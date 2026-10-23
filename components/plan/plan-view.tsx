@@ -9,6 +9,7 @@ import {
   ShieldAlert,
   Wrench,
 } from "lucide-react";
+import { BlueprintSheet } from "@/components/plan/blueprint-sheet";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -105,6 +106,15 @@ export function PlanView({
             professional if you&apos;re unsure.
           </div>
         )}
+      </section>
+
+      {/* blueprint */}
+      <section>
+        <BlueprintSheet plan={plan} units={units} />
+        <p className="mt-2 text-xs text-muted-foreground">
+          Blueprint generated from plan geometry — measured views, not an
+          illustration.
+        </p>
       </section>
 
       {unverified.length > 0 && (
