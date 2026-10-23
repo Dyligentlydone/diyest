@@ -9,6 +9,11 @@ export type LoginState = { error?: string; sent?: boolean; email?: string };
 
 const emailSchema = z.string().trim().toLowerCase().email();
 
+function safeNext(raw: unknown): string {
+  const v = typeof raw === "string" ? raw : "";
+  return v.startsWith("/") && !v.startsWith("//") ? v : "/projects";
+}
+
 export async function signInWithEmail(
   _prev: LoginState,
   formData: FormData
@@ -22,7 +27,7 @@ export async function signInWithEmail(
     email: parsed.data,
     options: {
       shouldCreateUser: true,
-      emailRedirectTo: `${origin}/auth/callback`,
+      emailRedirectTo: `${origin}/auth/callback?next=${encodeURIComponent(safeNext(formData.get("next")))}`,
     },
   });
 
@@ -30,12 +35,14 @@ export async function signInWithEmail(
   return { sent: true, email: parsed.data };
 }
 
-export async function signInWithGoogle() {
+export async function signInWithGoogle(formData: FormData) {
   const origin = (await headers()).get("origin") ?? process.env.NEXT_PUBLIC_APP_URL;
   const supabase = await createClient();
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
-    options: { redirectTo: `${origin}/auth/callback` },
+    options: {
+      redirectTo: `${origin}/auth/callback?next=${encodeURIComponent(safeNext(formData.get("next")))}`,
+    },
   });
 
   if (error || !data.url) redirect("/login?error=auth");

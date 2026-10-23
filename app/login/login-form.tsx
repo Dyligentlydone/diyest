@@ -9,7 +9,9 @@ import { Separator } from "@/components/ui/separator";
 import { signInWithEmail, signInWithGoogle, type LoginState } from "./actions";
 
 export function LoginForm() {
-  const oauthError = useSearchParams().get("error");
+  const params = useSearchParams();
+  const oauthError = params.get("error");
+  const next = params.get("next") ?? "/projects";
   const [state, formAction, pending] = useActionState<LoginState, FormData>(
     signInWithEmail,
     {}
@@ -30,6 +32,7 @@ export function LoginForm() {
   return (
     <div className="space-y-4">
       <form action={formAction} className="space-y-3">
+        <input type="hidden" name="next" value={next} />
         <div className="space-y-1.5">
           <Label htmlFor="email">Email</Label>
           <Input
@@ -54,6 +57,7 @@ export function LoginForm() {
       </div>
 
       <form action={signInWithGoogle}>
+        <input type="hidden" name="next" value={next} />
         <Button type="submit" variant="outline" className="w-full">
           Continue with Google
         </Button>
