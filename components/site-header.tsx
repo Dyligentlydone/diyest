@@ -1,6 +1,5 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { Hammer } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { isSupabaseConfigured } from "@/lib/env";
 import { createClient } from "@/lib/supabase/server";
@@ -32,9 +31,9 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2 font-semibold">
-          <Hammer className="h-5 w-5" aria-hidden />
-          diyest
+        <Link href="/" className="flex items-center font-semibold" aria-label="diyest home">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.png" alt="diyest" className="h-9 w-auto" />
         </Link>
         <nav className="flex items-center gap-1 sm:gap-2">
           <Link

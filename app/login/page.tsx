@@ -10,6 +10,8 @@ export default function LoginPage() {
     <main className="flex flex-1 items-center justify-center px-4 py-16">
       <Card className="w-full max-w-sm">
         <CardHeader>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.png" alt="diyest" className="mb-2 h-16 w-auto" />
           <CardTitle className="text-xl">Sign in to diyest</CardTitle>
           <CardDescription>
             Save your plans, track builds, and pick up where you left off.

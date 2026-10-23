@@ -6,7 +6,9 @@ export default function Home() {
   return (
     <main className="flex-1">
       <section className="mx-auto flex max-w-3xl flex-col items-center px-4 py-24 text-center">
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/logo.png" alt="diyest" className="h-28 w-auto sm:h-36" />
+        <h1 className="mt-8 text-4xl font-bold tracking-tight sm:text-5xl">
           Snap a photo. Get a plan you can actually build.
         </h1>
         <p className="mt-6 max-w-xl text-lg text-muted-foreground">
