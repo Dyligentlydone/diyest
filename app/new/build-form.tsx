@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { ImagePlus, Loader2, X } from "lucide-react";
+import { ImagePlus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,25 +19,7 @@ import { toMm } from "@/lib/units";
 import type { SkillLevel, Units } from "@/lib/types";
 
 const DRAFT_KEY = "diyest_draft_plan";
-
-const PROGRESS = [
-  "Reading your photo…",
-  "Sketching the design…",
-  "Laying out parts and joinery…",
-  "Checking every measurement…",
-  "Writing the steps…",
-];
-
-interface GenResponse {
-  ok: boolean;
-  kind?: string;
-  plan?: unknown;
-  unverified?: string[];
-  warnings?: string[];
-  errors?: string[];
-  summary?: string;
-  promptVersion?: string;
-}
+const PENDING_KEY = "diyest_pending_gen";
 
 export function BuildForm({
   defaults,
@@ -49,7 +31,6 @@ export function BuildForm({
   const [images, setImages] = useState<string[]>([]); // compressed data URLs
   const [units, setUnits] = useState<Units>(defaults.units);
   const [busy, setBusy] = useState(false);
-  const [stage, setStage] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
   async function onPickImages(files: FileList | null) {
@@ -93,47 +74,16 @@ export function BuildForm({
       currency: "USD",
     };
 
-    const body = new FormData();
-    body.set("payload", JSON.stringify(payload));
-    images.forEach((d, i) => body.append("images", dataUrlToBlob(d), `input-${i}.jpg`));
-
+    // Hand the request to the draft page — it owns the streamed generation
+    // so the plan can appear the moment the first draft is ready instead of
+    // after the full carpenter review. sessionStorage survives the navigation.
+    sessionStorage.setItem(
+      PENDING_KEY,
+      JSON.stringify({ payload, images })
+    );
+    sessionStorage.removeItem(DRAFT_KEY);
     setBusy(true);
-    setStage(0);
-    const timer = setInterval(() => setStage((s) => Math.min(s + 1, PROGRESS.length - 1)), 7000);
-    try {
-      const res = await fetch("/api/generate", { method: "POST", body });
-      const data = (await res.json()) as GenResponse;
-
-      if (!res.ok || !data.ok) {
-        if (data.kind === "not_buildable") {
-          setError(data.summary ?? "That doesn't look like a buildable project.");
-        } else if (data.kind === "limit") {
-          setError(data.errors?.[0] ?? "Generation limit reached.");
-        } else {
-          setError(data.errors?.[0] ?? "Generation failed. Try again.");
-        }
-        return;
-      }
-
-      sessionStorage.setItem(
-        DRAFT_KEY,
-        JSON.stringify({
-          plan: data.plan,
-          unverified: data.unverified ?? [],
-          warnings: data.warnings ?? [],
-          images,
-          input: payload,
-          promptVersion: data.promptVersion,
-          savedId: null,
-        })
-      );
-      router.push("/plan/draft");
-    } catch {
-      setError("Network error — check your connection and try again.");
-    } finally {
-      clearInterval(timer);
-      setBusy(false);
-    }
+    router.push("/plan/draft");
   }
 
   return (
@@ -266,24 +216,8 @@ export function BuildForm({
       )}
 
       <Button type="submit" className="w-full" size="lg" disabled={busy}>
-        {busy ? (
-          <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            {PROGRESS[stage]}
-          </>
-        ) : (
-          "Generate plan"
-        )}
+        {busy ? "Starting…" : "Generate plan"}
       </Button>
     </form>
   );
-}
-
-function dataUrlToBlob(d: string): Blob {
-  const [head, body] = d.split(",");
-  const mime = head.match(/data:(.*?);/)?.[1] ?? "image/jpeg";
-  const bin = atob(body);
-  const bytes = new Uint8Array(bin.length);
-  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-  return new Blob([bytes], { type: mime });
 }

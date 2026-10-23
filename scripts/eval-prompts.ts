@@ -18,7 +18,7 @@ import { readdirSync, readFileSync, mkdirSync, writeFileSync, existsSync } from 
 import { join, extname, basename } from "node:path";
 import { generatePlan } from "../lib/ai/generate";
 import { planSchema } from "../lib/plan/schema";
-import type { PlanRequest } from "../lib/ai/prompts/plan.v1.3";
+import type { PlanRequest } from "../lib/ai/prompts/plan.v1.4";
 
 const IMAGES_DIR = "eval/images";
 const RESULTS_DIR = "eval/results";
@@ -78,10 +78,18 @@ async function main() {
 
     const req = { ...DEFAULT_REQ, ...overrides, imageCount: 1 } as PlanRequest;
     console.log(`→ ${file} …`);
+    const t0 = Date.now();
     try {
-      const result = await generatePlan(req, [dataUrl], {
-        targetDimensionsMm: req.targetDimensionsMm,
-      });
+      let firstPlanMs: number | undefined;
+      const result = await generatePlan(
+        req,
+        [dataUrl],
+        { targetDimensionsMm: req.targetDimensionsMm },
+        (ev) => {
+          if (ev.type === "plan" && firstPlanMs === undefined)
+            firstPlanMs = Date.now() - t0;
+        }
+      );
       const out = {
         image: file,
         request: req,
@@ -94,18 +102,22 @@ async function main() {
               unverified: result.unverified,
               warnings: result.warnings,
               repairCount: result.repairCount,
+              improved: result.improved,
+              firstPlanMs: result.firstPlanMs,
               review: result.review
                 ? {
                     verdict: result.review.verdict,
                     issues: result.review.issues,
                     tokens: result.review.tokens,
                     latencyMs: result.review.latencyMs,
+                    model: result.review.model,
                   }
                 : null,
               plan: result.plan,
             }
           : result,
         latencyMs: result.ok ? result.latencyMs : undefined,
+        firstPlanMs: result.ok ? result.firstPlanMs : firstPlanMs,
         tokens: result.ok ? result.tokens : undefined,
         promptVersion: result.ok ? result.promptVersion : undefined,
       };

@@ -36,7 +36,7 @@ describe("planSchema", () => {
       ...bookcasePlan,
       parts: [],
       hardware: [],
-      finishes: [],
+      consumables: [],
       tools: [],
       steps: [],
     });

@@ -13,6 +13,7 @@ import { BlueprintSheet } from "@/components/plan/blueprint-sheet";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { consumablesOf } from "@/lib/plan/derive";
 import type { Plan } from "@/lib/plan/schema";
 import { formatDimension, formatDimensions } from "@/lib/units";
 import type { Units } from "@/lib/types";
@@ -244,20 +245,20 @@ export function PlanView({
               </CardContent>
             </Card>
 
-            {plan.finishes.length > 0 && (
+            {consumablesOf(plan).length > 0 && (
               <Card>
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-sm">Finishes</CardTitle>
+                  <CardTitle className="text-sm">Consumables</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-1.5 text-sm">
-                    {plan.finishes.map((f, i) => (
+                    {consumablesOf(plan).map((f, i) => (
                       <li key={i} className="flex justify-between gap-3">
                         <span>
                           {f.name}
-                          {f.notes && (
+                          {f.note && (
                             <span className="block text-xs text-muted-foreground">
-                              {f.notes}
+                              {f.note}
                             </span>
                           )}
                         </span>

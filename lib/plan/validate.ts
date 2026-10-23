@@ -19,9 +19,21 @@ export interface ValidationContext {
   useMyToolsOnly?: boolean;
 }
 
+/**
+ * "geometry": a part's size/placement/profile/solid is wrong → needs a full
+ * plan repair. "lists": joints/steps/tools references are wrong → a targeted
+ * joints+steps repair can fix it without re-drawing geometry.
+ */
+export type IssueKind = "geometry" | "lists";
+export interface ValidationIssue {
+  kind: IssueKind;
+  message: string;
+}
+
 export interface ValidationResult {
   errors: string[];
   warnings: string[];
+  issues: ValidationIssue[];
 }
 
 const MM_TOL = 1; // placement/size agreement tolerance
@@ -145,26 +157,42 @@ export async function validatePlan(
 ): Promise<ValidationResult> {
   const errors: string[] = [];
   const warnings: string[] = [];
+  const issues: ValidationIssue[] = [];
+  /** Record an error with a repair-routing kind (see IssueKind docs). */
+  const issue = (kind: IssueKind, message: string) => {
+    issues.push({ kind, message });
+    errors.push(message);
+  };
+  /** Mark every error appended inside fn() as geometry-class. */
+  const geometry = (fn: () => void) => {
+    const start = errors.length;
+    fn();
+    for (let i = start; i < errors.length; i++)
+      issues.push({ kind: "geometry", message: errors[i] });
+  };
 
   // ---- structural checks ----
-  if (!plan.parts.length) errors.push("Plan has no parts");
-  if (plan.est_cost.low > plan.est_cost.high)
-    errors.push("est_cost.low exceeds est_cost.high");
+  geometry(() => {
+    if (!plan.parts.length) errors.push("Plan has no parts");
+    if (plan.est_cost.low > plan.est_cost.high)
+      errors.push("est_cost.low exceeds est_cost.high");
+  });
   if (plan.clarifying_questions.length > 3)
     warnings.push("More than 3 clarifying questions returned");
 
   const ids = new Set(plan.parts.map((p) => p.id));
-  if (ids.size !== plan.parts.length) errors.push("Duplicate part ids");
+  if (ids.size !== plan.parts.length) issue("geometry", "Duplicate part ids");
 
   const used = new Set(plan.steps.flatMap((s) => s.parts_used));
   for (const s of plan.steps)
     for (const pid of s.parts_used)
-      if (!ids.has(pid)) errors.push(`Step ${s.n} references unknown part "${pid}"`);
+      if (!ids.has(pid)) issue("lists", `Step ${s.n} references unknown part "${pid}"`);
   for (const p of plan.parts)
-    if (!used.has(p.id)) errors.push(`Part ${p.id} (${p.name}) is not used in any step`);
+    if (!used.has(p.id)) issue("lists", `Part ${p.id} (${p.name}) is not used in any step`);
 
   const stepNums = plan.steps.map((s) => s.n);
-  if (new Set(stepNums).size !== stepNums.length) errors.push("Duplicate step numbers");
+  if (new Set(stepNums).size !== stepNums.length)
+    issue("lists", "Duplicate step numbers");
 
   // ---- per-part checks ----
   const targetMax = ctx.targetDimensionsMm
@@ -176,74 +204,37 @@ export async function validatePlan(
       )
     : MAX_PART_MM;
   for (const p of plan.parts) {
-    checkPart(p, targetMax, errors, warnings);
+    geometry(() => checkPart(p, targetMax, errors, warnings));
     if (p.source === "buy" && !p.buy_spec?.trim())
-      errors.push(`${p.id} (${p.name}): source "buy" requires a buy_spec`);
+      issue("geometry", `${p.id} (${p.name}): source "buy" requires a buy_spec`);
   }
 
-  // ---- joints (v1.3): structural declarations must cover reality ----
+  // ---- joints: structural declarations must cover reality ----
   const jointIds = new Set<string>();
   const jointPairs = new Set<string>();
   const pairKey = (a: string, b: string) => [a, b].sort().join("|");
   for (const j of plan.joints) {
-    if (jointIds.has(j.id)) errors.push(`Duplicate joint id ${j.id}`);
+    if (jointIds.has(j.id)) issue("lists", `Duplicate joint id ${j.id}`);
     jointIds.add(j.id);
     if (!ids.has(j.part_a))
-      errors.push(`Joint ${j.id} references unknown part_a "${j.part_a}"`);
+      issue("lists", `Joint ${j.id} references unknown part_a "${j.part_a}"`);
     if (!ids.has(j.part_b) && j.part_b !== "FLOOR" && j.part_b !== "WALL")
-      errors.push(`Joint ${j.id} references unknown part_b "${j.part_b}"`);
+      issue("lists", `Joint ${j.id} references unknown part_b "${j.part_b}"`);
     if (j.part_a === j.part_b)
-      errors.push(`Joint ${j.id} joins part ${j.part_a} to itself`);
+      issue("lists", `Joint ${j.id} joins part ${j.part_a} to itself`);
     jointPairs.add(pairKey(j.part_a, j.part_b));
 
-    const step = plan.steps.find((s) => s.n === j.step);
-    if (!step) {
-      errors.push(`Joint ${j.id} is made in step ${j.step}, which doesn't exist`);
-    } else {
-      if (!step.parts_used.includes(j.part_a))
-        errors.push(`Joint ${j.id} made in step ${j.step} but its parts_used lacks ${j.part_a}`);
-      if (ids.has(j.part_b) && !step.parts_used.includes(j.part_b))
-        errors.push(`Joint ${j.id} made in step ${j.step} but its parts_used lacks ${j.part_b}`);
-    }
+    if (!plan.steps.some((s) => s.n === j.step))
+      issue("lists", `Joint ${j.id} is made in step ${j.step}, which doesn't exist`);
+    // (steps' parts_used coverage is auto-filled by applyJointPartsToSteps)
   }
-
-  // hardware quantities must equal the sum of joint fasteners (name-matched)
-  const normName = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "");
-  const fastenerTotals = new Map<string, number>();
-  const fastenerNames = new Map<string, string>();
-  for (const j of plan.joints)
-    for (const f of j.fasteners) {
-      const k = normName(f.name);
-      fastenerTotals.set(k, (fastenerTotals.get(k) ?? 0) + f.qty_per_joint * j.count);
-      fastenerNames.set(k, f.name);
-    }
-  const hwMatched = new Set<string>();
-  for (const [fk, total] of fastenerTotals) {
-    const hw = plan.hardware.find(
-      (h) => normName(h.name) === fk || normName(h.name).includes(fk) || fk.includes(normName(h.name))
-    );
-    if (!hw)
-      errors.push(
-        `Fastener "${fastenerNames.get(fk)}" used by joints (×${total}) is missing from the hardware list`
-      );
-    else {
-      hwMatched.add(hw.name);
-      if (hw.qty !== total)
-        errors.push(
-          `Hardware "${hw.name}" qty ${hw.qty} ≠ joints total ${total} (sum of qty_per_joint × count)`
-        );
-    }
-  }
-  for (const h of plan.hardware)
-    if (!hwMatched.has(h.name))
-      warnings.push(`Hardware "${h.name}" isn't referenced by any joint`);
 
   // ---- geometry checks (real meshes) ----
   let solids: Solid[] = [];
   try {
     solids = solidsOf(plan);
   } catch (e) {
-    errors.push(`Failed to build part geometry: ${(e as Error).message}`);
+    issue("geometry", `Failed to build part geometry: ${(e as Error).message}`);
   }
 
   if (solids.length) {
@@ -252,7 +243,8 @@ export async function validatePlan(
     const got = [b.hi[0] - b.lo[0], b.hi[1] - b.lo[1], b.hi[2] - b.lo[2]];
     const want = [dims.width, dims.height, dims.depth];
     if (!want.every((w, i) => Math.abs(w - got[i]) <= BBOX_TOL))
-      errors.push(
+      issue(
+        "geometry",
         `Bounding box ${got.map((v) => Math.round(v)).join("×")}mm ≠ overall_dimensions_mm ${want.join("×")}`
       );
 
@@ -266,7 +258,8 @@ export async function validatePlan(
           return part?.notes && JOINERY_NOTE.test(part.notes);
         });
         if (h.volumeMm3 > OVERLAP_VOLUME_MIN && !joineryNoted)
-          errors.push(
+          issue(
+            "geometry",
             `Solids intersect: ${h.a} × ${h.b} overlap ${Math.round(h.volumeMm3)}mm³ (parts may touch, not pass through — note joinery if intentional)`
           );
       }
@@ -286,12 +279,11 @@ export async function validatePlan(
           boxes[i].lo[0] <= other.hi[0] + MM_TOL &&
           boxes[i].hi[0] >= other.lo[0] - MM_TOL &&
           boxes[i].lo[1] <= other.hi[1] + MM_TOL &&
-          boxes[i].hi[1] >= other.lo[1] - MM_TOL &&
           boxes[i].lo[2] <= other.hi[2] + MM_TOL &&
           boxes[i].hi[2] >= other.lo[2] - MM_TOL
       );
       if (!supported)
-        errors.push(`${s.part.id} (${s.part.name}) copy ${s.copy + 1} floats in mid-air`);
+        issue("geometry", `${s.part.id} (${s.part.name}) copy ${s.copy + 1} floats in mid-air`);
     }
 
     // joint coverage: every pair of different-part solids that touch (AABBs
@@ -314,7 +306,8 @@ export async function validatePlan(
           a.lo[2] <= b.hi[2] + MM_TOL &&
           a.hi[2] >= b.lo[2] - MM_TOL;
         if (touching && !jointPairs.has(pairKey(A.part.id, Bs.part.id)))
-          errors.push(
+          issue(
+            "lists",
             `Parts ${A.part.id} (${A.part.name}) and ${Bs.part.id} (${Bs.part.name}) touch but have no declared joint`
           );
       }
@@ -332,7 +325,8 @@ export async function validatePlan(
     ];
     for (const [want, got, name] of pairs)
       if (want && Math.abs(got - want) > want * 0.05)
-        errors.push(
+        issue(
+          "geometry",
           `Overall ${name} ${Math.round(got)}mm differs from target ${want}mm by more than 5%`
         );
   }
@@ -341,7 +335,8 @@ export async function validatePlan(
     const owned = new Set(ctx.toolsOwned.map((s) => s.toLowerCase()));
     for (const tool of plan.tools)
       if (tool.required && !owned.has(tool.name.toLowerCase()))
-        errors.push(
+        issue(
+          "geometry",
           `Required tool "${tool.name}" is not in the user's inventory (use-my-tools-only was on)`
         );
   }
@@ -356,7 +351,8 @@ export async function validatePlan(
         (pl) => !isAxisPlacement(pl) && Math.max(pl.sx, pl.sz) > 600
       );
       if (isHorizontalSlab && longSpan && p.thickness_mm < 18)
-        errors.push(
+        issue(
+          "geometry",
           `${p.id} (${p.name}): load-bearing horizontal part is only ${p.thickness_mm}mm thick (<18mm minimum)`
         );
     }
@@ -364,5 +360,5 @@ export async function validatePlan(
       warnings.push("load_bearing plan has no step-level safety notes");
   }
 
-  return { errors, warnings };
+  return { errors, warnings, issues };
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -9,26 +9,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { PlanView } from "@/components/plan/plan-view";
 import { createClient } from "@/lib/supabase/client";
+import { streamGenerate } from "@/lib/generate-stream";
 import type { Plan } from "@/lib/plan/schema";
 import type { Units } from "@/lib/types";
 
 const DRAFT_KEY = "diyest_draft_plan";
+const PENDING_KEY = "diyest_pending_gen";
 
 const subscribeNoop = () => () => {};
-
-// cache so useSyncExternalStore's getSnapshot stays referentially stable
-let draftCache: Draft | null | undefined;
-function readDraft(): Draft | null {
-  if (draftCache === undefined) {
-    try {
-      const raw = sessionStorage.getItem(DRAFT_KEY);
-      draftCache = raw ? (JSON.parse(raw) as Draft) : null;
-    } catch {
-      draftCache = null;
-    }
-  }
-  return draftCache;
-}
 
 interface Draft {
   plan: Plan;
@@ -37,7 +25,60 @@ interface Draft {
   images: string[];
   input: Record<string, unknown>;
   promptVersion?: string;
+  improved?: boolean;
   savedId: string | null;
+}
+
+interface PendingGen {
+  payload: Record<string, unknown>;
+  images: string[]; // data URLs
+}
+
+// caches keyed by raw storage string so useSyncExternalStore's getSnapshot
+// stays referentially stable AND notices when /new writes a new request
+let draftCache: { raw: string | null; parsed: Draft | null } | undefined;
+function readDraft(): Draft | null {
+  const raw = sessionStorage.getItem(DRAFT_KEY);
+  if (!draftCache || draftCache.raw !== raw) {
+    let parsed: Draft | null = null;
+    try {
+      parsed = raw ? (JSON.parse(raw) as Draft) : null;
+    } catch {
+      parsed = null;
+    }
+    draftCache = { raw, parsed };
+  }
+  return draftCache.parsed;
+}
+
+let pendingCache: { raw: string | null; parsed: PendingGen | null } | undefined;
+function readPending(): PendingGen | null {
+  const raw = sessionStorage.getItem(PENDING_KEY);
+  if (!pendingCache || pendingCache.raw !== raw) {
+    let parsed: PendingGen | null = null;
+    try {
+      parsed = raw ? (JSON.parse(raw) as PendingGen) : null;
+    } catch {
+      parsed = null;
+    }
+    pendingCache = { raw, parsed };
+  }
+  return pendingCache.parsed;
+}
+
+function dataUrlToBlob(d: string): Blob {
+  const [head, body] = d.split(",");
+  const mime = head.match(/data:(.*?);/)?.[1] ?? "image/jpeg";
+  const bin = atob(body);
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return new Blob([bytes], { type: mime });
+}
+
+function persistDraft(d: Draft) {
+  const raw = JSON.stringify(d);
+  draftCache = { raw, parsed: d };
+  sessionStorage.setItem(DRAFT_KEY, raw);
 }
 
 export function DraftClient({ isAuthed, units }: { isAuthed: boolean; units: Units }) {
@@ -45,16 +86,103 @@ export function DraftClient({ isAuthed, units }: { isAuthed: boolean; units: Uni
   // sessionStorage is a client-only store: subscribe-read pattern keeps the
   // SSR/hydration shell consistent ("Loading…"), then the draft streams in.
   const stored = useSyncExternalStore(subscribeNoop, readDraft, () => undefined);
+  const pending = useSyncExternalStore(subscribeNoop, readPending, () => undefined);
   const [override, setOverride] = useState<Draft | null>();
   const draft = override !== undefined ? override : stored;
-  const setDraft = (d: Draft | null) => setOverride(d);
+  const setDraft = (d: Draft | null) => {
+    if (d) persistDraft(d);
+    setOverride(d);
+  };
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
+  const [genFinished, setGenFinished] = useState(false); // stream ended (or never ran)
+  const [checking, setChecking] = useState(false);
+  const [genError, setGenError] = useState<{ msg: string; kind?: string } | null>(null);
+  const startedRef = useRef(false);
+  // "generating" = a pending request exists and the stream hasn't finished
+  const generating = !!pending && !genFinished;
+
+  // If the /new form handed us a pending request, run the streamed generation.
+  useEffect(() => {
+    if (startedRef.current || !pending) return;
+    startedRef.current = true;
+
+    const body = new FormData();
+    body.set("payload", JSON.stringify(pending.payload));
+    pending.images.forEach((d, i) => body.append("images", dataUrlToBlob(d), `input-${i}.jpg`));
+
+    void streamGenerate(body, {
+      onPlan: (ev) => {
+        sessionStorage.removeItem(PENDING_KEY);
+        setDraft({
+          plan: ev.plan,
+          unverified: ev.unverified,
+          warnings: ev.warnings,
+          images: pending.images,
+          input: pending.payload,
+          promptVersion: ev.promptVersion,
+          savedId: null,
+        });
+        setChecking(true); // master carpenter review still running
+      },
+      onFinal: (r) => {
+        setDraft({
+          plan: r.plan,
+          unverified: r.unverified,
+          warnings: r.warnings,
+          images: pending.images,
+          input: pending.payload,
+          promptVersion: r.promptVersion,
+          improved: r.improved,
+          savedId: null,
+        });
+        setChecking(false);
+        setGenFinished(true);
+      },
+      onError: (e) => {
+        setGenError({
+          msg:
+            e.kind === "not_buildable"
+              ? e.summary ?? "That doesn't look like a buildable project."
+              : e.errors[0] ?? "Generation failed. Try again.",
+          kind: e.reason === "anonymous_limit" || e.reason === "free_limit" ? "limit" : e.kind,
+        });
+        setChecking(false);
+        setGenFinished(true);
+      },
+    });
+  }, [pending]);
 
   if (draft === undefined) {
     return <div className="mx-auto max-w-4xl px-4 py-24 text-muted-foreground">Loading…</div>;
   }
+
+  if (genError) {
+    return (
+      <main className="mx-auto max-w-2xl px-4 py-24 text-center">
+        <h1 className="text-xl font-semibold">
+          {genError.kind === "not_buildable" ? "Not a buildable project" : "Something went wrong"}
+        </h1>
+        <p className="mt-2 text-muted-foreground">{genError.msg}</p>
+        <Link href="/new" className="mt-4 inline-block underline underline-offset-4">
+          Try a different project
+        </Link>
+      </main>
+    );
+  }
+
   if (!draft) {
+    if (generating) {
+      return (
+        <main className="mx-auto max-w-2xl px-4 py-24 text-center">
+          <div className="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-muted border-t-primary" />
+          <h1 className="mt-6 text-xl font-semibold">Drawing up your plan…</h1>
+          <p className="mt-2 text-muted-foreground">
+            Reading the photo, laying out parts and joinery, writing the steps.
+          </p>
+        </main>
+      );
+    }
     return (
       <main className="mx-auto max-w-2xl px-4 py-24 text-center">
         <h1 className="text-xl font-semibold">No draft plan</h1>
@@ -73,6 +201,7 @@ export function DraftClient({ isAuthed, units }: { isAuthed: boolean; units: Uni
   async function regenerate() {
     if (!draft) return;
     setBusy(true);
+    setChecking(false);
     try {
       const body = new FormData();
       body.set(
@@ -84,30 +213,31 @@ export function DraftClient({ isAuthed, units }: { isAuthed: boolean; units: Uni
             .filter((qa) => qa.answer.trim()),
         })
       );
-      draft.images.forEach((d, i) => {
-        const [head, b] = d.split(",");
-        const mime = head.match(/data:(.*?);/)?.[1] ?? "image/jpeg";
-        const bin = atob(b);
-        const bytes = new Uint8Array(bin.length);
-        for (let k = 0; k < bin.length; k++) bytes[k] = bin.charCodeAt(k);
-        body.append("images", new Blob([bytes], { type: mime }), `input-${i}.jpg`);
-      });
+      draft.images.forEach((d, i) =>
+        body.append("images", dataUrlToBlob(d), `input-${i}.jpg`)
+      );
 
-      const res = await fetch("/api/generate", { method: "POST", body });
-      const data = await res.json();
-      if (!res.ok || !data.ok) {
-        toast.error(data.errors?.[0] ?? data.summary ?? "Regeneration failed");
-        return;
-      }
-      const next: Draft = {
-        ...draft,
-        plan: data.plan,
-        unverified: data.unverified ?? [],
-        warnings: data.warnings ?? [],
-        promptVersion: data.promptVersion,
-      };
-      sessionStorage.setItem(DRAFT_KEY, JSON.stringify(next));
-      setDraft(next);
+      await streamGenerate(body, {
+        onPlan: (ev) => {
+          setDraft({ ...draft!, plan: ev.plan, unverified: ev.unverified, warnings: ev.warnings });
+          setChecking(true);
+        },
+        onFinal: (r) => {
+          setDraft({
+            ...draft!,
+            plan: r.plan,
+            unverified: r.unverified,
+            warnings: r.warnings,
+            promptVersion: r.promptVersion,
+            improved: r.improved,
+          });
+          setChecking(false);
+        },
+        onError: (e) => {
+          toast.error(e.errors[0] ?? e.summary ?? "Regeneration failed");
+          setChecking(false);
+        },
+      });
       setAnswers({});
       window.scrollTo(0, 0);
     } finally {
@@ -158,7 +288,7 @@ export function DraftClient({ isAuthed, units }: { isAuthed: boolean; units: Uni
           mode: "build",
           plan: draft.plan,
           input: draft.input,
-          prompt_version: draft.promptVersion ?? "plan.v1.2",
+          prompt_version: draft.promptVersion ?? "plan.v1.4",
           imagePaths,
         }),
       });
@@ -176,7 +306,25 @@ export function DraftClient({ isAuthed, units }: { isAuthed: boolean; units: Uni
 
   return (
     <main className="mx-auto w-full max-w-4xl px-4 py-10">
-      {questions.length > 0 && (
+      {checking && (
+        <div className="mb-6 flex items-center gap-3 rounded-md border border-primary/40 bg-primary/5 p-4 text-sm">
+          <div className="h-4 w-4 animate-spin rounded-full border-2 border-muted border-t-primary" />
+          <span>
+            <strong>Master carpenter check in progress…</strong> The plan below is ready
+            to read; we&apos;re verifying joinery, tool access and wood movement in the
+            background and will flag or fix anything we find.
+          </span>
+        </div>
+      )}
+      {!checking && draft.improved && (
+        <div className="mb-6 rounded-md border border-emerald-500/40 bg-emerald-500/10 p-4 text-sm">
+          <strong>Improved after carpenter review.</strong> The plan below was adjusted
+          automatically where our checks found problems — remaining flags are listed
+          under Unverified.
+        </div>
+      )}
+
+      {questions.length > 0 && !checking && (
         <Card className="mb-6 border-primary/40">
           <CardHeader>
             <CardTitle className="text-base">
@@ -226,7 +374,7 @@ export function DraftClient({ isAuthed, units }: { isAuthed: boolean; units: Uni
               Anonymous draft — sign up to keep it
             </span>
           )}
-          <Button onClick={save} disabled={busy}>
+          <Button onClick={save} disabled={busy || checking}>
             {busy ? "Saving…" : isAuthed ? "Save to my projects" : "Sign up to save"}
           </Button>
         </div>

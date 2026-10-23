@@ -28,3 +28,12 @@ export function reviewMode(): ReviewMode {
 export function supportsTemperature(model: string): boolean {
   return /^(gpt-4|gpt-3|o1-mini)/i.test(model);
 }
+
+/** Reasoning effort for gpt-5/6/o-series models. Default medium (speed). */
+export function reasoningEffort(
+  model: string
+): "low" | "medium" | "high" | null {
+  const v = process.env.AI_REASONING_EFFORT || "medium";
+  if (!/^(gpt-5|gpt-6|o\d)/i.test(model)) return null;
+  return v === "low" || v === "high" ? v : "medium";
+}

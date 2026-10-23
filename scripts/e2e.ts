@@ -73,14 +73,45 @@ if (IMAGE) {
 
 const t0 = Date.now();
 const res = await fetch(`${BASE}/api/generate`, { method: "POST", body: form });
-const wallMs = Date.now() - t0;
 check("POST /api/generate → 200", res.status === 200, `got ${res.status}`);
 
 const anonCookie = (res.headers.get("set-cookie") ?? "").match(/diyest_anon_gens=(\d+)/);
 check("anonymous usage cookie incremented", !!anonCookie, anonCookie?.[0]);
 
-const result = (await res.json()) as Record<string, unknown>;
+// NDJSON stream: collect events; the "plan" event is the fast preview,
+// "final" is the reviewed result.
+const events: Array<Record<string, unknown>> = [];
+let firstPlanMs: number | null = null;
+{
+  const reader = res.body!.getReader();
+  const decoder = new TextDecoder();
+  let buf = "";
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buf += decoder.decode(value, { stream: true });
+    let nl;
+    while ((nl = buf.indexOf("\n")) >= 0) {
+      const line = buf.slice(0, nl).trim();
+      buf = buf.slice(nl + 1);
+      if (!line) continue;
+      try {
+        const ev = JSON.parse(line) as Record<string, unknown>;
+        events.push(ev);
+        if (ev.type === "plan" && firstPlanMs == null) firstPlanMs = Date.now() - t0;
+      } catch {
+        /* skip */
+      }
+    }
+  }
+}
+const wallMs = Date.now() - t0;
+
+const finalEv = events.find((e) => e.type === "final") ?? events.find((e) => e.type === "error");
+const result = (finalEv?.result ?? { ok: false }) as Record<string, unknown>;
 check("result.ok === true", result.ok === true, String(result.kind ?? ""));
+if (firstPlanMs != null)
+  console.log(`  first plan event at ${(firstPlanMs / 1000).toFixed(1)}s`);
 
 let planJson: unknown = null;
 if (result.ok) {
@@ -126,8 +157,10 @@ writeFileSync(
       at: new Date().toISOString(),
       request: { ...payload, image: IMAGE ?? null },
       wallMs,
+      firstPlanMs,
       httpStatus: res.status,
       checks,
+      events,
       response: result,
     },
     null,

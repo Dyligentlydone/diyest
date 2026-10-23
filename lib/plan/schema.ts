@@ -2,7 +2,12 @@ import { z } from "zod";
 
 /**
  * Plan JSON schema — the contract between the AI and our code.
- * Must stay in sync with lib/ai/prompts/plan.v1.ts (PROMPT_VERSION plan.v1.2).
+ * Must stay in sync with lib/ai/prompts/plan.v1.4.ts (PROMPT_VERSION plan.v1.4).
+ *
+ * v1.4 changes: the AI no longer writes `hardware` (derived from joints in
+ * code), `finishes` (folded into `consumables`), or `joints.glue` (consumables
+ * covers it). `genPlanSchema` is what the model returns; `planSchema` is the
+ * stored/displayed plan — a gen plan plus code-derived hardware.
  *
  * All dimensions are millimeters. World axes: origin = front-bottom-left
  * corner of the finished piece; x = left→right, y = bottom→top, z = front→back.
@@ -104,7 +109,10 @@ export const jointTypeSchema = z.enum([
 
 export type JointType = z.infer<typeof jointTypeSchema>;
 
-/** A connection between two parts (part_b may be "FLOOR" or "WALL"). */
+/**
+ * A connection between two parts (part_b may be "FLOOR" or "WALL").
+ * Glue/sealant are not tracked per-joint — they live in plan.consumables.
+ */
 export const jointSchema = z.object({
   id: z.string().min(1),
   part_a: z.string().min(1),
@@ -118,13 +126,32 @@ export const jointSchema = z.object({
       qty_per_joint: z.number().positive(),
     })
   ),
-  glue: z.boolean(),
   drive_from: z.string().min(1),
   step: z.number().int().positive(),
   note: z.string().nullable(),
 });
 
 export type Joint = z.infer<typeof jointSchema>;
+
+export const fastenerSchema = jointSchema.shape.fasteners.element;
+export type Fastener = z.infer<typeof fastenerSchema>;
+
+/** A hardware-line item (derived from joints — never AI-written in v1.4+). */
+export const hardwareItemSchema = z.object({
+  name: z.string().min(1),
+  size: z.string().nullable().optional(),
+  qty: z.number().positive(),
+  notes: z.string().nullable().optional(),
+});
+export type HardwareItem = z.infer<typeof hardwareItemSchema>;
+
+/** Glue, sealant, finish, sandpaper — consumed, not cut or fastened. */
+export const consumableSchema = z.object({
+  name: z.string().min(1),
+  qty: z.string().nullable().optional(),
+  note: z.string().nullable().optional(),
+});
+export type Consumable = z.infer<typeof consumableSchema>;
 
 export const partSchema = z.object({
   id: z.string().min(1),
@@ -146,7 +173,22 @@ export const partSchema = z.object({
   notes: z.string().nullable().optional(),
 });
 
-export const planSchema = z.object({
+export const stepSchema = z.object({
+  n: z.number().int().positive(),
+  title: z.string().min(1),
+  text: z.string().min(1),
+  parts_used: z.array(z.string()),
+  tools_used: z.array(z.string()),
+  safety: z.string().nullable().optional(),
+  tip: z.string().nullable().optional(),
+});
+export type Step = z.infer<typeof stepSchema>;
+
+/**
+ * What the AI returns (plan.v1.4): no `hardware` (derived from joints in
+ * code), no `finishes` (folded into `consumables`).
+ */
+export const genPlanSchema = z.object({
   title: z.string().min(1),
   summary: z.string(),
   difficulty: z.enum(["beginner", "intermediate", "advanced"]),
@@ -167,21 +209,7 @@ export const planSchema = z.object({
   // responses. "A buildable plan must have parts" is enforced by validate.ts.
   parts: z.array(partSchema),
   joints: z.array(jointSchema),
-  hardware: z.array(
-    z.object({
-      name: z.string().min(1),
-      size: z.string().nullable().optional(),
-      qty: z.number().positive(),
-      notes: z.string().nullable().optional(),
-    })
-  ),
-  finishes: z.array(
-    z.object({
-      name: z.string().min(1),
-      qty: z.string().nullable().optional(),
-      notes: z.string().nullable().optional(),
-    })
-  ),
+  consumables: z.array(consumableSchema),
   tools: z.array(
     z.object({
       name: z.string().min(1),
@@ -189,19 +217,21 @@ export const planSchema = z.object({
       alternative: z.string().nullable().optional(),
     })
   ),
-  steps: z.array(
-    z.object({
-      n: z.number().int().positive(),
-      title: z.string().min(1),
-      text: z.string().min(1),
-      parts_used: z.array(z.string()),
-      tools_used: z.array(z.string()),
-      safety: z.string().nullable().optional(),
-      tip: z.string().nullable().optional(),
-    })
-  ),
+  steps: z.array(stepSchema),
   safety_overview: z.array(z.string()),
   load_bearing: z.boolean(),
+});
+export type GenPlan = z.infer<typeof genPlanSchema>;
+
+/**
+ * The stored/displayed plan = AI output + code-derived `hardware`.
+ * `finishes`/`consumables` are optional so plans saved under earlier prompt
+ * versions still parse; read them through consumablesOf() in lib/plan/derive.
+ */
+export const planSchema = genPlanSchema.extend({
+  hardware: z.array(hardwareItemSchema).default([]),
+  consumables: z.array(consumableSchema).optional(),
+  finishes: z.array(consumableSchema).nullable().optional(),
 });
 
 export type Part = z.infer<typeof partSchema>;

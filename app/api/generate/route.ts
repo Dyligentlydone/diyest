@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
-import { generatePlan } from "@/lib/ai/generate";
-import { PROMPT_VERSION } from "@/lib/ai/prompts/plan.v1.3";
+import { generatePlan, type GenEvent } from "@/lib/ai/generate";
+import { PROMPT_VERSION } from "@/lib/ai/prompts/plan.v1.4";
 import { REVIEW_PROMPT_VERSION } from "@/lib/ai/prompts/review.v1";
-import type { PlanRequest } from "@/lib/ai/prompts/plan.v1.3";
+import type { PlanRequest } from "@/lib/ai/prompts/plan.v1.4";
 import {
   ANON_COOKIE,
   anonGenerationsUsed,
@@ -122,53 +122,74 @@ export async function POST(request: NextRequest) {
     imageCount: imageDataUrls.length,
   };
 
-  try {
-    const result = await generatePlan(req, imageDataUrls, {
-      targetDimensionsMm: payload.targetDimensionsMm,
-    });
+  // ---- generate (NDJSON stream: "plan" fast, "final" after review+repair) ----
+  const enc = new TextEncoder();
+  const stream = new ReadableStream<Uint8Array>({
+    async start(controller) {
+      const send = (ev: GenEvent) =>
+        controller.enqueue(enc.encode(JSON.stringify(ev) + "\n"));
+      try {
+        const result = await generatePlan(
+          req,
+          imageDataUrls,
+          { targetDimensionsMm: payload.targetDimensionsMm },
+          send
+        );
 
-    void logGeneration({
-      user_id: user?.id,
-      prompt_version: result.ok ? result.promptVersion : PROMPT_VERSION,
-      raw_output: result.raw,
-      validation_errors: result.ok
-        ? result.unverified.length
-          ? result.unverified
-          : undefined
-        : result.kind === "invalid"
-          ? result.errors
-          : [{ kind: result.kind }],
-      latency_ms: result.ok ? result.latencyMs : undefined,
-      tokens: result.ok ? result.tokens : undefined,
-    });
-    if (result.ok && result.review)
-      void logGeneration({
-        user_id: user?.id,
-        prompt_version: REVIEW_PROMPT_VERSION,
-        raw_output: JSON.stringify(result.review),
-        validation_errors: result.review.issues.length
-          ? result.review.issues
-          : undefined,
-        latency_ms: result.review.latencyMs,
-        tokens: result.review.tokens,
-      });
-    if (user) void recordUsage(user.id, "plan_generate");
+        void logGeneration({
+          user_id: user?.id,
+          prompt_version: result.ok ? result.promptVersion : PROMPT_VERSION,
+          raw_output: result.raw,
+          validation_errors: result.ok
+            ? result.unverified.length
+              ? result.unverified
+              : undefined
+            : result.kind === "invalid"
+              ? result.errors
+              : [{ kind: result.kind }],
+          latency_ms: result.ok ? result.latencyMs : undefined,
+          tokens: result.ok ? result.tokens : undefined,
+        });
+        if (result.ok && result.review)
+          void logGeneration({
+            user_id: user?.id,
+            prompt_version: REVIEW_PROMPT_VERSION,
+            raw_output: JSON.stringify(result.review),
+            validation_errors: result.review.issues.length
+              ? result.review.issues
+              : undefined,
+            latency_ms: result.review.latencyMs,
+            tokens: result.review.tokens,
+          });
+        if (user) void recordUsage(user.id, "plan_generate");
+      } catch (e) {
+        console.error("[generate] failed", e);
+        send({
+          type: "error",
+          result: {
+            ok: false,
+            kind: "invalid",
+            errors: ["Plan generation failed. Try again."],
+            raw: "",
+          },
+        });
+      } finally {
+        controller.close();
+      }
+    },
+  });
 
-    const res = NextResponse.json(result);
-    if (!user) {
-      res.cookies.set(ANON_COOKIE, String(anonGenerationsUsed(request) + 1), {
-        httpOnly: true,
-        sameSite: "lax",
-        maxAge: 60 * 60 * 24 * 365,
-        path: "/",
-      });
-    }
-    return res;
-  } catch (e) {
-    console.error("[generate] failed", e);
-    return NextResponse.json(
-      { ok: false, kind: "error", errors: ["Plan generation failed. Try again."] },
-      { status: 500 }
+  const res = new Response(stream, {
+    headers: {
+      "content-type": "application/x-ndjson; charset=utf-8",
+      "cache-control": "no-store",
+    },
+  });
+  if (!user) {
+    res.headers.append(
+      "set-cookie",
+      `${ANON_COOKIE}=${anonGenerationsUsed(request) + 1}; HttpOnly; SameSite=Lax; Max-Age=${60 * 60 * 24 * 365}; Path=/`
     );
   }
+  return res;
 }

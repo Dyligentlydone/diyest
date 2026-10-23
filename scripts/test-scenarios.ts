@@ -14,7 +14,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { generatePlan, type GenerateResult } from "../lib/ai/generate";
 import { planSchema } from "../lib/plan/schema";
-import type { PlanRequest } from "../lib/ai/prompts/plan.v1.3";
+import type { PlanRequest } from "../lib/ai/prompts/plan.v1.4";
 
 const RESULTS_DIR = "test-results";
 
