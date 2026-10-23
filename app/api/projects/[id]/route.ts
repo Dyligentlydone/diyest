@@ -3,6 +3,7 @@ import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/env";
 import { randomBytes } from "crypto";
+import { denyIfNoInvite } from "@/lib/site-mode";
 
 /** short URL-safe slug for share pages */
 const newSlug = () => randomBytes(8).toString("base64url");
@@ -31,6 +32,8 @@ export async function PATCH(
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Sign in" }, { status: 401 });
+  const denied1 = await denyIfNoInvite(user.id);
+  if (denied1) return denied1;
 
   let patch: z.infer<typeof patchSchema>;
   try {

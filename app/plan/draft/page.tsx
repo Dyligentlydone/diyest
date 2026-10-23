@@ -1,10 +1,11 @@
 import { Suspense } from "react";
 import { isSupabaseConfigured } from "@/lib/env";
+import { requirePageAccess } from "@/lib/site-mode";
 import { createClient } from "@/lib/supabase/server";
 import type { Units } from "@/lib/types";
 import { DraftClient } from "./draft-client";
 
-export const metadata = { title: "Your plan — diyest" };
+export const metadata = { title: "Your plan — diyest" , robots: { index: false } };
 
 async function sessionInfo(): Promise<{
   isAuthed: boolean;
@@ -39,6 +40,8 @@ export default function DraftPlanPage() {
 }
 
 async function DraftLoader() {
+  // invite-only beta: drafts require an active invite
+  await requirePageAccess("/plan/draft");
   const { isAuthed, units, kerfMm } = await sessionInfo();
   return <DraftClient isAuthed={isAuthed} units={units} kerfMm={kerfMm} />;
 }

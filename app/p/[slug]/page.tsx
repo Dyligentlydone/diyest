@@ -6,6 +6,7 @@ import { PlanView } from "@/components/plan/plan-view";
 import { buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { isSupabaseConfigured } from "@/lib/env";
+import { betaAccessFor, isInviteOnly } from "@/lib/site-mode";
 import { planSchema } from "@/lib/plan/schema";
 import { createClient } from "@/lib/supabase/server";
 import { CloneButton } from "./clone-button";
@@ -94,8 +95,20 @@ async function PublicContent({ params }: Props) {
           </p>
         </div>
         <div className="flex gap-2">
-          {auth.user ? (
+          {auth.user && (!isInviteOnly() || (await betaAccessFor(auth.user.id))?.active) ? (
             <CloneButton projectId={project.id} />
+          ) : isInviteOnly() ? (
+            <>
+              <Link href="/#waitlist" className={buttonVariants()}>
+                Join the waitlist
+              </Link>
+              <Link
+                href="/invite"
+                className={buttonVariants({ variant: "outline" })}
+              >
+                Have an invite code?
+              </Link>
+            </>
           ) : (
             <Link href={`/login?next=/p/${slug}`} className={buttonVariants()}>
               Build this yourself

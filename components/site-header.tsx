@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { isSupabaseConfigured } from "@/lib/env";
+import { isInviteOnly } from "@/lib/site-mode";
 import { createClient } from "@/lib/supabase/server";
 import { UserMenu } from "./user-menu";
 
@@ -35,6 +36,11 @@ export function SiteHeader() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo.png" alt="diyest" className="h-9 w-auto" />
         </Link>
+        {isInviteOnly() && (
+          <span className="rounded-full border border-amber-400 bg-amber-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-800">
+            Beta
+          </span>
+        )}
         <nav className="flex items-center gap-1 sm:gap-2">
           <Link
             href="/gallery"

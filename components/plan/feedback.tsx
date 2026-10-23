@@ -13,7 +13,7 @@ async function send(payload: Record<string, unknown>) {
   if (!res.ok) throw new Error("Couldn't send feedback");
 }
 
-/** Whole-plan accuracy thumbs — sits under the plan overview. */
+/** Whole-plan accuracy thumbs — prominent beta feedback under the overview. */
 export function PlanFeedback({ projectId }: { projectId?: string | null }) {
   const [done, setDone] = useState<"up" | "down" | null>(null);
   const [comment, setComment] = useState("");
@@ -24,7 +24,7 @@ export function PlanFeedback({ projectId }: { projectId?: string | null }) {
     try {
       await send({ projectId, rating });
       if (rating === "down") setWantComment(true);
-      else toast.success("Thanks for the feedback");
+      else toast.success("Thanks — that trains the planner");
     } catch (e) {
       toast.error((e as Error).message);
       setDone(null);
@@ -32,27 +32,44 @@ export function PlanFeedback({ projectId }: { projectId?: string | null }) {
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-3 rounded-md border p-3 text-sm">
-      <span className="text-muted-foreground">Was this plan accurate?</span>
-      <button
-        type="button"
-        aria-label="Plan was accurate"
-        disabled={done != null}
-        onClick={() => void rate("up")}
-        className={`rounded-full border p-1.5 ${done === "up" ? "border-primary bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted"}`}
-      >
-        <ThumbsUp className="h-4 w-4" />
-      </button>
-      <button
-        type="button"
-        aria-label="Plan had problems"
-        disabled={done != null}
-        onClick={() => void rate("down")}
-        className={`rounded-full border p-1.5 ${done === "down" ? "border-destructive bg-destructive/10 text-destructive" : "text-muted-foreground hover:bg-muted"}`}
-      >
-        <ThumbsDown className="h-4 w-4" />
-      </button>
-      {done && <span className="text-xs text-muted-foreground">Recorded — thanks.</span>}
+    <div className="rounded-lg border-2 border-primary/20 bg-primary/5 p-4">
+      <div className="flex flex-wrap items-center gap-3">
+        <div>
+          <p className="text-sm font-semibold">Beta check — is this plan buildable?</p>
+          <p className="text-xs text-muted-foreground">
+            Your rating goes straight into the plan-review data.
+          </p>
+        </div>
+        <div className="ml-auto flex items-center gap-2">
+          <button
+            type="button"
+            disabled={done != null}
+            onClick={() => void rate("up")}
+            className={`flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
+              done === "up"
+                ? "border-green-600 bg-green-600/10 text-green-700"
+                : "hover:bg-muted disabled:opacity-60"
+            }`}
+          >
+            <ThumbsUp className="h-4 w-4" /> Yes
+          </button>
+          <button
+            type="button"
+            disabled={done != null}
+            onClick={() => void rate("down")}
+            className={`flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
+              done === "down"
+                ? "border-destructive bg-destructive/10 text-destructive"
+                : "hover:bg-muted disabled:opacity-60"
+            }`}
+          >
+            <ThumbsDown className="h-4 w-4" /> Problems
+          </button>
+        </div>
+      </div>
+      {done && !wantComment && (
+        <p className="mt-2 text-xs text-muted-foreground">Recorded — thanks.</p>
+      )}
       {wantComment && (
         <form
           className="flex w-full gap-2"
@@ -70,12 +87,13 @@ export function PlanFeedback({ projectId }: { projectId?: string | null }) {
           <input
             value={comment}
             onChange={(e) => setComment(e.target.value)}
-            placeholder="What was wrong? (optional)"
-            className="h-8 flex-1 rounded-md border bg-transparent px-2 text-sm outline-none"
+            placeholder="What was wrong? Wrong joint, bad dimensions, missing tool…"
+            autoFocus
+            className="h-9 flex-1 rounded-md border bg-background px-3 text-sm outline-none"
             maxLength={2000}
           />
-          <button type="submit" className="rounded border px-3 text-xs">
-            Send
+          <button type="submit" className="h-9 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground">
+            Send report
           </button>
         </form>
       )}
@@ -103,7 +121,7 @@ export function StepFeedback({
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground"
+        className="flex items-center gap-1 rounded border border-amber-300 bg-amber-50 px-2 py-1 text-[11px] font-medium text-amber-800 hover:bg-amber-100"
       >
         <Flag className="h-3 w-3" /> Report a problem
       </button>

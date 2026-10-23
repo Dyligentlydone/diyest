@@ -41,6 +41,20 @@ export async function usageThisMonth(userId: string, kind: UsageKind): Promise<n
   return count ?? 0;
 }
 
+/** Count today's usage events of a kind for a user (UTC day). */
+export async function usageToday(userId: string, kind: UsageKind): Promise<number> {
+  const supabase = createServiceClient();
+  const dayStart = new Date();
+  dayStart.setUTCHours(0, 0, 0, 0);
+  const { count } = await supabase
+    .from("usage_events")
+    .select("id", { count: "exact", head: true })
+    .eq("user_id", userId)
+    .eq("kind", kind)
+    .gte("created_at", dayStart.toISOString());
+  return count ?? 0;
+}
+
 export async function recordUsage(userId: string, kind: UsageKind): Promise<void> {
   const supabase = createServiceClient();
   await supabase.from("usage_events").insert({ user_id: userId, kind });
@@ -119,10 +133,16 @@ export async function checkDailySpend(thresholdUsd: number): Promise<void> {
       (s, r) => s + (Number((r as { cost_usd?: number }).cost_usd) || 0),
       0
     );
-    if (total > thresholdUsd)
+    if (total > thresholdUsd) {
       console.error(
         `[SPEND ALERT] diyest daily AI spend $${total.toFixed(2)} exceeds DAILY_SPEND_ALERT_USD $${thresholdUsd} — notify owner`
       );
+      const { notifyOwner } = await import("@/lib/email");
+      void notifyOwner(
+        "Daily AI spend alert",
+        `<p>Daily AI spend reached <strong>$${total.toFixed(2)}</strong> (threshold $${thresholdUsd}).</p>`
+      );
+    }
   } catch {
     // never break generation on alerting
   }

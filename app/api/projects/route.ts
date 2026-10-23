@@ -3,6 +3,7 @@ import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { planSchema } from "@/lib/plan/schema";
 import { isSupabaseConfigured } from "@/lib/env";
+import { denyIfNoInvite } from "@/lib/site-mode";
 
 const saveSchema = z.object({
   id: z.string().uuid(),
@@ -26,6 +27,8 @@ export async function POST(request: NextRequest) {
   } = await supabase.auth.getUser();
   if (!user)
     return NextResponse.json({ error: "Sign in to save projects" }, { status: 401 });
+  const denied1 = await denyIfNoInvite(user.id);
+  if (denied1) return denied1;
 
   let body: z.infer<typeof saveSchema>;
   try {

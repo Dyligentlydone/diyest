@@ -4,6 +4,7 @@ import Link from "next/link";
 import { isSupabaseConfigured } from "@/lib/env";
 import { planSchema } from "@/lib/plan/schema";
 import { createClient } from "@/lib/supabase/server";
+import { isInviteOnly } from "@/lib/site-mode";
 import { ProjectThumb } from "@/components/project-thumb";
 import { Badge } from "@/components/ui/badge";
 
@@ -82,9 +83,27 @@ export default function GalleryPage() {
       <h1 className="text-2xl font-bold">Project gallery</h1>
       <p className="mt-1 text-sm text-muted-foreground">
         Free plans shared by builders — blueprint, cut list, shopping list and
-        steps included. Open one and hit &ldquo;Build this yourself&rdquo; to
-        make it yours.
+        steps included.{" "}
+        {isInviteOnly()
+          ? "Open one and join the waitlist to build it."
+          : "Open one and hit “Build this yourself” to make it yours."}
       </p>
+      {isInviteOnly() && (
+        <div className="mt-4 flex gap-2">
+          <Link
+            href="/#waitlist"
+            className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
+          >
+            Join the waitlist
+          </Link>
+          <Link
+            href="/invite"
+            className="rounded-md border px-4 py-2 text-sm font-medium hover:bg-muted"
+          >
+            Have an invite code?
+          </Link>
+        </div>
+      )}
 
       <nav className="mt-5 flex flex-wrap gap-2" aria-label="Categories">
         <Link

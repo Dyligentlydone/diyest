@@ -5,11 +5,12 @@ import { buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ProjectThumb } from "@/components/project-thumb";
 import { isSupabaseConfigured } from "@/lib/env";
+import { denyPageIfNoInvite } from "@/lib/site-mode";
 import { planSchema } from "@/lib/plan/schema";
 import { createClient } from "@/lib/supabase/server";
 import { StatusSelect } from "./status-select";
 
-export const metadata = { title: "My projects — diyest" };
+export const metadata = { title: "My projects — diyest", robots: { index: false } };
 
 const MODE_LABEL: Record<string, string> = {
   build: "Build",
@@ -25,6 +26,7 @@ async function ProjectList() {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect("/login?next=/projects");
+  await denyPageIfNoInvite(user.id);
 
   const { data: projects } = await supabase
     .from("projects")

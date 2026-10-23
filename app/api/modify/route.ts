@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { denyIfNoInvite, isInviteOnly } from "@/lib/site-mode";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/env";
@@ -75,6 +76,13 @@ export async function POST(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  if (isInviteOnly()) {
+    if (!user)
+      return NextResponse.json({ error: "Sign in to continue" }, { status: 401 });
+    const denied = await denyIfNoInvite(user.id);
+    if (denied) return denied;
+  }
 
   let body: z.infer<typeof payloadSchema>;
   try {

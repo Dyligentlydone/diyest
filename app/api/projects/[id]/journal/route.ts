@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/env";
+import { denyIfNoInvite } from "@/lib/site-mode";
+import { stripImageMetadata } from "@/lib/image";
 
 const postSchema = z.object({
   note: z.string().max(2000).default(""),
@@ -25,6 +27,8 @@ export async function POST(
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Sign in" }, { status: 401 });
+  const denied1 = await denyIfNoInvite(user.id);
+  if (denied1) return denied1;
 
   let body: z.infer<typeof postSchema>;
   try {
@@ -43,15 +47,16 @@ export async function POST(
         { error: "Photo must be JPEG, PNG or WebP" },
         { status: 400 }
       );
-    const buf = Buffer.from(m[2], "base64");
-    if (buf.length > MAX_IMAGE_BYTES)
+    const raw = Buffer.from(m[2], "base64");
+    if (raw.length > MAX_IMAGE_BYTES)
       return NextResponse.json({ error: "Photo too large" }, { status: 400 });
-    const ext = m[1] === "image/png" ? "png" : m[1] === "image/webp" ? "webp" : "jpg";
-    imagePath = `${user.id}/${id}/journal-${Date.now()}.${ext}`;
+    // strip EXIF/GPS before storage — journal photos go on public pages
+    const { buf, contentType } = await stripImageMetadata(raw);
+    imagePath = `${user.id}/${id}/journal-${Date.now()}.jpg`;
     const { error: up } = await supabase.storage
       .from("project-images")
       .upload(imagePath, buf, {
-        contentType: m[1],
+        contentType,
         upsert: false,
       });
     if (up)
@@ -86,6 +91,8 @@ export async function DELETE(
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Sign in" }, { status: 401 });
+  const denied2 = await denyIfNoInvite(user.id);
+  if (denied2) return denied2;
 
   const { error } = await supabase
     .from("journal_entries")

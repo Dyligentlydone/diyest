@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+import type { Metadata } from "next";
 import { Printer } from "lucide-react";
 import { PlanView } from "@/components/plan/plan-view";
 import { JournalSection, type JournalEntry } from "@/components/journal";
@@ -8,9 +9,12 @@ import { ShareToggle } from "./share-toggle";
 import { Card, CardContent } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import { isSupabaseConfigured } from "@/lib/env";
+import { denyPageIfNoInvite } from "@/lib/site-mode";
 import { planSchema } from "@/lib/plan/schema";
 import { createClient } from "@/lib/supabase/server";
 import type { Units } from "@/lib/types";
+
+export const metadata: Metadata = { robots: { index: false } };
 
 async function ProjectContent({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -19,6 +23,7 @@ async function ProjectContent({ params }: { params: Promise<{ id: string }> }) {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect(`/login?next=/projects/${id}`);
+  await denyPageIfNoInvite(user.id);
 
   const { data: project } = await supabase
     .from("projects")

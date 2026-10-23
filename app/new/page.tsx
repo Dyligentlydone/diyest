@@ -1,10 +1,11 @@
 import { isSupabaseConfigured } from "@/lib/env";
+import { requirePageAccess } from "@/lib/site-mode";
 import { createClient } from "@/lib/supabase/server";
 import type { SkillLevel, Units } from "@/lib/types";
 import { ModeTabs } from "./mode-tabs";
 import { Suspense } from "react";
 
-export const metadata = { title: "New project — diyest" };
+export const metadata = { title: "New project — diyest" , robots: { index: false } };
 
 async function defaults(): Promise<{
   units: Units;
@@ -31,6 +32,8 @@ async function defaults(): Promise<{
 }
 
 async function Form() {
+  // invite-only beta: /new requires an active invite
+  await requirePageAccess("/new");
   const d = await defaults();
   return <ModeTabs defaults={d} />;
 }

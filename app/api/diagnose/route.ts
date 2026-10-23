@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { denyIfNoInvite, isInviteOnly } from "@/lib/site-mode";
 import { z } from "zod";
 import { zodResponseFormat } from "openai/helpers/zod";
 import { createClient } from "@/lib/supabase/server";
@@ -10,6 +11,7 @@ import {
   DIAGNOSE_SYSTEM_PROMPT,
   diagnosisSchema,
 } from "@/lib/ai/prompts/m4";
+import { stripImageDataUrl } from "@/lib/image";
 import { usageOf } from "@/lib/ai/usage-of";
 import { logGeneration, recordUsage } from "@/lib/usage";
 
@@ -29,6 +31,13 @@ export async function POST(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  if (isInviteOnly()) {
+    if (!user)
+      return NextResponse.json({ error: "Sign in to continue" }, { status: 401 });
+    const denied = await denyIfNoInvite(user.id);
+    if (denied) return denied;
+  }
+
   let body: z.infer<typeof payloadSchema>;
   try {
     body = payloadSchema.parse(await request.json());
@@ -41,6 +50,8 @@ export async function POST(request: NextRequest) {
 
   const model = diagnoseModel();
   const userMsg = buildDiagnosisMessage(body);
+  // strip EXIF/GPS from photos before they reach the model
+  const cleanImages = await Promise.all(body.images.map(stripImageDataUrl));
   const start = Date.now();
   const completion = await getOpenAI().chat.completions.parse(
     {
@@ -51,7 +62,7 @@ export async function POST(request: NextRequest) {
           role: "user",
           content: [
             { type: "text" as const, text: userMsg },
-            ...body.images.map((url) => ({
+            ...cleanImages.map((url) => ({
               type: "image_url" as const,
               image_url: { url, detail: "high" as const },
             })),

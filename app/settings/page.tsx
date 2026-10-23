@@ -8,11 +8,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { isSupabaseConfigured } from "@/lib/env";
+import { denyPageIfNoInvite } from "@/lib/site-mode";
 import { createClient } from "@/lib/supabase/server";
 import type { Profile } from "@/lib/types";
 import { SettingsForm } from "./settings-form";
 
-export const metadata = { title: "Settings — diyest" };
+export const metadata = { title: "Settings — diyest", robots: { index: false } };
 
 async function SettingsContent() {
   if (!isSupabaseConfigured()) {
@@ -34,6 +35,7 @@ async function SettingsContent() {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect("/login?next=/settings");
+  await denyPageIfNoInvite(user.id);
 
   const { data } = await supabase
     .from("profiles")

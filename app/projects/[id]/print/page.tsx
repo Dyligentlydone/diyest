@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { notFound, redirect } from "next/navigation";
 import { isSupabaseConfigured } from "@/lib/env";
+import { denyPageIfNoInvite } from "@/lib/site-mode";
 import { planSchema } from "@/lib/plan/schema";
 import { createClient } from "@/lib/supabase/server";
 import { renderBlueprint } from "@/lib/blueprint/render";
@@ -30,6 +31,7 @@ async function PrintContent({ params }: { params: Promise<{ id: string }> }) {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect(`/login?next=/projects/${id}/print`);
+  await denyPageIfNoInvite(user.id);
 
   const { data: project } = await supabase
     .from("projects")

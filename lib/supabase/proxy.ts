@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { isSupabaseConfigured } from "@/lib/env";
+import { isInviteOnly, isPublicPath } from "@/lib/site-mode";
 
 const PROTECTED_PATHS = ["/settings", "/projects"];
 
@@ -38,9 +39,12 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const { pathname } = request.nextUrl;
-  const needsAuth = PROTECTED_PATHS.some(
-    (p) => pathname === p || pathname.startsWith(p + "/")
-  );
+
+  // In invite_only mode every app page requires sign-in (invite validity is
+  // checked inside the routes/pages themselves — see lib/site-mode).
+  const needsAuth = isInviteOnly()
+    ? !isPublicPath(pathname) && !pathname.startsWith("/api/")
+    : PROTECTED_PATHS.some((p) => pathname === p || pathname.startsWith(p + "/"));
 
   if (!user && needsAuth) {
     const url = request.nextUrl.clone();

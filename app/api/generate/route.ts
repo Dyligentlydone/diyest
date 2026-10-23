@@ -12,10 +12,15 @@ import {
   checkDailySpend,
   logGeneration,
   recordUsage,
+  usageThisMonth,
+  usageToday,
 } from "@/lib/usage";
 import { dailySpendAlertUsd } from "@/lib/ai/pricing";
 import { isSupabaseConfigured } from "@/lib/env";
 import { cachedPlan, requestHash, storePlan } from "@/lib/plan/cache";
+import { planModel, reviewModel, escalationModel } from "@/lib/ai/openai";
+import { betaCanGenerate, isInviteOnly, requireApiAccess } from "@/lib/site-mode";
+import { stripImageDataUrl } from "@/lib/image";
 
 const payloadSchema = z.object({
   description: z.string().max(4000).optional(),
@@ -92,7 +97,10 @@ export async function POST(request: NextRequest) {
         );
       }
       const buf = Buffer.from(await f.arrayBuffer());
-      imageDataUrls.push(`data:${f.type};base64,${buf.toString("base64")}`);
+      // strip EXIF/GPS before the bytes leave our hands (model + logs)
+      imageDataUrls.push(
+        await stripImageDataUrl(`data:${f.type};base64,${buf.toString("base64")}`)
+      );
     }
   } catch (e) {
     const msg = e instanceof z.ZodError ? e.issues[0]?.message : "Malformed request";
@@ -103,25 +111,53 @@ export async function POST(request: NextRequest) {
   }
 
   // ---- auth + limits ----
+  let user: { id: string } | null = null;
   const supabase = isSupabaseConfigured() ? await createClient() : null;
-  const {
-    data: { user },
-  } = supabase ? await supabase.auth.getUser() : { data: { user: null } };
 
-  const limit = await canGenerate(request, user?.id ?? null);
-  if (!limit.allowed) {
-    return NextResponse.json(
-      {
-        ok: false,
-        kind: "limit",
-        reason: limit.reason,
-        errors:
-          limit.reason === "anonymous_limit"
-            ? ["Sign up to keep generating plans — it's free."]
-            : ["You've used all your free plans this month."],
-      },
-      { status: 429 }
-    );
+  if (isInviteOnly()) {
+    // invite-only beta: signed-in + active invite required, beta caps apply
+    const gate = await requireApiAccess();
+    if ("response" in gate) return gate.response;
+    user = { id: gate.userId };
+    const [usedToday, usedMonth] = await Promise.all([
+      usageToday(gate.userId, "plan_generate"),
+      usageThisMonth(gate.userId, "plan_generate"),
+    ]);
+    const cap = betaCanGenerate(usedToday, usedMonth);
+    if (!cap.allowed)
+      return NextResponse.json(
+        {
+          ok: false,
+          kind: "limit",
+          reason: cap.reason,
+          errors: [
+            cap.reason === "beta_daily_limit"
+              ? "Beta limit: that's all the plans for today — more tomorrow."
+              : "Beta limit: monthly plan cap reached. Ask us for more.",
+          ],
+        },
+        { status: 429 }
+      );
+  } else {
+    const {
+      data: { user: u },
+    } = supabase ? await supabase.auth.getUser() : { data: { user: null } };
+    user = u;
+    const limit = await canGenerate(request, user?.id ?? null);
+    if (!limit.allowed) {
+      return NextResponse.json(
+        {
+          ok: false,
+          kind: "limit",
+          reason: limit.reason,
+          errors:
+            limit.reason === "anonymous_limit"
+              ? ["Sign up to keep generating plans — it's free."]
+              : ["You've used all your free plans this month."],
+        },
+        { status: 429 }
+      );
+    }
   }
 
   // ---- generate ----
@@ -145,10 +181,14 @@ export async function POST(request: NextRequest) {
   };
 
   // ---- plan cache: identical request → checked plan, zero model calls ----
+  // salted with prompt versions + model names so a model/prompt change
+  // invalidates cached plans automatically
   const hash = requestHash(
     payload as Record<string, unknown>,
     imageDataUrls,
-    PROMPT_VERSION
+    [PROMPT_VERSION, REVIEW_PROMPT_VERSION, planModel(), reviewModel(), escalationModel()]
+      .filter(Boolean)
+      .join("|")
   );
   let cached: Awaited<ReturnType<typeof cachedPlan>> = null;
   if (supabase && user) {

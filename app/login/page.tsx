@@ -1,9 +1,10 @@
 import { Suspense } from "react";
+import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { isSupabaseConfigured } from "@/lib/env";
 import { LoginForm } from "./login-form";
 
-export const metadata = { title: "Sign in — diyest" };
+export const metadata = { title: "Sign in — diyest", robots: { index: false } };
 
 export default function LoginPage() {
   return (
@@ -30,6 +31,12 @@ export default function LoginPage() {
               <LoginForm />
             </Suspense>
           )}
+          <p className="mt-4 text-center text-xs text-muted-foreground">
+            Have an invite code?{" "}
+            <Link href="/invite" className="underline underline-offset-2">
+              Redeem it
+            </Link>
+          </p>
         </CardContent>
       </Card>
     </main>

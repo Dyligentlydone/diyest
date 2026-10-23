@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { denyIfNoInvite, isInviteOnly } from "@/lib/site-mode";
 import { z } from "zod";
 import { zodResponseFormat } from "openai/helpers/zod";
 import { createClient } from "@/lib/supabase/server";
@@ -10,6 +11,7 @@ import {
   CHAT_SYSTEM_PROMPT,
   chatReplySchema,
 } from "@/lib/ai/prompts/m4";
+import { stripImageDataUrl } from "@/lib/image";
 import { usageOf } from "@/lib/ai/usage-of";
 import { checkAllowance } from "@/lib/limits";
 import { logGeneration, recordUsage } from "@/lib/usage";
@@ -40,6 +42,13 @@ export async function POST(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  if (isInviteOnly()) {
+    if (!user)
+      return NextResponse.json({ error: "Sign in to continue" }, { status: 401 });
+    const denied = await denyIfNoInvite(user.id);
+    if (denied) return denied;
+  }
 
   let body: z.infer<typeof payloadSchema>;
   try {
@@ -75,14 +84,17 @@ export async function POST(request: NextRequest) {
   }) as { role: string; content: string }[];
 
   const lastUser = messages[messages.length - 1];
-  if (body.image && lastUser.role === "user")
+  if (body.image && lastUser.role === "user") {
+    // strip EXIF/GPS from the progress photo before it reaches the model
+    const cleanImage = await stripImageDataUrl(body.image);
     messages[messages.length - 1] = {
       role: "user",
       content: [
         { type: "text", text: lastUser.content },
-        { type: "image_url", image_url: { url: body.image, detail: "high" } },
+        { type: "image_url", image_url: { url: cleanImage, detail: "high" } },
       ],
     } as never;
+  }
 
   const completion = await getOpenAI().chat.completions.parse(
     {

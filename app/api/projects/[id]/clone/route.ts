@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/env";
 import { recordUsage } from "@/lib/usage";
+import { denyIfNoInvite } from "@/lib/site-mode";
 
 /**
  * POST — clone a public project into the caller's account. No generation
@@ -21,6 +22,8 @@ export async function POST(
   } = await supabase.auth.getUser();
   if (!user)
     return NextResponse.json({ error: "Sign in to copy this plan" }, { status: 401 });
+  const denied1 = await denyIfNoInvite(user.id);
+  if (denied1) return denied1;
 
   const { data: source } = await supabase
     .from("projects")
