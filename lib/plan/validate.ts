@@ -17,6 +17,10 @@ export interface ValidationContext {
   targetDimensionsMm?: { width?: number; depth?: number; height?: number };
   toolsOwned?: string[];
   useMyToolsOnly?: boolean;
+  /** Photos attached: the photographed footprint may legitimately exceed a
+   *  target dimension (L-desk return deeper than the requested depth), so
+   *  overshooting a target is a warning, not a repair-triggering error. */
+  hasPhotos?: boolean;
 }
 
 /**
@@ -393,11 +397,18 @@ export async function validatePlan(
       [t.height, d.height, "height"],
     ];
     for (const [want, got, name] of pairs)
-      if (want && Math.abs(got - want) > want * 0.05)
-        issue(
-          "geometry",
-          `Overall ${name} ${Math.round(got)}mm differs from target ${want}mm by more than 5%`
-        );
+      if (want && Math.abs(got - want) > want * 0.05) {
+        if (ctx.hasPhotos && got > want)
+          // photo footprint wins: a wing/return may extend past the target
+          warnings.push(
+            `Overall ${name} ${Math.round(got)}mm exceeds target ${want}mm — kept to match the photographed footprint`
+          );
+        else
+          issue(
+            "geometry",
+            `Overall ${name} ${Math.round(got)}mm differs from target ${want}mm by more than 5%`
+          );
+      }
   }
 
   if (!geoOnly && ctx.useMyToolsOnly && ctx.toolsOwned?.length) {

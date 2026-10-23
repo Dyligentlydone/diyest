@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { generatePlan, type GenEvent } from "@/lib/ai/generate";
-import { PROMPT_VERSION } from "@/lib/ai/prompts/plan.v1.5";
+import { PROMPT_VERSION } from "@/lib/ai/prompts/plan.v1.8";
 import { REVIEW_PROMPT_VERSION } from "@/lib/ai/prompts/review.v1";
-import type { PlanRequest } from "@/lib/ai/prompts/plan.v1.5";
+import type { PlanRequest } from "@/lib/ai/prompts/plan.v1.8";
 import {
   ANON_COOKIE,
   anonGenerationsUsed,
@@ -18,7 +18,14 @@ import {
 import { dailySpendAlertUsd } from "@/lib/ai/pricing";
 import { isSupabaseConfigured } from "@/lib/env";
 import { cachedPlan, requestHash, storePlan } from "@/lib/plan/cache";
-import { planModel, reviewModel, escalationModel } from "@/lib/ai/openai";
+import {
+  escalationModel,
+  genTier,
+  planModel,
+  reviewMode,
+  reviewModel,
+  reviewTier,
+} from "@/lib/ai/openai";
 import { betaCanGenerate, isInviteOnly, requireApiAccess } from "@/lib/site-mode";
 import { stripImageDataUrl } from "@/lib/image";
 
@@ -186,7 +193,19 @@ export async function POST(request: NextRequest) {
   const hash = requestHash(
     payload as Record<string, unknown>,
     imageDataUrls,
-    [PROMPT_VERSION, REVIEW_PROMPT_VERSION, planModel(), reviewModel(), escalationModel()]
+    [
+      PROMPT_VERSION,
+      REVIEW_PROMPT_VERSION,
+      planModel(),
+      reviewModel(),
+      escalationModel(),
+      // output-affecting env — effort/mode/tier changes must invalidate cache
+      process.env.AI_REASONING_EFFORT,
+      process.env.AI_REASONING_EFFORT_S1,
+      reviewMode(),
+      genTier(),
+      reviewTier(),
+    ]
       .filter(Boolean)
       .join("|")
   );
@@ -201,10 +220,19 @@ export async function POST(request: NextRequest) {
 
   // ---- generate (NDJSON stream: "plan" fast, "final" after review+repair) ----
   const enc = new TextEncoder();
+  // tracks client disconnect/stream close — generation keeps running so the
+  // plan (and its cache entry) is still produced; send() just becomes a no-op
+  let streamClosed = false;
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
-      const send = (ev: GenEvent) =>
-        controller.enqueue(enc.encode(JSON.stringify(ev) + "\n"));
+      const send = (ev: GenEvent) => {
+        if (streamClosed) return;
+        try {
+          controller.enqueue(enc.encode(JSON.stringify(ev) + "\n"));
+        } catch {
+          streamClosed = true;
+        }
+      };
       try {
         if (cached) {
           const result = {
@@ -313,8 +341,18 @@ export async function POST(request: NextRequest) {
           },
         });
       } finally {
-        controller.close();
+        if (!streamClosed) {
+          streamClosed = true;
+          try {
+            controller.close();
+          } catch {
+            /* already closed */
+          }
+        }
       }
+    },
+    cancel() {
+      streamClosed = true;
     },
   });
 

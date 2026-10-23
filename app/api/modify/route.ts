@@ -5,10 +5,10 @@ import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/env";
 import { planSchema } from "@/lib/plan/schema";
 import { modifyPlan } from "@/lib/ai/generate";
-import type { PlanRequest } from "@/lib/ai/prompts/plan.v1.5";
+import type { PlanRequest } from "@/lib/ai/prompts/plan.v1.8";
 import { checkAllowance } from "@/lib/limits";
 import { logGeneration, recordUsage } from "@/lib/usage";
-import { PROMPT_VERSION } from "@/lib/ai/prompts/plan.v1.5";
+import { PROMPT_VERSION } from "@/lib/ai/prompts/plan.v1.8";
 
 const payloadSchema = z.object({
   plan: planSchema,

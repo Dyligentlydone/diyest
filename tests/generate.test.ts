@@ -200,17 +200,18 @@ describe("generatePlan pipeline (two-stage)", () => {
       .mockResolvedValueOnce(reviewResp("fail", [blocker()])) // sol re-review
       .mockResolvedValueOnce(reviewResp("fail", [blocker()])) // luna re-review
       .mockResolvedValueOnce(resp(s1)) // escalate stage 1
-      .mockResolvedValueOnce(resp(s2)) // escalate stage 2
-      .mockResolvedValueOnce(reviewResp("pass")) // esc sol review
-      .mockResolvedValueOnce(reviewResp("pass")); // esc luna review
+      .mockResolvedValueOnce(resp(s2)); // escalate stage 2 — no re-review:
+    // the escalated plan is gated by code validation only and marked pending
 
     const r = await generatePlan(REQ, [], {}, undefined, OPTS);
     expect(r.ok).toBe(true);
     if (!r.ok) return;
     expect(r.escalated).toBe("test-esc");
     expect(r.blockers).toEqual([]);
+    expect(r.review).toBeNull(); // pre-escalation review refers to the old plan
+    expect(r.reviewPending).toBe(true); // never claims "carpenter checked"
     expect(r.calls.filter((c) => c.model === "test-esc").length).toBe(2);
-    expect(r.calls.length).toBeGreaterThanOrEqual(10);
+    expect(r.calls.length).toBeGreaterThanOrEqual(9);
   });
 
   it("surfaces surviving blockers for the friendly 'tricky' state", async () => {

@@ -54,18 +54,27 @@ Product name in code: one config constant (`APP_NAME = "diyest"`), so it can be 
 ## 4. AI pipeline (summary — details in `MODEL-ROUTING-PLAN.md`)
 
 ```
-Stage 1 (Luna): overview + parts + placements      → stream title/overview; blueprint as soon as geometry passes
+Stage 1 (Luna): photo survey (silhouette/components/hidden structure) + parts + placements
+                                                  → stream title/overview; blueprint as soon as geometry passes
 Code: geometry validation + contact detection      → exact list of touching part pairs
 Stage 2 (Luna): joints + steps + tools + estimates  → full plan on screen, "Master carpenter check in progress…"
-Review (Sol): buildability review (review.v1)       → always runs, in the background
+Review (Sol+Luna, review.v2): buildability + photo  → reviewers see the user's photos; a visible major mass
+  fidelity check against the photos                   missing from the plan (return, pedestal, carcass) is a blocker
 Targeted repair (Luna) if blockers/majors          → "Improved after carpenter review" badge
-Escalation (Sol regenerate) only if blockers remain → else friendly "This one's tricky" state
+Escalation (Sol regenerate, Fast tier, 360s/call)   → only if blockers remain; an escalation error/timeout never
+                                                       fails the run — falls back to the best plan so far and shows
+                                                       the friendly "This one's tricky" state. An adopted escalated
+                                                       plan keeps the primary plan's overall_dimensions_mm unless
+                                                       the escalated geometry can't fit inside them (primary dims
+                                                       were wrong). The escalated plan is gated by code validation
+                                                       only (no second review pass — saves ~90s); it is marked
+                                                       review-pending, never "carpenter checked".
 ```
 
-- Prompts live in `lib/ai/prompts/` as versioned files (`plan.v1.4*`, `review.v1`), and every plan stores the prompt versions used.
+- Prompts live in `lib/ai/prompts/` as versioned files (`plan.v1.6*`, `review.v2` via review.v1.ts), and every plan stores the prompt versions used.
 - Clarifying questions: if the AI is missing a key fact (scale, material, load), it asks up to 3 short questions while still producing its best plan. The user can answer and regenerate, or continue.
 - `NOT_BUILDABLE`: friendly refusal for things that can't be built at home (vehicles, appliance internals, non-project photos), with no review or repair calls wasted.
-- **Plan caching and reuse:** hash the normalized request (image hashes + inputs + prompt version). An identical request returns the cached plan instantly at no cost. Public gallery plans can be cloned without generating anything.
+- **Plan caching and reuse:** hash the normalized request (image hashes + inputs + prompt versions + model names + reasoning effort / stage-1 effort override / REVIEW_MODE / service tiers). An identical request returns the cached plan instantly at no cost. On a deploy that changes any salted input, run `tsx --env-file-if-exists=.env.production.local scripts/clear-plan-cache.ts` to guarantee no stale hits. Public gallery plans can be cloned without generating anything.
 
 ---
 

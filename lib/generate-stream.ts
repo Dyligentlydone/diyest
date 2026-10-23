@@ -25,6 +25,10 @@ export interface StreamHandlers {
   onPlan?: (ev: Extract<GenEvent, { type: "plan" }>) => void;
   onFinal?: (result: GenerateSuccess) => void;
   onError?: (result: StreamError) => void;
+  /** Always called once when the request finishes. "closed" means the
+   *  connection ended (or the fetch failed) before any final/error event —
+   *  the plan may still exist server-side; clear spinners, keep the draft. */
+  onEnd?: (status: "final" | "error" | "closed") => void;
 }
 
 function toStreamError(e: {
@@ -46,55 +50,67 @@ export async function streamGenerate(
   body: FormData,
   handlers: StreamHandlers
 ): Promise<void> {
-  const res = await fetch("/api/generate", { method: "POST", body });
+  let status: "final" | "error" | "closed" = "closed";
+  try {
+    const res = await fetch("/api/generate", { method: "POST", body });
 
-  if (!res.ok || !res.headers.get("content-type")?.includes("ndjson")) {
-    // non-streamed error path (bad payload, usage limit, …)
-    let msg = "Generation failed. Try again.";
-    let kind = "error";
-    let reason: string | undefined;
-    try {
-      const data = await res.json();
-      msg = data.errors?.[0] ?? data.summary ?? msg;
-      kind = data.kind ?? kind;
-      reason = data.reason;
-    } catch {
-      /* keep defaults */
-    }
-    handlers.onError?.(toStreamError({ kind, summary: msg, errors: [msg], reason }));
-    return;
-  }
-
-  const reader = res.body!.getReader();
-  const decoder = new TextDecoder();
-  let buf = "";
-  for (;;) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    buf += decoder.decode(value, { stream: true });
-    let nl: number;
-    while ((nl = buf.indexOf("\n")) >= 0) {
-      const line = buf.slice(0, nl).trim();
-      buf = buf.slice(nl + 1);
-      if (!line) continue;
-      let ev: GenEvent;
+    if (!res.ok || !res.headers.get("content-type")?.includes("ndjson")) {
+      // non-streamed error path (bad payload, usage limit, …)
+      let msg = "Generation failed. Try again.";
+      let kind = "error";
+      let reason: string | undefined;
       try {
-        ev = JSON.parse(line) as GenEvent;
+        const data = await res.json();
+        msg = data.errors?.[0] ?? data.summary ?? msg;
+        kind = data.kind ?? kind;
+        reason = data.reason;
       } catch {
-        continue;
+        /* keep defaults */
       }
-      if (ev.type === "meta") handlers.onMeta?.(ev);
-      else if (ev.type === "partial") handlers.onPartial?.(ev);
-      else if (ev.type === "plan") handlers.onPlan?.(ev);
-      else if (ev.type === "final") handlers.onFinal?.(ev.result);
-      else if (ev.type === "error")
-        handlers.onError?.(
-          toStreamError(
-            ev.result.ok === false && "summary" in ev.result
-              ? { kind: ev.result.kind, summary: ev.result.summary }
-              : { kind: "invalid", errors: (ev.result as { errors?: string[] }).errors }
-          )
-        );
+      status = "error";
+      handlers.onError?.(toStreamError({ kind, summary: msg, errors: [msg], reason }));
+      return;
     }
+
+    const reader = res.body!.getReader();
+    const decoder = new TextDecoder();
+    let buf = "";
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buf += decoder.decode(value, { stream: true });
+      let nl: number;
+      while ((nl = buf.indexOf("\n")) >= 0) {
+        const line = buf.slice(0, nl).trim();
+        buf = buf.slice(nl + 1);
+        if (!line) continue;
+        let ev: GenEvent;
+        try {
+          ev = JSON.parse(line) as GenEvent;
+        } catch {
+          continue;
+        }
+        if (ev.type === "meta") handlers.onMeta?.(ev);
+        else if (ev.type === "partial") handlers.onPartial?.(ev);
+        else if (ev.type === "plan") handlers.onPlan?.(ev);
+        else if (ev.type === "final") {
+          status = "final";
+          handlers.onFinal?.(ev.result);
+        } else if (ev.type === "error") {
+          status = "error";
+          handlers.onError?.(
+            toStreamError(
+              ev.result.ok === false && "summary" in ev.result
+                ? { kind: ev.result.kind, summary: ev.result.summary }
+                : { kind: "invalid", errors: (ev.result as { errors?: string[] }).errors }
+            )
+          );
+        }
+      }
+    }
+  } catch {
+    /* fetch/read failed — connection died; status stays "closed" */
+  } finally {
+    handlers.onEnd?.(status);
   }
 }

@@ -121,12 +121,25 @@ export function DraftClient({
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
   const [genFinished, setGenFinished] = useState(false); // stream ended (or never ran)
-  const [checking, setChecking] = useState(false);
+  // live pipeline phase — non-null while a generation is running. The plan is
+  // NEVER shown mid-run: drafts and partials stay hidden until the final,
+  // carpenter-checked plan arrives (or the connection drops).
+  const [phase, setPhase] = useState<null | "reading" | "geometry" | "joinery" | "checking">(null);
+  const [elapsed, setElapsed] = useState(0);
   const [genError, setGenError] = useState<{ msg: string; kind?: string } | null>(null);
   const [meta, setMeta] = useState<{ title?: string; summary?: string; partsReceived?: number }>({});
   const startedRef = useRef(false);
   // "generating" = a pending request exists and the stream hasn't finished
   const generating = !!pending && !genFinished;
+
+  // elapsed-time ticker for the progress screen
+  useEffect(() => {
+    if (!phase) return;
+    const t0 = Date.now() - elapsed * 1000;
+    const id = setInterval(() => setElapsed(Math.floor((Date.now() - t0) / 1000)), 1000);
+    return () => clearInterval(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase]);
 
   // If the /new form handed us a pending request, run the streamed generation.
   useEffect(() => {
@@ -137,26 +150,24 @@ export function DraftClient({
     body.set("payload", JSON.stringify(pending.payload));
     pending.images.forEach((d, i) => body.append("images", dataUrlToBlob(d), `input-${i}.jpg`));
 
+    setPhase("reading");
     void streamGenerate(body, {
       onMeta: (ev) => {
         setMeta((m) => ({ ...m, ...ev }));
+        if (ev.partsReceived != null && ev.partsReceived > 0)
+          setPhase((p) => (p === "reading" ? "geometry" : p));
       },
-      onPartial: (ev) => {
-        // geometry done — show the blueprint while joints/steps generate
-        setDraft({
-          plan: ev.plan,
-          unverified: [],
-          blockers: [],
-          warnings: [],
-          images: pending.images,
-          input: pending.payload,
-          partial: true,
-          savedId: null,
-        });
+      onPartial: () => {
+        // geometry done — joints/steps are being written. Not shown: only the
+        // final checked plan ever reaches the screen.
+        setPhase("joinery");
       },
       onPlan: (ev) => {
+        // full plan drafted — persist it as a recovery point (so a dropped
+        // connection or reload doesn't lose everything) but keep holding the
+        // progress screen while the carpenter review/repair runs.
         sessionStorage.removeItem(PENDING_KEY);
-        setDraft({
+        persistDraft({
           plan: ev.plan,
           unverified: ev.unverified,
           blockers: [],
@@ -164,9 +175,10 @@ export function DraftClient({
           images: pending.images,
           input: pending.payload,
           promptVersion: ev.promptVersion,
+          reviewPending: true,
           savedId: null,
         });
-        setChecking(true); // master carpenter review still running
+        setPhase("checking");
       },
       onFinal: (r) => {
         setDraft({
@@ -179,10 +191,9 @@ export function DraftClient({
           promptVersion: r.promptVersion,
           improved: r.improved,
           reviewPending: r.reviewPending,
-          changedSteps: diffSteps(readDraft()?.plan.steps ?? [], r.plan.steps),
           savedId: null,
         });
-        setChecking(false);
+        setPhase(null);
         setGenFinished(true);
       },
       onError: (e) => {
@@ -193,14 +204,77 @@ export function DraftClient({
               : e.errors[0] ?? "Generation failed. Try again.",
           kind: e.reason === "anonymous_limit" || e.reason === "free_limit" ? "limit" : e.kind,
         });
-        setChecking(false);
+        setPhase(null);
         setGenFinished(true);
+      },
+      onEnd: (status) => {
+        setGenFinished(true);
+        if (status !== "closed") return;
+        // stream dropped before the final event — fall back to the best plan
+        // received so far (honestly marked check-pending), or a clear error
+        setPhase(null);
+        const d = readDraft();
+        if (d) setDraft({ ...d, partial: false, reviewPending: true });
+        else
+          setGenError({
+            msg: "The connection dropped before your plan finished. Please try again.",
+          });
       },
     });
   }, [pending]);
 
   if (draft === undefined) {
     return <div className="mx-auto max-w-4xl px-4 py-24 text-muted-foreground">Loading…</div>;
+  }
+
+  // ---- live progress screen: shown for the WHOLE pipeline. No blueprint is
+  // ever rendered until the final, carpenter-checked plan arrives. ----
+  if (phase) {
+    const stages = [
+      { key: "reading", label: "Reading your photo" },
+      { key: "geometry", label: "Measuring parts & drawing geometry" },
+      { key: "joinery", label: "Choosing joints & writing build steps" },
+      { key: "checking", label: "Master carpenter check & fixes" },
+    ] as const;
+    const current = stages.findIndex((s) => s.key === phase);
+    const mm = Math.floor(elapsed / 60);
+    const ss = String(elapsed % 60).padStart(2, "0");
+    return (
+      <main className="mx-auto max-w-2xl px-4 py-24">
+        <div className="text-center">
+          <div className="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-muted border-t-primary" />
+          <h1 className="mt-6 text-xl font-semibold">
+            {meta.title ?? "Drawing up your plan…"}
+          </h1>
+          {meta.summary && (
+            <p className="mt-2 text-muted-foreground">{meta.summary}</p>
+          )}
+        </div>
+        <ol className="mx-auto mt-10 max-w-md space-y-3">
+          {stages.map((s, i) => (
+            <li key={s.key} className="flex items-center gap-3 text-sm">
+              {i < current ? (
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[11px] text-primary-foreground">✓</span>
+              ) : i === current ? (
+                <span className="h-5 w-5 animate-spin rounded-full border-2 border-muted border-t-primary" />
+              ) : (
+                <span className="h-5 w-5 rounded-full border border-muted" />
+              )}
+              <span className={i < current ? "text-muted-foreground line-through" : i === current ? "font-medium" : "text-muted-foreground"}>
+                {s.label}
+                {s.key === "geometry" && i === current && meta.partsReceived != null
+                  ? ` — ${meta.partsReceived} parts so far`
+                  : ""}
+              </span>
+            </li>
+          ))}
+        </ol>
+        <p className="mt-10 text-center text-sm text-muted-foreground">
+          {mm}:{ss} elapsed — a fully checked plan usually takes 2–10 minutes.
+          We only show blueprints that passed the master carpenter check.
+        </p>
+      </main>
+    );
   }
 
   if (genError) {
@@ -255,7 +329,8 @@ export function DraftClient({
   async function regenerate() {
     if (!draft) return;
     setBusy(true);
-    setChecking(false);
+    setElapsed(0);
+    setPhase("reading");
     try {
       const body = new FormData();
       body.set(
@@ -271,14 +346,16 @@ export function DraftClient({
         body.append("images", dataUrlToBlob(d), `input-${i}.jpg`)
       );
 
+      // same contract as the initial run: hold the progress screen, only the
+      // final checked plan is ever shown
       await streamGenerate(body, {
-        onPartial: (ev) => {
-          setDraft({ ...draft!, plan: ev.plan, unverified: [], blockers: [], warnings: [], partial: true });
+        onMeta: (ev) => {
+          setMeta((m) => ({ ...m, ...ev }));
+          if (ev.partsReceived != null && ev.partsReceived > 0)
+            setPhase((p) => (p === "reading" ? "geometry" : p));
         },
-        onPlan: (ev) => {
-          setDraft({ ...draft!, plan: ev.plan, unverified: ev.unverified, blockers: [], warnings: ev.warnings, partial: false });
-          setChecking(true);
-        },
+        onPartial: () => setPhase("joinery"),
+        onPlan: () => setPhase("checking"),
         onFinal: (r) => {
           setDraft({
             ...draft!,
@@ -292,11 +369,16 @@ export function DraftClient({
             changedSteps: diffSteps(draft!.plan.steps ?? [], r.plan.steps),
             partial: false,
           });
-          setChecking(false);
+          setPhase(null);
         },
         onError: (e) => {
           toast.error(e.errors[0] ?? e.summary ?? "Regeneration failed");
-          setChecking(false);
+          setPhase(null);
+        },
+        onEnd: (status) => {
+          setPhase(null);
+          if (status === "closed")
+            toast.error("Connection dropped — keeping your previous plan.");
         },
       });
       setAnswers({});
@@ -352,7 +434,7 @@ export function DraftClient({
               : "build",
           plan: draft.plan,
           input: draft.input,
-          prompt_version: draft.promptVersion ?? "plan.v1.5",
+          prompt_version: draft.promptVersion ?? "plan.v1.8",
           imagePaths,
         }),
       });
@@ -368,29 +450,10 @@ export function DraftClient({
     }
   }
 
-  const isPartial = !!draft.partial;
+  // the progress screen above guarantees only final checked plans render here
   return (
     <main className="mx-auto w-full max-w-4xl px-4 py-10">
-      {isPartial && (
-        <div className="mb-6 flex items-center gap-3 rounded-md border border-primary/40 bg-primary/5 p-4 text-sm">
-          <div className="h-4 w-4 animate-spin rounded-full border-2 border-muted border-t-primary" />
-          <span>
-            <strong>Geometry done — joinery in progress…</strong> Here&apos;s the
-            blueprint; we&apos;re choosing joints and writing the build steps.
-          </span>
-        </div>
-      )}
-      {checking && (
-        <div className="mb-6 flex items-center gap-3 rounded-md border border-primary/40 bg-primary/5 p-4 text-sm">
-          <div className="h-4 w-4 animate-spin rounded-full border-2 border-muted border-t-primary" />
-          <span>
-            <strong>Master carpenter check in progress…</strong> The plan below is ready
-            to read; we&apos;re verifying joinery, tool access and wood movement in the
-            background and will flag or fix anything we find.
-          </span>
-        </div>
-      )}
-      {!checking && draft.improved && (
+      {draft.improved && (
         <div className="mb-6 rounded-md border border-emerald-500/40 bg-emerald-500/10 p-4 text-sm">
           <strong>Improved after carpenter review.</strong> The plan below was adjusted
           automatically where our checks found problems — remaining flags are listed
@@ -398,7 +461,7 @@ export function DraftClient({
         </div>
       )}
 
-      {questions.length > 0 && !checking && (
+      {questions.length > 0 && (
         <Card className="mb-6 border-primary/40">
           <CardHeader>
             <CardTitle className="text-base">
@@ -441,7 +504,7 @@ export function DraftClient({
         blockers={draft.blockers}
         warnings={draft.warnings}
         reviewPending={draft.reviewPending}
-        checking={checking || isPartial}
+        checking={false}
         changedSteps={draft.changedSteps ?? []}
         kerfMm={kerfMm}
         projectId={draft.savedId}
@@ -459,7 +522,7 @@ export function DraftClient({
               Anonymous draft — sign up to keep it
             </span>
           )}
-          <Button onClick={save} disabled={busy || checking}>
+          <Button onClick={save} disabled={busy}>
             {busy ? "Saving…" : isAuthed ? "Save to my projects" : "Sign up to save"}
           </Button>
         </div>

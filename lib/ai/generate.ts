@@ -27,7 +27,7 @@ import {
   PROMPT_VERSION,
   type JointRepair,
   type PlanRequest,
-} from "./prompts/plan.v1.5";
+} from "./prompts/plan.v1.8";
 import {
   buildPartsRepairMessage,
   buildStage2UserMessage,
@@ -72,9 +72,12 @@ import {
   validatePlan,
   type ValidationContext,
 } from "@/lib/plan/validate";
+import { bounds, solidsOf } from "@/lib/blueprint/solids";
+import { mirrorPlanAxis } from "@/lib/plan/mirror";
 
 const CALL_TIMEOUT_MS = 120_000; // review/repair calls
 const GEN_TIMEOUT_MS = 240_000; // stage calls legitimately run 90–200s
+const ESC_TIMEOUT_MS = 360_000; // Sol escalation stages get their own, longer budget
 
 export interface ReviewInfo {
   verdict: Review["verdict"];
@@ -263,9 +266,16 @@ async function callReviewRawUsage(
   planJson: string,
   req: PlanRequest,
   model: string,
-  tier?: string
+  tier?: string,
+  imageDataUrls: string[] = []
 ): Promise<{ info: ReviewInfo; usage: TokenUsage }> {
   const start = Date.now();
+  const reviewText = buildReviewUserMessage(planJson, {
+    skillLevel: req.skillLevel,
+    toolsOwned: req.toolsOwned,
+    useMyToolsOnly: req.useMyToolsOnly,
+    units: req.units,
+  });
   const completion = await getOpenAI().chat.completions.parse(
     {
       model,
@@ -273,12 +283,16 @@ async function callReviewRawUsage(
         { role: "system", content: REVIEW_SYSTEM_PROMPT },
         {
           role: "user",
-          content: buildReviewUserMessage(planJson, {
-            skillLevel: req.skillLevel,
-            toolsOwned: req.toolsOwned,
-            useMyToolsOnly: req.useMyToolsOnly,
-            units: req.units,
-          }),
+          // photos attached when available → step 0 photo-fidelity check applies
+          content: imageDataUrls.length
+            ? [
+                { type: "text" as const, text: reviewText },
+                ...imageDataUrls.map((url) => ({
+                  type: "image_url" as const,
+                  image_url: { url, detail: "high" as const },
+                })),
+              ]
+            : reviewText,
         },
       ],
       response_format: zodResponseFormat(reviewSchema, "review"),
@@ -307,9 +321,10 @@ async function callReviewRawUsage(
 export async function callReview(
   planJson: string,
   req: PlanRequest,
-  model = reviewModel()
+  model = reviewModel(),
+  imageDataUrls: string[] = []
 ): Promise<ReviewInfo> {
-  return (await callReviewRawUsage(planJson, req, model, reviewTier())).info;
+  return (await callReviewRawUsage(planJson, req, model, reviewTier(), imageDataUrls)).info;
 }
 
 interface ReviewOutcome {
@@ -342,13 +357,17 @@ function mergeReviewIssues(primary: ReviewIssue[], secondary: ReviewIssue[]): Re
  * Sol failing → Luna's review still stands but the plan is "review pending"
  * (no-silent-downgrade). Luna failing → Sol's review stands alone.
  */
-async function reviewBoth(planJson: string, req: PlanRequest): Promise<ReviewOutcome> {
+async function reviewBoth(
+  planJson: string,
+  req: PlanRequest,
+  imageDataUrls: string[] = []
+): Promise<ReviewOutcome> {
   const sol = reviewModel();
   const luna = planModel();
   const solTier = reviewTier();
   const [solRes, lunaRes] = await Promise.allSettled([
-    callReviewRawUsage(planJson, req, sol, solTier),
-    callReviewRawUsage(planJson, req, luna, undefined),
+    callReviewRawUsage(planJson, req, sol, solTier, imageDataUrls),
+    callReviewRawUsage(planJson, req, luna, undefined, imageDataUrls),
   ]);
 
   const calls: CallRecord[] = [];
@@ -425,6 +444,20 @@ function stage1Shell(s1: Stage1Plan, req: PlanRequest): Plan {
   } as Plan;
 }
 
+/** Does the plan's real geometry fit inside the given overall dims (x=w, y=h, z=d)? */
+function fitsWithinDims(
+  plan: Plan,
+  dims: Plan["overall_dimensions_mm"]
+): boolean {
+  const eps = 1.5; // mm slack for rounding
+  const { hi } = bounds(solidsOf(plan));
+  return (
+    hi[0] <= dims.width + eps &&
+    hi[1] <= dims.height + eps &&
+    hi[2] <= dims.depth + eps
+  );
+}
+
 /** Remaining validation errors + review "blocker" issues = blocker level. */
 function computeBlockers(validationErrors: string[], review: ReviewInfo | null): string[] {
   const out = [...validationErrors];
@@ -472,6 +505,7 @@ export async function generatePlan(
   opts: GenerateOpts = {}
 ): Promise<GenerateResult> {
   const t0 = Date.now();
+  ctx = { ...ctx, hasPhotos: imageDataUrls.length > 0 };
   const model = opts.model ?? planModel();
   const calls: CallRecord[] = [];
   let firstMetaAt: number | null = null;
@@ -509,8 +543,9 @@ export async function generatePlan(
   ): Promise<{ s1: Stage1Plan; plan: Plan } | GenerateError> => {
     const streamed = opts2.streamed;
     const tag = opts2.escalate ? "escalate" : "stage";
-    // Luna stages run on the Fast (priority) tier; Sol/escalation stays Standard.
-    const callTier = m === planModel() ? genTier() : undefined;
+    // Luna stages AND Sol escalation run on the Fast (priority) tier.
+    const callTier = m === planModel() || opts2.escalate ? genTier() : undefined;
+    const callTimeout = opts2.escalate ? ESC_TIMEOUT_MS : undefined;
     const overBudget = () => !streamed && costSoFar() >= cap;
     const onDelta =
       emit && streamed
@@ -532,7 +567,14 @@ export async function generatePlan(
       imageDataUrls,
       "plan_stage1",
       stage1Schema,
-      { model: m, stream: streamed, onDelta, effort: s1Effort, tier: callTier }
+      {
+        model: m,
+        stream: streamed,
+        onDelta,
+        effort: s1Effort,
+        tier: callTier,
+        timeoutMs: callTimeout,
+      }
     );
     track(`${tag}1`, m, callTier, s1res);
 
@@ -554,7 +596,7 @@ export async function generatePlan(
         imageDataUrls,
         "plan_stage1",
         stage1Schema,
-        { model: m, effort: s1Effort, tier: callTier }
+        { model: m, effort: s1Effort, tier: callTier, timeoutMs: callTimeout }
       );
       track(`${tag}1_retry`, m, callTier, retry);
       s1 = retry.parsed;
@@ -581,7 +623,7 @@ export async function generatePlan(
         imageDataUrls,
         "parts_repair",
         partsRepairSchema,
-        { model: m, effort: s1Effort, tier: callTier }
+        { model: m, effort: s1Effort, tier: callTier, timeoutMs: callTimeout }
       );
       track(`${tag}1_geomrepair`, m, callTier, rep);
       if (rep.parsed?.parts?.length) {
@@ -615,7 +657,7 @@ export async function generatePlan(
       [], // no images — geometry is fixed, stage 2 is text-only
       "plan_stage2",
       stage2Schema,
-      { model: m, tier: callTier }
+      { model: m, tier: callTier, timeoutMs: callTimeout }
     );
     track(`${tag}2`, m, callTier, s2res);
     if (!s2res.parsed)
@@ -651,7 +693,7 @@ export async function generatePlan(
   const [validation, reviewOut] = await Promise.all([
     validatePlan(plan, ctx),
     shouldReview
-      ? reviewBoth(JSON.stringify(plan), req)
+      ? reviewBoth(JSON.stringify(plan), req, imageDataUrls)
       : Promise.resolve({ review: null, pending: false, calls: [] } as ReviewOutcome),
   ]);
   calls.push(...reviewOut.calls);
@@ -662,6 +704,39 @@ export async function generatePlan(
   let improved = false;
   let escalated: string | null = null;
   let currentPlan = plan;
+
+  // ---- deterministic mirror fix: the review sees the photo; if every mass is
+  // present but left/right (or front/back) is swapped, flip the geometry in
+  // code. No model call can fix handedness reliably — this can.
+  const mirroredIssue = review?.issues.find(
+    (i) => i.category === "photo_fidelity" && /^MIRRORED(-[XZ])?/i.test(i.problem)
+  );
+  if (mirroredIssue && imageDataUrls.length) {
+    const axis = /MIRRORED-Z/i.test(mirroredIssue.problem) ? ("z" as const) : ("x" as const);
+    const flipped = mirrorPlanAxis(currentPlan, axis);
+    const mv = await validatePlan(flipped, ctx);
+    if (mv.errors.length <= validation.errors.length) {
+      currentPlan = flipped;
+      validation.errors = mv.errors;
+      validation.issues = mv.issues;
+      validation.warnings = mv.warnings;
+      improved = true;
+      // the flip resolved this issue — drop it so it can't trigger
+      // a pointless repair or escalation
+      review = {
+        ...review!,
+        issues: review!.issues.filter((i) => i !== mirroredIssue),
+      };
+      emit?.({
+        type: "plan",
+        plan: currentPlan,
+        unverified: mv.errors,
+        warnings: mv.warnings,
+        promptVersion: PROMPT_VERSION,
+        firstPlanMs: Date.now() - t0,
+      });
+    }
+  }
 
   // ---- ONE merged targeted repair (§3 step 5) ----
   const reviewLines = review
@@ -748,7 +823,7 @@ export async function generatePlan(
 
     // re-review only if a blocker was being fixed (§3 step 5)
     if (hadBlocker && !v2.errors.length && shouldReview) {
-      const re = await reviewBoth(JSON.stringify(currentPlan), req);
+      const re = await reviewBoth(JSON.stringify(currentPlan), req, imageDataUrls);
       calls.push(...re.calls);
       review = re.review ?? review;
       reviewPending = reviewPending || re.pending;
@@ -758,27 +833,41 @@ export async function generatePlan(
   let blockers = computeBlockers(validation.errors, review);
 
   // ---- escalation (§3 step 6): stages 1+2 on the strong model, cost-capped ----
+  // Escalation must never kill a run: any error/timeout keeps the best plan
+  // so far (primary + repairs) and reports its blockers as the tricky state.
   const escModel = escalationModel();
   if (blockers.length && escModel && costSoFar() < cap) {
-    const esc = await runStages(escModel, { streamed: false, escalate: true });
-    if ("plan" in esc) {
+    let esc: Awaited<ReturnType<typeof runStages>> | null = null;
+    try {
+      esc = await runStages(escModel, { streamed: false, escalate: true });
+    } catch (e) {
+      console.warn(
+        `[generate] escalation on ${escModel} failed (${(e as Error).message}) — keeping pre-escalation plan`
+      );
+    }
+    if (esc && "plan" in esc) {
       if (costSoFar() < cap) {
-        const [ev, er] = await Promise.all([
-          validatePlan(esc.plan, ctx),
-          shouldReview
-            ? reviewBoth(JSON.stringify(esc.plan), req)
-            : Promise.resolve({ review: null, pending: false, calls: [] } as ReviewOutcome),
-        ]);
-        calls.push(...er.calls);
-        const eBlockers = computeBlockers(ev.errors, er.review);
+        // code validation only — no second review pass. The strong model was
+        // called BECAUSE the review found blockers; re-reviewing its output
+        // added ~90s per run for little signal. Geometry/contact validation
+        // is the deterministic gate; adopt when it's at least as clean.
+        const ev = await validatePlan(esc.plan, ctx);
+        const eBlockers = computeBlockers(ev.errors, null);
         if (eBlockers.length < blockers.length) {
           escalated = escModel;
-          currentPlan = esc.plan;
+          // keep the primary plan's stated dimensions unless they were wrong —
+          // i.e. the escalated geometry genuinely can't fit inside them
+          currentPlan = fitsWithinDims(esc.plan, plan.overall_dimensions_mm)
+            ? { ...esc.plan, overall_dimensions_mm: plan.overall_dimensions_mm }
+            : esc.plan;
           validation.errors = ev.errors;
           validation.issues = ev.issues;
           validation.warnings = ev.warnings;
-          review = er.review;
-          reviewPending = er.pending;
+          // the adopted plan hasn't itself been carpenter-reviewed — drop the
+          // pre-escalation review (its issues refer to the old plan) and never
+          // claim "carpenter checked" for this output
+          review = null;
+          reviewPending = shouldReview;
           blockers = eBlockers;
           improved = true;
           emit?.({
@@ -793,6 +882,10 @@ export async function generatePlan(
       } else {
         console.warn(`[generate] cost cap $${cap} reached mid-escalation — keeping original plan`);
       }
+    } else if (esc) {
+      console.warn(
+        `[generate] escalation on ${escModel} returned ${esc.kind} — keeping pre-escalation plan`
+      );
     }
   } else if (blockers.length && costSoFar() >= cap) {
     console.warn(`[generate] cost cap $${cap} reached — skipping escalation`);

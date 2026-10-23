@@ -125,6 +125,47 @@ export function projectPainter(
   return faces.sort((a, b) => b.depth - a.depth);
 }
 
+/**
+ * Clean turntable camera for the interactive preview: yaw spins the piece,
+ * pitch is the camera's elevation (0 = straight-on, 90 = top-down), and the
+ * result is a plain orthographic projection — no extra isometric skew, so
+ * the piece reads like a product photo and dragging behaves predictably.
+ */
+export function projectTurntable(
+  solids: Solid[],
+  yawDeg = 35,
+  pitchDeg = 20,
+  mirrorX = false
+): PaintedFace[] {
+  const T = (v: Vec3): Vec3 => rotateX(rotateY(v, yawDeg), pitchDeg);
+  const faces: PaintedFace[] = [];
+  // key light from the upper front-left
+  const light = norm([-0.45, -1, 0.35]);
+  for (const s of solids) {
+    const rv = s.mesh.verts.map(T);
+    s.mesh.faces.forEach((f) => {
+      const rn = norm(T(f.n));
+      if (rn[2] <= 0) return; // facing away from the camera (+z)
+      const pts3 = f.loops[0].map((i) => rv[i]);
+      // mirrorX reproduces the sheet iso's handedness: its u = (x − z)
+      // convention is a left-handed projection, so a proper camera at the
+      // same corner draws the composition flipped. Only screen u mirrors —
+      // face visibility, depth sorting and shading stay right-handed.
+      const pts: Vec2[] = pts3.map((p) => [mirrorX ? -p[0] : p[0], p[1]]);
+      // camera sits at +z: smaller z = farther away
+      const depth = -pts3.reduce((a, p) => a + p[2], 0) / pts3.length;
+      faces.push({
+        pts,
+        depth,
+        partId: s.part.id,
+        shade: Math.max(0.15, -(rn[0] * light[0] + rn[1] * light[1] + rn[2] * light[2])),
+        n: rn,
+      });
+    });
+  }
+  return faces.sort((a, b) => b.depth - a.depth);
+}
+
 /* ---------- static exploded sheet ---------- */
 
 const esc = (s: string) =>

@@ -4,6 +4,7 @@
  * cookies can be cleared; real enforcement is per-account).
  */
 import type { NextRequest } from "next/server";
+import { isSupabaseConfigured } from "@/lib/env";
 import { createServiceClient } from "@/lib/supabase/server";
 
 export const ANON_COOKIE = "diyest_anon_gens";
@@ -75,6 +76,8 @@ export async function canGenerate(
   request: NextRequest,
   userId: string | null
 ): Promise<{ allowed: boolean; remaining: number | null; reason?: string }> {
+  // no Supabase (local dev) → no usage accounting to enforce against
+  if (!isSupabaseConfigured()) return { allowed: true, remaining: null };
   if (!userId) {
     const used = anonGenerationsUsed(request);
     return used >= ANON_FREE_PLANS

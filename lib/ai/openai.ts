@@ -50,7 +50,9 @@ export function reviewTier(): string | undefined {
 /**
  * Service tier for generation calls on AI_MODEL_PLAN — stages, geometry and
  * list repairs (BRIEF-v2: Luna stages + Luna repairs run on the Fast tier).
- * "priority" = OpenAI's fast lane. Sol/escalation calls stay Standard.
+ * "priority" = OpenAI's fast lane. Sol escalation stages also use it so the
+ * slower strong model still returns inside the escalation timeout; Sol
+ * review/repair calls stay Standard.
  */
 export function genTier(): string | undefined {
   const v = process.env.AI_PLAN_TIER ?? "priority";

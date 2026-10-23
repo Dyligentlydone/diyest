@@ -1,5 +1,8 @@
 // lib/ai/prompts/review.v1.ts
-// Buildability review prompt, version 1.
+// Buildability review prompt, version 2 — adds step 0 PHOTO FIDELITY (the
+// reviewer's copy of the user's photos) so plans that omit a visible major
+// mass (return, pedestal, hutch) fail as blockers instead of passing on
+// internal consistency alone.
 //
 // WHERE IT RUNS (pipeline in lib/ai/generate.ts):
 //   generate plan → Zod parse → geometry validation (validate.ts)
@@ -11,13 +14,13 @@
 //                                     If issues remain, show the plan with an "UNVERIFIED" banner listing them.
 //   Optionally run the review only when plan.load_bearing is true, controlled by REVIEW_MODE=all|load_bearing|off.
 //
-// Use the strongest model available for AI_MODEL_REVIEW. It only reads JSON (no images needed), so it is
-// relatively cheap: about 4–8k input tokens, ~1k output tokens.
+// Use the strongest model available for AI_MODEL_REVIEW. When the user supplied photos they are
+// attached too, so the reviewer can check the plan models EVERYTHING the photo shows (step 0).
 // Log every review (verdict, issues, tokens, latency) to generation_logs with REVIEW_PROMPT_VERSION.
 
 import { z } from "zod";
 
-export const REVIEW_PROMPT_VERSION = "review.v1";
+export const REVIEW_PROMPT_VERSION = "review.v3";
 
 // All fields required; null for "none" (OpenAI strict structured outputs).
 export const reviewIssueSchema = z.object({
@@ -35,6 +38,7 @@ export const reviewIssueSchema = z.object({
     "hardware",         // wrong fastener type/length/count
     "dimensions",       // impractical, unrealistic or ergonomic problem
     "clarity",          // a step a beginner can't follow
+    "photo_fidelity",   // a component visible in the photo isn't modeled (missing wing, return, bank, hutch)
   ]),
   step: z.number().int().nullable(),
   joint_id: z.string().nullable(),
@@ -58,6 +62,9 @@ You are a master carpenter and shop instructor with 30 years of experience. You 
 You receive the plan as JSON (parts with placements, joints, hardware, tools, steps), plus the user's skill level, tool inventory and whether they want to use only their own tools.
 
 Review it by mentally building it, step by step, in order:
+
+0. PHOTO FIDELITY (only when the user's photo is attached — do this FIRST). Compare the plan's parts against what the photo actually shows. Every major visible mass must be modeled: each worktop, return, wing, pedestal, drawer bank, shelf bay, hutch, carcass, leg or leg panel. An L-shaped desk missing its return, a unit missing a whole bank of drawers — the plan is WRONG even though it is internally consistent. Reserve blocker severity for missing MAJOR masses (tops, returns, pedestals, carcasses, legs, shelves); missing trim, hardware or decoration is minor, and a component that is present but clearly the wrong size or position is major. Do not flag objects in the photo that are clearly not part of the piece (plants, chairs, decor).
+   MIRROR CHECK: if the plan's arrangement is the photo's mirror image — a mass on the wrong side (return pedestal on the right of the plan but the left of the photo, drawer bank swapped end-to-end, front/back flipped) — that is a blocker. Start the problem text with exactly "MIRRORED-X:" when left and right are swapped or "MIRRORED-Z:" when front and back are swapped, e.g. "MIRRORED-X: the return pedestal sits on the right end but the photo shows it on the left".
 
 1. TOOL ACCESS. At each step, picture the piece as it exists at that moment. Can a drill, driver or clamp physically reach every fastener in that step? Is the face being drilled through already covered by another part? Is there roughly 150 mm of straight-line clearance for a drill?
 2. JOINT STRENGTH. For each joint: is it strong enough for its load and for racking (side-to-side) forces? Flag screws into end grain as the main fastening, legs held only by screws, splayed legs without aprons or stretchers on seating, unsupported long shelves, glue-only joints under load, and too few fasteners.

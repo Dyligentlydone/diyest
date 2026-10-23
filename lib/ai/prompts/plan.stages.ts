@@ -65,16 +65,26 @@ Rules for both kinds:
 - Round every dimension a builder will measure to a whole millimeter. If the user's display units are imperial, choose dimensions that land on 1/16 in (1.5875 mm steps) or simpler fractions where possible, then convert to mm with up to one decimal.
 - Pick dimensions that are easy to cut from standard stock (e.g. design shelf depth around a 1x12 board's real 286 mm width).
 
+# Reading the photo
+Before writing any parts, survey the photo like a walk-around:
+1. Silhouette first: identify the object's floor footprint — a plain rectangle, an L, a U, a T, a galley. If the piece has a return, wing or second run (L-shaped desk, corner bench, wraparound counter, sectional), overall_dimensions_mm must span the WHOLE footprint and the parts must fill EVERY leg of it. An L-shaped desk is two full surfaces meeting at a corner: a main top AND a return top, each with its own support (pedestal, leg panel or legs).
+   Build each run's top as its own RECTANGULAR panel butting at the corner — never one giant path-profile sheet cut into an L (wasteful, hard to cut, and hard to draw), and never stacked duplicate top layers unless the photo clearly shows a double-thickness laminated top.
+2. Component inventory: list every distinct volume visible — tops, returns, pedestals, drawer banks, shelf bays, hutches, leg panels, aprons, backs, stretchers — then give each one at least one part. No major visible mass may go unmodeled.
+3. Hidden structure: infer what the photo hides but the piece needs to stand — far-side legs or panels, back panels, modesty panels, internal dividers — and include them.
+4. Coverage check: projected onto the floor, your parts must cover the object's whole silhouette. If the photo shows more than you modeled, you missed a component — go back.
+
 # Designing the geometry
 1. Identify what the object is, its function and roughly how it's built. If the request isn't a workshop-scale DIY project — a vehicle or its engine/fuel/electrical systems, a building, an appliance's electronics, mains wiring, gas work, or anything requiring a licensed trade — or the photo isn't a project at all, set title to "NOT_BUILDABLE", explain why in summary, and return empty arrays.
 2. Decide dimensions:
    - If target dimensions are given, they win. Hit them within ±5%.
+   - EXCEPTION — the photo's shape beats the numbers: when a photo is attached, target dimensions scale the piece but must NEVER change its footprint or delete components. If a given dimension cannot contain the photographed footprint (e.g. depth 750 for an L-desk whose return runs ~1500 deep), treat that dimension as applying to the MAIN RUN only, model the full L/U/T silhouette anyway with overall_dimensions_mm spanning the whole footprint, and state in assumptions (and clarifying_questions) that the requested size fits the main run while the photographed return extends beyond it. Dropping the return to satisfy a number is always wrong.
    - If space constraints are given, the piece must fit inside them with at least 10 mm clearance per side.
    - Otherwise estimate from the photo using common reference sizes (seat height ~450 mm, table height ~750 mm, counter ~900 mm, door ~2030 mm, standard shelf depth 250-300 mm). Record the estimate in assumptions.
 3. Choose materials:
    - Use standard, widely available lumber and sheet goods. budget: pine/spruce construction lumber, plywood or MDF. balanced: select pine, poplar, birch plywood. premium: hardwoods (oak, maple, walnut), hardwood plywood.
    - In leftovers mode, use the materials the user owns first and say so in assumptions.
-4. Think about joinery as you place parts — the next pass will fasten every touching pair, so design parts that CAN be joined well: aprons under table tops, stretchers between chair legs, dadoes or cleats for load-bearing shelves, space for plates and brackets. Do not design geometry that can only be held together with screws into end grain.
+4. Orientation convention (drawings depend on it): the piece's FRONT faces +z — the side a person stands at to use it: knee space, drawer pulls, door faces, open bays, the side that would face the camera in a product photo. Keep the photo's handedness exactly: a return, pedestal or drawer bank on the viewer's LEFT in the photo goes at the low-x (left) end. Never model the piece mirrored or back-to-front vs the photo — drawer pulls on a hidden back face, or a return hanging off the wrong side, are both wrong.
+5. Think about joinery as you place parts — the next pass will fasten every touching pair, so design parts that CAN be joined well: aprons under table tops, stretchers between chair legs, dadoes or cleats for load-bearing shelves, space for plates and brackets. Do not design geometry that can only be held together with screws into end grain.
 5. Honesty:
    - Put every important guess in assumptions (dimensions, material, wood species, hidden joinery, wall type).
    - If a key fact is missing and would change the plan substantially, add a short, specific question to clarifying_questions (max 3).
