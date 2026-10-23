@@ -1,0 +1,4106 @@
+{
+  "at": "2026-10-23T05:17:48.007Z",
+  "rows": [
+    {
+      "name": "bench",
+      "title": "Slatted Timber Garden Bench with Armrests",
+      "ok": true,
+      "tUsefulS": 30.073,
+      "tPartialS": 117.231,
+      "tFirstPlanS": 304.151,
+      "tFinalS": 491.983,
+      "calls": "5×6.1-sol",
+      "tokens": 76337,
+      "costUsd": 0.3564959,
+      "repairs": 1,
+      "escalated": null,
+      "verdict": "fix",
+      "reviewModel": "gpt-6.1-sol",
+      "blockers": 0,
+      "unverified": 2,
+      "notes": ""
+    },
+    {
+      "name": "chair",
+      "title": "Painted Spindle-Back Wooden Chair",
+      "ok": true,
+      "tUsefulS": 30.299,
+      "tPartialS": 89.487,
+      "tFirstPlanS": 230.98,
+      "tFinalS": 368.315,
+      "calls": "5×6.1-sol",
+      "tokens": 54496,
+      "costUsd": 0.2404691,
+      "repairs": 1,
+      "escalated": null,
+      "verdict": "fix",
+      "reviewModel": "gpt-6.1-sol",
+      "blockers": 0,
+      "unverified": 1,
+      "notes": ""
+    },
+    {
+      "name": "desk",
+      "title": "Classroom Tablet-Arm Chair — Wood-Frame Adaptation",
+      "ok": true,
+      "tUsefulS": 30.958,
+      "tPartialS": 86.195,
+      "tFirstPlanS": 306.285,
+      "tFinalS": 521.295,
+      "calls": "5×6.1-sol",
+      "tokens": 81222,
+      "costUsd": 0.3779859,
+      "repairs": 1,
+      "escalated": null,
+      "verdict": "fix",
+      "reviewModel": "gpt-6.1-sol",
+      "blockers": 2,
+      "unverified": 2,
+      "notes": ""
+    }
+  ],
+  "results": {
+    "chair": {
+      "plan": {
+        "title": "Painted Spindle-Back Wooden Chair",
+        "summary": "An adult-size wooden chair inspired by the photograph, with a rounded solid-wood seat, broad rounded crest rail, five back spindles and four legs tied together by stretchers. Straight round stock and a flat crest rail simplify the photographed turned and curved details.",
+        "difficulty": "intermediate",
+        "overall_dimensions_mm": {
+          "width": 440,
+          "depth": 460,
+          "height": 820
+        },
+        "assumptions": [
+          "The photograph is cropped and blurred. Dimensions are estimated for an adult dining chair: 450 mm seat height and 820 mm overall height.",
+          "The unseen front and underside are interpreted as a four-legged chair with four stretchers.",
+          "The photographed crest appears curved in depth. This version uses a flat, rounded crest rail and upright back spindles rather than steam-bent or carved components.",
+          "Straight round hardwood legs and spindles replace the photographed turned details. Decorative turnings are not represented.",
+          "Use straight-grained beech or maple for structural components and an opaque warm yellow-orange finish to match the photograph.",
+          "Legs enter the seat underside by 15 mm. Back spindles enter the seat and crest by 20 mm. Stretcher ends enter blind sockets in the legs. These intentional mesh overlaps represent mortise-and-dowel joints.",
+          "Seat and crest are edge-glued solid-hardwood panels, not MDF. Seat edges may be eased without changing the modeled bounding dimensions.",
+          "This is a household chair, not a certified commercial seating design. Finished joints and stability must be checked before use; no numerical load rating is assumed."
+        ],
+        "clarifying_questions": [],
+        "parts": [
+          {
+            "id": "P1",
+            "name": "Rounded seat",
+            "material": "Edge-glued beech or maple",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 460,
+            "width_mm": 440,
+            "thickness_mm": 30,
+            "qty": 1,
+            "placements": [
+              {
+                "x": 0,
+                "y": 420,
+                "z": 0,
+                "sx": 440,
+                "sy": 30,
+                "sz": 460
+              }
+            ],
+            "profile": {
+              "type": "rounded_rect",
+              "radius": 40
+            },
+            "cross_section": null,
+            "ends": null,
+            "notes": "Flat seat with rounded plan-view corners. Four leg tops bear flush against the underside at y=420 without solid overlap. Join these interfaces using concealed loose-tenon or dowel joinery specified in the joinery pass, not end-grain screws alone. Five rear spindle sockets are 20 mm deep and separated in plan from the leg connections."
+          },
+          {
+            "id": "P2",
+            "name": "Round hardwood legs",
+            "material": "Beech or maple",
+            "stock": "dowel",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 420,
+            "width_mm": 45,
+            "thickness_mm": 45,
+            "qty": 4,
+            "placements": [
+              {
+                "from": [
+                  65,
+                  0,
+                  65
+                ],
+                "to": [
+                  65,
+                  420,
+                  65
+                ],
+                "roll_deg": null
+              },
+              {
+                "from": [
+                  375,
+                  0,
+                  65
+                ],
+                "to": [
+                  375,
+                  420,
+                  65
+                ],
+                "roll_deg": null
+              },
+              {
+                "from": [
+                  65,
+                  0,
+                  375
+                ],
+                "to": [
+                  65,
+                  420,
+                  375
+                ],
+                "roll_deg": null
+              },
+              {
+                "from": [
+                  375,
+                  0,
+                  375
+                ],
+                "to": [
+                  375,
+                  420,
+                  375
+                ],
+                "roll_deg": null
+              }
+            ],
+            "profile": null,
+            "cross_section": {
+              "shape": "round",
+              "d": 45,
+              "end_d": null
+            },
+            "ends": "square",
+            "notes": "Cut from straight 45 mm hardwood round stock. Legs terminate flush at the seat underside, y=420, with no leg-to-seat solid overlap. Concealed loose-tenon or dowel joinery must secure the bearing interfaces; do not rely on end-grain screws alone. Stretcher sockets terminate at the leg centerlines."
+          },
+          {
+            "id": "P3",
+            "name": "Front and rear stretchers",
+            "material": "Beech or maple",
+            "stock": "dowel",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 310,
+            "width_mm": 22,
+            "thickness_mm": 22,
+            "qty": 2,
+            "placements": [
+              {
+                "from": [
+                  65,
+                  180,
+                  65
+                ],
+                "to": [
+                  375,
+                  180,
+                  65
+                ],
+                "roll_deg": null
+              },
+              {
+                "from": [
+                  65,
+                  180,
+                  375
+                ],
+                "to": [
+                  375,
+                  180,
+                  375
+                ],
+                "roll_deg": null
+              }
+            ],
+            "profile": null,
+            "cross_section": {
+              "shape": "round",
+              "d": 22,
+              "end_d": null
+            },
+            "ends": "square",
+            "notes": "Full-diameter ends enter 22 mm blind sockets extending to the leg centerlines. Modeled overlaps are intentional housed joints, not surface butt joints."
+          },
+          {
+            "id": "P4",
+            "name": "Left and right stretchers",
+            "material": "Beech or maple",
+            "stock": "dowel",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 310,
+            "width_mm": 22,
+            "thickness_mm": 22,
+            "qty": 2,
+            "placements": [
+              {
+                "from": [
+                  65,
+                  225,
+                  65
+                ],
+                "to": [
+                  65,
+                  225,
+                  375
+                ],
+                "roll_deg": null
+              },
+              {
+                "from": [
+                  375,
+                  225,
+                  65
+                ],
+                "to": [
+                  375,
+                  225,
+                  375
+                ],
+                "roll_deg": null
+              }
+            ],
+            "profile": null,
+            "cross_section": {
+              "shape": "round",
+              "d": 22,
+              "end_d": null
+            },
+            "ends": "square",
+            "notes": "Ends enter blind sockets to the leg centerlines. These sockets sit 45 mm above the front and rear stretcher sockets, preventing intersecting mortises."
+          },
+          {
+            "id": "P5",
+            "name": "Back spindles",
+            "material": "Beech or maple",
+            "stock": "dowel",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 270,
+            "width_mm": 20,
+            "thickness_mm": 20,
+            "qty": 5,
+            "placements": [
+              {
+                "from": [
+                  65,
+                  430,
+                  441
+                ],
+                "to": [
+                  65,
+                  700,
+                  441
+                ],
+                "roll_deg": null
+              },
+              {
+                "from": [
+                  142,
+                  430,
+                  441
+                ],
+                "to": [
+                  142,
+                  700,
+                  441
+                ],
+                "roll_deg": null
+              },
+              {
+                "from": [
+                  220,
+                  430,
+                  441
+                ],
+                "to": [
+                  220,
+                  700,
+                  441
+                ],
+                "roll_deg": null
+              },
+              {
+                "from": [
+                  298,
+                  430,
+                  441
+                ],
+                "to": [
+                  298,
+                  700,
+                  441
+                ],
+                "roll_deg": null
+              },
+              {
+                "from": [
+                  375,
+                  430,
+                  441
+                ],
+                "to": [
+                  375,
+                  700,
+                  441
+                ],
+                "roll_deg": null
+              }
+            ],
+            "profile": null,
+            "cross_section": {
+              "shape": "round",
+              "d": 20,
+              "end_d": null
+            },
+            "ends": "square",
+            "notes": "Exposed length is 230 mm, between seat top at y=450 and crest underside at y=680. Each end has 20 mm embedment in a matching blind socket."
+          },
+          {
+            "id": "P6",
+            "name": "Broad rounded crest rail",
+            "material": "Edge-glued beech or maple",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 440,
+            "width_mm": 140,
+            "thickness_mm": 38,
+            "qty": 1,
+            "placements": [
+              {
+                "x": 0,
+                "y": 680,
+                "z": 422,
+                "sx": 440,
+                "sy": 140,
+                "sz": 38
+              }
+            ],
+            "profile": {
+              "type": "rounded_rect",
+              "radius": 45
+            },
+            "cross_section": null,
+            "ends": null,
+            "notes": "Broad, flat approximation of the photographed curved back rail. All five spindle sockets enter the straight bottom edge by 20 mm, centered through its 38 mm thickness."
+          }
+        ],
+        "consumables": [
+          {
+            "name": "Interior wood glue",
+            "qty": "250 ml",
+            "note": "For close-fitting structural sockets and any panel glue-up; do not paint mating surfaces."
+          },
+          {
+            "name": "Sandpaper",
+            "qty": "3 sheets each of 120, 180 and 220 grit",
+            "note": "Sand components before assembly and lightly between finish coats."
+          },
+          {
+            "name": "Paintable wood filler",
+            "qty": "100 g",
+            "note": "For cosmetic defects only, not structural joint gaps."
+          },
+          {
+            "name": "Wood primer",
+            "qty": "250 ml",
+            "note": "Compatible with the selected furniture enamel."
+          },
+          {
+            "name": "Warm yellow-orange furniture enamel",
+            "qty": "500 ml",
+            "note": "Apply two thin coats; allow full curing before use."
+          }
+        ],
+        "load_bearing": true,
+        "joints": [
+          {
+            "id": "J1",
+            "part_a": "P1",
+            "part_b": "P2",
+            "count": 4,
+            "type": "threaded_insert_bolt",
+            "fasteners": [
+              {
+                "name": "Hardwood dowel",
+                "size": "22 diameter x 60, drilled axially 9",
+                "qty_per_joint": 1
+              },
+              {
+                "name": "Threaded insert for hardwood",
+                "size": "M8 internal thread x 20 long, approximately 12 outside diameter",
+                "qty_per_joint": 1
+              },
+              {
+                "name": "Low-head socket machine bolt",
+                "size": "M8 x 80, head height 5",
+                "qty_per_joint": 1
+              },
+              {
+                "name": "Flat washer",
+                "size": "M8, 28 outside diameter x 2 thick",
+                "qty_per_joint": 1
+              }
+            ],
+            "drive_from": "From above P1 before installing P5; install inserts through the open leg mortises first.",
+            "step": 10,
+            "note": "Conditional detail only: the chair build is on hold because J2 cannot be safely resolved within the fixed geometry. Each hollow dowel enters P2 by 40 and P1 by 20. Use 7-deep top washer recesses, not the previous 10-deep recesses, to retain a 3-thick web above the underside mortises. With the specified bolt and washer, nominal insert engagement is 15; verify actual hardware dimensions and clearance on scrap. Glue dowels into legs and front seat sockets only. Rear seat sockets are 22 x 36, oriented front-to-back, with matching elongated passages and recesses; do not glue rear bearing surfaces. Rear washers must permit seasonal sliding."
+          },
+          {
+            "id": "J2",
+            "part_a": "P1",
+            "part_b": "P5",
+            "count": 5,
+            "type": "mortise_tenon",
+            "fasteners": [],
+            "drive_from": "Proposed assembly direction is downward from above P1; assembly is prohibited pending an approved structural revision.",
+            "step": 12,
+            "note": "UNRESOLVED — DO NOT BORE OR ASSEMBLE. The fixed socket centers are 441 from the front of a 460-deep seat. A 20-diameter socket therefore leaves only 9 of wood behind its wall. The fixed 30-thick seat and 20 spindle embedment leave a 10-thick socket bottom. The requested minimum 20 rear margin and 30 engagement with a substantial bottom cannot be achieved without changing fixed parts or placements. Glue, extra screws, and a cautious seated trial do not remedy this conflict. Obtain an approved geometry revision or a professionally engineered reinforcement detail before proceeding; no reinforcement capacity is assumed here."
+          },
+          {
+            "id": "J3",
+            "part_a": "P2",
+            "part_b": "P3",
+            "count": 4,
+            "type": "mortise_tenon",
+            "fasteners": [],
+            "drive_from": "Insert P3 horizontally between each front or rear pair of loose P2 legs before closing the base.",
+            "step": 8,
+            "note": "Conditional on release of the structural hold. Glue full-diameter 22 stretcher ends into blind sockets ending at the leg centerlines, nominally 22.5 deep from the inward tangent. Socket axes are 180 above the floor. Do not substitute screws into stretcher end grain."
+          },
+          {
+            "id": "J4",
+            "part_a": "P2",
+            "part_b": "P4",
+            "count": 4,
+            "type": "mortise_tenon",
+            "fasteners": [],
+            "drive_from": "Insert P4 between the separated front and rear leg subassemblies, then bring those subassemblies together.",
+            "step": 9,
+            "note": "Conditional on release of the structural hold. Glue full-diameter 22 stretcher ends into blind sockets ending at the leg centerlines, nominally 22.5 deep from the inward tangent. Socket axes are 225 above the floor, avoiding the P3 sockets."
+          },
+          {
+            "id": "J5",
+            "part_a": "P5",
+            "part_b": "P6",
+            "count": 5,
+            "type": "mortise_tenon",
+            "fasteners": [],
+            "drive_from": "Insert P5 into the upward-facing bottom edge of inverted P6 on the bench.",
+            "step": 11,
+            "note": "Conditional on an approved resolution of J2 that also confirms the crest connection and back assembly. The original detail glues each 20-diameter spindle end into a 20-deep blind crest socket. Do not make this subassembly before that approval, since the back geometry or load path may need revision."
+          }
+        ],
+        "steps": [
+          {
+            "n": 1,
+            "title": "Identify the structural conflict and stop the build",
+            "text": "Review P1 (rounded seat), P5 (back spindles), and P6 (broad rounded crest rail) before cutting or buying connector hardware. The fixed spindle sockets leave only 9 of wood behind their walls, and the 30-thick seat cannot provide 30 engagement while retaining a substantial socket bottom. The review's requested correction requires changes to fixed parts or placements, which this repair is not authorized to make. Stop here and obtain an approved structural revision; steps 2–14 are conditional planning information, not permission to build or use this chair.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6"
+            ],
+            "tools_used": [
+              "Tape measure",
+              "Combination square",
+              "Marking pencil"
+            ],
+            "safety": "Do not build or use this chair as adult seating while J2 remains unresolved.",
+            "tip": "Request a revised seat thickness, spindle location and length, and matching crest placement together, or a professionally engineered reinforcement detail."
+          },
+          {
+            "n": 2,
+            "title": "Prepare components only after structural approval",
+            "text": "After the structural hold is formally released, verify that the approved drawings match P1 (rounded seat), P2 (round hardwood legs), P3 (front and rear stretchers), P4 (left and right stretchers), P5 (back spindles), and P6 (broad rounded crest rail). Cut only to those approved dimensions and keep round-stock ends square. Preserve the specified corner profiles and ease exposed edges about 2 without rounding mating surfaces. Reject checking, knots, or grain runout near any structural socket.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6"
+            ],
+            "tools_used": [
+              "Crosscut saw",
+              "Jigsaw",
+              "Clamps",
+              "Workbench",
+              "Rasp",
+              "Sanding block",
+              "Combination square"
+            ],
+            "safety": "Do not perform this step before approval; wear eye and hearing protection during powered cutting and support all offcuts.",
+            "tip": "Keep P1 and P6 grain parallel across the chair width unless the approved movement detail explicitly requires otherwise."
+          },
+          {
+            "n": 3,
+            "title": "Bore the conditional stretcher sockets",
+            "text": "After approval, secure each P2 (round hardwood leg) in an indexed V-block cradle. Bore the inward-facing sockets for P3 (front and rear stretchers) at 180 above the floor and for P4 (left and right stretchers) at 225. Use a 22 flat-bottom bit and stop each socket at the leg centerline, nominally 22.5 from the inward tangent. Index adjacent socket directions exactly 90 degrees apart.",
+            "parts_used": [
+              "P2",
+              "P3",
+              "P4"
+            ],
+            "tools_used": [
+              "Drill press",
+              "V-block drilling cradle",
+              "Clamps",
+              "22 flat-bottom boring bit",
+              "Depth stops",
+              "Combination square",
+              "Marking pencil"
+            ],
+            "safety": "Clamp the cradle and round stock securely; never hold a round leg by hand while drilling.",
+            "tip": "Test the depth setting on scrap round stock before drilling a leg."
+          },
+          {
+            "n": 4,
+            "title": "Prepare the conditional leg connectors",
+            "text": "After approval, bore a centered 22-diameter mortise 40 deep into each P2 (round hardwood leg), followed by the selected insert manufacturer's pilot for an M8 x 20 insert. Prepare four 22 x 60 hardwood connector dowels with centered 9 through-bores, leaving them unglued. Confirm that the insert driver reaches the mortise bottom and that the insert has sufficient usable thread for 15 nominal bolt engagement. Trial the complete connector in scrap before machining P1.",
+            "parts_used": [
+              "P2"
+            ],
+            "tools_used": [
+              "Drill press",
+              "V-block drilling cradle",
+              "Clamps",
+              "22 flat-bottom boring bit",
+              "9 drill bit",
+              "Insert pilot drill bit",
+              "Long insert driver",
+              "Depth stops"
+            ],
+            "safety": "Use clamped end-drilling fixtures for legs and dowels; short round pieces must not be hand-held.",
+            "tip": "Measure actual insert and bolt dimensions rather than relying only on nominal package descriptions."
+          },
+          {
+            "n": 5,
+            "title": "Prepare the conditional seat connectors",
+            "text": "After approval, mark P1 (rounded seat) leg centers at 65 and 375 from the left edge and 65 and 375 from the front edge. Make front underside sockets 22 diameter x 20 deep and rear sockets 22 x 36 x 20 deep, with rear slots running front-to-back. Provide front 9 through-holes and rear 9 x 23 through-slots, then make top washer recesses 30 diameter x 7 deep at the front and 30 x 44 x 7 deep at the rear. Do not use the previous 10-deep recesses, which would meet the underside mortises and remove the washer-bearing web.",
+            "parts_used": [
+              "P1"
+            ],
+            "tools_used": [
+              "Drill press",
+              "Router",
+              "Router guide jig",
+              "Clamps",
+              "22 flat-bottom boring bit",
+              "9 drill bit",
+              "30 flat-bottom boring bit",
+              "Router straight bit",
+              "Depth stops",
+              "Combination square"
+            ],
+            "safety": "Clamp P1, verify remaining material thickness, and disconnect the router before cutter adjustments.",
+            "tip": "All rear slots and recesses must share the same direction and center to permit approximately 7 movement each way."
+          },
+          {
+            "n": 6,
+            "title": "Hold all back-socket boring",
+            "text": "Do not bore the P1 (rounded seat) sockets for P5 (back spindles) at the fixed 441 front-to-back coordinate. Do not deepen those sockets to 30, because that would break through the fixed seat rather than retain a socket bottom. Hold matching P6 (broad rounded crest rail) boring until an approved detail resolves the seat connection, matching back geometry, and load path. Inspect the proposed socket areas for checking and reject defective stock regardless of any later reinforcement.",
+            "parts_used": [
+              "P1",
+              "P5",
+              "P6"
+            ],
+            "tools_used": [
+              "Tape measure",
+              "Combination square",
+              "Marking pencil"
+            ],
+            "safety": "This is a mandatory stop point, not an optional improvement; the original blind-socket detail is not released for seating use.",
+            "tip": "Moving only the seat sockets would misalign the fixed spindles and crest, so do not improvise a partial relocation."
+          },
+          {
+            "n": 7,
+            "title": "Hold dry fitting pending an approved back detail",
+            "text": "Do not force P5 (back spindles) or P6 (broad rounded crest rail) into an unapproved P1 (rounded seat) socket arrangement. After approval, dry-fit P1 through P6 without glue and verify the approved engagement depths, sound rear margin, leg spacing, and rear connector movement. Check approximately 15 engagement for each M8 x 80 low-head bolt without bottoming, then disassemble and sand exposed surfaces through 120 and 180 grit. Keep all mating surfaces clean and unpainted.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6"
+            ],
+            "tools_used": [
+              "Clamps",
+              "Combination square",
+              "Tape measure",
+              "Hex key",
+              "Long insert driver",
+              "Sanding block",
+              "Random-orbit sander",
+              "Vacuum"
+            ],
+            "safety": "Use hardwood dust extraction and a suitable dust respirator; a successful dry fit does not establish structural adequacy.",
+            "tip": "Neither tight sockets nor gap-filling adhesive compensate for inadequate wood behind a socket."
+          },
+          {
+            "n": 8,
+            "title": "Glue the conditional front and rear leg pairs",
+            "text": "Only after structural approval, join each P3 (front and rear stretcher) to its corresponding pair of P2 (round hardwood legs). Brush glue onto all four 22-diameter stretcher ends and socket walls, insert from between the legs, and clamp with leg centerlines 310 apart. Check square and socket orientation, hold clamps at least 60 minutes at about 20°C, and allow 24 hours before stressing the assemblies.",
+            "parts_used": [
+              "P2",
+              "P3"
+            ],
+            "tools_used": [
+              "Clamps",
+              "Padded clamp cauls",
+              "Combination square",
+              "Tape measure",
+              "Glue brush"
+            ],
+            "safety": null,
+            "tip": "Keep the unused P4 sockets facing inward before the glue sets."
+          },
+          {
+            "n": 9,
+            "title": "Glue the conditional stretcher base",
+            "text": "Only after structural approval, apply glue to all four ends of P4 (left and right stretchers) and their P2 (round hardwood leg) sockets. Insert both stretchers between the front and rear leg pairs and close the assembly with front-to-rear leg centerlines 310 apart. Check equal diagonals and four-foot contact, clamp at least 60 minutes, and allow 24 hours before stressing the base.",
+            "parts_used": [
+              "P2",
+              "P3",
+              "P4"
+            ],
+            "tools_used": [
+              "Clamps",
+              "Padded clamp cauls",
+              "Tape measure",
+              "Combination square",
+              "Glue brush",
+              "Workbench"
+            ],
+            "safety": null,
+            "tip": "Use moderate pressure so the stretchers remain straight."
+          },
+          {
+            "n": 10,
+            "title": "Install the conditional seat connectors",
+            "text": "Only after structural approval, install one M8 x 20 insert in each P2 (round hardwood leg) and glue one hollow 22 x 60 dowel 40 into each leg, keeping glue out of its bore. Lower P1 (rounded seat) onto the dowels, gluing its two front sockets but leaving both rear slots and rear leg bearing surfaces unglued. From above, install one M8 washer, 28 outside diameter x 2 thick, and one M8 x 80 low-head socket bolt with a 5-high head at each of the four legs. Secure the front pair and snug the rear pair only enough to retain the seat while allowing sliding; clamp the front joints for 60 minutes and allow 24 hours to cure.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4"
+            ],
+            "tools_used": [
+              "Long insert driver",
+              "Hex key",
+              "Clamps",
+              "Padded clamp cauls",
+              "Glue brush"
+            ],
+            "safety": "Secure the base on a stable work surface; do not stand on the chair to reach the connectors.",
+            "tip": "The specified head and washer total 7 high; use only hardware verified to fit the 7-deep recess without bottoming."
+          },
+          {
+            "n": 11,
+            "title": "Hold the crest-and-spindle subassembly",
+            "text": "Do not glue P5 (back spindles) into P6 (broad rounded crest rail) while J2 remains unresolved. If an approved revision explicitly retains J5, place P6 inverted in a padded fixture and glue the upper 20 of each of the five P5 spindles into its matching 20-deep socket. Keep the spindles parallel with a spacing template, clamp with padded cauls for at least 60 minutes, and leave unstressed for 24 hours.",
+            "parts_used": [
+              "P5",
+              "P6"
+            ],
+            "tools_used": [
+              "Socket spacing template",
+              "Clamps",
+              "Padded clamp cauls",
+              "Glue brush",
+              "Combination square"
+            ],
+            "safety": "Do not treat this conditional connection detail as approval of the complete chair back.",
+            "tip": "Do not hammer spindle ends into sockets; correct the fit before applying glue."
+          },
+          {
+            "n": 12,
+            "title": "Do not assemble the unresolved seat-to-back joint",
+            "text": "Do not glue P5 (back spindles) into P1 (rounded seat), and do not install the P5/P6 back assembly using the previous instructions. No glue schedule, additional ordinary screw, or clamp time makes the fixed 9 rear margin and 20 engagement equivalent to the requested structural correction. J2 remains unmade until an approved revision supplies a compatible connection, any required hardware, assembly access, and curing instructions. Those instructions must replace this hold card before construction resumes.",
+            "parts_used": [
+              "P1",
+              "P5",
+              "P6"
+            ],
+            "tools_used": [],
+            "safety": "Do not sit on, lean against, or load a chair assembled with the unresolved J2 detail.",
+            "tip": "Retain all parts unaltered while requesting the structural revision."
+          },
+          {
+            "n": 13,
+            "title": "Finish only after structural release",
+            "text": "After the revised structure has been approved, assembled, and inspected, remove glue from P1 through P6 and fill cosmetic defects only. Mask connector recesses and rear sliding interfaces, then apply one compatible primer coat and two thin enamel coats. Allow approximately 4–6 hours for primer and 16–24 hours between enamel coats, or longer where the product label requires. Lightly sand with 220 grit between coats only as permitted by the finish manufacturer.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6"
+            ],
+            "tools_used": [
+              "Sanding block",
+              "Vacuum",
+              "Paintbrush",
+              "Masking tape",
+              "Drop cloth"
+            ],
+            "safety": "Ventilate, wear appropriate gloves and respiratory protection, and follow finish-label ignition and disposal precautions.",
+            "tip": "Paint and filler must not conceal checking around the rear sockets or bridge movement interfaces."
+          },
+          {
+            "n": 14,
+            "title": "Withhold commissioning until the structure is resolved",
+            "text": "Do not commission this fixed-geometry chair for seating while J2 is unresolved. A cautious seated trial, absence of creaking, or an uncertified household-use disclaimer does not establish long-term back-joint durability. After an approved revision, follow its inspection and verification requirements for P1 through P6 and allow the finish to cure fully, typically 7–14 days or longer according to its label. Check connector retention and seasonal movement as maintenance, not as a substitute for structural approval.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6"
+            ],
+            "tools_used": [
+              "Hex key",
+              "Combination square"
+            ],
+            "safety": "Until the structural hold is released, label the assembly not for seating and keep it out of use.",
+            "tip": "Any later cracking, looseness, or rocking requires immediate withdrawal from use and assessment."
+          }
+        ],
+        "tools": [
+          {
+            "name": "Tape measure",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Combination square",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Marking pencil",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Crosscut saw",
+            "required": true,
+            "alternative": "A sharp hand saw with a square-cut guide can replace a powered miter saw."
+          },
+          {
+            "name": "Jigsaw",
+            "required": false,
+            "alternative": "Coping saw or bow saw, followed by rasping and sanding."
+          },
+          {
+            "name": "Rasp",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Workbench",
+            "required": true,
+            "alternative": "A rigid, level work surface with secure clamping points."
+          },
+          {
+            "name": "Clamps",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Padded clamp cauls",
+            "required": true,
+            "alternative": "Scrap-wood pressure blocks with protective padding."
+          },
+          {
+            "name": "Drill press",
+            "required": false,
+            "alternative": "Portable drill in a rigid guided boring stand with clamped indexing fixtures; unsupported freehand drilling is unsuitable."
+          },
+          {
+            "name": "V-block drilling cradle",
+            "required": true,
+            "alternative": "A shop-made clamping and indexing jig for round stock, including end-drilling support."
+          },
+          {
+            "name": "Depth stops",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "20 flat-bottom boring bit",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "22 flat-bottom boring bit",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "30 flat-bottom boring bit",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "9 drill bit",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Insert pilot drill bit",
+            "required": true,
+            "alternative": "Select its diameter from the chosen insert manufacturer's hardwood instructions."
+          },
+          {
+            "name": "Router",
+            "required": false,
+            "alternative": "Guided overlapping drill holes and sharp chisels can form the elongated mortises and recesses."
+          },
+          {
+            "name": "Router straight bit",
+            "required": false,
+            "alternative": "Sharp chisels when using the manual slot-making method."
+          },
+          {
+            "name": "Router guide jig",
+            "required": false,
+            "alternative": "A clamped drilling template and chisel layout guides."
+          },
+          {
+            "name": "Socket spacing template",
+            "required": true,
+            "alternative": "Shop-made template checked against the fixed spindle coordinates."
+          },
+          {
+            "name": "Long insert driver",
+            "required": true,
+            "alternative": "Manufacturer-compatible extended hex driver that reaches through the 40-deep mortise."
+          },
+          {
+            "name": "Hex key",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Sanding block",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Random-orbit sander",
+            "required": false,
+            "alternative": "Hand sanding with a sanding block."
+          },
+          {
+            "name": "Vacuum",
+            "required": true,
+            "alternative": "Suitable dust extraction; supplement with damp cleanup rather than dry sweeping."
+          },
+          {
+            "name": "Glue brush",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Paintbrush",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Masking tape",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Drop cloth",
+            "required": true,
+            "alternative": null
+          }
+        ],
+        "safety_overview": [
+          "Wear eye protection for cutting and drilling, hearing protection around powered machinery, and suitable respiratory protection with dust extraction for hardwood sanding.",
+          "Clamp every round component in a positive holding jig. Never hand-hold legs or short dowels against a rotating drill bit.",
+          "Use depth stops for every blind socket and test on scrap; breakthrough or a thin socket wall can make a chair joint unsafe.",
+          "Ventilate during finishing, follow product safety instructions, and allow complete glue and finish curing before use.",
+          "This is an uncertified household chair, not a step stool. Inspect joints regularly and stop using it immediately if a joint loosens, a component cracks, or the base rocks."
+        ],
+        "est_hours": 24,
+        "est_cost": {
+          "low": 180,
+          "high": 310,
+          "currency": "USD"
+        },
+        "hardware": [
+          {
+            "name": "Flat washer",
+            "size": "M8, 28 outside diameter x 2 thick",
+            "qty": 4
+          },
+          {
+            "name": "Hardwood dowel",
+            "size": "22 diameter x 60, drilled axially 9",
+            "qty": 4
+          },
+          {
+            "name": "Low-head socket machine bolt",
+            "size": "M8 x 80, head height 5",
+            "qty": 4
+          },
+          {
+            "name": "Threaded insert for hardwood",
+            "size": "M8 internal thread x 20 long, approximately 12 outside diameter",
+            "qty": 4
+          }
+        ]
+      },
+      "review": {
+        "verdict": "fix",
+        "summary": "The assembly order, tool access, stretcher joinery, and seat-movement provisions are generally workable. Revise the back-to-seat connection before building: its shallow sockets and narrow rear seat margin create a splitting risk under normal leaning loads.",
+        "issues": [
+          {
+            "severity": "major",
+            "category": "joint_strength",
+            "step": 6,
+            "joint_id": "J2",
+            "part_ids": [
+              "P1",
+              "P5",
+              "P6"
+            ],
+            "problem": "The five back spindles act as levers against 20 mm-deep blind sockets close to P1's rear edge. The narrow strip behind these sockets is vulnerable to splitting along the seat grain when someone leans against P6. The crest distributes the load among spindles but does not eliminate this splitting load. A cautious seated trial in step 14 will not establish long-term durability.",
+            "fix": "Revise J2 before boring in step 6. Move the spindle row inward to leave at least 20 mm of sound wood behind the socket walls, and use a thicker seat locally or throughout to provide at least 30 mm of spindle engagement while retaining a substantial socket bottom. Update P1, P5, the matching crest location, and steps 6, 7, and 12 accordingly. Keep all mating stock straight-grained and reject any checking around the rear sockets."
+          }
+        ],
+        "model": "gpt-6.1-sol",
+        "latencyMs": 48151,
+        "tokens": 8208
+      },
+      "unverified": [
+        "[REVIEW major · joint_strength] Step 6 / J2 / P1+P5+P6: The five back spindles act as levers against 20 mm-deep blind sockets close to P1's rear edge. The narrow strip behind these sockets is vulnerable to splitting along the seat grain when someone leans against P6. The crest distributes the load among spindles but does not eliminate this splitting load. A cautious seated trial in step 14 will not establish long-term durability. → Revise J2 before boring in step 6. Move the spindle row inward to leave at least 20 mm of sound wood behind the socket walls, and use a thicker seat locally or throughout to provide at least 30 mm of spindle engagement while retaining a substantial socket bottom. Update P1, P5, the matching crest location, and steps 6, 7, and 12 accordingly. Keep all mating stock straight-grained and reject any checking around the rear sockets."
+      ],
+      "blockers": [],
+      "warnings": [],
+      "tokens": 54496,
+      "costUsd": 0.2404691,
+      "calls": [
+        {
+          "stage": "stage1",
+          "model": "gpt-6.1-sol",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 3594,
+            "cachedTokens": 3328,
+            "outputTokens": 3249,
+            "reasoningTokens": 1024
+          },
+          "costUsd": 0.033354800000000004,
+          "latencyMs": 62323
+        },
+        {
+          "stage": "stage1_geomrepair",
+          "model": "gpt-6.1-sol",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 9011,
+            "cachedTokens": 0,
+            "outputTokens": 1812,
+            "reasoningTokens": 112
+          },
+          "costUsd": 0.036142,
+          "latencyMs": 27074
+        },
+        {
+          "stage": "stage2",
+          "model": "gpt-6.1-sol",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 3601,
+            "cachedTokens": 1823,
+            "outputTokens": 6568,
+            "reasoningTokens": 1386
+          },
+          "costUsd": 0.0694183,
+          "latencyMs": 141484
+        },
+        {
+          "stage": "review",
+          "model": "gpt-6.1-sol",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 6857,
+            "cachedTokens": 0,
+            "outputTokens": 1351,
+            "reasoningTokens": 1024
+          },
+          "costUsd": 0.027224,
+          "latencyMs": 48151
+        },
+        {
+          "stage": "repair_joints",
+          "model": "gpt-6.1-sol",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 13775,
+            "cachedTokens": 0,
+            "outputTokens": 4678,
+            "reasoningTokens": 358
+          },
+          "costUsd": 0.07433,
+          "latencyMs": 89158
+        }
+      ],
+      "latencyMs": 368314,
+      "firstPlanMs": 230980,
+      "firstMetaMs": 30299,
+      "repairCount": 1,
+      "improved": true,
+      "escalated": null,
+      "reviewPending": false
+    },
+    "bench": {
+      "plan": {
+        "title": "Slatted Timber Garden Bench with Armrests",
+        "summary": "A two-person outdoor bench matching the photograph's open slatted seat, upright slatted back, broad arms and substantial timber frame. Straight, flat seating and back components provide a buildable interpretation of the partly obscured original.",
+        "difficulty": "intermediate",
+        "overall_dimensions_mm": {
+          "width": 1500,
+          "depth": 545,
+          "height": 900
+        },
+        "assumptions": [
+          "Dimensions are estimated from the photograph: 1500 mm overall width, 450 mm seat height and 900 mm back height.",
+          "The photograph does not show the complete frame. The concealed structure is interpreted as four legs, front and rear aprons, two side seat rails and one central seat rail.",
+          "The seat and back are flat rather than sculpted or reclined. Arms have rounded plan-view corners rather than carved profiles.",
+          "Use exterior-rated, kiln-dried pressure-treated pine suitable for above-ground furniture, with a weathered-gray penetrating finish. All listed timber sizes are finished actual dimensions.",
+          "Rear legs continue uninterrupted to the top of the back. Armrests terminate against their front faces rather than passing through them.",
+          "Front arm supports stand on the first seat slat directly above the front legs. Their rear 5 mm bridges the adjacent seat gap; the remaining 65 mm of depth bears on solid timber.",
+          "Apron-to-leg and side-rail connections require structural exterior joinery or suitable concealed brackets in the next planning stage, not screws driven solely into end grain.",
+          "The bench is intended for two adults, but no tested load rating is implied."
+        ],
+        "clarifying_questions": [],
+        "parts": [
+          {
+            "id": "P1",
+            "name": "Front legs",
+            "material": "Exterior-rated pressure-treated pine",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 425,
+            "width_mm": 70,
+            "thickness_mm": 70,
+            "qty": 2,
+            "placements": [
+              {
+                "x": 50,
+                "y": 0,
+                "z": 25,
+                "sx": 70,
+                "sy": 425,
+                "sz": 70
+              },
+              {
+                "x": 1380,
+                "y": 0,
+                "z": 25,
+                "sx": 70,
+                "sy": 425,
+                "sz": 70
+              }
+            ],
+            "profile": null,
+            "cross_section": null,
+            "ends": null,
+            "notes": "Leg tops bear directly against the underside of the front seat slat."
+          },
+          {
+            "id": "P2",
+            "name": "Continuous rear legs and back posts",
+            "material": "Exterior-rated pressure-treated pine",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 900,
+            "width_mm": 70,
+            "thickness_mm": 70,
+            "qty": 2,
+            "placements": [
+              {
+                "x": 50,
+                "y": 0,
+                "z": 475,
+                "sx": 70,
+                "sy": 900,
+                "sz": 70
+              },
+              {
+                "x": 1380,
+                "y": 0,
+                "z": 475,
+                "sx": 70,
+                "sy": 900,
+                "sz": 70
+              }
+            ],
+            "profile": null,
+            "cross_section": null,
+            "ends": null,
+            "notes": "Continuous posts support the seat frame, back rails and rear ends of the armrests."
+          },
+          {
+            "id": "P3",
+            "name": "Front and rear seat aprons",
+            "material": "Exterior-rated pressure-treated pine",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 1260,
+            "width_mm": 90,
+            "thickness_mm": 45,
+            "qty": 2,
+            "placements": [
+              {
+                "x": 120,
+                "y": 335,
+                "z": 50,
+                "sx": 1260,
+                "sy": 90,
+                "sz": 45
+              },
+              {
+                "x": 120,
+                "y": 335,
+                "z": 475,
+                "sx": 1260,
+                "sy": 90,
+                "sz": 45
+              }
+            ],
+            "profile": null,
+            "cross_section": null,
+            "ends": null,
+            "notes": "Fit between the legs. The front apron supports the front seat slat; the rear apron supports the central rail and braces the rear legs."
+          },
+          {
+            "id": "P4",
+            "name": "Side and central seat support rails",
+            "material": "Exterior-rated pressure-treated pine",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 380,
+            "width_mm": 90,
+            "thickness_mm": 45,
+            "qty": 3,
+            "placements": [
+              {
+                "x": 50,
+                "y": 335,
+                "z": 95,
+                "sx": 45,
+                "sy": 90,
+                "sz": 380
+              },
+              {
+                "x": 1405,
+                "y": 335,
+                "z": 95,
+                "sx": 45,
+                "sy": 90,
+                "sz": 380
+              },
+              {
+                "x": 727,
+                "y": 335,
+                "z": 95,
+                "sx": 45,
+                "sy": 90,
+                "sz": 380
+              }
+            ],
+            "profile": null,
+            "cross_section": null,
+            "ends": null,
+            "notes": "Side rails meet the front and rear legs. The central rail meets the inside faces of both aprons. All rail tops are flush at y=425."
+          },
+          {
+            "id": "P5",
+            "name": "Lengthwise seat slats",
+            "material": "Exterior-rated pressure-treated pine",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 1500,
+            "width_mm": 65,
+            "thickness_mm": 25,
+            "qty": 6,
+            "placements": [
+              {
+                "x": 0,
+                "y": 425,
+                "z": 25,
+                "sx": 1500,
+                "sy": 25,
+                "sz": 65
+              },
+              {
+                "x": 0,
+                "y": 425,
+                "z": 102,
+                "sx": 1500,
+                "sy": 25,
+                "sz": 65
+              },
+              {
+                "x": 0,
+                "y": 425,
+                "z": 179,
+                "sx": 1500,
+                "sy": 25,
+                "sz": 65
+              },
+              {
+                "x": 0,
+                "y": 425,
+                "z": 256,
+                "sx": 1500,
+                "sy": 25,
+                "sz": 65
+              },
+              {
+                "x": 0,
+                "y": 425,
+                "z": 333,
+                "sx": 1500,
+                "sy": 25,
+                "sz": 65
+              },
+              {
+                "x": 0,
+                "y": 425,
+                "z": 410,
+                "sx": 1500,
+                "sy": 25,
+                "sz": 65
+              }
+            ],
+            "profile": null,
+            "cross_section": null,
+            "ends": null,
+            "notes": "Six slats with five 12 mm drainage gaps form a 450 mm-deep seat. Rip from wider decking stock if necessary. The front slat bears on the front legs and apron; the other slats bear on all three seat rails."
+          },
+          {
+            "id": "P6",
+            "name": "Front arm supports",
+            "material": "Exterior-rated pressure-treated pine",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 200,
+            "width_mm": 70,
+            "thickness_mm": 70,
+            "qty": 2,
+            "placements": [
+              {
+                "x": 50,
+                "y": 450,
+                "z": 25,
+                "sx": 70,
+                "sy": 200,
+                "sz": 70
+              },
+              {
+                "x": 1380,
+                "y": 450,
+                "z": 25,
+                "sx": 70,
+                "sy": 200,
+                "sz": 70
+              }
+            ],
+            "profile": null,
+            "cross_section": null,
+            "ends": null,
+            "notes": "Align with the front legs below. Provide a positive mechanical connection through the seat into the leg assembly so the arms resist lateral forces."
+          },
+          {
+            "id": "P7",
+            "name": "Broad rounded armrests",
+            "material": "Exterior-rated pressure-treated pine",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 475,
+            "width_mm": 100,
+            "thickness_mm": 25,
+            "qty": 2,
+            "placements": [
+              {
+                "x": 35,
+                "y": 650,
+                "z": 0,
+                "sx": 100,
+                "sy": 25,
+                "sz": 475
+              },
+              {
+                "x": 1365,
+                "y": 650,
+                "z": 0,
+                "sx": 100,
+                "sy": 25,
+                "sz": 475
+              }
+            ],
+            "profile": {
+              "type": "rounded_rect",
+              "radius": 20
+            },
+            "cross_section": null,
+            "ends": null,
+            "notes": "Plan-view corner radii soften the arms. Front portions bear on P6; the straight central portion of each rear edge contacts P2 at z=475. Rear connections require exterior brackets or equivalent structural joinery."
+          },
+          {
+            "id": "P8",
+            "name": "Lower back rail",
+            "material": "Exterior-rated pressure-treated pine",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 1260,
+            "width_mm": 45,
+            "thickness_mm": 25,
+            "qty": 1,
+            "placements": [
+              {
+                "x": 120,
+                "y": 475,
+                "z": 475,
+                "sx": 1260,
+                "sy": 25,
+                "sz": 45
+              }
+            ],
+            "profile": null,
+            "cross_section": null,
+            "ends": null,
+            "notes": "Fits between rear posts. Back slats rest on its upper face."
+          },
+          {
+            "id": "P9",
+            "name": "Upper back rail",
+            "material": "Exterior-rated pressure-treated pine",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 1260,
+            "width_mm": 50,
+            "thickness_mm": 45,
+            "qty": 1,
+            "placements": [
+              {
+                "x": 120,
+                "y": 850,
+                "z": 475,
+                "sx": 1260,
+                "sy": 50,
+                "sz": 45
+              }
+            ],
+            "profile": null,
+            "cross_section": null,
+            "ends": null,
+            "notes": "Fits between rear posts with its top flush at 900 mm. Contacts the upper ends of all back slats."
+          },
+          {
+            "id": "P10",
+            "name": "Upright back slats",
+            "material": "Exterior-rated pressure-treated pine",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 350,
+            "width_mm": 70,
+            "thickness_mm": 20,
+            "qty": 13,
+            "placements": [
+              {
+                "x": 145,
+                "y": 500,
+                "z": 490,
+                "sx": 70,
+                "sy": 350,
+                "sz": 20
+              },
+              {
+                "x": 240,
+                "y": 500,
+                "z": 490,
+                "sx": 70,
+                "sy": 350,
+                "sz": 20
+              },
+              {
+                "x": 335,
+                "y": 500,
+                "z": 490,
+                "sx": 70,
+                "sy": 350,
+                "sz": 20
+              },
+              {
+                "x": 430,
+                "y": 500,
+                "z": 490,
+                "sx": 70,
+                "sy": 350,
+                "sz": 20
+              },
+              {
+                "x": 525,
+                "y": 500,
+                "z": 490,
+                "sx": 70,
+                "sy": 350,
+                "sz": 20
+              },
+              {
+                "x": 620,
+                "y": 500,
+                "z": 490,
+                "sx": 70,
+                "sy": 350,
+                "sz": 20
+              },
+              {
+                "x": 715,
+                "y": 500,
+                "z": 490,
+                "sx": 70,
+                "sy": 350,
+                "sz": 20
+              },
+              {
+                "x": 810,
+                "y": 500,
+                "z": 490,
+                "sx": 70,
+                "sy": 350,
+                "sz": 20
+              },
+              {
+                "x": 905,
+                "y": 500,
+                "z": 490,
+                "sx": 70,
+                "sy": 350,
+                "sz": 20
+              },
+              {
+                "x": 1000,
+                "y": 500,
+                "z": 490,
+                "sx": 70,
+                "sy": 350,
+                "sz": 20
+              },
+              {
+                "x": 1095,
+                "y": 500,
+                "z": 490,
+                "sx": 70,
+                "sy": 350,
+                "sz": 20
+              },
+              {
+                "x": 1190,
+                "y": 500,
+                "z": 490,
+                "sx": 70,
+                "sy": 350,
+                "sz": 20
+              },
+              {
+                "x": 1285,
+                "y": 500,
+                "z": 490,
+                "sx": 70,
+                "sy": 350,
+                "sz": 20
+              }
+            ],
+            "profile": null,
+            "cross_section": null,
+            "ends": null,
+            "notes": "Maintain 25 mm gaps between slats and at both ends of the opening. Rail connections must resist pressure from occupants leaning against the back; use dowels, loose tenons or equivalent positive joinery rather than relying on end-grain screws."
+          }
+        ],
+        "consumables": [
+          {
+            "name": "Exterior waterproof wood adhesive",
+            "qty": "250 ml",
+            "note": "Use on appropriate close-fitting joints; follow treatment and moisture compatibility requirements."
+          },
+          {
+            "name": "Pressure-treated timber cut-end preservative",
+            "qty": "250 ml",
+            "note": "Treat newly cut surfaces according to the timber supplier's instructions."
+          },
+          {
+            "name": "80-, 120- and 150-grit abrasives",
+            "qty": "4 sheets or discs of each grit",
+            "note": "Smooth contact surfaces and ease exposed edges without materially changing the specified geometry."
+          },
+          {
+            "name": "Weathered-gray exterior penetrating furniture stain",
+            "qty": "1 litre",
+            "note": "Confirm coverage and timber dryness requirements; coat concealed surfaces and end grain as well as visible faces."
+          }
+        ],
+        "load_bearing": true,
+        "joints": [
+          {
+            "id": "J1",
+            "part_a": "P1",
+            "part_b": "P3",
+            "count": 2,
+            "type": "dowel",
+            "fasteners": [
+              {
+                "name": "Exterior hardwood dowel",
+                "size": "12 x 60",
+                "qty_per_joint": 2
+              },
+              {
+                "name": "316 stainless reinforcing plate",
+                "size": "80 x 60 x 3",
+                "qty_per_joint": 1
+              },
+              {
+                "name": "316 stainless wood screw",
+                "size": "5 x 35",
+                "qty_per_joint": 4
+              }
+            ],
+            "drive_from": "Drill exposed mating ends and faces; drive plate screws from behind the front apron before installing P4.",
+            "step": 5,
+            "note": "Glue dowels and mating timber. Embed dowels 30 into each member, with centers 45 apart vertically. Mount each plate across the flush rear faces, overlapping the leg by 25 and apron by 55; use two screws in each member. Keep clear of the side-rail footprint."
+          },
+          {
+            "id": "J2",
+            "part_a": "P1",
+            "part_b": "P4",
+            "count": 2,
+            "type": "dowel",
+            "fasteners": [
+              {
+                "name": "Exterior hardwood dowel",
+                "size": "12 x 60",
+                "qty_per_joint": 2
+              },
+              {
+                "name": "316 stainless reinforcing plate",
+                "size": "120 x 60 x 3",
+                "qty_per_joint": 1
+              },
+              {
+                "name": "316 stainless wood screw",
+                "size": "5 x 35",
+                "qty_per_joint": 4
+              }
+            ],
+            "drive_from": "Drill sockets before assembly; drive plate screws from the outside left and right faces.",
+            "step": 7,
+            "note": "Glue dowels and mating timber; embed dowels 30 each side, with centers 45 apart vertically. Center each plate across the joint on the flush outer faces, using two screws into each member."
+          },
+          {
+            "id": "J3",
+            "part_a": "P1",
+            "part_b": "P5",
+            "count": 2,
+            "type": "dowel",
+            "fasteners": [
+              {
+                "name": "Exterior hardwood dowel",
+                "size": "10 x 40",
+                "qty_per_joint": 2
+              }
+            ],
+            "drive_from": "Drill downward into each exposed P1 top and upward into the underside of the loose front P5 before assembly; lower the slat onto the glued dowels in step 10.",
+            "step": 10,
+            "note": "Replaces the unspecified structural angle with positive glued dowel joinery. Use two dowels per leg, embedded 25 into P1 and 15 into P5, leaving 10 of unbored slat thickness. Centers are 15 and 55 from the leg's left edge and 32.5 behind its front face. This places them beside, not through, the P6 bolt-head pockets. Glue the actual bearing area, excluding pockets. The dowels transfer lateral force by bearing; no end-grain screw withdrawal or unverified bracket rating is used."
+          },
+          {
+            "id": "J4",
+            "part_a": "P2",
+            "part_b": "P3",
+            "count": 2,
+            "type": "dowel",
+            "fasteners": [
+              {
+                "name": "Exterior hardwood dowel",
+                "size": "12 x 60",
+                "qty_per_joint": 2
+              },
+              {
+                "name": "316 stainless reinforcing plate",
+                "size": "80 x 60 x 3",
+                "qty_per_joint": 1
+              },
+              {
+                "name": "316 stainless wood screw",
+                "size": "5 x 35",
+                "qty_per_joint": 4
+              }
+            ],
+            "drive_from": "Drill sockets before assembly; drive plate screws from the front faces of the rear apron and posts before adding P4.",
+            "step": 6,
+            "note": "Glue dowels and mating timber. Embed dowels 30 each side, centers 45 apart vertically. Each plate overlaps the post by 25 and apron by 55, with two screws into each member; keep clear of side-rail ends."
+          },
+          {
+            "id": "J5",
+            "part_a": "P2",
+            "part_b": "P4",
+            "count": 2,
+            "type": "dowel",
+            "fasteners": [
+              {
+                "name": "Exterior hardwood dowel",
+                "size": "12 x 60",
+                "qty_per_joint": 2
+              },
+              {
+                "name": "316 stainless reinforcing plate",
+                "size": "120 x 60 x 3",
+                "qty_per_joint": 1
+              },
+              {
+                "name": "316 stainless wood screw",
+                "size": "5 x 35",
+                "qty_per_joint": 4
+              }
+            ],
+            "drive_from": "Drill sockets before assembly; drive plate screws from the outside left and right faces.",
+            "step": 7,
+            "note": "Glue dowels and mating timber. Embed dowels 30 each side, centers 45 apart vertically. Center each plate across the joint on the flush outer faces, using two screws into each member."
+          },
+          {
+            "id": "J6",
+            "part_a": "P2",
+            "part_b": "P5",
+            "count": 2,
+            "type": "metal_bracket",
+            "fasteners": [
+              {
+                "name": "316 stainless angle bracket",
+                "size": "25 x 25 x 20 x 2",
+                "qty_per_joint": 1
+              },
+              {
+                "name": "316 stainless wood screw",
+                "size": "4 x 20",
+                "qty_per_joint": 4
+              }
+            ],
+            "drive_from": "Preinstall vertical leaves from in front of P2 in step 6, before P4 or P5 obstruct access; complete only the upward slat screws from below in step 10 using slim 150-long pilot and driver bits.",
+            "step": 10,
+            "note": "Hardware preparation in step 6 uses two screws per bracket into post face grain; the joint to P5 is completed in step 10 with two screws per bracket into the slat underside. All four screws per contact are counted here once. Position each 20-wide bracket in the 25-wide strip on the inboard side of its side rail, clear of reinforcing plates, with its horizontal leaf directly beneath P5. Do not glue this edge-only contact. The long slim bits keep the chuck below the adjacent rail while completing the slat screws."
+          },
+          {
+            "id": "J7",
+            "part_a": "P2",
+            "part_b": "P7",
+            "count": 2,
+            "type": "dowel",
+            "fasteners": [
+              {
+                "name": "Exterior hardwood dowel",
+                "size": "8 x 60",
+                "qty_per_joint": 2
+              }
+            ],
+            "drive_from": "Drill into each loose P7 rear end and the exposed front face of P2 before assembly; slide the arm rearward onto the glued dowels before tightening its front bolts in step 11.",
+            "step": 11,
+            "note": "Replaces the unspecified structural angle with two glued hardwood dowels, embedded 30 into the arm and 30 into the post. Center both through the arm's 25 thickness, leaving 8.5 of timber above and below each socket. Across the arm width, place centers 35 and 65 from its left edge, within the straight rear contact. Glue dowels and the contacting rear edge. The dowels provide positive shear and bending restraint together with the bolted front support; no bracket capacity is claimed. Arms are not lifting handles or standing platforms."
+          },
+          {
+            "id": "J8",
+            "part_a": "P2",
+            "part_b": "P8",
+            "count": 2,
+            "type": "dowel",
+            "fasteners": [
+              {
+                "name": "Exterior hardwood dowel",
+                "size": "8 x 40",
+                "qty_per_joint": 2
+              }
+            ],
+            "drive_from": "Into exposed rail ends and matching post faces before bringing the rear frame together.",
+            "step": 6,
+            "note": "Glue two dowels at each end, embedded 20 into each member. Center holes through the rail's 25 thickness and space them 20 along its 45 depth."
+          },
+          {
+            "id": "J9",
+            "part_a": "P2",
+            "part_b": "P9",
+            "count": 2,
+            "type": "dowel",
+            "fasteners": [
+              {
+                "name": "Exterior hardwood dowel",
+                "size": "10 x 60",
+                "qty_per_joint": 2
+              }
+            ],
+            "drive_from": "Into exposed rail ends and matching post faces before bringing the rear frame together.",
+            "step": 6,
+            "note": "Glue dowels and mating ends. Embed 30 into each member, with holes centered through the 45 depth and spaced 25 vertically."
+          },
+          {
+            "id": "J10",
+            "part_a": "P3",
+            "part_b": "P4",
+            "count": 2,
+            "type": "dowel",
+            "fasteners": [
+              {
+                "name": "Exterior hardwood dowel",
+                "size": "12 x 60",
+                "qty_per_joint": 2
+              }
+            ],
+            "drive_from": "Into the central rail's exposed ends and the aprons' inside faces before closing the seat frame.",
+            "step": 7,
+            "note": "These are the central rail's two ends. Glue both dowels and mating surfaces; embed 30 each side, leaving 15 of timber behind each apron socket. Space dowels 45 vertically."
+          },
+          {
+            "id": "J11",
+            "part_a": "P3",
+            "part_b": "P5",
+            "count": 2,
+            "type": "metal_bracket",
+            "fasteners": [
+              {
+                "name": "316 stainless angle bracket",
+                "size": "25 x 25 x 20 x 2",
+                "qty_per_joint": 1
+              },
+              {
+                "name": "316 stainless wood screw",
+                "size": "4 x 20",
+                "qty_per_joint": 4
+              }
+            ],
+            "drive_from": "Preinstall vertical leaves onto the apron faces in step 7 before installing any slats; complete only the upward slat screws from below in step 10 using slim 150-long pilot and driver bits.",
+            "step": 10,
+            "note": "One bracket connects the front apron's front face to the front slat underside; one connects the rear apron's front face to the rearmost slat underside. Center both approximately 400 from the bench's left end, clear of rails, with horizontal leaves projecting forward and their tops at the slat underside. Step 7 uses two screws into each apron; step 10 completes each joint with two screws into P5. All four screws per contact are counted here once. Glue only the front apron's actual bearing surface; do not glue the rear edge-only contact."
+          },
+          {
+            "id": "J12",
+            "part_a": "P4",
+            "part_b": "P5",
+            "count": 15,
+            "type": "glue_screw",
+            "fasteners": [
+              {
+                "name": "316 stainless wood screw",
+                "size": "5 x 60",
+                "qty_per_joint": 2
+              }
+            ],
+            "drive_from": "Vertically downward through the five rearward seat slats into the three support rails.",
+            "step": 9,
+            "note": "Use two screws at every crossing, spaced 35 along each slat's 65 width and centered over the 45-wide rail. Use clearance holes through slats and pilot holes into rails. Approximately 35 penetrates the receiving rail. Glue each narrow bearing patch; individual 65-wide slats do not require movement slots."
+          },
+          {
+            "id": "J13",
+            "part_a": "P5",
+            "part_b": "P6",
+            "count": 2,
+            "type": "threaded_insert_bolt",
+            "fasteners": [
+              {
+                "name": "316 stainless threaded wood insert",
+                "size": "M8 internal x 30 long, 13 external diameter",
+                "qty_per_joint": 2
+              },
+              {
+                "name": "316 stainless hex-head bolt",
+                "size": "M8 x 50",
+                "qty_per_joint": 2
+              },
+              {
+                "name": "316 stainless flat washer",
+                "size": "M8, 16 outside diameter, 2 thick",
+                "qty_per_joint": 2
+              }
+            ],
+            "drive_from": "From the underside of the loose front slat, before setting it on P1.",
+            "step": 8,
+            "note": "Install inserts in the bottom of each support using the manufacturer's end-grain installation method and compatible exterior adhesive. Locate two bolts on the support centerline, 20 and 50 from its front edge. Glue the support-to-slat bearing area. Provide matching 22-diameter, 8-deep head-clearance pockets in P1 tops; these contain no additional hardware. Keep these pockets separate from the J3 dowel sockets."
+          },
+          {
+            "id": "J14",
+            "part_a": "P6",
+            "part_b": "P7",
+            "count": 2,
+            "type": "threaded_insert_bolt",
+            "fasteners": [
+              {
+                "name": "316 stainless threaded wood insert",
+                "size": "M8 internal x 30 long, 13 external diameter",
+                "qty_per_joint": 2
+              },
+              {
+                "name": "316 stainless hex-head bolt",
+                "size": "M8 x 50",
+                "qty_per_joint": 2
+              },
+              {
+                "name": "316 stainless flat washer",
+                "size": "M8, 16 outside diameter, 2 thick",
+                "qty_per_joint": 2
+              }
+            ],
+            "drive_from": "From above each armrest after sliding its rear end onto the J7 dowels.",
+            "step": 11,
+            "note": "Use two bolts on each support centerline, 20 and 50 from the support's front edge. Install inserts using the manufacturer's end-grain method and compatible exterior adhesive. Glue the support bearing area; the 100-wide arm does not need movement slots. Engage the rear dowels before inserting or tightening these bolts. Tighten without crushing the pine."
+          },
+          {
+            "id": "J15",
+            "part_a": "P8",
+            "part_b": "P10",
+            "count": 13,
+            "type": "dowel",
+            "fasteners": [
+              {
+                "name": "Exterior hardwood dowel",
+                "size": "8 x 40",
+                "qty_per_joint": 2
+              }
+            ],
+            "drive_from": "Into exposed lower slat ends and the lower rail's top face while the back panel lies on the workbench.",
+            "step": 4,
+            "note": "Glue two dowels per slat. Place centers 15 from each slat side and centered through its 20 thickness. Embed 25 into the slat and only 15 into the 25-thick lower rail, leaving 10 unbored."
+          },
+          {
+            "id": "J16",
+            "part_a": "P9",
+            "part_b": "P10",
+            "count": 13,
+            "type": "dowel",
+            "fasteners": [
+              {
+                "name": "Exterior hardwood dowel",
+                "size": "8 x 40",
+                "qty_per_joint": 2
+              }
+            ],
+            "drive_from": "Into exposed upper slat ends and the upper rail's underside before closing the back panel.",
+            "step": 4,
+            "note": "Glue two dowels per slat, with centers 15 from each side and centered through the slat thickness. Embed 20 in each member. Keep individual slat gaps open rather than gluing neighboring slats together."
+          }
+        ],
+        "steps": [
+          {
+            "n": 1,
+            "title": "Check stock and cut the fixed parts",
+            "text": "Check that the treated pine is dry enough for the selected adhesive and finish, then mark and cut P1–P10 to the supplied finished dimensions and quantities. Cut the 20-radius plan-view corners on P7 (broad rounded armrests), preserving their straight rear contact areas. Label every copy and its front, top and outside faces.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7",
+              "P8",
+              "P9",
+              "P10"
+            ],
+            "tools_used": [
+              "Tape measure, square and marking pencil",
+              "Saw",
+              "Jigsaw or coping saw",
+              "Clamps and work supports",
+              "Moisture meter"
+            ],
+            "safety": "Wear eye protection, hearing protection and a P2/N95 respirator when cutting treated timber; support long stock and collect dust.",
+            "tip": "Reject deeply split or badly twisted pieces, especially for legs, rails and arm supports."
+          },
+          {
+            "n": 2,
+            "title": "Lay out and drill the joinery",
+            "text": "Use a dowelling jig and depth stops to drill the sockets specified in J1–J5, J7–J10, J15 and J16, transferring locations from matching reference faces. For J3, drill two 10-diameter sockets per P1 (front leg), 25 deep, and matching sockets 15 deep into the underside of the front P5 (seat slat), at the centers specified in J3. For J7, drill two 8-diameter sockets 30 deep into each P7 rear end and matching P2 (rear post) front face, centered through the arm thickness and spaced 30 across its width. Prepare the P6 (front arm support) insert pilot holes, matching bolt clearance holes in P5 and P7, two 22-diameter by 8-deep head pockets per P1 top, and reinforcing-plate pilot holes with screw centers at least 10 from timber edges.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7",
+              "P8",
+              "P9",
+              "P10"
+            ],
+            "tools_used": [
+              "Tape measure, square and marking pencil",
+              "Drill/driver",
+              "Dowelling jig and depth stops",
+              "Drill bits and countersink",
+              "Clamps and work supports"
+            ],
+            "safety": "Clamp every drilling workpiece and use depth stops; never hold a small support or rail end in your hand while drilling.",
+            "tip": "Stagger apron and side-rail dowel heights by 10 to prevent intersecting sockets; check that J3 sockets remain separate from the bolt-head pockets."
+          },
+          {
+            "n": 3,
+            "title": "Dry-fit and prepare the surfaces",
+            "text": "Dry-fit P1–P10 without glue or installed threaded inserts, checking frame diagonals, flush rail tops, arm alignment and all hardware clearances. Confirm that P7 (armrests) can slide forward and rearward to engage their rear dowels before the front bolts are inserted. Sand exposed surfaces through 80, 120 and 150 grit, easing sharp touch edges without changing the specified profiles. Apply cut-end preservative as directed, keeping glue surfaces compatible with the adhesive, and let it dry for the product's full stated interval.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7",
+              "P8",
+              "P9",
+              "P10"
+            ],
+            "tools_used": [
+              "Tape measure, square and marking pencil",
+              "Clamps and work supports",
+              "Sander or hand sanding block",
+              "Brush and wiping cloths"
+            ],
+            "safety": "Use respiratory and eye protection for sanding, and gloves and ventilation for preservative. Follow its label for handling and drying.",
+            "tip": "Test the slim 150-long pilot and driver bits beside the temporarily positioned side rails before committing to the rear seat-bracket locations."
+          },
+          {
+            "n": 4,
+            "title": "Glue the slatted back panel",
+            "text": "Join all thirteen P10 (upright back slats) between P8 (lower back rail) and P9 (upper back rail), using two glued 8 x 40 dowels at each slat end: 26 below and 26 above. Assemble from the exposed mating faces, using 15 embedment into P8 and 25 into the slats below, and 20 each side above. Hold 25 gaps between slats and at the opening ends, clamp square for at least 60 minutes, and leave flat for 24 hours or the adhesive's longer specified cure.",
+            "parts_used": [
+              "P8",
+              "P9",
+              "P10"
+            ],
+            "tools_used": [
+              "Clamps and work supports",
+              "Tape measure, square and marking pencil",
+              "Spacing blocks"
+            ],
+            "safety": null,
+            "tip": "Use scrap clamping pads and check that neither long rail bows under excessive clamp pressure."
+          },
+          {
+            "n": 5,
+            "title": "Assemble the front leg frame",
+            "text": "Glue the front P3 (seat apron) between both P1 (front legs), using two 12 x 60 dowels per end, embedded 30 each side. From behind the apron, fit one 80 x 60 x 3 stainless reinforcing plate across each joint with four 5 x 35 screws per plate, two into each member, for eight screws total. Pilot-drill, check square, and clamp for at least 60 minutes before leaving the frame to cure for 24 hours.",
+            "parts_used": [
+              "P1",
+              "P3"
+            ],
+            "tools_used": [
+              "Clamps and work supports",
+              "Drill/driver",
+              "Drill bits and countersink",
+              "Tape measure, square and marking pencil"
+            ],
+            "safety": "Clamp the frame securely before drilling or driving screws; keep fingers away from drill exits.",
+            "tip": "The plates overlap each leg by only 25; mark their screw holes carefully and pilot-drill all holes near timber edges."
+          },
+          {
+            "n": 6,
+            "title": "Assemble the rear frame and prepare its seat brackets",
+            "text": "Bring both P2 (rear legs and back posts) onto the rear P3 (seat apron) and cured P8–P10 back panel, gluing all mating joints with two 12 x 60 dowels at each apron end, two 8 x 40 at each P8 end, and two 10 x 60 at each P9 end. From the front of the rear apron, fit one 80 x 60 x 3 plate at each apron-to-post joint with four 5 x 35 screws per plate, two per member. Before P4 (support rails) are installed, prepare J6 by attaching one 25 x 25 x 20 x 2 angle to each post's front face with two 4 x 20 screws through its vertical leaf, driven straight rearward with no glue. Place each bracket in the 25-wide inboard strip beside the future side rail, with its horizontal leaf projecting forward directly beneath the future rear P5 slat; leave the slat holes empty until step 10. Clamp the rear frame square for at least 60 minutes and allow 24 hours to cure.",
+            "parts_used": [
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P8",
+              "P9",
+              "P10"
+            ],
+            "tools_used": [
+              "Clamps and work supports",
+              "Drill/driver",
+              "Drill bits and countersink",
+              "Tape measure, square and marking pencil"
+            ],
+            "safety": "Use a helper to position the large rear frame, and clamp it before drilling or driving screws.",
+            "tip": "Keep the J6 vertical-leaf screw holes clear of the leg-frame dowel sockets and reinforcing plates."
+          },
+          {
+            "n": 7,
+            "title": "Connect the frames and prepare the apron brackets",
+            "text": "Glue all three P4 (seat support rails) between the cured frames, using two 12 x 60 dowels at each of their six ends, embedded 30 each side. At each of the four side-rail-to-leg joints, drive four 5 x 35 screws through a 120 x 60 x 3 plate from the outer side of the bench, placing two screws in each member. Before installing any P5 (seat slats), prepare J11 by attaching one 25 x 25 x 20 x 2 angle to the front face of each P3 apron, approximately 400 from the bench's left end, using two 4 x 20 screws through each vertical leaf, with no glue. Set both horizontal leaves projecting forward with their tops at the future slat underside, and leave their upward screw holes empty until step 10. Keep rail tops flush, compare diagonals, clamp for at least 60 minutes, and allow 24 hours to cure.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5"
+            ],
+            "tools_used": [
+              "Clamps and work supports",
+              "Drill/driver",
+              "Drill bits and countersink",
+              "Tape measure, square and marking pencil"
+            ],
+            "safety": "Have a helper stabilize the frames during assembly; clamp before using the drill.",
+            "tip": "Use a temporary straightedge across the rail tops to set bracket height; the central rail sockets must stop 30 into the 45-thick aprons."
+          },
+          {
+            "n": 8,
+            "title": "Bolt the arm supports to the loose front slat",
+            "text": "Install two M8 x 30 threaded inserts in the bottom of each P6 (front arm support), using the manufacturer's end-grain installation method and compatible exterior adhesive. Glue each support's bearing area to the front P5 (seat slat), then drive two M8 x 50 hex-head bolts with M8 washers upward from the slat underside into each support. Keep the supports square and aligned directly over P1 (front legs), and let the adhesive cure for 24 hours before fitting this subassembly.",
+            "parts_used": [
+              "P1",
+              "P5",
+              "P6"
+            ],
+            "tools_used": [
+              "Insert installation tool",
+              "Socket wrench",
+              "Clamps and work supports",
+              "Tape measure, square and marking pencil"
+            ],
+            "safety": null,
+            "tip": "Confirm the bolt heads fit the leg-top pockets and that the four J3 dowel sockets remain unobstructed."
+          },
+          {
+            "n": 9,
+            "title": "Screw down the five rearward seat slats",
+            "text": "Position the five rearward P5 (seat slats) across P4 (support rails), preserving the five 12 seat gaps with the front slat subassembly temporarily in place as a spacing reference. Remove the front slat again, glue each of the fifteen rail bearing patches, and drive two 5 x 60 stainless screws downward at every crossing, for 30 screws total. Space each screw pair 35 along the slat width, drill clearance holes through the slats and pilot holes into the rails, and set heads flush rather than deeply countersunk. The rearmost slat must rest on the preinstalled J6 and rear J11 horizontal leaves without displacement; their upward screws are installed in step 10.",
+            "parts_used": [
+              "P4",
+              "P5",
+              "P6"
+            ],
+            "tools_used": [
+              "Drill/driver",
+              "Drill bits and countersink",
+              "Spacing blocks",
+              "Clamps and work supports",
+              "Tape measure, square and marking pencil"
+            ],
+            "safety": "Clamp each slat before drilling, and keep hands clear beneath the work.",
+            "tip": "Check gaps at both ends of every slat and verify that no preinstalled angle lifts a slat above its supporting rails."
+          },
+          {
+            "n": 10,
+            "title": "Dowel the front slat and complete the seat brackets",
+            "text": "Glue two 10 x 40 dowels into each P1 (front leg) top, embedded 25 into the leg and 15 into the front P5 (seat slat), then lower the P5–P6 subassembly vertically into place while gluing the actual P1 and front P3 bearing areas, excluding bolt-head pockets. Clamp the front slat onto the frame and have a helper turn and block the bench securely on padded supports, keeping weight off P6 (arm supports). Complete J6 and J11 by driving only two 4 x 20 screws upward into P5 through each of the four preinstalled horizontal bracket leaves, eight screws total, with no glue at rear edge-only contacts. Use a slim 150-long pilot bit with a depth stop and matching extended driver bit so the chuck stays below adjacent rails; do not attempt to install or redrive the vertical-leaf screws here. Return the bench upright with help, retain clamps for at least 60 minutes, and allow 24 hours for the new glue joints to cure.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P5",
+              "P6"
+            ],
+            "tools_used": [
+              "Clamps and work supports",
+              "Drill/driver",
+              "Slim 150-long pilot bit and depth stop",
+              "Slim 150-long driver bit",
+              "Tape measure, square and marking pencil"
+            ],
+            "safety": "Use two people to turn the bench and block it against rolling; do not rest its weight on the arm supports. Stop pilot holes before breaking through the seat.",
+            "tip": "Keep the long bits square to each leaf; the 4 x 20 screws penetrate approximately 18 into the slats through the 2-thick brackets."
+          },
+          {
+            "n": 11,
+            "title": "Dowel and bolt the armrests into place",
+            "text": "Install two M8 x 30 inserts into the prepared top of each P6 (front arm support), following the manufacturer's end-grain method and adhesive requirements. Glue two 8 x 60 dowels into each P2 (rear post), embedded 30, apply glue to the matching P7 (armrest) sockets and straight rear contact, and slide each arm rearward to engage the remaining 30 of each dowel. Apply glue to the P6 bearing areas before lowering the arms fully onto them, then drive two M8 x 50 hex-head bolts with M8 washers downward through each arm into its support. Tighten gently with a socket wrench, check both rear joints are fully closed, and clamp the arms level for at least 60 minutes.",
+            "parts_used": [
+              "P2",
+              "P6",
+              "P7"
+            ],
+            "tools_used": [
+              "Insert installation tool",
+              "Socket wrench",
+              "Clamps and work supports",
+              "Tape measure, square and marking pencil"
+            ],
+            "safety": null,
+            "tip": "Engage the rear dowels before inserting the front bolts; tightening the bolts first would prevent the required rearward assembly movement."
+          },
+          {
+            "n": 12,
+            "title": "Check alignment and allow the arms to cure",
+            "text": "Check P7 (armrests) against P2 (rear posts) and P6 (front arm supports) while the adhesive remains workable, confirming closed rear joints and level front bearings. Wipe away squeeze-out without flooding the joints, and adjust clamp pressure rather than overtightening bolts. Leave the arms completely unloaded for at least 24 hours, or the adhesive's longer specified full-cure interval; no brackets or additional fasteners are installed in this step.",
+            "parts_used": [
+              "P2",
+              "P6",
+              "P7"
+            ],
+            "tools_used": [
+              "Clamps and work supports",
+              "Tape measure, square and marking pencil",
+              "Wiping cloths"
+            ],
+            "safety": null,
+            "tip": "Do not test the arm joints by leaning on them before the glue has fully cured."
+          },
+          {
+            "n": 13,
+            "title": "Finish the assembled bench",
+            "text": "Remove dried glue and lightly hand-sand any raised grain on P1–P10, then apply the weathered-gray exterior penetrating furniture stain to all faces, including undersides and exposed end grain. Keep stain out of threaded connections and follow the product's coat count and recoat interval, allowing approximately 24 hours between coats only if its label permits. Allow at least 72 hours after the last coat before use, or longer when the label, temperature or humidity requires it.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7",
+              "P8",
+              "P9",
+              "P10"
+            ],
+            "tools_used": [
+              "Hand sanding block",
+              "Brush and wiping cloths",
+              "Clamps and work supports"
+            ],
+            "safety": "Wear finish-compatible gloves and provide ventilation. Handle oily cloths according to the finish label to prevent spontaneous combustion; use a helper for any turning.",
+            "tip": "Do not apply penetrating stain over damp treated timber or leave a thick, sticky surface film."
+          },
+          {
+            "n": 14,
+            "title": "Inspect and place the bench",
+            "text": "Check P1–P10 for cracks, proud fasteners, rocking, loose hardware and incomplete glue bonds, then place the bench on a firm, level surface. Apply modest hand pressure progressively to the seat, back and arms before anyone sits; this inspection does not establish a tested load rating. Recheck bolts and screws after the first week and each season, and keep the bench away from edges or unstable slopes.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7",
+              "P8",
+              "P9",
+              "P10"
+            ],
+            "tools_used": [
+              "Socket wrench",
+              "Manual screwdriver"
+            ],
+            "safety": "Use two people to move the bench, lifting by the seat frame rather than the arms or back. Do not stand on the seat or sit on the arms.",
+            "tip": "This low, broad bench is not tall cabinet furniture; assess site-specific overturning risks and obtain suitable anchoring advice for exposed or public locations."
+          }
+        ],
+        "tools": [
+          {
+            "name": "Tape measure, square and marking pencil",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Saw",
+            "required": true,
+            "alternative": "Use a hand saw with a guide instead of a powered crosscut saw, or have the timber supplier cut the fixed dimensions."
+          },
+          {
+            "name": "Jigsaw",
+            "required": false,
+            "alternative": "Use a coping saw and sanding block for the armrest corner radii."
+          },
+          {
+            "name": "Clamps and work supports",
+            "required": true,
+            "alternative": "Use rated strap clamps for large frames, with a flat supported assembly surface and protective pads."
+          },
+          {
+            "name": "Moisture meter",
+            "required": true,
+            "alternative": "Have the timber supplier measure moisture and confirm suitability for the selected adhesive and finish."
+          },
+          {
+            "name": "Drill/driver",
+            "required": true,
+            "alternative": "A hand brace, suitable drill bits and manual screwdrivers can perform the work more slowly; accurate dowelling guides remain essential."
+          },
+          {
+            "name": "Dowelling jig and depth stops",
+            "required": true,
+            "alternative": "A carefully made drill-guide block and dowel centers can transfer locations, but must be verified on scrap."
+          },
+          {
+            "name": "Drill bits and countersink",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Sander",
+            "required": false,
+            "alternative": "Use a hand sanding block with 80-, 120- and 150-grit abrasives."
+          },
+          {
+            "name": "Hand sanding block",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Spacing blocks",
+            "required": true,
+            "alternative": "Make accurate 12 and 25 spacers from scrap; these are temporary aids, not bench parts."
+          },
+          {
+            "name": "Insert installation tool",
+            "required": true,
+            "alternative": "Use the insert manufacturer's approved bolt-and-locknut installation method."
+          },
+          {
+            "name": "Socket wrench",
+            "required": true,
+            "alternative": "Use a correctly sized hand spanner where clearance permits."
+          },
+          {
+            "name": "Brush and wiping cloths",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Eye protection, hearing protection, P2/N95 respirator and chemical-resistant gloves",
+            "required": true,
+            "alternative": null
+          }
+        ],
+        "safety_overview": [
+          "Wear eye protection for drilling and cutting, hearing protection with power tools, and P2/N95 respiratory protection when machining treated pine. Collect dust; never burn treated offcuts.",
+          "Clamp work before drilling and cutting. Use drill depth stops, pilot all hardwood dowels and screw locations near timber ends, and verify that screw tips remain buried.",
+          "Use exterior adhesive, preservative and finish compatible with the treatment and measured moisture content. Follow label ventilation, glove, drying and oily-cloth disposal requirements.",
+          "Use a helper when turning or moving the assembled bench, support it securely, and lift by the seat frame rather than the arms or back.",
+          "Use corrosion-compatible 316 stainless hardware throughout. Verify structural bracket capacities for the specified timber and fastener layout; do not substitute light decorative angles.",
+          "This bench has no tested load rating. Do not stand on it, sit on its arms, or use it before full adhesive and finish cure; inspect connections regularly and address site-specific tipping risks."
+        ],
+        "est_hours": 24,
+        "est_cost": {
+          "low": 420,
+          "high": 700,
+          "currency": "USD"
+        },
+        "hardware": [
+          {
+            "name": "316 stainless angle bracket",
+            "size": "25 x 25 x 20 x 2",
+            "qty": 4
+          },
+          {
+            "name": "316 stainless flat washer",
+            "size": "M8, 16 outside diameter, 2 thick",
+            "qty": 8
+          },
+          {
+            "name": "316 stainless hex-head bolt",
+            "size": "M8 x 50",
+            "qty": 8
+          },
+          {
+            "name": "316 stainless reinforcing plate",
+            "size": "80 x 60 x 3",
+            "qty": 4
+          },
+          {
+            "name": "316 stainless reinforcing plate",
+            "size": "120 x 60 x 3",
+            "qty": 4
+          },
+          {
+            "name": "316 stainless threaded wood insert",
+            "size": "M8 internal x 30 long, 13 external diameter",
+            "qty": 8
+          },
+          {
+            "name": "316 stainless wood screw",
+            "size": "5 x 35",
+            "qty": 32
+          },
+          {
+            "name": "316 stainless wood screw",
+            "size": "4 x 20",
+            "qty": 16
+          },
+          {
+            "name": "316 stainless wood screw",
+            "size": "5 x 60",
+            "qty": 30
+          },
+          {
+            "name": "Exterior hardwood dowel",
+            "size": "12 x 60",
+            "qty": 20
+          },
+          {
+            "name": "Exterior hardwood dowel",
+            "size": "10 x 40",
+            "qty": 4
+          },
+          {
+            "name": "Exterior hardwood dowel",
+            "size": "8 x 60",
+            "qty": 4
+          },
+          {
+            "name": "Exterior hardwood dowel",
+            "size": "8 x 40",
+            "qty": 56
+          },
+          {
+            "name": "Exterior hardwood dowel",
+            "size": "10 x 60",
+            "qty": 4
+          }
+        ]
+      },
+      "review": {
+        "verdict": "fix",
+        "summary": "The reinforced dowelled frame and assembly sequence are generally workable, but the small seat-edge brackets need an earlier installation sequence, and the specified structural angles need a verified purchasing specification before this plan is ready to build.",
+        "issues": [
+          {
+            "severity": "major",
+            "category": "tool_access",
+            "step": 10,
+            "joint_id": "J6",
+            "part_ids": [
+              "P2",
+              "P3",
+              "P4",
+              "P5"
+            ],
+            "problem": "Step 10 leaves installation of the small brackets' vertical-leaf screws until after the seat slats and support rails are installed. At J6, the bracket is confined beside a side rail and immediately beneath the rear slat. A conventional drill/driver chuck cannot reliably reach the post-facing screw holes squarely in that pocket. The rear J11 bracket also has its vertical-leaf screws immediately beneath an installed slat. Turning the bench over does not remove these obstructions.",
+            "fix": "Attach the vertical leaves of both J6 brackets to P2 in step 6, before installing P4. Attach the J11 brackets to the apron faces before installing the seat slats, positioning their horizontal leaves to receive the slat undersides. In step 10, install only their upward-facing slat screws. Update the joint instructions and steps accordingly, and specify a slim extended pilot bit and driver bit where needed to reach past the rails."
+          },
+          {
+            "severity": "major",
+            "category": "sourcing",
+            "step": 1,
+            "joint_id": "J3",
+            "part_ids": [
+              "P1",
+              "P2",
+              "P5",
+              "P7"
+            ],
+            "problem": "J3 and J7 depend on a very specific small 316 stainless angle having published allowable lateral resistance of at least 0.5 kN with the listed short wood screws in treated pine. No actual bracket or approved screw schedule is identified. A generic angle matching the dimensions is not necessarily structural, and a rating obtained with longer connector screws or different timber does not establish the required capacity here. This leaves a critical hardware-selection task unresolved for the builder.",
+            "fix": "Before releasing the plan, identify an available manufacturer and model for J3 and J7, together with its approved fasteners, timber requirements and applicable load direction. Verify that the approved screws remain safely buried in P5 and P7. If no rated product fits this arrangement, revise the connections around an available structural connector or specified positive joinery, then update the hardware list and installation steps."
+          }
+        ],
+        "model": "gpt-6.1-sol",
+        "latencyMs": 75396,
+        "tokens": 12439
+      },
+      "unverified": [
+        "[REVIEW major · tool_access] Step 10 / J6 / P2+P3+P4+P5: Step 10 leaves installation of the small brackets' vertical-leaf screws until after the seat slats and support rails are installed. At J6, the bracket is confined beside a side rail and immediately beneath the rear slat. A conventional drill/driver chuck cannot reliably reach the post-facing screw holes squarely in that pocket. The rear J11 bracket also has its vertical-leaf screws immediately beneath an installed slat. Turning the bench over does not remove these obstructions. → Attach the vertical leaves of both J6 brackets to P2 in step 6, before installing P4. Attach the J11 brackets to the apron faces before installing the seat slats, positioning their horizontal leaves to receive the slat undersides. In step 10, install only their upward-facing slat screws. Update the joint instructions and steps accordingly, and specify a slim extended pilot bit and driver bit where needed to reach past the rails.",
+        "[REVIEW major · sourcing] Step 1 / J3 / P1+P2+P5+P7: J3 and J7 depend on a very specific small 316 stainless angle having published allowable lateral resistance of at least 0.5 kN with the listed short wood screws in treated pine. No actual bracket or approved screw schedule is identified. A generic angle matching the dimensions is not necessarily structural, and a rating obtained with longer connector screws or different timber does not establish the required capacity here. This leaves a critical hardware-selection task unresolved for the builder. → Before releasing the plan, identify an available manufacturer and model for J3 and J7, together with its approved fasteners, timber requirements and applicable load direction. Verify that the approved screws remain safely buried in P5 and P7. If no rated product fits this arrangement, revise the connections around an available structural connector or specified positive joinery, then update the hardware list and installation steps."
+      ],
+      "blockers": [],
+      "warnings": [],
+      "tokens": 76337,
+      "costUsd": 0.3564959,
+      "calls": [
+        {
+          "stage": "stage1",
+          "model": "gpt-6.1-sol",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 3441,
+            "cachedTokens": 3200,
+            "outputTokens": 4372,
+            "reasoningTokens": 975
+          },
+          "costUsd": 0.044522,
+          "latencyMs": 81094
+        },
+        {
+          "stage": "stage1_geomrepair",
+          "model": "gpt-6.1-sol",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 10887,
+            "cachedTokens": 0,
+            "outputTokens": 2884,
+            "reasoningTokens": 30
+          },
+          "costUsd": 0.050614,
+          "latencyMs": 36120
+        },
+        {
+          "stage": "stage2",
+          "model": "gpt-6.1-sol",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 4680,
+            "cachedTokens": 1823,
+            "outputTokens": 9694,
+            "reasoningTokens": 2049
+          },
+          "costUsd": 0.1028363,
+          "latencyMs": 186919
+        },
+        {
+          "stage": "review",
+          "model": "gpt-6.1-sol",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 9992,
+            "cachedTokens": 0,
+            "outputTokens": 2447,
+            "reasoningTokens": 1866
+          },
+          "costUsd": 0.044454,
+          "latencyMs": 75396
+        },
+        {
+          "stage": "repair_joints",
+          "model": "gpt-6.1-sol",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 20254,
+            "cachedTokens": 1736,
+            "outputTokens": 7686,
+            "reasoningTokens": 264
+          },
+          "costUsd": 0.11406960000000001,
+          "latencyMs": 112423
+        }
+      ],
+      "latencyMs": 491983,
+      "firstPlanMs": 304151,
+      "firstMetaMs": 30073,
+      "repairCount": 1,
+      "improved": true,
+      "escalated": null,
+      "reviewPending": false
+    },
+    "desk": {
+      "plan": {
+        "title": "Classroom Tablet-Arm Chair — Wood-Frame Adaptation",
+        "summary": "A single adult-size classroom chair with an integrated right-hand writing tablet, matching the photograph's red seat and back, dark frame, and woodgrain writing surface. Straight wooden framing replaces the original bent steel, making this an intermediate woodworking project.",
+        "difficulty": "intermediate",
+        "overall_dimensions_mm": {
+          "width": 760,
+          "depth": 700,
+          "height": 830
+        },
+        "assumptions": [
+          "The plan is for one chair-and-tablet unit, not the entire classroom.",
+          "Dimensions are estimated from the photograph: seat height 450 mm, writing height 744 mm, and overall back height 830 mm.",
+          "The writing tablet is right-handed, with access from the open left side.",
+          "The photographed bent steel frame and molded seat are replaced with straight black-painted poplar framing and flat, rounded plywood panels. This preserves the general appearance without requiring welding, bending, or custom molding.",
+          "Use actual 38 mm square poplar stock, 24 mm birch plywood for the seat and writing tablet, and 18 mm birch plywood for the back.",
+          "The seat and back are flat rather than sculpted or reclined; a thin removable cushion can improve comfort but is not included in the geometry.",
+          "Frame joints require proper structural joinery or rated furniture brackets in the next planning stage, not screws driven only into end grain.",
+          "The chair and tablet are structurally linked by a side connector and the tablet's lower side stretcher. No load rating is implied; verify joinery and test stability before use."
+        ],
+        "clarifying_questions": [],
+        "parts": [
+          {
+            "id": "P1",
+            "name": "L-shaped writing tablet",
+            "material": "24 mm birch plywood with clear-finished woodgrain face",
+            "stock": "sheet",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 760,
+            "width_mm": 650,
+            "thickness_mm": 24,
+            "qty": 1,
+            "placements": [
+              {
+                "x": 0,
+                "y": 720,
+                "z": 0,
+                "sx": 760,
+                "sy": 24,
+                "sz": 650
+              }
+            ],
+            "profile": {
+              "type": "path",
+              "d": "M0 0 L760 0 L760 650 L570 650 L570 300 L0 300 Z",
+              "holes": []
+            },
+            "cross_section": null,
+            "ends": null,
+            "notes": "The front writing surface is 300 mm deep; the right-hand extension is 190 mm wide. Cut the inside corner with a jigsaw. Ease exposed edges without materially changing the outline."
+          },
+          {
+            "id": "P2",
+            "name": "Tablet support legs",
+            "material": "Select poplar, black painted",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 720,
+            "width_mm": 38,
+            "thickness_mm": 38,
+            "qty": 3,
+            "placements": [
+              {
+                "x": 20,
+                "y": 0,
+                "z": 20,
+                "sx": 38,
+                "sy": 720,
+                "sz": 38
+              },
+              {
+                "x": 690,
+                "y": 0,
+                "z": 20,
+                "sx": 38,
+                "sy": 720,
+                "sz": 38
+              },
+              {
+                "x": 690,
+                "y": 0,
+                "z": 590,
+                "sx": 38,
+                "sy": 720,
+                "sz": 38
+              }
+            ],
+            "profile": null,
+            "cross_section": null,
+            "ends": null,
+            "notes": "All three legs meet the tablet underside at y=720."
+          },
+          {
+            "id": "P3",
+            "name": "Tablet front apron",
+            "material": "Select poplar, black painted",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 632,
+            "width_mm": 90,
+            "thickness_mm": 18,
+            "qty": 1,
+            "placements": [
+              {
+                "x": 58,
+                "y": 630,
+                "z": 20,
+                "sx": 632,
+                "sy": 90,
+                "sz": 18
+              }
+            ],
+            "profile": null,
+            "cross_section": null,
+            "ends": null,
+            "notes": "Fits between the front legs and supports the tablet."
+          },
+          {
+            "id": "P4",
+            "name": "Tablet right side apron",
+            "material": "Select poplar, black painted",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 532,
+            "width_mm": 90,
+            "thickness_mm": 38,
+            "qty": 1,
+            "placements": [
+              {
+                "x": 690,
+                "y": 630,
+                "z": 58,
+                "sx": 38,
+                "sy": 90,
+                "sz": 532
+              }
+            ],
+            "profile": null,
+            "cross_section": null,
+            "ends": null,
+            "notes": "Connects the right front and right rear tablet legs, directly beneath the tablet."
+          },
+          {
+            "id": "P5",
+            "name": "Tablet left side apron",
+            "material": "Select poplar, black painted",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 192,
+            "width_mm": 70,
+            "thickness_mm": 38,
+            "qty": 1,
+            "placements": [
+              {
+                "x": 20,
+                "y": 650,
+                "z": 58,
+                "sx": 38,
+                "sy": 70,
+                "sz": 192
+              }
+            ],
+            "profile": null,
+            "cross_section": null,
+            "ends": null,
+            "notes": "Joins the left front leg to the tablet's rear cross-apron."
+          },
+          {
+            "id": "P6",
+            "name": "Tablet rear cross-apron",
+            "material": "Select poplar, black painted",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 670,
+            "width_mm": 70,
+            "thickness_mm": 20,
+            "qty": 1,
+            "placements": [
+              {
+                "x": 20,
+                "y": 650,
+                "z": 250,
+                "sx": 670,
+                "sy": 70,
+                "sz": 20
+              }
+            ],
+            "profile": null,
+            "cross_section": null,
+            "ends": null,
+            "notes": "Supports the rear edge of the main writing area. Its ends meet the left and right side aprons."
+          },
+          {
+            "id": "P7",
+            "name": "Tablet lower right stretcher",
+            "material": "Select poplar, black painted",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 532,
+            "width_mm": 38,
+            "thickness_mm": 38,
+            "qty": 1,
+            "placements": [
+              {
+                "x": 690,
+                "y": 350,
+                "z": 58,
+                "sx": 38,
+                "sy": 38,
+                "sz": 532
+              }
+            ],
+            "profile": null,
+            "cross_section": null,
+            "ends": null,
+            "notes": "Connects both right tablet legs and receives the chair connector."
+          },
+          {
+            "id": "P8",
+            "name": "Chair-to-tablet connector",
+            "material": "Select poplar, black painted",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 200,
+            "width_mm": 38,
+            "thickness_mm": 38,
+            "qty": 1,
+            "placements": [
+              {
+                "x": 490,
+                "y": 350,
+                "z": 290,
+                "sx": 200,
+                "sy": 38,
+                "sz": 38
+              }
+            ],
+            "profile": null,
+            "cross_section": null,
+            "ends": null,
+            "notes": "Touches the right front chair leg at x=490 and the tablet lower stretcher at x=690. Use structural furniture joinery or rated brackets at both ends."
+          },
+          {
+            "id": "P9",
+            "name": "Chair legs",
+            "material": "Select poplar, black painted",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 426,
+            "width_mm": 38,
+            "thickness_mm": 38,
+            "qty": 4,
+            "placements": [
+              {
+                "x": 90,
+                "y": 0,
+                "z": 290,
+                "sx": 38,
+                "sy": 426,
+                "sz": 38
+              },
+              {
+                "x": 452,
+                "y": 0,
+                "z": 290,
+                "sx": 38,
+                "sy": 426,
+                "sz": 38
+              },
+              {
+                "x": 90,
+                "y": 0,
+                "z": 640,
+                "sx": 38,
+                "sy": 426,
+                "sz": 38
+              },
+              {
+                "x": 452,
+                "y": 0,
+                "z": 640,
+                "sx": 38,
+                "sy": 426,
+                "sz": 38
+              }
+            ],
+            "profile": null,
+            "cross_section": null,
+            "ends": null,
+            "notes": "Leg tops directly support the seat underside."
+          },
+          {
+            "id": "P10",
+            "name": "Chair front and rear seat aprons",
+            "material": "Select poplar, black painted",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 324,
+            "width_mm": 80,
+            "thickness_mm": 19,
+            "qty": 2,
+            "placements": [
+              {
+                "x": 128,
+                "y": 346,
+                "z": 290,
+                "sx": 324,
+                "sy": 80,
+                "sz": 19
+              },
+              {
+                "x": 128,
+                "y": 346,
+                "z": 659,
+                "sx": 324,
+                "sy": 80,
+                "sz": 19
+              }
+            ],
+            "profile": null,
+            "cross_section": null,
+            "ends": null,
+            "notes": "Fit between the legs, with top edges touching the seat underside."
+          },
+          {
+            "id": "P11",
+            "name": "Chair side seat aprons",
+            "material": "Select poplar, black painted",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 312,
+            "width_mm": 80,
+            "thickness_mm": 19,
+            "qty": 2,
+            "placements": [
+              {
+                "x": 90,
+                "y": 346,
+                "z": 328,
+                "sx": 19,
+                "sy": 80,
+                "sz": 312
+              },
+              {
+                "x": 471,
+                "y": 346,
+                "z": 328,
+                "sx": 19,
+                "sy": 80,
+                "sz": 312
+              }
+            ],
+            "profile": null,
+            "cross_section": null,
+            "ends": null,
+            "notes": "Fit between the front and rear legs and directly support the seat."
+          },
+          {
+            "id": "P12",
+            "name": "Rounded chair seat",
+            "material": "24 mm birch plywood, gloss red painted",
+            "stock": "sheet",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 420,
+            "width_mm": 420,
+            "thickness_mm": 24,
+            "qty": 1,
+            "placements": [
+              {
+                "x": 80,
+                "y": 426,
+                "z": 280,
+                "sx": 420,
+                "sy": 24,
+                "sz": 420
+              }
+            ],
+            "profile": {
+              "type": "rounded_rect",
+              "radius": 30
+            },
+            "cross_section": null,
+            "ends": null,
+            "notes": "Seat top is at y=450. Rear back posts rest on the seat directly above the rear legs."
+          },
+          {
+            "id": "P13",
+            "name": "Chair back posts",
+            "material": "Select poplar, black painted",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 362,
+            "width_mm": 38,
+            "thickness_mm": 38,
+            "qty": 2,
+            "placements": [
+              {
+                "x": 90,
+                "y": 450,
+                "z": 640,
+                "sx": 38,
+                "sy": 362,
+                "sz": 38
+              },
+              {
+                "x": 452,
+                "y": 450,
+                "z": 640,
+                "sx": 38,
+                "sy": 362,
+                "sz": 38
+              }
+            ],
+            "profile": null,
+            "cross_section": null,
+            "ends": null,
+            "notes": "These posts are separated from the rear legs by the seat thickness. Use a reinforced connection through the seat into the rear-leg assembly, with suitable side reinforcement; do not rely on end-grain screws alone."
+          },
+          {
+            "id": "P14",
+            "name": "Rounded chair back panel",
+            "material": "18 mm birch plywood, gloss red painted",
+            "stock": "sheet",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 420,
+            "width_mm": 270,
+            "thickness_mm": 18,
+            "qty": 1,
+            "placements": [
+              {
+                "x": 80,
+                "y": 560,
+                "z": 678,
+                "sx": 420,
+                "sy": 270,
+                "sz": 18
+              }
+            ],
+            "profile": {
+              "type": "rounded_rect",
+              "radius": 35
+            },
+            "cross_section": null,
+            "ends": null,
+            "notes": "The front face meets the rear faces of both back posts. The panel extends 18 mm above the posts and sets the overall height."
+          }
+        ],
+        "consumables": [
+          {
+            "name": "Interior wood glue",
+            "qty": "250 ml",
+            "note": "For compatible structural wood joints."
+          },
+          {
+            "name": "Paintable wood filler",
+            "qty": "150 g",
+            "note": "For plywood edges and cosmetic defects, not structural gaps."
+          },
+          {
+            "name": "Sandpaper",
+            "qty": "3 sheets each of 80, 120, 180, and 220 grit",
+            "note": "Prepare cut edges, framing, and finish surfaces."
+          },
+          {
+            "name": "Bonding primer",
+            "qty": "500 ml",
+            "note": "Prime the frame, seat, back, and exposed plywood edges before painting."
+          },
+          {
+            "name": "Black furniture enamel",
+            "qty": "500 ml",
+            "note": "For the wooden frame."
+          },
+          {
+            "name": "Gloss red furniture enamel",
+            "qty": "500 ml",
+            "note": "For the seat and back."
+          },
+          {
+            "name": "Clear water-based polyurethane",
+            "qty": "500 ml",
+            "note": "Apply approximately three coats to the writing tablet, including its underside and edges."
+          }
+        ],
+        "load_bearing": true,
+        "joints": [
+          {
+            "id": "J1",
+            "part_a": "P1",
+            "part_b": "P2",
+            "count": 3,
+            "type": "dowel",
+            "fasteners": [
+              {
+                "name": "Fluted hardwood dowel",
+                "size": "6 x 30",
+                "qty_per_joint": 2
+              }
+            ],
+            "drive_from": "Into exposed P2 leg tops and the P1 underside before lowering the inverted frame onto P1.",
+            "step": 13,
+            "note": "Glue dowels and bearing surfaces; drill 15 deep in each member. Apron brackets provide the primary tablet restraint."
+          },
+          {
+            "id": "J2",
+            "part_a": "P1",
+            "part_b": "P3",
+            "count": 1,
+            "type": "metal_bracket",
+            "fasteners": [
+              {
+                "name": "Gusseted tabletop angle kit with included screws",
+                "size": "30 x 30 x 20; two 4 x 16 apron screws and two 4 x 20 tablet screws",
+                "qty_per_joint": 3
+              }
+            ],
+            "drive_from": "From the open underside and inside face of P3, with the tablet assembly inverted.",
+            "step": 13,
+            "note": "Glue the bearing surface. Locate brackets approximately 100, 316 and 532 from the apron end."
+          },
+          {
+            "id": "J3",
+            "part_a": "P1",
+            "part_b": "P4",
+            "count": 1,
+            "type": "metal_bracket",
+            "fasteners": [
+              {
+                "name": "Gusseted tabletop angle kit with included screws",
+                "size": "30 x 30 x 20; two 4 x 16 apron screws and two 4 x 20 tablet screws",
+                "qty_per_joint": 3
+              }
+            ],
+            "drive_from": "From the open underside and inside face of P4, with the tablet assembly inverted.",
+            "step": 13,
+            "note": "Glue the bearing surface. Locate brackets approximately 85, 266 and 447 from the apron end."
+          },
+          {
+            "id": "J4",
+            "part_a": "P1",
+            "part_b": "P5",
+            "count": 1,
+            "type": "metal_bracket",
+            "fasteners": [
+              {
+                "name": "Gusseted tabletop angle kit with included screws",
+                "size": "30 x 30 x 20; two 4 x 16 apron screws and two 4 x 20 tablet screws",
+                "qty_per_joint": 2
+              }
+            ],
+            "drive_from": "From the open underside and inside face of P5, with the tablet assembly inverted.",
+            "step": 13,
+            "note": "Glue the bearing surface. Locate brackets approximately 45 and 145 from the apron end."
+          },
+          {
+            "id": "J5",
+            "part_a": "P1",
+            "part_b": "P6",
+            "count": 1,
+            "type": "metal_bracket",
+            "fasteners": [
+              {
+                "name": "Gusseted tabletop angle kit with included screws",
+                "size": "30 x 30 x 20; two 4 x 16 apron screws and two 4 x 20 tablet screws",
+                "qty_per_joint": 3
+              }
+            ],
+            "drive_from": "From the open underside and forward face of P6, with the tablet assembly inverted.",
+            "step": 13,
+            "note": "Glue the bearing surface. Locate brackets approximately 100, 335 and 570 from the apron end."
+          },
+          {
+            "id": "J6",
+            "part_a": "P1",
+            "part_b": "P13",
+            "count": 2,
+            "type": "metal_bracket",
+            "fasteners": [
+              {
+                "name": "Custom offset tablet-to-back-post tie bracket kit",
+                "size": "UNRELEASED: complete fabrication specification, mounting layout and included fasteners not established",
+                "qty_per_joint": 1
+              }
+            ],
+            "drive_from": "Proposed access is below P1 and in front of P13 before P14 is installed; final access requires validation against approved fitting drawings.",
+            "step": 16,
+            "note": "UNRESOLVED RELEASE BLOCKER, not a purchasable or approved fitting. The previous approximate offset and plate thickness do not define a safe fabrication. Do not order, fabricate or install from that description. A released specification must establish material, complete profile, bends, gussets, welds, hole coordinates, edge treatment, every included fastener, attachment capacity, intended tablet loads and full-size occupant-clearance validation. No such validated specification or commercial substitute is available in the supplied information."
+          },
+          {
+            "id": "J7",
+            "part_a": "P2",
+            "part_b": "P3",
+            "count": 1,
+            "type": "dowel",
+            "fasteners": [
+              {
+                "name": "Fluted hardwood dowel",
+                "size": "8 x 40",
+                "qty_per_joint": 2
+              },
+              {
+                "name": "Gusseted frame corner bracket kit with included screws",
+                "size": "40 x 40 x 20; two 4 x 16 rail screws and two 4 x 30 leg screws",
+                "qty_per_joint": 1
+              }
+            ],
+            "drive_from": "Into the exposed right end of P3 and inward face of the front-right P2 leg; bracket screws from inside the open corner.",
+            "step": 9,
+            "note": "Right-front interface only; the left-front interface is J23. Glue dowels and mating faces. Embed dowels 25 into P3 and 15 into P2, with centers approximately 45 apart vertically. Keep perpendicular P4 bores and bracket screws clear."
+          },
+          {
+            "id": "J8",
+            "part_a": "P2",
+            "part_b": "P5",
+            "count": 1,
+            "type": "dowel",
+            "fasteners": [
+              {
+                "name": "Fluted hardwood dowel",
+                "size": "8 x 40",
+                "qty_per_joint": 2
+              },
+              {
+                "name": "Gusseted frame corner bracket kit with included screws",
+                "size": "40 x 40 x 20; two 4 x 16 rail screws and two 4 x 30 leg screws",
+                "qty_per_joint": 1
+              }
+            ],
+            "drive_from": "Into the exposed P5 end and left-front P2 side face; bracket screws from inside the separate left subassembly.",
+            "step": 11,
+            "note": "Glue dowels and mating faces. Embed 25 into P5 and 15 into P2. Keep the P3-to-left-leg interface completely open for step 12 and stagger perpendicular bores."
+          },
+          {
+            "id": "J9",
+            "part_a": "P2",
+            "part_b": "P4",
+            "count": 2,
+            "type": "dowel",
+            "fasteners": [
+              {
+                "name": "Fluted hardwood dowel",
+                "size": "8 x 40",
+                "qty_per_joint": 2
+              },
+              {
+                "name": "Gusseted frame corner bracket kit with included screws",
+                "size": "40 x 40 x 20; two 4 x 16 rail screws and two 4 x 30 leg screws",
+                "qty_per_joint": 1
+              }
+            ],
+            "drive_from": "Into exposed P4 ends and right-leg side faces; bracket screws from the open inside of the right frame.",
+            "step": 10,
+            "note": "Glue dowels and mating faces. Embed 25 into P4 and 15 into P2. Offset front-leg bores and screws from J7."
+          },
+          {
+            "id": "J10",
+            "part_a": "P2",
+            "part_b": "P7",
+            "count": 2,
+            "type": "dowel",
+            "fasteners": [
+              {
+                "name": "Fluted hardwood dowel",
+                "size": "8 x 40",
+                "qty_per_joint": 2
+              }
+            ],
+            "drive_from": "Into exposed P7 ends and inward faces of both right P2 legs before closing the right-side frame.",
+            "step": 10,
+            "note": "Glue dowels and mating faces. Embed 25 into P7 and 15 into P2; separate centers vertically by 16. P7 is not a footrest."
+          },
+          {
+            "id": "J11",
+            "part_a": "P4",
+            "part_b": "P6",
+            "count": 1,
+            "type": "dowel",
+            "fasteners": [
+              {
+                "name": "Fluted hardwood dowel",
+                "size": "6 x 30",
+                "qty_per_joint": 2
+              }
+            ],
+            "drive_from": "Into the exposed right end of P6 and inside face of P4 before translating the left subassembly toward the right frame.",
+            "step": 12,
+            "note": "Glue dowels and mating faces; drill 15 deep in each member with centers approximately 35 apart vertically. Engage simultaneously with J23 by a straight movement toward the right; no perpendicular insertion remains at closure."
+          },
+          {
+            "id": "J12",
+            "part_a": "P5",
+            "part_b": "P6",
+            "count": 1,
+            "type": "dowel",
+            "fasteners": [
+              {
+                "name": "Fluted hardwood dowel",
+                "size": "6 x 30",
+                "qty_per_joint": 2
+              }
+            ],
+            "drive_from": "Into the free rear end of P5 and forward face of P6 while the left subassembly remains separate from P3 and P4.",
+            "step": 11,
+            "note": "Glue dowels and mating faces. Drill 15 deep in each member, leaving 5 behind the bores in P6. Complete this perpendicular interface before the final lateral closure in step 12."
+          },
+          {
+            "id": "J13",
+            "part_a": "P7",
+            "part_b": "P8",
+            "count": 1,
+            "type": "dowel",
+            "fasteners": [
+              {
+                "name": "Fluted hardwood dowel",
+                "size": "8 x 40",
+                "qty_per_joint": 2
+              }
+            ],
+            "drive_from": "Into the exposed right end of P8 and inward side face of P7 before bringing the assemblies together.",
+            "step": 14,
+            "note": "Glue dowels and mating faces. Embed 25 into P8 and 15 into P7; separate centers vertically by 16."
+          },
+          {
+            "id": "J14",
+            "part_a": "P8",
+            "part_b": "P9",
+            "count": 1,
+            "type": "dowel",
+            "fasteners": [
+              {
+                "name": "Fluted hardwood dowel",
+                "size": "8 x 40",
+                "qty_per_joint": 2
+              }
+            ],
+            "drive_from": "Into the exposed left end of P8 and outside face of the right-front P9 leg.",
+            "step": 14,
+            "note": "Glue dowels and mating faces. Embed 25 into P8 and 15 into P9. Keep bores forward of the side-apron interface and clear of existing leg bores."
+          },
+          {
+            "id": "J15",
+            "part_a": "P8",
+            "part_b": "P11",
+            "count": 1,
+            "type": "metal_bracket",
+            "fasteners": [
+              {
+                "name": "Gusseted frame corner bracket kit with included screws",
+                "size": "40 x 40 x 20; two 4 x 16 rail screws and two 4 x 30 leg screws",
+                "qty_per_joint": 1
+              }
+            ],
+            "drive_from": "From the open rear face of P8 and outside face of the right P11 apron before P12 is attached.",
+            "step": 14,
+            "note": "Edge contact: use the angle around the corner with 4 x 16 screws into P11 and 4 x 30 screws into P8. Do not rely on glue across this edge contact."
+          },
+          {
+            "id": "J16",
+            "part_a": "P9",
+            "part_b": "P10",
+            "count": 4,
+            "type": "dowel",
+            "fasteners": [
+              {
+                "name": "Fluted hardwood dowel",
+                "size": "8 x 40",
+                "qty_per_joint": 2
+              },
+              {
+                "name": "Gusseted frame corner bracket kit with included screws",
+                "size": "40 x 40 x 20; two 4 x 16 rail screws and two 4 x 30 leg screws",
+                "qty_per_joint": 1
+              }
+            ],
+            "drive_from": "Into exposed P10 ends and P9 faces; bracket screws from inside the separate front and rear frames.",
+            "step": 6,
+            "note": "Glue dowels and mating faces. Embed 25 into P10 and 15 into P9. Separate centers vertically and keep clear of seat connector bores."
+          },
+          {
+            "id": "J17",
+            "part_a": "P9",
+            "part_b": "P11",
+            "count": 4,
+            "type": "dowel",
+            "fasteners": [
+              {
+                "name": "Fluted hardwood dowel",
+                "size": "8 x 40",
+                "qty_per_joint": 2
+              },
+              {
+                "name": "Gusseted frame corner bracket kit with included screws",
+                "size": "40 x 40 x 20; two 4 x 16 rail screws and two 4 x 30 leg screws",
+                "qty_per_joint": 1
+              }
+            ],
+            "drive_from": "Into exposed P11 ends and inward P9 faces; bracket screws from inside the open seat frame.",
+            "step": 7,
+            "note": "Glue dowels and mating faces. Embed 25 into P11 and 15 into P9. Stagger bores from P10 bores and offset neighboring bracket screws to prevent collisions."
+          },
+          {
+            "id": "J18",
+            "part_a": "P9",
+            "part_b": "P12",
+            "count": 4,
+            "type": "connector_bolt",
+            "fasteners": [
+              {
+                "name": "Furniture connector bolt and cross-dowel kit",
+                "size": "M6 x 60 countersunk bolt with 10 diameter x 16 cross dowel",
+                "qty_per_joint": 1
+              },
+              {
+                "name": "Fluted hardwood dowel",
+                "size": "8 x 35",
+                "qty_per_joint": 2
+              }
+            ],
+            "drive_from": "From above P12 before P13 covers the rear heads; cross dowels enter outward front or rear P9 faces.",
+            "step": 15,
+            "note": "Glue bearing surfaces and dowels. Embed dowels 15 into P12 and 20 into P9. Center each bolt over its leg and place its cross dowel approximately 26 below the leg top. Countersink only enough for a flush head."
+          },
+          {
+            "id": "J19",
+            "part_a": "P10",
+            "part_b": "P12",
+            "count": 2,
+            "type": "metal_bracket",
+            "fasteners": [
+              {
+                "name": "Gusseted tabletop angle kit with included screws",
+                "size": "30 x 30 x 20; two 4 x 16 apron screws and two 4 x 20 tablet screws",
+                "qty_per_joint": 2
+              }
+            ],
+            "drive_from": "From inside and below the open seat frame, with the linked assembly supported on its side.",
+            "step": 15,
+            "note": "Glue the bearing surface. Locate brackets approximately 80 and 244 from each apron end."
+          },
+          {
+            "id": "J20",
+            "part_a": "P11",
+            "part_b": "P12",
+            "count": 2,
+            "type": "metal_bracket",
+            "fasteners": [
+              {
+                "name": "Gusseted tabletop angle kit with included screws",
+                "size": "30 x 30 x 20; two 4 x 16 apron screws and two 4 x 20 tablet screws",
+                "qty_per_joint": 2
+              }
+            ],
+            "drive_from": "From inside and below the open seat frame, with the linked assembly supported on its side.",
+            "step": 15,
+            "note": "Glue the bearing surface. Locate brackets approximately 75 and 237 from each apron end, keeping the right-front bracket clear of P8 hardware."
+          },
+          {
+            "id": "J21",
+            "part_a": "P12",
+            "part_b": "P13",
+            "count": 2,
+            "type": "metal_bracket",
+            "fasteners": [
+              {
+                "name": "Gusseted chair-back post reinforcement kit",
+                "size": "UNRELEASED: complete fabrication specification, mounting layout, capacity and included fasteners not established",
+                "qty_per_joint": 1
+              },
+              {
+                "name": "Fluted hardwood dowel",
+                "size": "8 x 35",
+                "qty_per_joint": 2
+              }
+            ],
+            "drive_from": "Proposed access is from the inward sides of P13 and below P12; final access requires validation against approved fitting drawings.",
+            "step": 16,
+            "note": "UNRESOLVED RELEASE BLOCKER, not a purchasable or approved fitting. The previous envelope and bolt counts do not establish chair-back strength. Do not substitute shelf brackets or fabricate from those dimensions. A released specification must establish material, profile, bends, gussets, welds, hole coordinates, edge treatment, every included fastener and the load path through P12 into the rear-leg assembly. Intended back loads, attachment capacity and full-size occupant clearance require validation. Proposed glued dowels embed 20 into P13 and 15 into P12 but are not sufficient reinforcement alone."
+          },
+          {
+            "id": "J22",
+            "part_a": "P13",
+            "part_b": "P14",
+            "count": 2,
+            "type": "glue_screw",
+            "fasteners": [
+              {
+                "name": "Countersunk wood screw",
+                "size": "4 x 40",
+                "qty_per_joint": 3
+              }
+            ],
+            "drive_from": "From the exposed rear face of P14 into P13 side grain after all post hardware is installed.",
+            "step": 17,
+            "note": "Glue mating faces. Locate screws approximately 40, 125 and 210 above the panel bottom, centered across each post. Final positions must clear the approved reinforcement hardware; penetration into P13 is approximately 22."
+          },
+          {
+            "id": "J23",
+            "part_a": "P2",
+            "part_b": "P3",
+            "count": 1,
+            "type": "dowel",
+            "fasteners": [
+              {
+                "name": "Fluted hardwood dowel",
+                "size": "8 x 40",
+                "qty_per_joint": 2
+              },
+              {
+                "name": "Gusseted frame corner bracket kit with included screws",
+                "size": "40 x 40 x 20; two 4 x 16 rail screws and two 4 x 30 leg screws",
+                "qty_per_joint": 1
+              }
+            ],
+            "drive_from": "Into the exposed left end of P3 and inward face of the left-front P2 leg; bracket screws from inside after lateral closure.",
+            "step": 12,
+            "note": "Left-front interface only; J7 covers the right-front interface. Glue dowels and mating faces, embedding 25 into P3 and 15 into P2 with centers approximately 45 apart vertically. Translate the complete left subassembly toward the right frame so J23 and J11 seat in the same direction, then install this corner bracket."
+          }
+        ],
+        "steps": [
+          {
+            "n": 1,
+            "title": "Hold release until essential fittings are validated",
+            "text": "This is a corrected assembly sequence, not a released construction plan: J6 and J21 remain unresolved, and their previous descriptions are insufficient for purchasing or fabrication. No validated commercial substitute, fabrication drawings, load assessment or full-size clearance test is available in the supplied information; I cannot truthfully supply those as completed work. Before any construction, obtain an engineered fitting package covering material, profiles, bends, gussets, welds, hole coordinates, edge treatment, all fasteners, intended back and tablet loads, and the load path into the rear-leg assembly. Have the installed fittings checked in a full-size mock-up of P1–P14 for left-side entry, exit, thigh and torso clearance, pinch points and driver access; release requires documented acceptance and an updated J6/J21 specification.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7",
+              "P8",
+              "P9",
+              "P10",
+              "P11",
+              "P12",
+              "P13",
+              "P14"
+            ],
+            "tools_used": [
+              "Tape measure",
+              "Combination square",
+              "Pencil"
+            ],
+            "safety": "Do not proceed to construction or occupant testing while this hold remains open. The following cards preserve the corrected woodworking sequence but do not resolve the essential hardware design.",
+            "tip": "A fitting envelope is not a fabrication drawing or a verified load rating."
+          },
+          {
+            "n": 2,
+            "title": "Order supplier-milled stock and crosscut the framing",
+            "text": "After the release hold is closed, order clear, straight-grained poplar from a hardwood dealer offering custom four-side surfacing, or have a cabinet-shop millwork service prepare the sections; request actual finished dimensions within 0.2, not nominal lumber equivalents. Order 38 x 38 blanks for P2 (tablet support legs), three at 750; P7 (tablet lower right stretcher), one at 560; P8 (chair-to-tablet connector), one at 230; P9 (chair legs), four at 460; and P13 (chair back posts), two at 400. Also order P3 (tablet front apron), one 18 x 90 x 670; P4 (tablet right side apron), one 38 x 90 x 570; P5 (tablet left side apron), one 38 x 70 x 230; P6 (tablet rear cross-apron), one 20 x 70 x 710; P10 (chair front and rear seat aprons), two 19 x 80 x 360; and P11 (chair side seat aprons), two 19 x 80 x 350. Verify sections with calipers, reject undersized stock, and crosscut to the fixed final lengths: P2 720, P3 632, P4 532, P5 192, P6 670, P7 532, P8 200, P9 426, P10 324, P11 312 and P13 362; all ripping and thicknessing are supplier operations, not operations covered by the crosscut saw.",
+            "parts_used": [
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7",
+              "P8",
+              "P9",
+              "P10",
+              "P11",
+              "P13"
+            ],
+            "tools_used": [
+              "Saw",
+              "Calipers",
+              "Combination square",
+              "Tape measure",
+              "Clamps",
+              "Pencil"
+            ],
+            "safety": "Wear eye protection and hearing protection for powered cutting. Clamp short stock and keep hands outside the blade path; a fine-tooth handsaw and miter box are the nonpowered crosscut alternative.",
+            "tip": "Ask the supplier to confirm the finished-section schedule in writing before placing the order."
+          },
+          {
+            "n": 3,
+            "title": "Cut the plywood profiles",
+            "text": "Obtain actual 24 birch plywood for P1 (L-shaped writing tablet) and P12 (rounded chair seat), and actual 18 birch plywood for P14 (rounded chair back panel); verify thickness before purchasing rather than substituting nominal equivalents. Cut the fixed profiles, including P12's 30 corner radii and P14's 35 corner radii, without enlarging P1's inside opening. Lightly ease exposed edges and sand through 120 and 180 grit.",
+            "parts_used": [
+              "P1",
+              "P12",
+              "P14"
+            ],
+            "tools_used": [
+              "Jigsaw",
+              "Clamps",
+              "Sanding block",
+              "Pencil",
+              "Tape measure",
+              "Calipers"
+            ],
+            "safety": "Support offcuts and wear eye protection and a particulate respirator. A coping saw and fine-tooth panel saw are alternatives to the jigsaw.",
+            "tip": "Test the plywood blade on scrap to identify the cleaner cutting face."
+          },
+          {
+            "n": 4,
+            "title": "Drill and dry-fit the joinery",
+            "text": "Mark P1–P14 by ID, name and orientation, then lay out dowel bores, seat connectors and bracket pilots using depth stops and the released hardware templates. Drill the joint-note depths, stagger perpendicular leg bores, and check screw paths against all dowels and connectors before drilling. Dry-fit the chair and tablet separately, including the complete two-subassembly tablet closure described in steps 8–12. Do not drill J6 or J21 from the withdrawn approximate dimensions.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7",
+              "P8",
+              "P9",
+              "P10",
+              "P11",
+              "P12",
+              "P13",
+              "P14"
+            ],
+            "tools_used": [
+              "Drill/driver",
+              "Doweling jig and transfer centers",
+              "Drill bits and depth stops",
+              "Countersink bit",
+              "Combination square",
+              "Tape measure",
+              "Clamps",
+              "Pencil"
+            ],
+            "safety": "Clamp every drilling setup and use depth stops. Verify at least 150 of straight driver access before committing to bracket positions.",
+            "tip": "Draw intersecting hole paths on adjacent faces so hidden collisions are easier to spot."
+          },
+          {
+            "n": 5,
+            "title": "Pre-sand and coat inaccessible surfaces",
+            "text": "Disassemble the dry fit and sand the framing to 180 grit. Mask structural glue surfaces, then apply primer and black enamel to inaccessible framing areas and primer and red enamel to inaccessible areas of P12 (rounded chair seat) and P14 (rounded chair back panel). Allow approximately 4–6 hours between compatible water-based coats and at least 24 hours before clamping, or the manufacturer's longer times.",
+            "parts_used": [
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7",
+              "P8",
+              "P9",
+              "P10",
+              "P11",
+              "P12",
+              "P13",
+              "P14"
+            ],
+            "tools_used": [
+              "Sanding block",
+              "Masking tape",
+              "Brushes"
+            ],
+            "safety": "Ventilate the work area and follow coating-label PPE requirements. Use respiratory protection for sanding dust.",
+            "tip": "Keep glue surfaces bare; paint is not a structural bonding surface."
+          },
+          {
+            "n": 6,
+            "title": "Glue the chair front and rear frames",
+            "text": "Join both P10 (chair front and rear seat aprons) to P9 (chair legs), making four interfaces. At each interface apply glue, insert two 8 x 40 dowels and fit one 40 x 40 x 20 frame corner kit, driving its included two 4 x 16 screws into P10 and two 4 x 30 screws into P9 from inside. Clamp square for at least 60 minutes or the glue manufacturer's longer minimum.",
+            "parts_used": [
+              "P9",
+              "P10"
+            ],
+            "tools_used": [
+              "Clamps",
+              "Combination square",
+              "Drill/driver",
+              "Drill bits and depth stops",
+              "Tape measure"
+            ],
+            "safety": "Support the assemblies and use a low driver-clutch setting. Keep fingers clear of closing clamps.",
+            "tip": "Compare diagonals before fully tightening the clamps."
+          },
+          {
+            "n": 7,
+            "title": "Close the chair base",
+            "text": "Join both P11 (chair side seat aprons) between the front and rear P9 leg assemblies. At each of four interfaces use glue, two 8 x 40 dowels and one frame corner kit, driving its included two 4 x 16 apron screws and two 4 x 30 leg screws from the open seat-frame interior. Clamp square for at least 60 minutes and leave unloaded for 24 hours.",
+            "parts_used": [
+              "P9",
+              "P10",
+              "P11"
+            ],
+            "tools_used": [
+              "Clamps",
+              "Combination square",
+              "Tape measure",
+              "Drill/driver"
+            ],
+            "safety": "Support the chair frame on a stable bench before driving screws.",
+            "tip": "Check all four feet against a flat reference surface before the glue sets."
+          },
+          {
+            "n": 8,
+            "title": "Rehearse the two-subassembly tablet closure",
+            "text": "Without glue, arrange the right subassembly as both right P2 (tablet support legs), P4 (tablet right side apron), P7 (tablet lower right stretcher) and P3 (tablet front apron) attached only to the right-front leg. Separately dry-fit the left-front P2 leg, P5 (tablet left side apron) and P6 (tablet rear cross-apron). Translate that complete left subassembly toward the right frame so the P3-to-left-leg dowels and P6-to-P4 dowels engage simultaneously along the width direction. Confirm complete seating without twisting, then separate the subassemblies for gluing.",
+            "parts_used": [
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7"
+            ],
+            "tools_used": [
+              "Clamps",
+              "Combination square",
+              "Tape measure"
+            ],
+            "safety": null,
+            "tip": "If both interfaces will not close with light hand pressure, correct the dry fit rather than increasing clamp force."
+          },
+          {
+            "n": 9,
+            "title": "Attach the front apron only to the right-front leg",
+            "text": "Glue only the right end of P3 (tablet front apron) to the right-front P2 (tablet support leg), using two 8 x 40 dowels. Fit one frame corner kit from inside, driving its included two 4 x 16 screws into P3 and two 4 x 30 screws into P2. Clamp square for at least 60 minutes; leave P3's left end and the left-front leg completely separate.",
+            "parts_used": [
+              "P2",
+              "P3"
+            ],
+            "tools_used": [
+              "Clamps",
+              "Combination square",
+              "Drill/driver"
+            ],
+            "safety": "Support the projecting apron and clamp the leg before driving screws.",
+            "tip": "Label the unglued end 'close in step 12' to avoid prematurely attaching the left leg."
+          },
+          {
+            "n": 10,
+            "title": "Complete the right-side tablet subassembly",
+            "text": "Glue P4 (tablet right side apron) and P7 (tablet lower right stretcher) between the two right P2 legs, inserting two 8 x 40 dowels at each of their four interfaces while supporting the attached P3 (tablet front apron). At each P4 end install one frame corner kit from inside, using its included two 4 x 16 screws into P4 and two 4 x 30 screws into P2; P7 receives only dowels and glue. Clamp square for at least 60 minutes, then allow 24 hours before the final closure.",
+            "parts_used": [
+              "P2",
+              "P3",
+              "P4",
+              "P7"
+            ],
+            "tools_used": [
+              "Clamps",
+              "Combination square",
+              "Tape measure",
+              "Drill/driver"
+            ],
+            "safety": "Use a helper or bench supports for the projecting P3 apron during repositioning.",
+            "tip": "Keep P4's inside receiving holes for P6 clean and unobstructed."
+          },
+          {
+            "n": 11,
+            "title": "Build the separate left tablet subassembly",
+            "text": "Glue P5 (tablet left side apron) to the left-front P2 leg using two 8 x 40 dowels, and fit one frame corner kit from inside with its included two 4 x 16 screws into P5 and two 4 x 30 screws into P2. While this assembly remains separate, glue P6 (tablet rear cross-apron) onto P5's free rear end using two 6 x 30 dowels, embedded 15 into each member. Clamp both interfaces square for at least 60 minutes and allow 24 hours before closure; do not attach the left leg to P3.",
+            "parts_used": [
+              "P2",
+              "P5",
+              "P6"
+            ],
+            "tools_used": [
+              "Clamps",
+              "Combination square",
+              "Tape measure",
+              "Drill/driver"
+            ],
+            "safety": "Support the projecting cross-apron and clamp the assembly before driving screws.",
+            "tip": "Check P6's orientation against the layout; its free right end must face P4."
+          },
+          {
+            "n": 12,
+            "title": "Close the tablet frame in one straight movement",
+            "text": "Repeat the complete closure dry, then separate and apply glue only to the remaining P3-to-left-P2 and P6-to-P4 interfaces. Insert two 8 x 40 dowels at P3's left end and two 6 x 30 dowels at P6's right end, then translate the entire left subassembly toward the right frame so both interfaces seat together without twisting. After seating, install the remaining P3-to-left-leg frame corner kit from inside, driving its included two 4 x 16 screws into P3 and two 4 x 30 screws into P2. Clamp square for at least 60 minutes and leave unloaded for 24 hours.",
+            "parts_used": [
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7"
+            ],
+            "tools_used": [
+              "Clamps",
+              "Combination square",
+              "Tape measure",
+              "Drill/driver"
+            ],
+            "safety": "Use supports or a helper to keep both subassemblies level. Stop if closure binds; do not force misaligned dowels with clamps.",
+            "tip": "P5-to-P6 is already complete; no joint should need a second, perpendicular movement during closure."
+          },
+          {
+            "n": 13,
+            "title": "Attach the writing tablet",
+            "text": "Place P1 (L-shaped writing tablet) upside down on a padded bench and lower the inverted frame onto it, gluing bearing surfaces and inserting two 6 x 30 dowels at each of the three P2 leg tops. Install three tabletop angle kits on P3, three on P4, two on P5 and three on P6 at the joint-note spacing. From the open underside, drive each kit's included two 4 x 16 screws into its apron and two 4 x 20 screws into P1. Clamp for at least 60 minutes and allow 24 hours before moving the assembly.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7"
+            ],
+            "tools_used": [
+              "Clamps",
+              "Drill/driver",
+              "Drill bits and depth stops",
+              "Tape measure"
+            ],
+            "safety": "Use a helper to invert the frame and keep the tablet fully supported on padding.",
+            "tip": "Check pilot depths before every bracket; longer screws can break through the writing face."
+          },
+          {
+            "n": 14,
+            "title": "Link the chair and tablet frames",
+            "text": "With both assemblies upright and P12 still off, glue P8 (chair-to-tablet connector) between the right-front P9 leg and P7 (tablet lower right stretcher), using two 8 x 40 dowels at each end. Fit one frame corner kit between P8 and the right P11 side apron, driving its included two 4 x 16 screws into P11 from outside and two 4 x 30 screws into P8 from its rear face, without relying on glue at their edge contact. Clamp at the fixed spacing, keep all feet level and leave unloaded for 24 hours.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P7",
+              "P8",
+              "P9",
+              "P10",
+              "P11"
+            ],
+            "tools_used": [
+              "Clamps",
+              "Tape measure",
+              "Combination square",
+              "Drill/driver"
+            ],
+            "safety": "Use a helper to move the assemblies and lift by the frames, not by the tablet or connector.",
+            "tip": "Do not bend either frame into alignment with clamp pressure."
+          },
+          {
+            "n": 15,
+            "title": "Fasten the seat",
+            "text": "Glue P12 (rounded chair seat) to the four P9 leg tops and P10/P11 apron tops, using two 8 x 35 dowels at each leg. From above, tighten one M6 x 60 connector-bolt and cross-dowel kit per leg with its head flush before P13 is installed. With a helper, support the linked unit on its side and install two tabletop angle kits per P10 apron and per P11 apron from below, each using its included two 4 x 16 apron screws and two 4 x 20 seat screws at the joint-note spacing. Return upright and cure for 24 hours.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P8",
+              "P9",
+              "P10",
+              "P11",
+              "P12"
+            ],
+            "tools_used": [
+              "Hex keys",
+              "Drill/driver",
+              "Clamps",
+              "Drill bits and depth stops"
+            ],
+            "safety": "Use two people and padded supports; do not balance the linked assembly on the tablet edge.",
+            "tip": "Align cross-dowel threads before tightening a binding bolt."
+          },
+          {
+            "n": 16,
+            "title": "Blocked: install only released back reinforcement and tablet ties",
+            "text": "Do not perform this step from the present specification: the essential J21 reinforcement between P12 (rounded chair seat) and P13 (chair back posts), and J6 ties between P1 (L-shaped writing tablet) and P13, have no validated fitting design. The proposed two glued 8 x 35 dowels per post, embedded 20 into P13 and 15 into P12, are not a substitute for that reinforcement. This card must be replaced with the approved fitting identifiers, exact fastener sizes and counts, mounting coordinates, installation order, torque requirements, glue instructions and verified driving access before release. Keep P14 off until the approved hardware installation is complete.",
+            "parts_used": [
+              "P1",
+              "P12",
+              "P13"
+            ],
+            "tools_used": [],
+            "safety": "No occupant use, leaning on posts, improvised brackets or installation based on the withdrawn approximate fitting descriptions.",
+            "tip": "A professional design and validation package is still required; these revisions do not claim that work has been completed."
+          },
+          {
+            "n": 17,
+            "title": "Install the back panel after reinforcement approval",
+            "text": "Only after the released step 16 is complete and post glue has cured for at least 24 hours, glue P14 (rounded chair back panel) to both P13 posts. Drive three countersunk 4 x 40 wood screws per post from the rear, approximately 40, 125 and 210 above the panel bottom, at positions checked against the approved reinforcement hardware. Clamp for at least 60 minutes and wipe away squeeze-out.",
+            "parts_used": [
+              "P13",
+              "P14"
+            ],
+            "tools_used": [
+              "Clamps",
+              "Drill/driver",
+              "Drill bits and depth stops",
+              "Countersink bit",
+              "Tape measure"
+            ],
+            "safety": "Do not bypass step 16. Pilot-drill the posts and keep hands clear of the screw paths.",
+            "tip": "Use the fixed panel placement; its top extends above the posts."
+          },
+          {
+            "n": 18,
+            "title": "Finish and obtain final acceptance",
+            "text": "After all release conditions are satisfied, touch up the black frame and red P12/P14 finishes and apply approximately three coats of water-based polyurethane to both faces and all edges of P1. Allow approximately 4–6 hours between compatible coats and at least seven days before service, or the manufacturer's longer full-cure time. Inspect every joint and obtain the specified furniture-strength and stability assessment, including back loading and tablet-edge overturning, before classroom use. Home dead-weight checks alone do not establish an occupant load rating or resolve the unreleased fittings.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7",
+              "P8",
+              "P9",
+              "P10",
+              "P11",
+              "P12",
+              "P13",
+              "P14"
+            ],
+            "tools_used": [
+              "Brushes",
+              "Sanding block",
+              "Hex keys",
+              "Spanners",
+              "Inspection light"
+            ],
+            "safety": "Ventilate during finishing and exclude people from structural-test areas. Never stand on the chair, sit on the tablet or lift by the back or tablet; ordinary wall anti-tip straps are not a substitute for movable-chair stability testing.",
+            "tip": "Reinspect after initial service and periodically thereafter, using the approved maintenance requirements."
+          }
+        ],
+        "tools": [
+          {
+            "name": "Tape measure",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Combination square",
+            "required": true,
+            "alternative": "Accurate try square and straightedge"
+          },
+          {
+            "name": "Pencil",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Saw",
+            "required": true,
+            "alternative": "Fine-tooth handsaw and miter box instead of a powered miter saw"
+          },
+          {
+            "name": "Jigsaw",
+            "required": true,
+            "alternative": "Coping saw for profiles and a fine-tooth panel saw for straight cuts"
+          },
+          {
+            "name": "Drill/driver",
+            "required": true,
+            "alternative": "Hand drill with suitable bits, screwdriver and ratchet driver"
+          },
+          {
+            "name": "Drill bits and depth stops",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Countersink bit",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Doweling jig and transfer centers",
+            "required": true,
+            "alternative": "Accurate shop-made drilling jig with hardened guide bushings"
+          },
+          {
+            "name": "Clamps",
+            "required": true,
+            "alternative": "Bar clamps sized for both frames, plus small clamps for drilling"
+          },
+          {
+            "name": "Sanding block",
+            "required": true,
+            "alternative": "Optional random-orbit sander with dust extraction"
+          },
+          {
+            "name": "Hex keys",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Spanners",
+            "required": true,
+            "alternative": "Suitable sockets and ratchet"
+          },
+          {
+            "name": "Masking tape",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Brushes",
+            "required": true,
+            "alternative": "Small finish rollers with a brush for edges"
+          },
+          {
+            "name": "Inspection light",
+            "required": true,
+            "alternative": "Bright portable lamp"
+          },
+          {
+            "name": "Dust extractor",
+            "required": false,
+            "alternative": "Work outdoors where appropriate and use respiratory protection"
+          },
+          {
+            "name": "Eye protection, hearing protection and particulate respirator",
+            "required": true,
+            "alternative": null
+          }
+        ],
+        "safety_overview": [
+          "Wear eye protection for cutting and drilling, hearing protection around powered tools, and a suitable particulate respirator for wood and finish dust.",
+          "Clamp stock before cutting or drilling, support plywood offcuts, and use depth stops so screws and drills cannot emerge through seating or writing surfaces.",
+          "Use two people to move or invert the linked assembly; never lift it by the tablet, back panel or connector.",
+          "Back-post reinforcement and offset tablet ties require properly designed fabricated hardware. Obtain professional review before occupant use; this plan does not establish a chair load rating or classroom certification.",
+          "Provide ventilation for primer, enamel and polyurethane, follow product-label handling instructions, and allow full cure before use.",
+          "Do not stand on the chair or sit on the tablet. Because the overall height exceeds 750, assess overturning under tablet-edge and back loads; a wall anti-tip strap is inappropriate for normal movable-chair use, so stability must be verified rather than assumed."
+        ],
+        "est_hours": 32,
+        "est_cost": {
+          "low": 420,
+          "high": 780,
+          "currency": "USD"
+        },
+        "hardware": [
+          {
+            "name": "Countersunk wood screw",
+            "size": "4 x 40",
+            "qty": 6
+          },
+          {
+            "name": "Custom offset tablet-to-back-post tie bracket kit",
+            "size": "UNRELEASED: complete fabrication specification, mounting layout and included fasteners not established",
+            "qty": 2
+          },
+          {
+            "name": "Fluted hardwood dowel",
+            "size": "6 x 30",
+            "qty": 10
+          },
+          {
+            "name": "Fluted hardwood dowel",
+            "size": "8 x 40",
+            "qty": 34
+          },
+          {
+            "name": "Fluted hardwood dowel",
+            "size": "8 x 35",
+            "qty": 12
+          },
+          {
+            "name": "Furniture connector bolt and cross-dowel kit",
+            "size": "M6 x 60 countersunk bolt with 10 diameter x 16 cross dowel",
+            "qty": 4
+          },
+          {
+            "name": "Gusseted chair-back post reinforcement kit",
+            "size": "UNRELEASED: complete fabrication specification, mounting layout, capacity and included fasteners not established",
+            "qty": 2
+          },
+          {
+            "name": "Gusseted frame corner bracket kit with included screws",
+            "size": "40 x 40 x 20; two 4 x 16 rail screws and two 4 x 30 leg screws",
+            "qty": 14
+          },
+          {
+            "name": "Gusseted tabletop angle kit with included screws",
+            "size": "30 x 30 x 20; two 4 x 16 apron screws and two 4 x 20 tablet screws",
+            "qty": 19
+          }
+        ]
+      },
+      "review": {
+        "verdict": "fix",
+        "summary": "The woodworking sequence is generally workable, but this is explicitly an unreleased plan. Two essential structural fittings remain undefined, so a builder cannot purchase the hardware, complete assembly, or establish safe occupant use. Keep the step 1 construction hold until both connections are fully resolved.",
+        "issues": [
+          {
+            "severity": "blocker",
+            "category": "joint_strength",
+            "step": 16,
+            "joint_id": "J21",
+            "part_ids": [
+              "P9",
+              "P12",
+              "P13"
+            ],
+            "problem": "The back posts terminate on the seat rather than continuing into the rear legs. Backward leaning therefore depends on the unspecified J21 reinforcement to transfer bending loads through the seat into the rear-leg assembly. The two glued dowels per post do not establish that load path, and the listed reinforcement kit has no purchasable specification, fastening schedule, or established capacity.",
+            "fix": "Before releasing step 1, replace the UNRELEASED J21 entry with an approved, obtainable reinforcement assembly and complete installation drawings showing its connection to P13, P12 and the rear P9 legs. Specify every fastener, mounting hole, installation sequence and required access, and validate the connection for intended chair-back loads. Alternatively, redesign the rear legs and back posts as continuous members and revise the seat attachment and assembly instructions accordingly. Replace step 16 with executable instructions and update the hardware list."
+          },
+          {
+            "severity": "blocker",
+            "category": "hardware",
+            "step": 16,
+            "joint_id": "J6",
+            "part_ids": [
+              "P1",
+              "P13"
+            ],
+            "problem": "The required tablet-to-back-post ties are not defined parts: their shape, attachment details, fasteners and capacity are all unresolved. Consequently, neither sourcing nor actual drill access and occupant clearance can be verified. The lower P8 connector is not a documented substitute for these required upper ties.",
+            "fix": "Resolve J6 before any stock is cut. Supply either an identified commercial fitting with approved installation details or complete fabrication drawings and a qualified fabricator. Document the intended tablet loads, attachment capacity, exact fasteners and mounting positions. Verify driver access and entry, exit, thigh and torso clearance in a full-size mock-up. Update J6, the hardware list, step 4 drilling instructions and step 16 installation instructions; retain installation before P14 covers the posts."
+          }
+        ],
+        "model": "gpt-6.1-sol",
+        "latencyMs": 22955,
+        "tokens": 12595
+      },
+      "unverified": [
+        "[REVIEW blocker · joint_strength] Step 16 / J21 / P9+P12+P13: The back posts terminate on the seat rather than continuing into the rear legs. Backward leaning therefore depends on the unspecified J21 reinforcement to transfer bending loads through the seat into the rear-leg assembly. The two glued dowels per post do not establish that load path, and the listed reinforcement kit has no purchasable specification, fastening schedule, or established capacity. → Before releasing step 1, replace the UNRELEASED J21 entry with an approved, obtainable reinforcement assembly and complete installation drawings showing its connection to P13, P12 and the rear P9 legs. Specify every fastener, mounting hole, installation sequence and required access, and validate the connection for intended chair-back loads. Alternatively, redesign the rear legs and back posts as continuous members and revise the seat attachment and assembly instructions accordingly. Replace step 16 with executable instructions and update the hardware list.",
+        "[REVIEW blocker · hardware] Step 16 / J6 / P1+P13: The required tablet-to-back-post ties are not defined parts: their shape, attachment details, fasteners and capacity are all unresolved. Consequently, neither sourcing nor actual drill access and occupant clearance can be verified. The lower P8 connector is not a documented substitute for these required upper ties. → Resolve J6 before any stock is cut. Supply either an identified commercial fitting with approved installation details or complete fabrication drawings and a qualified fabricator. Document the intended tablet loads, attachment capacity, exact fasteners and mounting positions. Verify driver access and entry, exit, thigh and torso clearance in a full-size mock-up. Update J6, the hardware list, step 4 drilling instructions and step 16 installation instructions; retain installation before P14 covers the posts."
+      ],
+      "blockers": [
+        "[REVIEW blocker · joint_strength] The back posts terminate on the seat rather than continuing into the rear legs. Backward leaning therefore depends on the unspecified J21 reinforcement to transfer bending loads through the seat into the rear-leg assembly. The two glued dowels per post do not establish that load path, and the listed reinforcement kit has no purchasable specification, fastening schedule, or established capacity.",
+        "[REVIEW blocker · hardware] The required tablet-to-back-post ties are not defined parts: their shape, attachment details, fasteners and capacity are all unresolved. Consequently, neither sourcing nor actual drill access and occupant clearance can be verified. The lower P8 connector is not a documented substitute for these required upper ties."
+      ],
+      "warnings": [],
+      "tokens": 81222,
+      "costUsd": 0.3779859,
+      "calls": [
+        {
+          "stage": "stage1",
+          "model": "gpt-6.1-sol",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 3671,
+            "cachedTokens": 0,
+            "outputTokens": 4706,
+            "reasoningTokens": 998
+          },
+          "costUsd": 0.054402,
+          "latencyMs": 86187
+        },
+        {
+          "stage": "stage2",
+          "model": "gpt-6.1-sol",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 4867,
+            "cachedTokens": 1823,
+            "outputTokens": 11258,
+            "reasoningTokens": 2560
+          },
+          "costUsd": 0.1188503,
+          "latencyMs": 220089
+        },
+        {
+          "stage": "review",
+          "model": "gpt-6.1-sol",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 10860,
+            "cachedTokens": 0,
+            "outputTokens": 1868,
+            "reasoningTokens": 1021
+          },
+          "costUsd": 0.0404,
+          "latencyMs": 56648
+        },
+        {
+          "stage": "repair_joints",
+          "model": "gpt-6.1-sol",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 22184,
+            "cachedTokens": 1736,
+            "outputTokens": 9213,
+            "reasoningTokens": 152
+          },
+          "costUsd": 0.1331996,
+          "latencyMs": 135389
+        },
+        {
+          "stage": "review",
+          "model": "gpt-6.1-sol",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 11852,
+            "cachedTokens": 0,
+            "outputTokens": 743,
+            "reasoningTokens": 211
+          },
+          "costUsd": 0.031134,
+          "latencyMs": 22955
+        }
+      ],
+      "latencyMs": 521289,
+      "firstPlanMs": 306285,
+      "firstMetaMs": 30958,
+      "repairCount": 1,
+      "improved": true,
+      "escalated": null,
+      "reviewPending": false
+    }
+  }
+}

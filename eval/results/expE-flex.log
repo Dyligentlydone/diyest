@@ -1,0 +1,39 @@
+Running 8 regression plans (concurrency 4)…
+
+[review] gpt-6.1-sol failed (429 Flex does not have sufficient resources available to fulfill your request. You can try again later in case more resources are available, or change service_tier=default. Visit the docs at https://platform.openai.com/docs/guides/flex-processing to learn more.) — falling back to gpt-6-luna
+[review] gpt-6.1-sol failed (429 Flex does not have sufficient resources available to fulfill your request. You can try again later in case more resources are available, or change service_tier=default. Visit the docs at https://platform.openai.com/docs/guides/flex-processing to learn more.) — falling back to gpt-6-luna
+[review] gpt-6.1-sol failed (429 Flex does not have sufficient resources available to fulfill your request. You can try again later in case more resources are available, or change service_tier=default. Visit the docs at https://platform.openai.com/docs/guides/flex-processing to learn more.) — falling back to gpt-6-luna
+[review] gpt-6.1-sol failed (429 Flex does not have sufficient resources available to fulfill your request. You can try again later in case more resources are available, or change service_tier=default. Visit the docs at https://platform.openai.com/docs/guides/flex-processing to learn more.) — falling back to gpt-6-luna
+[review] gpt-6.1-sol failed (429 Flex does not have sufficient resources available to fulfill your request. You can try again later in case more resources are available, or change service_tier=default. Visit the docs at https://platform.openai.com/docs/guides/flex-processing to learn more.) — falling back to gpt-6-luna
+[review] gpt-6.1-sol failed (429 Flex does not have sufficient resources available to fulfill your request. You can try again later in case more resources are available, or change service_tier=default. Visit the docs at https://platform.openai.com/docs/guides/flex-processing to learn more.) — falling back to gpt-6-luna
+  done: coffee-table (258s, fix(pending))
+  done: birdhouse (265s, fix(pending))
+  done: chair (283s, fix(pending))
+[review] gpt-6.1-sol failed (429 Flex does not have sufficient resources available to fulfill your request. You can try again later in case more resources are available, or change service_tier=default. Visit the docs at https://platform.openai.com/docs/guides/flex-processing to learn more.) — falling back to gpt-6-luna
+[review] gpt-6.1-sol failed (429 Flex does not have sufficient resources available to fulfill your request. You can try again later in case more resources are available, or change service_tier=default. Visit the docs at https://platform.openai.com/docs/guides/flex-processing to learn more.) — falling back to gpt-6-luna
+  done: bench (397s, fix(pending))
+  done: not-buildable (3s, not_buildable)
+  done: step-stool (158s, fix(pending))
+[review] gpt-6.1-sol failed (429 Flex does not have sufficient resources available to fulfill your request. You can try again later in case more resources are available, or change service_tier=default. Visit the docs at https://platform.openai.com/docs/guides/flex-processing to learn more.) — falling back to gpt-6-luna
+  done: round-table (186s, fix(pending))
+[review] gpt-6.1-sol failed (429 Flex does not have sufficient resources available to fulfill your request. You can try again later in case more resources are available, or change service_tier=default. Visit the docs at https://platform.openai.com/docs/guides/flex-processing to learn more.) — falling back to gpt-6-luna
+  done: desk (320s, fix(pending))
+
+blueprint → test-results/blueprint-table-v14.svg
+
+name          | useful | partial | plan | final | calls           | tokens | cost$ | rep | esc | verdict    | blk | title
+---------------------------------------------------------------------------------------------------------------------------------------
+bench         |     56 |      69 |  171 |   397 | 4×6-luna        |  78072 | $0.027 |   1 |   - | fix(pending) |   0 | Rustic Outdoor Slatted Bench
+birdhouse     |     27 |      36 |  119 |   265 | 5×6-luna        |  58528 | $0.018 |   1 |   - | fix(pending) |   0 | Woodpecker Nesting Box
+chair         |     51 |      79 |  163 |   283 | 5×6-luna        |  78006 | $0.021 |   1 |   - | fix(pending) |   0 | Painted Windsor-Style Armchair
+coffee-table  |     38 |      49 |  121 |   258 | 5×6-luna        |  64077 | $0.019 |   1 |   - | fix(pending) |   0 | Walnut-Stained Console Table with Lower Shelf
+desk          |     69 |      80 |  180 |   320 | 5×6-luna        |  76537 | $0.023 |   1 |   - | fix(pending) |   0 | Classroom Desk and Chair Set
+not-buildable |      — |       — |    — |     3 |                 |      0 | $0.000 |   0 |   - | not_buildable |   0 | —
+round-table   |     36 |      43 |  103 |   186 | 4×6-luna        |  40000 | $0.012 |   1 |   - | fix(pending) |   0 | Round Side Table
+step-stool    |     27 |      34 |   98 |   158 | 4×6-luna        |  41018 | $0.011 |   1 |   - | fix(pending) |   0 | Two-Step Wooden Step Stool
+
+AVERAGES: useful 44s · full plan 136s · final 267s · cost $0.019 · tokens 62320
+MEDIANS:  useful 38s · full plan 121s · final 265s
+escalations: 0/7 · blocker-free finals: 7/7
+
+results → eval/results/regression-1792732725646.json

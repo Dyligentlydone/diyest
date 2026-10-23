@@ -1,0 +1,17 @@
+Running 3 regression plans (concurrency 3)…
+
+  done: chair (368s, fix)
+  done: bench (492s, fix)
+  done: desk (521s, fix)
+
+name          | useful | partial | plan | final | calls           | tokens | cost$ | rep | esc | verdict    | blk | title
+---------------------------------------------------------------------------------------------------------------------------------------
+bench         |     30 |     117 |  304 |   492 | 5×6.1-sol       |  76337 | $0.356 |   1 |   - | fix        |   0 | Slatted Timber Garden Bench with Armrests
+chair         |     30 |      89 |  231 |   368 | 5×6.1-sol       |  54496 | $0.240 |   1 |   - | fix        |   0 | Painted Spindle-Back Wooden Chair
+desk          |     31 |      86 |  306 |   521 | 5×6.1-sol       |  81222 | $0.378 |   1 |   - | fix        |   2 | Classroom Tablet-Arm Chair — Wood-Frame Adaptation
+
+AVERAGES: useful 30s · full plan 280s · final 461s · cost $0.325 · tokens 70685
+MEDIANS:  useful 30s · full plan 304s · final 492s
+escalations: 0/3 · blocker-free finals: 2/3
+
+results → eval/results/regression-1792732668007.json

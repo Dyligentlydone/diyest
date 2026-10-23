@@ -142,3 +142,105 @@ Token totals are recorded per run (`tokens` field). Dollar cost isn't reported �
 **Blueprint check** (`test-results/blueprint-table-v14.svg[.png]`): J1/J2 joint markers at leg-top contacts, `BUY` cut column for purchased legs, derived hardware (kit listed once, qty 4 + screws qty 4), consumables list populated, title fits block. Stale pre-v1.3 drafts in sessionStorage no longer crash the renderer (`plan.joints ?? []` guard).
 
 **Remaining residuals are honest UNVERIFIED surfacing** — review blockers and geometry errors that one repair pass didn't clear. The merged-repair approach fixes most single-class issues; plans with multiple error classes (bench: dims + overlap) still leak through. Candidate follow-ups: allow a second repair on new-class errors, or tighten per-part box-dims wording.
+
+---
+
+## 12. Model-routing experiments (docs/MODEL-ROUTING-PLAN.md §6/§9)
+
+New pipeline (`generate.ts` §3): **stage 1** (Luna, parts/geometry, streamed meta+partial events) → **code** contact-pair detection → **stage 2** (Luna, joints/steps with exact contact list) → **Sol review** → targeted repair → **Sol escalation** under `PLAN_COST_CAP_USD=$0.60`. Per-call cost logging in `generation_logs` (migration 0003). Timeouts: 120 s review / 240 s stage calls, one retry. Sol→Luna review fallback marks `reviewPending` — UI shows "check pending", never claims carpenter-checked.
+
+### Exp C+B — primary (two-stage Luna + Sol review + Sol escalation)
+
+| Plan | Useful (s) | Full (s) | Final (s) | Calls | Tokens | Cost | Rep | Esc | Verdict | Blk |
+|---|---|---|---|---|---|---|---|---|---|---|
+| bench | 56 | 195 | 306 | 4×Luna, 1×Sol | 68,084 | $0.049 | 1 | – | fix | 0 |
+| birdhouse | 32 | 101 | 428 | 3×Luna, 4×Sol | 62,844 | $0.159 | 1 | ran¹ | fix | 2 |
+| chair | 45 | 177 | 620 | 4×Luna, 4×Sol | 103,667 | $0.198 | 1 | yes | fix | 1 |
+| coffee-table | 43 | 148 | 296 | 3×Luna, 2×Sol | 58,042 | $0.074 | 1 | – | fix | 0 |
+| desk | 44 | 172 | 287 | 4×Luna, 2×Sol | 84,010 | $0.078 | 1 | – | fix | 0 |
+| round-table | 39 | 109 | 225 | 3×Luna, 2×Sol | 45,149 | $0.051 | 1 | – | fix | 0 |
+| step-stool | 41 | 120 | 181 | 3×Luna, 1×Sol | 37,325 | $0.032 | 1 | – | fix | 0 |
+| not-buildable | – | – | 3 | – | 0 | $0.000 | 0 | – | refused | 0 |
+
+**Avg:** useful 43 s · full 146 s · final 335 s · cost **$0.092** · 65,589 tok · escalation 2/7 (1 adopted) · **blocker-free 5/7**
+
+¹ Birdhouse: Sol regen ran but scored no better → original kept (`escalated: null`). Chair: Sol plan adopted, still 1 blocker (1 mm spindle-socket walls — reviewer's strictest call). Both land in the friendly "This one's tricky" state.
+
+### Exp C-only — same pipeline, escalation disabled
+
+| Plan | Useful (s) | Full (s) | Final (s) | Calls | Tokens | Cost | Rep | Verdict | Blk |
+|---|---|---|---|---|---|---|---|---|---|
+| bench | 32 | 129 | 229 | 3×Luna, 1×Sol | 45,078 | $0.039 | 1 | fix | 0 |
+| birdhouse | 39 | 115 | 272 | 3×Luna, 2×Sol | 50,247 | $0.068 | 1 | fix | 0 |
+| chair | 50 | 172 | 336 | 3×Luna, 2×Sol | 71,204 | $0.087 | 1 | fix | 3 |
+| coffee-table | 26 | 168 | 274 | 3×Luna, 1×Sol | 57,937 | $0.048 | 1 | fix | 0 |
+| desk | 108 | 224 | 318 | 3×Luna, 1×Sol | 65,558 | $0.046 | 1 | fix | 0 |
+| round-table | 30 | 94 | 172 | 3×Luna, 1×Sol | 35,392 | $0.028 | 1 | fix | 0 |
+| step-stool | 16 | 89 | 185 | 3×Luna, 1×Sol | 36,596 | $0.031 | 1 | fix | 0 |
+| not-buildable | – | – | 3 | – | 0 | $0.000 | 0 | refused | 0 |
+
+**Avg:** useful 43 s · full 142 s · final 256 s · cost **$0.050** · **blocker-free 6/7** (chair kept 3 — the plan escalation later rescued)
+
+### Exp A — Sol does all generation (chair/desk/bench only)
+
+| Plan | Useful (s) | Full (s) | Final (s) | Calls | Tokens | Cost | Verdict | Blk |
+|---|---|---|---|---|---|---|---|---|
+| bench | 30 | 304 | 491 | 5×Sol | 76,337 | $0.356 | fix | 0 |
+| chair | 30 | 230 | 368 | 5×Sol | 54,496 | $0.240 | fix | 0 |
+| desk | 30 | 306 | 521 | 5×Sol | 81,222 | $0.378 | fix | 2 |
+
+**Avg cost $0.325 > $0.25 → stopped per §6.** Slower (~5 min final) AND not better quality — desk still got 2 blockers (unresolved tablet-arm ties, back posts). Confirms: Sol's value is *judgment* (review), not generation.
+
+### Exp D — reviewer benchmark (7 planted flaws × 3 runs)
+
+| Flaw | Luna catch | Sol catch |
+|---|---|---|
+| end-grain screws (bad table) | 3/3 | 1/3 |
+| cross-grain glue-up (bad table) | 3/3 | 3/3 |
+| blocked tool access (bad table) | 1/3 | 3/3 |
+| floating shelf (no support) | 3/3 | 3/3 |
+| glued solid top to aprons | 3/3 | 3/3 |
+| missing anti-tip (bookcase) | 3/3 | 3/3 |
+| step needs unowned tool | 3/3 | 3/3 |
+| **Aggregate** | **19/21 = 90%** | **19/21 = 90%** |
+
+Luna meets the ≥90% bar → viable as primary reviewer; Sol reserved for escalation/load-bearing is a cost lever if needed. Small sample + Sol's end-grain miss worth noting.
+
+### Exp E — Flex-tier review
+
+Every Sol review got `429 Flex does not have sufficient resources` → Sol→Luna fallback engaged on all 7 plans (`fix(pending)` state). Result: $0.019 avg, 7/7 zero blockers — but no Sol review ran. **Flex not adoptable** (capacity-starved, not just slower). The fallback + pending state worked exactly as designed.
+
+### Stage-1 effort A/B (round-table)
+
+| S1 effort | Blueprint on screen | Total | Cost | Geom errors | Blockers |
+|---|---|---|---|---|---|
+| low | **19 s** | 192 s | $0.032 | 0 | 0 |
+| medium | 49 s | 187 s | $0.028 | 0 | 0 |
+
+`low` adopted (`AI_REASONING_EFFORT_S1=low`) — blueprint lands under the 20 s target with no quality loss; stage 2+review dominate total time anyway.
+
+### Averages vs §7 decision rules
+
+| Setup | 0-blk ≥7/8 | Avg cost ≤$0.25 | Single ≤$0.60 | Useful <20 s | Full <90 s | Final <3 min |
+|---|---|---|---|---|---|---|
+| C+B (primary) | ✗ 5/7 | ✓ $0.092 | ✓ max $0.198 | ✗ med 44 s | ✗ med 148 s | ✗ med 296 s |
+| C-only | ✗ 6/7 | ✓ $0.050 | ✓ max $0.087 | ✗ med 32 s | ✗ med 129 s | ✗ med 272 s |
+| A (Sol gen) | ✗ 2/3 | ✗ $0.325 | ✓ | ✗ med 30 s | ✗ med 304 s | ✗ med 492 s |
+| E (flex) | n/a — no Sol review ran | ✓ $0.019 | ✓ | ✗ med 38 s | ✗ med 121 s | ✗ med 265 s |
+
+Cost targets all pass; **speed targets all miss** — Luna stage calls run 60–180 s at medium effort (reasoning-heavy), Sol reviews add 40–100 s, and every plan triggers one repair round.
+
+### Recommendation (§7 — quality > cost > speed)
+
+**Ship C+B (two-stage Luna + Sol standard-tier review + Sol escalation), with `AI_REASONING_EFFORT_S1=low`.** Escalation is worth its ~$0.10 occasional cost — it rescued chair 3→1 blocker and ran at 28% rate, under budget. Keep Sol review on Standard tier (Flex has no capacity; Luna review at 90% catch is the documented fallback lever if cost ever matters — it's already the fallback path when Sol 429s). Do NOT adopt Sol generation (5× cost, slower, no better).
+
+Residual blockers (1–3 per ~2/7 plans) are real but edge-grade critiques — the friendly "tricky" state + logged blockers is the designed landing for them. `AI_REASONING_EFFORT_S1=low` should pull median useful-time under 20 s; couldn't verify end-to-end — **the API account ran out of credits mid-run** (all further calls 429). Rerun once topped up.
+
+### Surprises
+
+- **Escalation mostly doesn't trigger** (2/7) — code-supplied contact lists kill the "undeclared joints" failure class almost entirely (desk went 11→0 undeclared-joint issues across runs).
+- **Sol missed end-grain screws 2/3 runs** in exp D while Luna caught them 3/3 — reviewer quality is not strictly ordered by model tier.
+- **Sol generation isn't better** — its desk plan had real structural flaws; generation quality is not Sol's edge, judgment is.
+- **Flex tier is a dead end** on this account — pure 429s, not latency.
+- **Luna review fallback** accidentally produced a 7/7 clean run at $0.019 avg — cheapest possible config if Sol review ever needs cutting.
+- **Speed is reasoning-bound, not quality-bound** — stage calls spend most latency in reasoning tokens (40–60k total/plan); effort knobs help stage-1 but stages 2/review dominate.

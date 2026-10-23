@@ -1,2 +1,29 @@
 Running 8 regression plans (concurrency 4)…
 
+  done: bench (230s, fix)
+  done: birdhouse (272s, fix)
+  done: coffee-table (275s, fix)
+  done: chair (336s, fix)
+  done: not-buildable (3s, not_buildable)
+  done: round-table (173s, fix)
+  done: step-stool (185s, fix)
+  done: desk (318s, fix)
+
+blueprint → test-results/blueprint-table-v14.svg
+
+name          | useful | partial | plan | final | calls           | tokens | cost$ | rep | esc | verdict    | blk | title
+---------------------------------------------------------------------------------------------------------------------------------------
+bench         |     32 |      40 |  129 |   230 | 3×6-luna,1×6.1-sol |  45078 | $0.039 |   1 |   - | fix        |   0 | Rustic Outdoor Slatted Bench
+birdhouse     |     40 |      49 |  115 |   272 | 3×6-luna,2×6.1-sol |  50247 | $0.068 |   1 |   - | fix        |   0 | Woodpecker Nest Box
+chair         |     50 |      63 |  172 |   336 | 3×6-luna,2×6.1-sol |  71204 | $0.087 |   1 |   - | fix        |   3 | Painted Wooden Armchair
+coffee-table  |     26 |      36 |  169 |   275 | 3×6-luna,1×6.1-sol |  57937 | $0.048 |   1 |   - | fix        |   0 | Walnut-Style Console Table with Lower Shelf
+desk          |    108 |     120 |  224 |   318 | 3×6-luna,1×6.1-sol |  65558 | $0.046 |   1 |   - | fix        |   0 | School Chair-Desk Combo
+not-buildable |      — |       — |    — |     3 |                 |      0 | $0.000 |   0 |   - | not_buildable |   0 | —
+round-table   |     30 |      36 |   95 |   173 | 3×6-luna,1×6.1-sol |  35392 | $0.028 |   1 |   - | fix        |   0 | 600 mm Round Side Table
+step-stool    |     17 |      22 |   90 |   185 | 3×6-luna,1×6.1-sol |  36596 | $0.031 |   1 |   - | fix        |   0 | Two-Step Wooden Step Stool
+
+AVERAGES: useful 43s · full plan 142s · final 256s · cost $0.050 · tokens 51716
+MEDIANS:  useful 32s · full plan 129s · final 272s
+escalations: 0/7 · blocker-free finals: 6/7
+
+results → eval/results/regression-1792732132032.json

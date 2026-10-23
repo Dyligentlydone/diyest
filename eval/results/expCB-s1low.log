@@ -1,0 +1,13 @@
+Running 8 regression plans (concurrency 4)…
+
+  done: birdhouse (182s, exception)
+  done: desk (1s, exception)
+  done: step-stool (1s, exception)
+  done: round-table (1s, exception)
+  done: not-buildable (1s, exception)
+[review] gpt-6.1-sol failed (429 You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/.) — falling back to gpt-6-luna
+[review] fallback also failed (429 You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/.) — review pending
+  done: chair (231s, exception)
+[review] gpt-6.1-sol failed (429 You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/.) — falling back to gpt-6-luna
+[review] fallback also failed (429 You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/.) — review pending
+  done: coffee-table (248s, exception)

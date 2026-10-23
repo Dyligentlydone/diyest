@@ -453,9 +453,11 @@ export async function generatePlan(
   };
 
   const userMessage = buildPlanUserMessage({ ...req, imageCount: imageDataUrls.length });
+  const s1Env = process.env.AI_REASONING_EFFORT_S1;
   const s1Effort =
-    (process.env.AI_REASONING_EFFORT_S1 as "low" | "medium" | "high" | undefined) ??
-    reasoningEffort(model);
+    s1Env === "low" || s1Env === "high" || s1Env === "medium"
+      ? s1Env
+      : reasoningEffort(model);
 
   /**
    * Stage 1 + geometry check + stage 2 for a given model.
