@@ -1,0 +1,654 @@
+{
+  "image": "step-stool.jpg",
+  "request": {
+    "mode": "build",
+    "units": "metric",
+    "skillLevel": "intermediate",
+    "budget": "balanced",
+    "style": "match_photo",
+    "useMyToolsOnly": false,
+    "currency": "USD",
+    "imageCount": 1
+  },
+  "result": {
+    "title": "Two-Step Wooden Footstool",
+    "parts": 6,
+    "steps": 8,
+    "schemaValid": true,
+    "unverified": [
+      "Fastener \"Heavy-duty steel angle bracket, approximately 50 x 50 mm\" used by joints (×8) is missing from the hardware list"
+    ],
+    "warnings": [
+      "Hardware \"Heavy-duty steel angle brackets\" isn't referenced by any joint",
+      "Hardware \"Wood glue\" isn't referenced by any joint",
+      "Hardware \"Adhesive nonslip stair-tread strips\" isn't referenced by any joint"
+    ],
+    "repairCount": 1,
+    "review": null,
+    "plan": {
+      "title": "Two-Step Wooden Footstool",
+      "summary": "A sturdy two-step footstool inspired by the photo, with warm brown plywood treads and dark plywood side supports. Broad side panels and cross stretchers help resist racking. Use it only on a level, nonslip floor; it is not a ladder or a certified load-rated product.",
+      "difficulty": "intermediate",
+      "est_hours": 7,
+      "est_cost": {
+        "low": 100,
+        "high": 175,
+        "currency": "USD"
+      },
+      "overall_dimensions_mm": {
+        "width": 450,
+        "depth": 500,
+        "height": 330
+      },
+      "assumptions": [
+        "Dimensions are estimated from the photo because no target size or reference object was provided; check fit in the intended space before building.",
+        "The lower tread top is 175 mm above the floor and the upper tread top is 330 mm above the floor.",
+        "Side supports are 18 mm birch plywood; treads are 24 mm birch plywood; stretchers are hardwood with actual dimensions 30 x 70 mm.",
+        "The pictured dark supports and medium-brown treads are approximated with separate stains. The actual species, joinery, and load rating in the photo cannot be confirmed.",
+        "Treads are plywood to avoid solid-wood seasonal movement. They bear on the side-support ledges; metal angle brackets retain them mechanically.",
+        "This plan is for household footstool use, not standing on at height. It is not a certified load-rated product."
+      ],
+      "clarifying_questions": [
+        "What is the maximum user or load weight you need this stool to support?"
+      ],
+      "parts": [
+        {
+          "id": "P1",
+          "name": "Left side support",
+          "material": "18 mm birch plywood",
+          "stock": "sheet",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 500,
+          "width_mm": 330,
+          "thickness_mm": 18,
+          "qty": 1,
+          "placements": [
+            {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "sx": 18,
+              "sy": 330,
+              "sz": 500
+            }
+          ],
+          "profile": {
+            "type": "path",
+            "d": "M0 0 L500 0 L500 306 L250 306 L250 151 L0 151 Z",
+            "holes": null
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Side profile coordinates use depth as the 500 mm long direction and height as the 330 mm middle direction. The top edge forms lower and upper tread supports."
+        },
+        {
+          "id": "P2",
+          "name": "Right side support",
+          "material": "18 mm birch plywood",
+          "stock": "sheet",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 500,
+          "width_mm": 330,
+          "thickness_mm": 18,
+          "qty": 1,
+          "placements": [
+            {
+              "x": 432,
+              "y": 0,
+              "z": 0,
+              "sx": 18,
+              "sy": 330,
+              "sz": 500
+            }
+          ],
+          "profile": {
+            "type": "path",
+            "d": "M0 0 L500 0 L500 306 L250 306 L250 151 L0 151 Z",
+            "holes": null
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Same profile as P1; the inner faces are 414 mm apart."
+        },
+        {
+          "id": "P3",
+          "name": "Lower tread",
+          "material": "24 mm birch plywood",
+          "stock": "sheet",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 414,
+          "width_mm": 210,
+          "thickness_mm": 24,
+          "qty": 1,
+          "placements": [
+            {
+              "x": 18,
+              "y": 151,
+              "z": 20,
+              "sx": 414,
+              "sy": 24,
+              "sz": 210
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Top surface is at y=175 mm. It bears on the lower ledges of both side supports."
+        },
+        {
+          "id": "P4",
+          "name": "Upper tread",
+          "material": "24 mm birch plywood",
+          "stock": "sheet",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 414,
+          "width_mm": 210,
+          "thickness_mm": 24,
+          "qty": 1,
+          "placements": [
+            {
+              "x": 18,
+              "y": 306,
+              "z": 270,
+              "sx": 414,
+              "sy": 24,
+              "sz": 210
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Top surface is at y=330 mm. It bears on the upper ledges of both side supports."
+        },
+        {
+          "id": "P5",
+          "name": "Front cross stretcher",
+          "material": "Hardwood, 30 x 70 mm actual",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 414,
+          "width_mm": 70,
+          "thickness_mm": 30,
+          "qty": 1,
+          "placements": [
+            {
+              "x": 18,
+              "y": 35,
+              "z": 35,
+              "sx": 414,
+              "sy": 70,
+              "sz": 30
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Fits between the side supports, low at the front."
+        },
+        {
+          "id": "P6",
+          "name": "Rear cross stretcher",
+          "material": "Hardwood, 30 x 70 mm actual",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 414,
+          "width_mm": 70,
+          "thickness_mm": 30,
+          "qty": 1,
+          "placements": [
+            {
+              "x": 18,
+              "y": 35,
+              "z": 435,
+              "sx": 414,
+              "sy": 70,
+              "sz": 30
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Fits between the side supports, low at the rear."
+        }
+      ],
+      "joints": [
+        {
+          "id": "J1",
+          "part_a": "P1",
+          "part_b": "P5",
+          "count": 1,
+          "type": "metal_bracket",
+          "fasteners": [
+            {
+              "name": "Heavy-duty steel angle bracket, approximately 50 x 50 mm",
+              "size": "50 x 50 x 2 mm",
+              "qty_per_joint": 1
+            },
+            {
+              "name": "Pan-head wood screws",
+              "size": "#8 x 12 mm",
+              "qty_per_joint": 4
+            }
+          ],
+          "glue": false,
+          "drive_from": "From the inside of the assembly, through one bracket flange into the inner face of P1 and the other flange into the side face of P5.",
+          "step": 5,
+          "note": "The stretcher end bears against the plywood face. The bracket screws, not glue or screws into end grain, retain the joint; use two screws in each bracket flange."
+        },
+        {
+          "id": "J2",
+          "part_a": "P2",
+          "part_b": "P5",
+          "count": 1,
+          "type": "metal_bracket",
+          "fasteners": [
+            {
+              "name": "Heavy-duty steel angle bracket, approximately 50 x 50 mm",
+              "size": "50 x 50 x 2 mm",
+              "qty_per_joint": 1
+            },
+            {
+              "name": "Pan-head wood screws",
+              "size": "#8 x 12 mm",
+              "qty_per_joint": 4
+            }
+          ],
+          "glue": false,
+          "drive_from": "From the inside of the assembly, through one bracket flange into the inner face of P2 and the other flange into the side face of P5.",
+          "step": 5,
+          "note": "The stretcher end bears against the plywood face. The bracket connection is mechanically fastened and removable."
+        },
+        {
+          "id": "J3",
+          "part_a": "P1",
+          "part_b": "P6",
+          "count": 1,
+          "type": "metal_bracket",
+          "fasteners": [
+            {
+              "name": "Heavy-duty steel angle bracket, approximately 50 x 50 mm",
+              "size": "50 x 50 x 2 mm",
+              "qty_per_joint": 1
+            },
+            {
+              "name": "Pan-head wood screws",
+              "size": "#8 x 12 mm",
+              "qty_per_joint": 4
+            }
+          ],
+          "glue": false,
+          "drive_from": "From the inside of the assembly, through one bracket flange into the inner face of P1 and the other flange into the side face of P6.",
+          "step": 5,
+          "note": "The stretcher end bears against the plywood face. The bracket screws provide retention without relying on end-grain screw holding."
+        },
+        {
+          "id": "J4",
+          "part_a": "P2",
+          "part_b": "P6",
+          "count": 1,
+          "type": "metal_bracket",
+          "fasteners": [
+            {
+              "name": "Heavy-duty steel angle bracket, approximately 50 x 50 mm",
+              "size": "50 x 50 x 2 mm",
+              "qty_per_joint": 1
+            },
+            {
+              "name": "Pan-head wood screws",
+              "size": "#8 x 12 mm",
+              "qty_per_joint": 4
+            }
+          ],
+          "glue": false,
+          "drive_from": "From the inside of the assembly, through one bracket flange into the inner face of P2 and the other flange into the side face of P6.",
+          "step": 5,
+          "note": "The stretcher end bears against the plywood face. The bracket connection is mechanically fastened and removable."
+        },
+        {
+          "id": "J5",
+          "part_a": "P1",
+          "part_b": "P3",
+          "count": 1,
+          "type": "metal_bracket",
+          "fasteners": [
+            {
+              "name": "Heavy-duty steel angle bracket, approximately 50 x 50 mm",
+              "size": "50 x 50 x 2 mm",
+              "qty_per_joint": 1
+            },
+            {
+              "name": "Pan-head wood screws",
+              "size": "#8 x 12 mm",
+              "qty_per_joint": 4
+            }
+          ],
+          "glue": false,
+          "drive_from": "From below, through one bracket flange into the underside of P3 and the other flange into the inner face of P1; turn the frame onto its side if needed for straight driver access.",
+          "step": 6,
+          "note": "P3 bears on the ledge of P1; the bracket retains it against movement. Use short screws into plywood faces, not glue or screws into an edge."
+        },
+        {
+          "id": "J6",
+          "part_a": "P2",
+          "part_b": "P3",
+          "count": 1,
+          "type": "metal_bracket",
+          "fasteners": [
+            {
+              "name": "Heavy-duty steel angle bracket, approximately 50 x 50 mm",
+              "size": "50 x 50 x 2 mm",
+              "qty_per_joint": 1
+            },
+            {
+              "name": "Pan-head wood screws",
+              "size": "#8 x 12 mm",
+              "qty_per_joint": 4
+            }
+          ],
+          "glue": false,
+          "drive_from": "From below, through one bracket flange into the underside of P3 and the other flange into the inner face of P2; turn the frame onto its side if needed for straight driver access.",
+          "step": 6,
+          "note": "P3 bears on the ledge of P2; the bracket retains it against movement. Use short screws into plywood faces."
+        },
+        {
+          "id": "J7",
+          "part_a": "P1",
+          "part_b": "P4",
+          "count": 1,
+          "type": "metal_bracket",
+          "fasteners": [
+            {
+              "name": "Heavy-duty steel angle bracket, approximately 50 x 50 mm",
+              "size": "50 x 50 x 2 mm",
+              "qty_per_joint": 1
+            },
+            {
+              "name": "Pan-head wood screws",
+              "size": "#8 x 12 mm",
+              "qty_per_joint": 4
+            }
+          ],
+          "glue": false,
+          "drive_from": "From below, through one bracket flange into the underside of P4 and the other flange into the inner face of P1.",
+          "step": 7,
+          "note": "P4 bears on the ledge of P1; the bracket mechanically retains it. Use short screws into plywood faces."
+        },
+        {
+          "id": "J8",
+          "part_a": "P2",
+          "part_b": "P4",
+          "count": 1,
+          "type": "metal_bracket",
+          "fasteners": [
+            {
+              "name": "Heavy-duty steel angle bracket, approximately 50 x 50 mm",
+              "size": "50 x 50 x 2 mm",
+              "qty_per_joint": 1
+            },
+            {
+              "name": "Pan-head wood screws",
+              "size": "#8 x 12 mm",
+              "qty_per_joint": 4
+            }
+          ],
+          "glue": false,
+          "drive_from": "From below, through one bracket flange into the underside of P4 and the other flange into the inner face of P2.",
+          "step": 7,
+          "note": "P4 bears on the ledge of P2; the bracket mechanically retains it. Use short screws into plywood faces."
+        }
+      ],
+      "hardware": [
+        {
+          "name": "Heavy-duty steel angle brackets",
+          "size": "approximately 50 x 50 x 2 mm",
+          "qty": 8,
+          "notes": "One bracket at each side-support connection to each stretcher and tread; choose brackets with predrilled holes and rated for furniture use."
+        },
+        {
+          "name": "Pan-head wood screws",
+          "size": "#8 x 12 mm",
+          "qty": 32,
+          "notes": "Four screws per bracket: two in each flange. With a roughly 2 mm bracket, about 10 mm enters the receiving face; predrill and verify on offcuts that tips do not emerge."
+        },
+        {
+          "name": "Wood glue",
+          "size": null,
+          "qty": 1,
+          "notes": "One small bottle for no structural joints in this bracketed design; not needed for the removable metal-bracket connections."
+        },
+        {
+          "name": "Adhesive nonslip stair-tread strips",
+          "size": "approximately 25 x 180 mm per tread",
+          "qty": 2,
+          "notes": "One strip centered across each tread; apply only after finish has fully cured."
+        }
+      ],
+      "finishes": [
+        {
+          "name": "Dark wood stain for plywood supports",
+          "qty": "250 ml",
+          "notes": "Test on an offcut; follow the label and allow the stated drying time before applying clear coat."
+        },
+        {
+          "name": "Medium-brown wood stain for treads and stretchers",
+          "qty": "250 ml",
+          "notes": "Test on an offcut to coordinate with the dark supports."
+        },
+        {
+          "name": "Water-based clear polyurethane",
+          "qty": "500 ml",
+          "notes": "Apply 2–3 thin coats, lightly sanding between coats as directed. Let the final coat cure fully before applying nonslip strips."
+        }
+      ],
+      "tools": [
+        {
+          "name": "Tape measure, pencil, and combination square",
+          "required": true,
+          "alternative": null
+        },
+        {
+          "name": "Circular saw with straightedge guide",
+          "required": true,
+          "alternative": "Have the home center cut the plywood and board blanks; use a hand saw with a guide for small adjustments."
+        },
+        {
+          "name": "Jigsaw for the stepped side-support profiles",
+          "required": true,
+          "alternative": "Have a shop cut the profiles, or use a coping saw and take shallow, controlled cuts."
+        },
+        {
+          "name": "Drill/driver with pilot bit and depth stop",
+          "required": true,
+          "alternative": "Use a hand drill and manual screwdriver; a depth stop can be made with tape on the bit."
+        },
+        {
+          "name": "Clamps",
+          "required": true,
+          "alternative": "Use temporary scrap-wood cauls and carefully placed clamps; do not rely on hand pressure while driving screws."
+        },
+        {
+          "name": "Random-orbit sander and sanding discs",
+          "required": true,
+          "alternative": "Use sanding blocks and work through the grits by hand."
+        },
+        {
+          "name": "Paintbrushes or stain applicators",
+          "required": true,
+          "alternative": null
+        }
+      ],
+      "steps": [
+        {
+          "n": 1,
+          "title": "Measure and cut the blanks",
+          "text": "Cut P1 and P2 as 500 x 330 mm blanks from 18 mm plywood. Cut P3 and P4 to 414 x 210 mm from 24 mm plywood, and cut P5 and P6 to 414 mm long from 30 x 70 mm stock. Mark each piece and keep the plywood face grain aligned consistently.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5",
+            "P6"
+          ],
+          "tools_used": [
+            "Tape measure, pencil, and combination square",
+            "Circular saw with straightedge guide"
+          ],
+          "safety": "Wear eye and hearing protection and a dust mask. Support the work securely, keep hands clear of the blade, and unplug the saw before changing blades or making adjustments.",
+          "tip": "Confirm actual plywood thicknesses before cutting; the step heights and screw depth depend on them."
+        },
+        {
+          "n": 2,
+          "title": "Cut and smooth the side profiles",
+          "text": "On each side blank, mark the stair-step outline: the lower support is 151 mm high through the front 250 mm of depth, and the rear support rises to 306 mm. Cut both profiles to match, then sand the cut edges smooth and make the pair identical.",
+          "parts_used": [
+            "P1",
+            "P2"
+          ],
+          "tools_used": [
+            "Tape measure, pencil, and combination square",
+            "Jigsaw for the stepped side-support profiles",
+            "Random-orbit sander and sanding discs"
+          ],
+          "safety": "Wear eye protection and a dust mask. Clamp the plywood flat, keep the jigsaw base firmly on the work, and wait for the blade to stop before setting the tool down.",
+          "tip": "Cut the two panels separately unless your saw is rated to safely cut the combined thickness; use the first panel as a template for the second."
+        },
+        {
+          "n": 3,
+          "title": "Sand and mark the parts",
+          "text": "Sand exposed surfaces, edges, and corners, starting around 120 grit and finishing around 180 grit. Mark the inner faces of both side supports, their front and rear, and the tread locations. Dry-fit the pieces and confirm the side panels are parallel and the tread tops will be level.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5",
+            "P6"
+          ],
+          "tools_used": [
+            "Random-orbit sander and sanding discs",
+            "Tape measure, pencil, and combination square"
+          ],
+          "safety": "Wear a dust mask and eye protection while sanding; control dust or work in a well-ventilated area.",
+          "tip": "Do not round over the tread edges so much that the usable flat standing area becomes narrow."
+        },
+        {
+          "n": 4,
+          "title": "Mark bracket positions and predrill",
+          "text": "Mark one angle-bracket position at each end of P5 and P6, and one beneath each end of P3 and P4, keeping tread brackets away from the stretcher locations. Use the bracket holes as guides and drill pilot holes for #8 x 12 mm screws with a depth stop. Test a screw and bracket on offcuts first: it must get at least 6 mm of purchase in the receiving part without breaking through a visible face.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5",
+            "P6"
+          ],
+          "tools_used": [
+            "Drill/driver with pilot bit and depth stop",
+            "Tape measure, pencil, and combination square",
+            "Clamps"
+          ],
+          "safety": "Clamp each piece before drilling, wear eye protection, and keep hands away from the bit. Set the depth stop so the pilot hole cannot exit a visible face.",
+          "tip": "The short screws pass through the approximately 2 mm bracket and enter the wood by about 10 mm; do not substitute longer screws."
+        },
+        {
+          "n": 5,
+          "title": "Attach the cross stretchers",
+          "text": "Position P5 between the supports at y=35 mm and z=35 mm, and P6 at y=35 mm and z=435 mm. Fit one angle bracket at each stretcher end, with one flange on the inner face of the side support and one on the stretcher side face. Drive two #8 x 12 mm screws per bracket flange; do not use glue on these removable bracket joints.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P5",
+            "P6"
+          ],
+          "tools_used": [
+            "Drill/driver with pilot bit and depth stop",
+            "Clamps",
+            "Tape measure, pencil, and combination square"
+          ],
+          "safety": "Wear eye protection when driving screws and support the panels so they cannot tip. Keep fingers clear of the bracket and screw path.",
+          "tip": "Check that the supports remain parallel and square before tightening the final screws."
+        },
+        {
+          "n": 6,
+          "title": "Install the lower tread",
+          "text": "Place P3 between the supports at x=18 mm, y=151 mm, and z=20 mm, seated on both lower ledges. Fit one bracket beneath each end, positioned away from the front stretcher, and fasten each flange with two #8 x 12 mm screws. Turn the frame onto its side or otherwise support it so the driver has clear, straight access to every underside hole; do not use glue.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3"
+          ],
+          "tools_used": [
+            "Drill/driver with pilot bit and depth stop",
+            "Clamps",
+            "Tape measure, pencil, and combination square"
+          ],
+          "safety": "Wear eye protection while driving screws and secure the frame against rolling or tipping. Keep hands out of the screw path.",
+          "tip": "Check that the tread is centered, its front edge is 20 mm behind the front of the supports, and its top is 175 mm above the floor."
+        },
+        {
+          "n": 7,
+          "title": "Install the upper tread",
+          "text": "Place P4 between the supports at x=18 mm, y=306 mm, and z=270 mm, seated on both upper ledges. Fit one bracket beneath each end and fasten each flange with two #8 x 12 mm screws. Check that the tread is level and its top is 330 mm above the floor; do not use glue on the bracket joints.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P4"
+          ],
+          "tools_used": [
+            "Drill/driver with pilot bit and depth stop",
+            "Clamps",
+            "Tape measure, pencil, and combination square"
+          ],
+          "safety": "Wear eye protection while driving screws and use a helper if the assembly is awkward to handle.",
+          "tip": "Verify all bracket screws are snug without overtightening or stripping the plywood."
+        },
+        {
+          "n": 8,
+          "title": "Finish, add nonslip strips, and inspect",
+          "text": "Sand lightly, remove all dust, and stain the supports dark and the treads and stretchers medium brown. Apply 2–3 thin coats of clear polyurethane as directed, allowing each coat to dry as labeled and the final coat to cure fully. Apply one adhesive nonslip strip to each tread following its product instructions, then check every joint and place the stool on a flat nonslip floor before use.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5",
+            "P6"
+          ],
+          "tools_used": [
+            "Random-orbit sander and sanding discs",
+            "Paintbrushes or stain applicators"
+          ],
+          "safety": "Stains and clear coats can give off harmful vapors: follow label precautions, ventilate well, wear suitable gloves, and keep finishes away from flames. Dispose of oily rags safely according to the product label.",
+          "tip": "Do not use the stool if a tread moves, a panel cracks, a nonslip strip lifts, or the stool rocks; repair the cause before use."
+        }
+      ],
+      "safety_overview": [
+        "Wear eye protection during cutting, drilling, and screw driving; use hearing protection for power saws.",
+        "Wear a suitable dust mask and control dust when cutting plywood or sanding; ventilate when applying finishes.",
+        "Clamp work securely, use a drill depth stop, and keep hands clear of saw blades and drill bits.",
+        "Use the stool only on a level, nonslip floor; do not use it as a ladder or stand on its top edge.",
+        "Inspect the stool and nonslip strips before use; stop using it if a joint loosens, wood cracks, or the stool rocks."
+      ],
+      "load_bearing": true
+    }
+  },
+  "latencyMs": 216568,
+  "tokens": 48064,
+  "promptVersion": "plan.v1.3"
+}

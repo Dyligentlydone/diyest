@@ -1,0 +1,594 @@
+{
+  "image": "bookshelf.jpg",
+  "request": {
+    "mode": "build",
+    "units": "metric",
+    "skillLevel": "intermediate",
+    "budget": "balanced",
+    "style": "match_photo",
+    "useMyToolsOnly": false,
+    "currency": "USD",
+    "imageCount": 1
+  },
+  "result": {
+    "title": "Slim Coffee Table with Lower Shelf",
+    "parts": 6,
+    "steps": 6,
+    "schemaValid": true,
+    "unverified": [],
+    "warnings": [
+      "Hardware \"Small steel angle brackets\" isn't referenced by any joint",
+      "Hardware \"PVA wood glue\" isn't referenced by any joint"
+    ],
+    "repairCount": 1,
+    "review": {
+      "verdict": "pass",
+      "issues": [],
+      "tokens": 8251,
+      "latencyMs": 31386
+    },
+    "plan": {
+      "title": "Slim Coffee Table with Lower Shelf",
+      "summary": "Build a low rectangular coffee table with a pale painted plywood top, slim dark legs, and an inset lower shelf, echoing the table in the photo. The 18 mm plywood top and shelf are supported by a glued and pocket-screwed frame; metal angle brackets fasten the top to the legs.",
+      "difficulty": "intermediate",
+      "est_hours": 6,
+      "est_cost": {
+        "low": 95,
+        "high": 155,
+        "currency": "USD"
+      },
+      "overall_dimensions_mm": {
+        "width": 1000,
+        "depth": 500,
+        "height": 430
+      },
+      "assumptions": [
+        "The foreground table is estimated at 1000 mm wide, 500 mm deep, and 430 mm high using the photo's proportions; no reference object gives an exact scale.",
+        "The table is for ordinary coffee-table use, not for sitting or standing. The lower shelf is intended for light items.",
+        "Use 18 mm birch plywood for both horizontal panels and straight, actual 30 mm square pine for the legs. Pine or poplar is suitable for the aprons and shelf rails.",
+        "The photo appears to show slim dark legs and a pale blue-green top. Painted wood is a practical home-build approximation of the apparent metal legs and painted top.",
+        "The top is plywood, so seasonal wood movement across its width is not a concern. The lower shelf is also plywood.",
+        "All dimensions describe finished parts. Check actual lumber thickness before cutting; adjust mating parts if stock differs."
+      ],
+      "clarifying_questions": [],
+      "parts": [
+        {
+          "id": "P1",
+          "name": "Tabletop",
+          "material": "18 mm birch plywood, painted pale blue-green",
+          "stock": "sheet",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 1000,
+          "width_mm": 500,
+          "thickness_mm": 18,
+          "qty": 1,
+          "placements": [
+            {
+              "x": 0,
+              "y": 412,
+              "z": 0,
+              "sx": 1000,
+              "sy": 18,
+              "sz": 500
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Square-cornered rectangle; its underside rests directly on the four leg tops."
+        },
+        {
+          "id": "P2",
+          "name": "Leg",
+          "material": "30 mm square pine, painted matte black",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 412,
+          "width_mm": 30,
+          "thickness_mm": 30,
+          "qty": 4,
+          "placements": [
+            {
+              "x": 20,
+              "y": 0,
+              "z": 20,
+              "sx": 30,
+              "sy": 412,
+              "sz": 30
+            },
+            {
+              "x": 950,
+              "y": 0,
+              "z": 20,
+              "sx": 30,
+              "sy": 412,
+              "sz": 30
+            },
+            {
+              "x": 20,
+              "y": 0,
+              "z": 450,
+              "sx": 30,
+              "sy": 412,
+              "sz": 30
+            },
+            {
+              "x": 950,
+              "y": 0,
+              "z": 450,
+              "sx": 30,
+              "sy": 412,
+              "sz": 30
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Legs finish flush with the tabletop underside at y=412 mm. The tabletop overhangs the legs by 20 mm on each side."
+        },
+        {
+          "id": "P3",
+          "name": "Front and back apron",
+          "material": "18 mm pine or poplar board",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 900,
+          "width_mm": 70,
+          "thickness_mm": 18,
+          "qty": 2,
+          "placements": [
+            {
+              "x": 50,
+              "y": 332,
+              "z": 26,
+              "sx": 900,
+              "sy": 70,
+              "sz": 18
+            },
+            {
+              "x": 50,
+              "y": 332,
+              "z": 456,
+              "sx": 900,
+              "sy": 70,
+              "sz": 18
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "One apron runs along each long side. Keep its top 10 mm below the tabletop underside."
+        },
+        {
+          "id": "P4",
+          "name": "Left and right apron",
+          "material": "18 mm pine or poplar board",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 400,
+          "width_mm": 70,
+          "thickness_mm": 18,
+          "qty": 2,
+          "placements": [
+            {
+              "x": 26,
+              "y": 332,
+              "z": 50,
+              "sx": 18,
+              "sy": 70,
+              "sz": 400
+            },
+            {
+              "x": 956,
+              "y": 332,
+              "z": 50,
+              "sx": 18,
+              "sy": 70,
+              "sz": 400
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Short-side aprons fit between the front and back leg pairs and leave a 10 mm gap below the tabletop."
+        },
+        {
+          "id": "P5",
+          "name": "Lower shelf support rail",
+          "material": "18 mm pine or poplar board",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 900,
+          "width_mm": 30,
+          "thickness_mm": 18,
+          "qty": 2,
+          "placements": [
+            {
+              "x": 50,
+              "y": 125,
+              "z": 26,
+              "sx": 900,
+              "sy": 30,
+              "sz": 18
+            },
+            {
+              "x": 50,
+              "y": 125,
+              "z": 456,
+              "sx": 900,
+              "sy": 30,
+              "sz": 18
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Front and rear rails support the lower shelf. Their tops are at y=155 mm."
+        },
+        {
+          "id": "P6",
+          "name": "Lower shelf panel",
+          "material": "18 mm birch plywood, painted to match the tabletop",
+          "stock": "sheet",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 896,
+          "width_mm": 448,
+          "thickness_mm": 18,
+          "qty": 1,
+          "placements": [
+            {
+              "x": 52,
+              "y": 155,
+              "z": 26,
+              "sx": 896,
+              "sy": 18,
+              "sz": 448
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "The panel sits on the front and rear rails with a 2 mm clearance from each leg in width. Its ends extend to the outer edges of the rails."
+        }
+      ],
+      "joints": [
+        {
+          "id": "J1",
+          "part_a": "P3",
+          "part_b": "P2",
+          "count": 4,
+          "type": "pocket_screw",
+          "fasteners": [
+            {
+              "name": "Coarse-thread pocket-hole screw",
+              "size": "32 mm",
+              "qty_per_joint": 2
+            }
+          ],
+          "glue": true,
+          "drive_from": "From the inside face of each P3 apron into the side grain of the adjacent P2 leg; drill pocket holes before assembly.",
+          "step": 3,
+          "note": "Two screws per apron end; keep the apron end square to the leg and wipe away squeezed-out glue."
+        },
+        {
+          "id": "J2",
+          "part_a": "P4",
+          "part_b": "P2",
+          "count": 4,
+          "type": "pocket_screw",
+          "fasteners": [
+            {
+              "name": "Coarse-thread pocket-hole screw",
+              "size": "32 mm",
+              "qty_per_joint": 2
+            }
+          ],
+          "glue": true,
+          "drive_from": "From the inside face of each P4 apron into the side grain of the adjacent P2 leg; drill pocket holes before assembly.",
+          "step": 3,
+          "note": "Two screws per apron end. These fasteners enter leg side grain, not end grain."
+        },
+        {
+          "id": "J3",
+          "part_a": "P5",
+          "part_b": "P2",
+          "count": 4,
+          "type": "pocket_screw",
+          "fasteners": [
+            {
+              "name": "Coarse-thread pocket-hole screw",
+              "size": "32 mm",
+              "qty_per_joint": 2
+            }
+          ],
+          "glue": true,
+          "drive_from": "From the inside face of each P5 rail into the side grain of the adjacent P2 leg; drill pocket holes before assembly.",
+          "step": 4,
+          "note": "Two screws at each rail end. Set the rail tops level at y=155 mm."
+        },
+        {
+          "id": "J4",
+          "part_a": "P6",
+          "part_b": "P5",
+          "count": 2,
+          "type": "glue_screw",
+          "fasteners": [
+            {
+              "name": "Wood screw",
+              "size": "35 mm, #8",
+              "qty_per_joint": 4
+            }
+          ],
+          "glue": true,
+          "drive_from": "Down through the top face of P6 into each P5 rail, with the table upright and the tabletop not yet installed; countersink the panel first.",
+          "step": 4,
+          "note": "Use four screws per rail, spaced evenly. The screws pass through the 18 mm plywood and enter the 30 mm-high rail; countersink heads so they sit flush."
+        },
+        {
+          "id": "J5",
+          "part_a": "P1",
+          "part_b": "P2",
+          "count": 4,
+          "type": "metal_bracket",
+          "fasteners": [
+            {
+              "name": "Angle-bracket screw into leg",
+              "size": "20 mm, #8",
+              "qty_per_joint": 2
+            },
+            {
+              "name": "Angle-bracket screw into plywood top",
+              "size": "12 mm, #8",
+              "qty_per_joint": 2
+            }
+          ],
+          "glue": false,
+          "drive_from": "From underneath the tabletop, through one small angle bracket at each leg; install the brackets with the tabletop upside down and the apron frame clear of the driver.",
+          "step": 5,
+          "note": "Use one 25 mm angle bracket per leg. The plywood top is stable and does not need a movement allowance; do not glue it to the legs."
+        }
+      ],
+      "hardware": [
+        {
+          "name": "Coarse-thread pocket-hole screw",
+          "size": "32 mm",
+          "qty": 24,
+          "notes": "For apron-to-leg and lower-rail-to-leg joints; 2 screws at each of 12 rail/apron ends."
+        },
+        {
+          "name": "Wood screw",
+          "size": "35 mm, #8",
+          "qty": 8,
+          "notes": "For fastening the lower plywood shelf down into the two support rails; countersink the shelf face."
+        },
+        {
+          "name": "Small steel angle brackets",
+          "size": "25 mm legs, approximately 2 mm thick",
+          "qty": 4,
+          "notes": "One bracket at each leg to secure the tabletop."
+        },
+        {
+          "name": "Angle-bracket screw into leg",
+          "size": "20 mm, #8",
+          "qty": 8,
+          "notes": "Two per bracket into leg side grain."
+        },
+        {
+          "name": "Angle-bracket screw into plywood top",
+          "size": "12 mm, #8",
+          "qty": 8,
+          "notes": "Two per bracket into the underside of the 18 mm plywood top."
+        },
+        {
+          "name": "PVA wood glue",
+          "size": null,
+          "qty": 1,
+          "notes": "One small bottle; use at glued wood-to-wood frame and shelf joints."
+        }
+      ],
+      "finishes": [
+        {
+          "name": "Water-based interior paint, pale blue-green",
+          "qty": "1 small can",
+          "notes": "For the tabletop and lower shelf; apply thin coats and follow the label for recoat and cure times."
+        },
+        {
+          "name": "Water-based interior paint, matte black",
+          "qty": "1 small can",
+          "notes": "For the legs and apron frame to echo the photo's dark, slim base."
+        },
+        {
+          "name": "Water-based clear topcoat",
+          "qty": "1 small can",
+          "notes": "Optional protection over the painted tabletop; use a compatible product and allow the labeled cure time before use."
+        }
+      ],
+      "tools": [
+        {
+          "name": "Tape measure and pencil",
+          "required": true,
+          "alternative": null
+        },
+        {
+          "name": "Combination square",
+          "required": true,
+          "alternative": "A straight scrap with a carefully checked 90-degree corner."
+        },
+        {
+          "name": "Circular saw with straightedge guide",
+          "required": true,
+          "alternative": "Have the home center cut plywood panels, then use a hand saw with a clamped guide for lumber."
+        },
+        {
+          "name": "Miter saw or handsaw with a square cutting guide",
+          "required": true,
+          "alternative": "A handsaw and miter box."
+        },
+        {
+          "name": "Drill/driver with bits and countersink bit",
+          "required": true,
+          "alternative": "A hand drill and manual screwdriver; work slowly and keep pilot holes straight."
+        },
+        {
+          "name": "Pocket-hole jig and bit",
+          "required": true,
+          "alternative": "Use a doweling jig with 8 mm dowels, or have a shop cut the pocket holes; retain the same glue-and-screw joint strength."
+        },
+        {
+          "name": "Random-orbit sander and 120/180-grit discs",
+          "required": true,
+          "alternative": "Sanding block and sheets of 120- and 180-grit sandpaper."
+        },
+        {
+          "name": "Clamps",
+          "required": true,
+          "alternative": "Temporary strap clamps or carefully placed weights on a flat surface."
+        },
+        {
+          "name": "Paint brushes or small foam rollers",
+          "required": true,
+          "alternative": null
+        }
+      ],
+      "steps": [
+        {
+          "n": 1,
+          "title": "Cut and label the pieces",
+          "text": "Cut P1, P2, P3, P4, P5, and P6 to the listed dimensions. Mark each apron and rail by position, then dry-fit the frame parts around the legs. Keep the plywood panels flat and protect their faces from scratches.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5",
+            "P6"
+          ],
+          "tools_used": [
+            "Tape measure and pencil",
+            "Combination square",
+            "Circular saw with straightedge guide",
+            "Miter saw or handsaw with a square cutting guide"
+          ],
+          "safety": "Wear eye and hearing protection when cutting. Support sheet goods fully, keep hands clear of the blade, and unplug or remove the battery before changing blades.",
+          "tip": "Measure each matching pair together and label front, back, left, and right before cutting."
+        },
+        {
+          "n": 2,
+          "title": "Sand and drill pocket holes",
+          "text": "Sand the cut edges of all parts with 120 grit, then smooth visible faces with 180 grit. Drill two pocket holes near each end of P3, P4, and P5, following the jig setting for 18 mm stock. Do this before assembling the frame so every hole remains reachable.",
+          "parts_used": [
+            "P2",
+            "P3",
+            "P4",
+            "P5",
+            "P1",
+            "P6"
+          ],
+          "tools_used": [
+            "Random-orbit sander and 120/180-grit discs",
+            "Pocket-hole jig and bit",
+            "Drill/driver with bits and countersink bit"
+          ],
+          "safety": "Wear eye protection and a dust mask while drilling and sanding; clamp small parts securely and keep hands away from the bit.",
+          "tip": "Make a test pocket hole in scrap first and confirm the screw tip will not break through the outside face of the leg."
+        },
+        {
+          "n": 3,
+          "title": "Assemble the upper apron frame",
+          "text": "Lay out the four P2 legs and fit P3 and P4 between them at y=332 mm, leaving their tops 10 mm below the tabletop underside. Apply a thin coat of glue at each contact, clamp the corners square, and drive two 32 mm pocket screws at every apron end from the apron inside faces into the leg side grain. Check both diagonals before the glue sets.",
+          "parts_used": [
+            "P2",
+            "P3",
+            "P4"
+          ],
+          "tools_used": [
+            "Drill/driver with bits and countersink bit",
+            "Clamps",
+            "Combination square"
+          ],
+          "safety": "Wear eye protection while driving screws; keep fingers clear of the drill and support the frame so it cannot tip.",
+          "tip": "Do not overtighten pocket screws; snug them firmly after checking the frame is square."
+        },
+        {
+          "n": 4,
+          "title": "Install the shelf rails and lower panel",
+          "text": "Fit the two P5 rails between the leg pairs at y=125 mm, with their tops at y=155 mm. Glue the ends, clamp them square, and drive two 32 mm pocket screws at each rail end from the inside faces into the legs. Set P6 on the rails, apply a thin bead of glue, then drive four 35 mm screws per rail downward through countersunk holes in the panel into the rails.",
+          "parts_used": [
+            "P2",
+            "P5",
+            "P6"
+          ],
+          "tools_used": [
+            "Drill/driver with bits and countersink bit",
+            "Clamps",
+            "Combination square"
+          ],
+          "safety": "Wear eye protection while drilling and driving screws. Support the table frame securely and keep the driver bit aligned so it does not slip across the shelf face.",
+          "tip": "Check that P6 has about 2 mm clearance from the legs at both ends before fastening it."
+        },
+        {
+          "n": 5,
+          "title": "Fasten the tabletop",
+          "text": "Place P1 face down on a padded, flat surface and carefully turn the frame upside down on it. Center the frame so the tabletop overhang is 20 mm on every side. Attach one 25 mm angle bracket at each leg with two 20 mm screws into the leg and two 12 mm screws into the plywood underside; do not glue this joint.",
+          "parts_used": [
+            "P1",
+            "P2"
+          ],
+          "tools_used": [
+            "Drill/driver with bits and countersink bit",
+            "Tape measure and pencil"
+          ],
+          "safety": "Use a helper to turn the frame onto the tabletop, and protect the tabletop finish surface with a clean blanket or cardboard.",
+          "tip": "Confirm the 20 mm overhang on all four edges before driving any bracket screws."
+        },
+        {
+          "n": 6,
+          "title": "Finish and allow the table to cure",
+          "text": "Fill visible screw holes if desired, then lightly sand any rough edges and remove all dust. Apply black paint to the legs and apron frame and pale blue-green paint to the tabletop and shelf, following the product labels for coats and recoat times. Let the finish cure fully before putting objects on the table.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5",
+            "P6"
+          ],
+          "tools_used": [
+            "Random-orbit sander and 120/180-grit discs",
+            "Paint brushes or small foam rollers"
+          ],
+          "safety": "Wear gloves and work in a well-ventilated area when using paint or topcoat; keep finishes away from flames and follow the product label.",
+          "tip": "Use thin coats to avoid drips on the tabletop edges and around the legs."
+        }
+      ],
+      "safety_overview": [
+        "Wear eye protection for cutting, drilling, and screw driving; wear hearing protection around powered saws.",
+        "Use a dust mask when sanding, and work with good ventilation when painting or applying clear coat.",
+        "Clamp work securely, keep hands clear of blades and bits, and disconnect power before changing a blade or bit.",
+        "Use a helper to turn the assembled frame onto the tabletop; the frame can be awkward to handle."
+      ],
+      "load_bearing": false
+    }
+  },
+  "latencyMs": 219250,
+  "tokens": 45805,
+  "promptVersion": "plan.v1.3"
+}

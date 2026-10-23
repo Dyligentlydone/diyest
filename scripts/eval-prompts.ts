@@ -1,7 +1,11 @@
 /**
  * Prompt eval harness (brief §7).
  *
- *   npx tsx --env-file=.env.local scripts/eval-prompts.ts
+ *   npx tsx --env-file=.env.local scripts/eval-prompts.ts [--concurrency N] [--skip-existing]
+ *
+ * --concurrency N  run up to N images at once (default 1 — generation+review
+ *                  is several model calls, so 3–4 roughly quarters wall time)
+ * --skip-existing  skip images that already have a result in eval/results/
  *
  * Drop test photos in eval/images/ (jpg/png/webp). Optionally add a sidecar
  * <name>.json next to an image to override the request:
@@ -37,15 +41,31 @@ async function main() {
   }
   mkdirSync(RESULTS_DIR, { recursive: true });
 
-  const images = readdirSync(IMAGES_DIR).filter((f) =>
+  const concurrency = Math.max(
+    1,
+    parseInt(process.argv[process.argv.indexOf("--concurrency") + 1] || "1", 10) || 1
+  );
+  const skipExisting = process.argv.includes("--skip-existing");
+
+  let images = readdirSync(IMAGES_DIR).filter((f) =>
     EXTS.has(extname(f).toLowerCase())
   );
   if (!images.length) {
     console.error(`${IMAGES_DIR}/ is empty — add test photos first.`);
     process.exit(1);
   }
+  if (skipExisting) {
+    const done = new Set(
+      readdirSync(RESULTS_DIR).map((f) => f.split("-")[0])
+    );
+    images = images.filter((f) => !done.has(basename(f, extname(f))));
+    if (!images.length) {
+      console.log("All images already have results — nothing to do.");
+      return;
+    }
+  }
 
-  for (const file of images) {
+  const runOne = async (file: string) => {
     const name = basename(file, extname(file));
     const sidecar = join(IMAGES_DIR, `${name}.json`);
     const overrides = existsSync(sidecar)
@@ -97,7 +117,15 @@ async function main() {
       const outFile = join(RESULTS_DIR, `${name}-${Date.now()}-error.json`);
       writeFileSync(outFile, JSON.stringify({ image: file, error: String(e) }, null, 2));
     }
-  }
+  };
+
+  // tiny worker pool
+  const queue = [...images];
+  const workers = Array.from({ length: Math.min(concurrency, queue.length) }, async () => {
+    let f: string | undefined;
+    while ((f = queue.shift())) await runOne(f);
+  });
+  await Promise.all(workers);
 }
 
 main();

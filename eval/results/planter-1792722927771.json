@@ -1,0 +1,597 @@
+{
+  "image": "planter.jpg",
+  "request": {
+    "mode": "build",
+    "units": "metric",
+    "skillLevel": "intermediate",
+    "budget": "balanced",
+    "style": "match_photo",
+    "useMyToolsOnly": false,
+    "currency": "USD",
+    "imageCount": 1
+  },
+  "result": {
+    "title": "Horizontal Wood-Grain Privacy Fence Panel",
+    "parts": 3,
+    "steps": 7,
+    "schemaValid": true,
+    "unverified": [
+      "[REVIEW major · tool_access] Step 2 / J3 / P3: The step requires 6.5 × 14 mm slots, but the listed drill/driver and bits cannot make a clean slot by themselves. The plan does not specify a tool or a method to connect and smooth the slot ends. → Specify drilling the two slot-end holes, connecting them with a jigsaw or oscillating tool, and smoothing with a file; add those tools to the tool list. Alternatively, use a suitable slot-cutting method and state it explicitly."
+    ],
+    "warnings": [
+      "Hardware \"Exterior-rated galvanized angle brackets\" isn't referenced by any joint",
+      "Hardware \"Exterior-rated washer-head deck screws for board-to-post contacts\" isn't referenced by any joint",
+      "Part P3: geometry could not be verified for overlap",
+      "Review tip (step_order): Finishing happens after assembly, so the rear faces of P3 and surfaces of P2 concealed by the boards cannot be coated. Those surfaces may still be exposed to moisture through the gaps. → Prime and finish all faces, edges, and cut ends of P2 and P3 before assembly, then touch up the fastener and bracket areas after installation."
+    ],
+    "repairCount": 2,
+    "review": {
+      "verdict": "fix",
+      "issues": [
+        {
+          "severity": "major",
+          "category": "tool_access",
+          "step": 2,
+          "joint_id": "J3",
+          "part_ids": [
+            "P3"
+          ],
+          "problem": "The step requires 6.5 × 14 mm slots, but the listed drill/driver and bits cannot make a clean slot by themselves. The plan does not specify a tool or a method to connect and smooth the slot ends.",
+          "fix": "Specify drilling the two slot-end holes, connecting them with a jigsaw or oscillating tool, and smoothing with a file; add those tools to the tool list. Alternatively, use a suitable slot-cutting method and state it explicitly."
+        },
+        {
+          "severity": "minor",
+          "category": "step_order",
+          "step": 7,
+          "joint_id": null,
+          "part_ids": [
+            "P2",
+            "P3"
+          ],
+          "problem": "Finishing happens after assembly, so the rear faces of P3 and surfaces of P2 concealed by the boards cannot be coated. Those surfaces may still be exposed to moisture through the gaps.",
+          "fix": "Prime and finish all faces, edges, and cut ends of P2 and P3 before assembly, then touch up the fastener and bracket areas after installation."
+        }
+      ],
+      "tokens": 11751,
+      "latencyMs": 56067
+    },
+    "plan": {
+      "title": "Horizontal Wood-Grain Privacy Fence Panel",
+      "summary": "Build a 1800 × 1800 mm horizontal-plank cladding section inspired by the photo, fitted to two existing, adequately anchored 89 × 89 mm fence posts. Pressure-treated pine boards with narrow shadow gaps approximate the horizontal look, but will not reproduce the photo’s embossed vinyl texture. Check local wind, soil, and code requirements before installation.",
+      "difficulty": "intermediate",
+      "est_hours": 9,
+      "est_cost": {
+        "low": 180,
+        "high": 300,
+        "currency": "USD"
+      },
+      "overall_dimensions_mm": {
+        "width": 1800,
+        "depth": 108,
+        "height": 1800
+      },
+      "assumptions": [
+        "The image is a close-up of a horizontal-plank privacy fence; its full size and construction are not visible, so this is an estimated 1800 mm-wide by 1800 mm-high cladding section.",
+        "The section is designed for two existing, sound, adequately anchored 89 × 89 mm posts at the shown positions. The posts are included as reference geometry but are not part of the cut list or estimated material cost.",
+        "The 108 mm depth includes the 19 mm front boards and the 89 mm-deep existing posts behind them.",
+        "Use exterior-rated pressure-treated pine. The 1x8 boards are ripped to 178 mm actual height; the photo's embossed vinyl grain is approximated with painted wood.",
+        "Rails are installed behind every face board, so each board bears on a rail. The 2 mm gaps between boards allow drainage and movement; pressure-treated lumber may shrink as it dries.",
+        "Use exterior-rated fasteners and finish suitable for pressure-treated lumber, following the coating maker's cure instructions.",
+        "Confirm that the existing posts and their foundations are suitable for the additional near-solid fence area under local wind, soil, and code requirements. Do not build or install this section if the posts are not adequately anchored."
+      ],
+      "clarifying_questions": [
+        "Are the existing posts sound, spaced as shown, and adequately anchored for the local wind and soil conditions?"
+      ],
+      "parts": [
+        {
+          "id": "P1",
+          "name": "Existing vertical fence posts (reference geometry; not supplied)",
+          "material": "Existing pressure-treated pine, actual 89 × 89 mm",
+          "stock": "board",
+          "source": "buy",
+          "buy_spec": "Existing sound, anchored 89 × 89 mm fence posts; not included in this panel's purchase list",
+          "length_mm": 1800,
+          "width_mm": 89,
+          "thickness_mm": 89,
+          "qty": 2,
+          "placements": [
+            {
+              "x": 0,
+              "y": 0,
+              "z": 19,
+              "sx": 89,
+              "sy": 1800,
+              "sz": 89
+            },
+            {
+              "x": 1711,
+              "y": 0,
+              "z": 19,
+              "sx": 89,
+              "sy": 1800,
+              "sz": 89
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Reference geometry for posts already anchored on site. Verify their soundness, spacing, anchorage, and capacity before construction; their below-ground portions are outside this section's dimensions."
+        },
+        {
+          "id": "P2",
+          "name": "Horizontal backing rails",
+          "material": "Pressure-treated pine, actual 38 × 89 mm",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 1622,
+          "width_mm": 89,
+          "thickness_mm": 38,
+          "qty": 10,
+          "placements": [
+            {
+              "x": 89,
+              "y": 45,
+              "z": 19,
+              "sx": 1622,
+              "sy": 89,
+              "sz": 38
+            },
+            {
+              "x": 89,
+              "y": 225,
+              "z": 19,
+              "sx": 1622,
+              "sy": 89,
+              "sz": 38
+            },
+            {
+              "x": 89,
+              "y": 405,
+              "z": 19,
+              "sx": 1622,
+              "sy": 89,
+              "sz": 38
+            },
+            {
+              "x": 89,
+              "y": 585,
+              "z": 19,
+              "sx": 1622,
+              "sy": 89,
+              "sz": 38
+            },
+            {
+              "x": 89,
+              "y": 765,
+              "z": 19,
+              "sx": 1622,
+              "sy": 89,
+              "sz": 38
+            },
+            {
+              "x": 89,
+              "y": 945,
+              "z": 19,
+              "sx": 1622,
+              "sy": 89,
+              "sz": 38
+            },
+            {
+              "x": 89,
+              "y": 1125,
+              "z": 19,
+              "sx": 1622,
+              "sy": 89,
+              "sz": 38
+            },
+            {
+              "x": 89,
+              "y": 1305,
+              "z": 19,
+              "sx": 1622,
+              "sy": 89,
+              "sz": 38
+            },
+            {
+              "x": 89,
+              "y": 1485,
+              "z": 19,
+              "sx": 1622,
+              "sy": 89,
+              "sz": 38
+            },
+            {
+              "x": 89,
+              "y": 1665,
+              "z": 19,
+              "sx": 1622,
+              "sy": 89,
+              "sz": 38
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Each rail fits between the existing posts and sits behind one face board. Fasten rail ends to the post faces with exterior-rated angle brackets."
+        },
+        {
+          "id": "P3",
+          "name": "Horizontal face boards with post-fastener slots",
+          "material": "Pressure-treated pine, actual 19 mm thick, ripped to 178 mm high",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 1800,
+          "width_mm": 178,
+          "thickness_mm": 19,
+          "qty": 10,
+          "placements": [
+            {
+              "x": 0,
+              "y": 1,
+              "z": 0,
+              "sx": 1800,
+              "sy": 178,
+              "sz": 19
+            },
+            {
+              "x": 0,
+              "y": 181,
+              "z": 0,
+              "sx": 1800,
+              "sy": 178,
+              "sz": 19
+            },
+            {
+              "x": 0,
+              "y": 361,
+              "z": 0,
+              "sx": 1800,
+              "sy": 178,
+              "sz": 19
+            },
+            {
+              "x": 0,
+              "y": 541,
+              "z": 0,
+              "sx": 1800,
+              "sy": 178,
+              "sz": 19
+            },
+            {
+              "x": 0,
+              "y": 721,
+              "z": 0,
+              "sx": 1800,
+              "sy": 178,
+              "sz": 19
+            },
+            {
+              "x": 0,
+              "y": 901,
+              "z": 0,
+              "sx": 1800,
+              "sy": 178,
+              "sz": 19
+            },
+            {
+              "x": 0,
+              "y": 1081,
+              "z": 0,
+              "sx": 1800,
+              "sy": 178,
+              "sz": 19
+            },
+            {
+              "x": 0,
+              "y": 1261,
+              "z": 0,
+              "sx": 1800,
+              "sy": 178,
+              "sz": 19
+            },
+            {
+              "x": 0,
+              "y": 1441,
+              "z": 0,
+              "sx": 1800,
+              "sy": 178,
+              "sz": 19
+            },
+            {
+              "x": 0,
+              "y": 1621,
+              "z": 0,
+              "sx": 1800,
+              "sy": 178,
+              "sz": 19
+            }
+          ],
+          "profile": {
+            "type": "path",
+            "d": "M0 0 L1800 0 L1800 178 L0 178 Z",
+            "holes": [
+              "M41.25 89 A3.25 3.25 0 1 0 47.75 89 A3.25 3.25 0 1 0 41.25 89 Z",
+              "M1752.25 89 A3.25 3.25 0 1 0 1758.75 89 A3.25 3.25 0 1 0 1752.25 89 Z",
+              "M41.25 135.25 A3.25 3.25 0 0 1 47.75 135.25 L47.75 142.75 A3.25 3.25 0 0 1 41.25 142.75 Z",
+              "M1752.25 135.25 A3.25 3.25 0 0 1 1758.75 135.25 L1758.75 142.75 A3.25 3.25 0 0 1 1752.25 142.75 Z"
+            ]
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Boards are spaced at 180 mm pitch, leaving 2 mm horizontal shadow gaps and 1 mm top and bottom margins. At each post, each board has a 6.5 mm round locating hole near its height center and a 6.5 × 14 mm vertical slot above it for seasonal movement; fit washers over the slots."
+        }
+      ],
+      "joints": [
+        {
+          "id": "J1",
+          "part_a": "P1",
+          "part_b": "P2",
+          "count": 20,
+          "type": "metal_bracket",
+          "fasteners": [
+            {
+              "name": "Exterior-rated structural screws for bracket-to-wood attachment",
+              "size": "#10 × 32 mm",
+              "qty_per_joint": 8
+            }
+          ],
+          "glue": false,
+          "drive_from": "From the rear of the open frame, before P3 boards are installed; fasten one angle bracket at each rail end, with four screws into the existing post face and four into the rail face.",
+          "step": 3,
+          "note": "Use an exterior-rated angle bracket suitable for fence loads at each of the 20 rail ends. Do not rely on screws driven into rail end grain."
+        },
+        {
+          "id": "J2",
+          "part_a": "P3",
+          "part_b": "P2",
+          "count": 10,
+          "type": "slotted_screw",
+          "fasteners": [
+            {
+              "name": "Exterior-rated deck screws",
+              "size": "#8 × 50 mm",
+              "qty_per_joint": 2
+            }
+          ],
+          "glue": false,
+          "drive_from": "From the front face of each P3 board into its P2 rail, before fitting the next board course.",
+          "step": 5,
+          "note": "There are 10 board-to-rail contacts, one rail centered behind each board. Drive two screws into each rail face, spaced along the board width; total 20 screws."
+        },
+        {
+          "id": "J3",
+          "part_a": "P3",
+          "part_b": "P1",
+          "count": 20,
+          "type": "slotted_screw",
+          "fasteners": [
+            {
+              "name": "Exterior-rated washer-head deck screws with corrosion-resistant washers",
+              "size": "#8 × 50 mm screws; washers sized to cover 6.5 mm slots",
+              "qty_per_joint": 2
+            }
+          ],
+          "glue": false,
+          "drive_from": "From the front face of each P3 board into each existing P1 post face. At each post, drive one screw through the round locating hole and one through the vertical slot; leave the slotted screw just snug so the washer can slide.",
+          "step": 5,
+          "note": "One board/post contact at each end of each board. The round hole locates the board; the vertical slot and washer permit movement across the board's grain. Do not clamp the slot rigidly."
+        }
+      ],
+      "hardware": [
+        {
+          "name": "Exterior-rated galvanized angle brackets",
+          "size": "For 38 mm rails and 89 mm posts",
+          "qty": 20,
+          "notes": "One bracket at each end of each of the 10 rails; choose brackets rated for outdoor structural use."
+        },
+        {
+          "name": "Exterior-rated structural screws for bracket-to-wood attachment",
+          "size": "#10 × 32 mm",
+          "qty": 160,
+          "notes": "Eight per bracket: four into the post and four into the rail."
+        },
+        {
+          "name": "Exterior-rated deck screws for board-to-rail contacts",
+          "size": "#8 × 50 mm",
+          "qty": 20,
+          "notes": "Two screws at each of the 10 board-to-rail contacts."
+        },
+        {
+          "name": "Exterior-rated washer-head deck screws for board-to-post contacts",
+          "size": "#8 × 50 mm",
+          "qty": 40,
+          "notes": "Two at each of 20 board-to-post contacts. One per contact goes through the round hole and one through a vertical slot."
+        },
+        {
+          "name": "Corrosion-resistant washers",
+          "size": "Compatible with #8 screws; wide enough to cover 6.5 mm slots",
+          "qty": 40,
+          "notes": "One washer at each slotted board-to-post fastening."
+        }
+      ],
+      "finishes": [
+        {
+          "name": "Exterior wood primer and paint, or compatible exterior solid-color stain",
+          "qty": "Approximately 1.5 L",
+          "notes": "Let pressure-treated lumber dry as required by the coating manufacturer. Coat all accessible faces, edges, and cut ends; observe stated recoat and cure times."
+        }
+      ],
+      "tools": [
+        {
+          "name": "Tape measure and pencil",
+          "required": true,
+          "alternative": null
+        },
+        {
+          "name": "Circular saw with straightedge guide",
+          "required": true,
+          "alternative": "Have a lumberyard make the straight cuts, or use a handsaw with a guide."
+        },
+        {
+          "name": "Drill/driver with countersink and pilot bits",
+          "required": true,
+          "alternative": "A hand drill and manual countersink are slower alternatives."
+        },
+        {
+          "name": "Clamps",
+          "required": true,
+          "alternative": "Use temporary blocks and a helper to hold boards flush."
+        },
+        {
+          "name": "Framing square and level",
+          "required": true,
+          "alternative": null
+        },
+        {
+          "name": "Sander or sanding block",
+          "required": true,
+          "alternative": "Hand-sand sharp edges."
+        },
+        {
+          "name": "Paint brush or roller",
+          "required": true,
+          "alternative": null
+        },
+        {
+          "name": "Safety glasses, hearing protection, and dust mask",
+          "required": true,
+          "alternative": null
+        }
+      ],
+      "steps": [
+        {
+          "n": 1,
+          "title": "Verify the existing posts, then cut the panel lumber",
+          "text": "Confirm that the two existing posts are sound, adequately anchored, and positioned as shown before building. Cut ten P2 rails to 1622 mm and ten P3 boards to 1800 mm long; rip the P3 boards to 178 mm high and cut square ends. Do not cut or include P1 posts; they are existing site posts.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3"
+          ],
+          "tools_used": [
+            "Tape measure and pencil",
+            "Circular saw with straightedge guide",
+            "Framing square"
+          ],
+          "safety": "Wear eye, hearing, and dust protection. Support stock securely and keep hands clear of the blade; use a handsaw or store cutting service if preferred.",
+          "tip": "Measure actual lumber sizes before setting the saw; nominal board sizes are not actual sizes."
+        },
+        {
+          "n": 2,
+          "title": "Sand, mark, and prepare the boards",
+          "text": "Ease splinters from the cut edges and lightly sand exposed faces of P3. Each P2 rail will sit behind the center of one P3 board, at board-relative height 44 mm; mark this rail position for all ten courses. At both post positions on every board, drill one 6.5 mm round locating hole at board-relative height 89 mm and one 6.5 × 14 mm vertical slot centered at height 139 mm; drill the slots carefully and smooth their edges.",
+          "parts_used": [
+            "P2",
+            "P3"
+          ],
+          "tools_used": [
+            "Sander or sanding block",
+            "Tape measure and pencil",
+            "Drill/driver with countersink and pilot bits"
+          ],
+          "safety": "Wear eye and dust protection while sanding and drilling. Clamp each board securely and keep hands clear of bits.",
+          "tip": "Use a drill guide or mark the slot ends before opening the slot; the slots must be vertical and centered over the posts."
+        },
+        {
+          "n": 3,
+          "title": "Attach the rails to the existing posts",
+          "text": "Mark rail heights on the posts at 45, 225, 405, 585, 765, 945, 1125, 1305, 1485, and 1665 mm above the panel bottom. Fit the ten P2 rails between the posts, with each rail level and centered behind its matching P3 board. At each rail end, attach one exterior-rated angle bracket using four #10 × 32 mm structural screws into the post face and four into the rail face; use no glue.",
+          "parts_used": [
+            "P1",
+            "P2"
+          ],
+          "tools_used": [
+            "Drill/driver with countersink and pilot bits",
+            "Tape measure and pencil",
+            "Framing square and level",
+            "Clamps"
+          ],
+          "safety": "Wear eye protection while driving screws and keep fingers clear while clamping. Use a helper or stable support while positioning long rails.",
+          "tip": "Check each rail for level and confirm the frame is square before fully tightening the brackets."
+        },
+        {
+          "n": 4,
+          "title": "Position the first and last boards",
+          "text": "Position the bottom P3 board with its lower edge 1 mm above the post bottoms and its two post holes aligned over the post centers. Position the top board with its upper edge 1 mm below the post tops. Confirm that each board meets its rail and lies flat against the posts before fastening.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3"
+          ],
+          "tools_used": [
+            "Tape measure and pencil",
+            "Framing square",
+            "Clamps"
+          ],
+          "safety": "Keep the panel securely supported and use a helper if the work is awkward or heavy; do not leave it standing unsupported.",
+          "tip": "Use 2 mm spacer offcuts between courses to maintain even shadow gaps."
+        },
+        {
+          "n": 5,
+          "title": "Fasten all ten face boards",
+          "text": "Install all ten P3 boards at 180 mm pitch, beginning at y=1 mm and using 2 mm spacers. At each of the 10 board-to-rail contacts, drive two #8 × 50 mm exterior screws through the front face into the rail face. At each of the 20 board-to-post contacts, drive two #8 × 50 mm washer-head screws into the post: one through the round locating hole and one through the vertical slot, with a washer over the slot; leave the slotted screw just snug, not clamped tight. This uses 20 rail screws and 40 post screws, 60 total; use no glue.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3"
+          ],
+          "tools_used": [
+            "Drill/driver with countersink and pilot bits",
+            "Tape measure and pencil",
+            "Clamps",
+            "Framing square and level"
+          ],
+          "safety": "Wear eye and hearing protection while driving screws. Keep the panel supported and fingers clear of the driver bit.",
+          "tip": "Check the level and 2 mm gap after each course; small errors accumulate across ten boards. The slotted fasteners must remain able to slide."
+        },
+        {
+          "n": 6,
+          "title": "Confirm the installation is suitable",
+          "text": "Before relying on the finished section, verify that the existing posts and foundations are rated or otherwise adequate for this near-solid fence area under local wind, soil, and code requirements. Do not install or use the section if the posts are loose, damaged, undersized, or inadequately anchored. Consult the local building authority or a qualified fence professional if the anchorage capacity is uncertain.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3"
+          ],
+          "tools_used": [
+            "Tape measure and pencil",
+            "Framing square and level"
+          ],
+          "safety": "Keep the panel secured during any inspection or installation; get help handling it and do not work beneath an unsecured panel.",
+          "tip": "A fence section that looks stable in calm weather may still impose substantial wind load on its posts."
+        },
+        {
+          "n": 7,
+          "title": "Prime and finish the panel",
+          "text": "Brush or roll primer and the selected exterior finish over all accessible faces, edges, and cut ends. Follow the coating label for drying and recoat times, and touch up areas hidden by brackets or washers where practical. Allow the finish to cure before exposure to weather.",
+          "parts_used": [
+            "P2",
+            "P3"
+          ],
+          "tools_used": [
+            "Paint brush or roller"
+          ],
+          "safety": "Work outdoors or with strong ventilation, wear gloves and eye protection, and keep finishes away from flames. Follow the product label for safe use and disposal.",
+          "tip": "A sample board is useful for checking whether the chosen beige finish approximates the photo."
+        }
+      ],
+      "safety_overview": [
+        "Wear eye protection during cutting, drilling, and installation; use hearing protection and a dust mask for power-tool work.",
+        "Clamp and support long boards before cutting or drilling, and keep hands away from blades and rotating bits.",
+        "Pressure-treated lumber can be heavy and rough; wear gloves and get help handling the panel.",
+        "Use only existing posts verified as sound and adequately anchored for local wind, soil, and code requirements; do not install the section on unverified posts.",
+        "Use exterior finishes with adequate ventilation and follow the product label for protective equipment, drying, and disposal."
+      ],
+      "load_bearing": true
+    }
+  },
+  "latencyMs": 332342,
+  "tokens": 76264,
+  "promptVersion": "plan.v1.3"
+}

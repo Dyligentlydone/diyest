@@ -1,0 +1,1048 @@
+{
+  "image": "desk.jpg",
+  "request": {
+    "mode": "build",
+    "units": "metric",
+    "skillLevel": "intermediate",
+    "budget": "balanced",
+    "style": "match_photo",
+    "useMyToolsOnly": false,
+    "currency": "USD",
+    "imageCount": 1
+  },
+  "result": {
+    "title": "Classroom Desk-and-Chair Set",
+    "parts": 10,
+    "steps": 10,
+    "schemaValid": true,
+    "unverified": [
+      "Fastener \"Bracket screw into apron\" used by joints (×16) is missing from the hardware list",
+      "Fastener \"Short bracket screw into plywood top\" used by joints (×24) is missing from the hardware list",
+      "Fastener \"Bracket screw into support\" used by joints (×8) is missing from the hardware list",
+      "Fastener \"Short bracket screw into seat\" used by joints (×16) is missing from the hardware list",
+      "Fastener \"Bracket screw into rail\" used by joints (×8) is missing from the hardware list",
+      "Hardware \"Bracket screws into 18 mm wood members\" qty 96 ≠ joints total 16 (sum of qty_per_joint × count)",
+      "Fastener \"Bracket screw into leg side\" used by joints (×8) is missing from the hardware list",
+      "Fastener \"Bracket screw into leg\" used by joints (×4) is missing from the hardware list",
+      "Fastener \"Short bracket screw into plywood seat\" used by joints (×8) is missing from the hardware list",
+      "Fastener \"Bracket screw into upright\" used by joints (×4) is missing from the hardware list"
+    ],
+    "warnings": [
+      "Hardware \"Short bracket screws into plywood\" isn't referenced by any joint",
+      "Hardware \"Wood glue\" isn't referenced by any joint",
+      "Hardware \"Sandpaper\" isn't referenced by any joint"
+    ],
+    "repairCount": 1,
+    "review": null,
+    "plan": {
+      "title": "Classroom Desk-and-Chair Set",
+      "summary": "A compact student desk and matching chair inspired by the photo: dark wood-look desktop, black-painted square-leg frames, a notched plywood seat, and a plywood backrest. The desk and chair are separate, movable pieces sized as a coordinated set.",
+      "difficulty": "intermediate",
+      "est_hours": 10,
+      "est_cost": {
+        "low": 150,
+        "high": 240,
+        "currency": "USD"
+      },
+      "overall_dimensions_mm": {
+        "width": 600,
+        "depth": 850,
+        "height": 820
+      },
+      "assumptions": [
+        "Dimensions are estimated from common classroom furniture proportions because the photo has no reliable scale: desk top 600 × 450 mm at 750 mm high; chair seat 400 × 380 mm at 450 mm high.",
+        "The desk and chair are two separate pieces. Their combined bounding dimensions are 600 mm wide × 850 mm deep × 820 mm high.",
+        "Use 18 mm birch plywood for the desktop, seat, and backrest, and straight, dry pine for the 38 × 38 mm legs and 18 mm-thick rails/aprons.",
+        "The chair seat has two rear-corner notches to clear the rear uprights. A jigsaw or store-cutting service is needed for these notches.",
+        "The photo shows metal frames and molded-looking panels. This woodworking version approximates the appearance with black paint and plywood; it does not reproduce the original welded steel frame or molded seat.",
+        "The set is intended for one student of typical school age and ordinary classroom use. Check dimensions against the intended user before cutting."
+      ],
+      "clarifying_questions": [],
+      "parts": [
+        {
+          "id": "P1",
+          "name": "Desk top",
+          "material": "18 mm birch plywood, dark wood-look stain or laminate",
+          "stock": "sheet",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 600,
+          "width_mm": 450,
+          "thickness_mm": 18,
+          "qty": 1,
+          "placements": [
+            {
+              "x": 0,
+              "y": 732,
+              "z": 0,
+              "sx": 600,
+              "sy": 18,
+              "sz": 450
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Square corners; finish the top to resemble the photo."
+        },
+        {
+          "id": "P2",
+          "name": "Desk legs",
+          "material": "Pine, actual 38 × 38 mm",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 732,
+          "width_mm": 38,
+          "thickness_mm": 38,
+          "qty": 4,
+          "placements": [
+            {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "sx": 38,
+              "sy": 732,
+              "sz": 38
+            },
+            {
+              "x": 562,
+              "y": 0,
+              "z": 0,
+              "sx": 38,
+              "sy": 732,
+              "sz": 38
+            },
+            {
+              "x": 0,
+              "y": 0,
+              "z": 412,
+              "sx": 38,
+              "sy": 732,
+              "sz": 38
+            },
+            {
+              "x": 562,
+              "y": 0,
+              "z": 412,
+              "sx": 38,
+              "sy": 732,
+              "sz": 38
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Vertical legs; their tops meet the underside of P1 at y=732 mm."
+        },
+        {
+          "id": "P3",
+          "name": "Desk front and back aprons",
+          "material": "Pine, 18 × 82 mm",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 488,
+          "width_mm": 82,
+          "thickness_mm": 18,
+          "qty": 2,
+          "placements": [
+            {
+              "x": 56,
+              "y": 650,
+              "z": 20,
+              "sx": 488,
+              "sy": 82,
+              "sz": 18
+            },
+            {
+              "x": 56,
+              "y": 650,
+              "z": 412,
+              "sx": 488,
+              "sy": 82,
+              "sz": 18
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Fit between the side aprons; front and rear apron positions align with the desk legs."
+        },
+        {
+          "id": "P4",
+          "name": "Desk side aprons",
+          "material": "Pine, 18 × 82 mm",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 410,
+          "width_mm": 82,
+          "thickness_mm": 18,
+          "qty": 2,
+          "placements": [
+            {
+              "x": 38,
+              "y": 650,
+              "z": 20,
+              "sx": 18,
+              "sy": 82,
+              "sz": 410
+            },
+            {
+              "x": 544,
+              "y": 650,
+              "z": 20,
+              "sx": 18,
+              "sy": 82,
+              "sz": 410
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Side aprons meet the inside faces of the desk legs and the ends of P3."
+        },
+        {
+          "id": "P5",
+          "name": "Chair seat",
+          "material": "18 mm birch plywood",
+          "stock": "sheet",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 400,
+          "width_mm": 380,
+          "thickness_mm": 18,
+          "qty": 1,
+          "placements": [
+            {
+              "x": 100,
+              "y": 432,
+              "z": 470,
+              "sx": 400,
+              "sy": 18,
+              "sz": 380
+            }
+          ],
+          "profile": {
+            "type": "path",
+            "d": "M0 0 L400 0 L400 312 L362 312 L362 380 L38 380 L38 312 L0 312 Z",
+            "holes": []
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Two 38 × 68 mm rear-corner notches clear the rear uprights at x=100–138 and x=462–500, z=782–850."
+        },
+        {
+          "id": "P6",
+          "name": "Chair front legs",
+          "material": "Pine, actual 38 × 38 mm",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 432,
+          "width_mm": 38,
+          "thickness_mm": 38,
+          "qty": 2,
+          "placements": [
+            {
+              "x": 100,
+              "y": 0,
+              "z": 500,
+              "sx": 38,
+              "sy": 432,
+              "sz": 38
+            },
+            {
+              "x": 462,
+              "y": 0,
+              "z": 500,
+              "sx": 38,
+              "sy": 432,
+              "sz": 38
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Straight vertical front legs; tops support the underside of the seat."
+        },
+        {
+          "id": "P7",
+          "name": "Chair rear uprights and legs",
+          "material": "Pine, actual 38 × 38 mm",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 820,
+          "width_mm": 38,
+          "thickness_mm": 38,
+          "qty": 2,
+          "placements": [
+            {
+              "x": 100,
+              "y": 0,
+              "z": 782,
+              "sx": 38,
+              "sy": 820,
+              "sz": 38
+            },
+            {
+              "x": 462,
+              "y": 0,
+              "z": 782,
+              "sx": 38,
+              "sy": 820,
+              "sz": 38
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Straight vertical rear legs extend through the seat notches and support the backrest."
+        },
+        {
+          "id": "P8",
+          "name": "Chair front and rear aprons",
+          "material": "Pine, 18 × 52 mm",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 324,
+          "width_mm": 52,
+          "thickness_mm": 18,
+          "qty": 2,
+          "placements": [
+            {
+              "x": 138,
+              "y": 380,
+              "z": 538,
+              "sx": 324,
+              "sy": 52,
+              "sz": 18
+            },
+            {
+              "x": 138,
+              "y": 380,
+              "z": 764,
+              "sx": 324,
+              "sy": 52,
+              "sz": 18
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "The front apron meets the front legs; the rear apron meets the rear uprights."
+        },
+        {
+          "id": "P9",
+          "name": "Chair side rails",
+          "material": "Pine, 18 × 52 mm",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 208,
+          "width_mm": 52,
+          "thickness_mm": 18,
+          "qty": 2,
+          "placements": [
+            {
+              "x": 138,
+              "y": 380,
+              "z": 556,
+              "sx": 18,
+              "sy": 52,
+              "sz": 208
+            },
+            {
+              "x": 444,
+              "y": 380,
+              "z": 556,
+              "sx": 18,
+              "sy": 52,
+              "sz": 208
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Rails run between the front and rear aprons and support the seat sides."
+        },
+        {
+          "id": "P10",
+          "name": "Chair backrest",
+          "material": "18 mm birch plywood",
+          "stock": "sheet",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 400,
+          "width_mm": 200,
+          "thickness_mm": 18,
+          "qty": 1,
+          "placements": [
+            {
+              "x": 100,
+              "y": 590,
+              "z": 820,
+              "sx": 400,
+              "sy": 200,
+              "sz": 18
+            }
+          ],
+          "profile": {
+            "type": "rounded_rect",
+            "radius": 20
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Round the four corners to a 20 mm radius if desired; the bounding dimensions remain 400 × 200 mm."
+        }
+      ],
+      "joints": [
+        {
+          "id": "J1",
+          "part_a": "P2",
+          "part_b": "P4",
+          "count": 4,
+          "type": "pocket_screw",
+          "fasteners": [
+            {
+              "name": "Coarse-thread pocket screw",
+              "size": "32 mm",
+              "qty_per_joint": 2
+            }
+          ],
+          "glue": true,
+          "drive_from": "Through pocket holes in the inside faces of P4 into the side faces of P2",
+          "step": 5,
+          "note": "Two screws at each side-apron-to-leg connection; screws enter leg side grain."
+        },
+        {
+          "id": "J2",
+          "part_a": "P3",
+          "part_b": "P4",
+          "count": 4,
+          "type": "dowel",
+          "fasteners": [
+            {
+              "name": "Fluted hardwood dowel",
+              "size": "6 × 30 mm",
+              "qty_per_joint": 2
+            }
+          ],
+          "glue": true,
+          "drive_from": "Drill matching holes from each P3 end and into the adjoining P4 face before assembling the desk frame",
+          "step": 5,
+          "note": "Two dowels at each apron corner join P3 ends to P4 side grain; these connect the apron frame, while the legs carry the frame joints."
+        },
+        {
+          "id": "J3",
+          "part_a": "P1",
+          "part_b": "P3",
+          "count": 2,
+          "type": "metal_bracket",
+          "fasteners": [
+            {
+              "name": "Small steel angle bracket",
+              "size": "about 25 × 25 mm",
+              "qty_per_joint": 2
+            },
+            {
+              "name": "Bracket screw into apron",
+              "size": "#8 × 16 mm",
+              "qty_per_joint": 4
+            },
+            {
+              "name": "Short bracket screw into plywood top",
+              "size": "#8 × 12 mm",
+              "qty_per_joint": 4
+            }
+          ],
+          "glue": true,
+          "drive_from": "From inside the desk frame into P3, then upward into the underside of P1",
+          "step": 6,
+          "note": "Two brackets per apron, each with two screws into the apron and two shorter screws into the desktop. Apply a thin glue bead to the apron upper edge."
+        },
+        {
+          "id": "J4",
+          "part_a": "P1",
+          "part_b": "P4",
+          "count": 2,
+          "type": "metal_bracket",
+          "fasteners": [
+            {
+              "name": "Small steel angle bracket",
+              "size": "about 25 × 25 mm",
+              "qty_per_joint": 2
+            },
+            {
+              "name": "Bracket screw into apron",
+              "size": "#8 × 16 mm",
+              "qty_per_joint": 4
+            },
+            {
+              "name": "Short bracket screw into plywood top",
+              "size": "#8 × 12 mm",
+              "qty_per_joint": 4
+            }
+          ],
+          "glue": true,
+          "drive_from": "From inside the desk frame into P4, then upward into the underside of P1",
+          "step": 6,
+          "note": "Two brackets per side apron, with screws sized to avoid breaking through the plywood top."
+        },
+        {
+          "id": "J5",
+          "part_a": "P6",
+          "part_b": "P8",
+          "count": 2,
+          "type": "pocket_screw",
+          "fasteners": [
+            {
+              "name": "Coarse-thread pocket screw",
+              "size": "32 mm",
+              "qty_per_joint": 2
+            }
+          ],
+          "glue": true,
+          "drive_from": "Through pocket holes drilled in each end of the front apron, into the side faces of the front legs",
+          "step": 7,
+          "note": "Two screws per front-leg connection."
+        },
+        {
+          "id": "J6",
+          "part_a": "P7",
+          "part_b": "P8",
+          "count": 2,
+          "type": "pocket_screw",
+          "fasteners": [
+            {
+              "name": "Coarse-thread pocket screw",
+              "size": "32 mm",
+              "qty_per_joint": 2
+            }
+          ],
+          "glue": true,
+          "drive_from": "Through pocket holes drilled in each end of the rear apron, into the side faces of the rear uprights",
+          "step": 7,
+          "note": "Two screws per rear-upright connection."
+        },
+        {
+          "id": "J7",
+          "part_a": "P8",
+          "part_b": "P9",
+          "count": 4,
+          "type": "pocket_screw",
+          "fasteners": [
+            {
+              "name": "Coarse-thread pocket screw",
+              "size": "32 mm",
+              "qty_per_joint": 2
+            }
+          ],
+          "glue": true,
+          "drive_from": "Through pocket holes in the inside faces of the side-rail ends, into the face of each front or rear apron",
+          "step": 7,
+          "note": "Each side rail joins both aprons. Keep the frame square while fastening."
+        },
+        {
+          "id": "J8",
+          "part_a": "P5",
+          "part_b": "P8",
+          "count": 2,
+          "type": "metal_bracket",
+          "fasteners": [
+            {
+              "name": "Small steel angle bracket",
+              "size": "about 25 × 25 mm",
+              "qty_per_joint": 2
+            },
+            {
+              "name": "Bracket screw into support",
+              "size": "#8 × 16 mm",
+              "qty_per_joint": 4
+            },
+            {
+              "name": "Short bracket screw into seat",
+              "size": "#8 × 12 mm",
+              "qty_per_joint": 4
+            }
+          ],
+          "glue": true,
+          "drive_from": "From below the seat, into the apron and upward into the seat underside",
+          "step": 8,
+          "note": "Two brackets per apron. Glue the apron upper edge; use short screws into the plywood seat."
+        },
+        {
+          "id": "J9",
+          "part_a": "P5",
+          "part_b": "P9",
+          "count": 2,
+          "type": "metal_bracket",
+          "fasteners": [
+            {
+              "name": "Small steel angle bracket",
+              "size": "about 25 × 25 mm",
+              "qty_per_joint": 2
+            },
+            {
+              "name": "Bracket screw into rail",
+              "size": "#8 × 16 mm",
+              "qty_per_joint": 4
+            },
+            {
+              "name": "Short bracket screw into seat",
+              "size": "#8 × 12 mm",
+              "qty_per_joint": 4
+            }
+          ],
+          "glue": true,
+          "drive_from": "From below the seat, into the side rail and upward into the seat underside",
+          "step": 8,
+          "note": "Two brackets per side rail. Glue the rail upper edge and keep the short screws shallow."
+        },
+        {
+          "id": "J10",
+          "part_a": "P7",
+          "part_b": "P10",
+          "count": 2,
+          "type": "metal_bracket",
+          "fasteners": [
+            {
+              "name": "Small steel angle bracket",
+              "size": "about 25 × 25 mm",
+              "qty_per_joint": 2
+            },
+            {
+              "name": "Bracket screw",
+              "size": "#8 × 16 mm",
+              "qty_per_joint": 8
+            }
+          ],
+          "glue": true,
+          "drive_from": "From the rear face of the backrest and the rear faces of the uprights; fit the brackets to the backrest before installing it",
+          "step": 9,
+          "note": "Two brackets at each upright, with two screws into each wood member per bracket."
+        },
+        {
+          "id": "J11",
+          "part_a": "P1",
+          "part_b": "P2",
+          "count": 4,
+          "type": "metal_bracket",
+          "fasteners": [
+            {
+              "name": "Small steel angle bracket",
+              "size": "about 25 × 25 mm",
+              "qty_per_joint": 1
+            },
+            {
+              "name": "Bracket screw into leg side",
+              "size": "#8 × 16 mm",
+              "qty_per_joint": 2
+            },
+            {
+              "name": "Short bracket screw into plywood top",
+              "size": "#8 × 12 mm",
+              "qty_per_joint": 2
+            }
+          ],
+          "glue": false,
+          "drive_from": "From below P1, secure one bracket at each leg to the leg side and desktop underside",
+          "step": 6,
+          "note": "These brackets secure the real contact between the desktop underside and each leg without relying on screws into leg end grain."
+        },
+        {
+          "id": "J12",
+          "part_a": "P5",
+          "part_b": "P6",
+          "count": 2,
+          "type": "metal_bracket",
+          "fasteners": [
+            {
+              "name": "Small steel angle bracket",
+              "size": "about 25 × 25 mm",
+              "qty_per_joint": 1
+            },
+            {
+              "name": "Bracket screw into leg",
+              "size": "#8 × 16 mm",
+              "qty_per_joint": 2
+            },
+            {
+              "name": "Short bracket screw into plywood seat",
+              "size": "#8 × 12 mm",
+              "qty_per_joint": 2
+            }
+          ],
+          "glue": false,
+          "drive_from": "From beneath the seat, fasten one angle bracket at each front-leg-to-seat contact",
+          "step": 8,
+          "note": "The brackets reinforce the seat bearing on the front-leg tops; screws enter leg side grain and seat underside."
+        },
+        {
+          "id": "J13",
+          "part_a": "P5",
+          "part_b": "P7",
+          "count": 2,
+          "type": "metal_bracket",
+          "fasteners": [
+            {
+              "name": "Small steel angle bracket",
+              "size": "about 25 × 25 mm",
+              "qty_per_joint": 1
+            },
+            {
+              "name": "Bracket screw into upright",
+              "size": "#8 × 16 mm",
+              "qty_per_joint": 2
+            },
+            {
+              "name": "Short bracket screw into plywood seat",
+              "size": "#8 × 12 mm",
+              "qty_per_joint": 2
+            }
+          ],
+          "glue": false,
+          "drive_from": "From beneath the seat, fasten one bracket at each rear-upright-to-seat notch contact",
+          "step": 8,
+          "note": "Position each bracket within the notch at the upright and use screws into the upright side grain and seat underside."
+        }
+      ],
+      "hardware": [
+        {
+          "name": "Coarse-thread pocket screws",
+          "size": "32 mm",
+          "qty": 24,
+          "notes": "For desk side-apron-to-leg joints and chair apron/rail joints."
+        },
+        {
+          "name": "Fluted hardwood dowels",
+          "size": "6 × 30 mm",
+          "qty": 8,
+          "notes": "Two dowels at each of the four desk apron corners."
+        },
+        {
+          "name": "Small steel angle brackets",
+          "size": "about 25 × 25 mm",
+          "qty": 28,
+          "notes": "Eight for desk apron-to-top, four for direct desk leg-to-top, eight for chair seat supports, four for direct chair seat-to-leg/upright contacts, and four for the backrest."
+        },
+        {
+          "name": "Bracket screws into 18 mm wood members",
+          "size": "#8 × 16 mm",
+          "qty": 96,
+          "notes": "For bracket legs and aprons; pilot-drill near ends and do not use these to fasten into end grain."
+        },
+        {
+          "name": "Short bracket screws into plywood",
+          "size": "#8 × 12 mm",
+          "qty": 32,
+          "notes": "For desktop and seat underside bracket holes; short enough to avoid breaking through."
+        },
+        {
+          "name": "Wood glue",
+          "size": null,
+          "qty": 1,
+          "notes": "One small bottle is sufficient; use on structural wood-to-wood joints."
+        },
+        {
+          "name": "Sandpaper",
+          "size": "120 and 180 grit",
+          "qty": 1,
+          "notes": "One assorted pack is sufficient."
+        }
+      ],
+      "finishes": [
+        {
+          "name": "Black water-based enamel or furniture paint",
+          "qty": "about 1 L",
+          "notes": "For the visible desk and chair frames; apply thin coats and follow the label for recoat and cure times."
+        },
+        {
+          "name": "Dark brown water-based stain and clear water-based polyurethane",
+          "qty": "about 0.5 L each",
+          "notes": "For the desktop; a dark wood-look laminate is an alternative. Test stain on a plywood offcut first."
+        }
+      ],
+      "tools": [
+        {
+          "name": "Tape measure, combination square, and pencil",
+          "required": true,
+          "alternative": null
+        },
+        {
+          "name": "Circular saw with straightedge guide",
+          "required": true,
+          "alternative": "Ask the home center to make the straight cuts; a handsaw and guide can also work."
+        },
+        {
+          "name": "Jigsaw",
+          "required": true,
+          "alternative": "Ask a cabinet shop to cut the seat notches; round the backrest corners with a coping saw or file."
+        },
+        {
+          "name": "Drill/driver and drill bits",
+          "required": true,
+          "alternative": "A hand drill and screwdriver can be used, with more time."
+        },
+        {
+          "name": "Pocket-hole jig",
+          "required": true,
+          "alternative": "Use suitable angle brackets at each apron-to-leg connection instead of pocket screws."
+        },
+        {
+          "name": "Dowel jig or dowel centers",
+          "required": true,
+          "alternative": "A dowel center set and careful square marking can locate matching holes."
+        },
+        {
+          "name": "Clamps",
+          "required": true,
+          "alternative": "Use temporary straps or have a helper hold the frame square while fastening."
+        },
+        {
+          "name": "Random-orbit sander or sanding block",
+          "required": true,
+          "alternative": "Hand-sand with a flat block."
+        },
+        {
+          "name": "Paintbrush or small foam roller",
+          "required": true,
+          "alternative": "Disposable foam brushes."
+        },
+        {
+          "name": "Safety glasses, hearing protection, and dust mask",
+          "required": true,
+          "alternative": null
+        }
+      ],
+      "steps": [
+        {
+          "n": 1,
+          "title": "Check the layout and mark the stock",
+          "text": "Confirm that the 750 mm desk height and 450 mm seat height suit the intended user. Mark each piece from the cut list and label its position; double-check the leg lengths before cutting.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5",
+            "P6",
+            "P7",
+            "P8",
+            "P9",
+            "P10"
+          ],
+          "tools_used": [
+            "Tape measure, combination square, and pencil"
+          ],
+          "safety": null,
+          "tip": "Mark the front and back of the desk and chair on the parts so the frames are not assembled in reverse."
+        },
+        {
+          "n": 2,
+          "title": "Cut the panels and legs",
+          "text": "Cut the plywood panels and all straight stock to the listed dimensions. Cut P5 to its 400 × 380 mm outline and remove the two rear-corner notches shown by its profile; round P10 corners if desired.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5",
+            "P6",
+            "P7",
+            "P8",
+            "P9",
+            "P10"
+          ],
+          "tools_used": [
+            "Circular saw with straightedge guide",
+            "Jigsaw",
+            "Tape measure, combination square, and pencil"
+          ],
+          "safety": "Wear eye, hearing, and dust protection. Clamp stock securely, keep hands clear of blades, and support sheet goods so offcuts cannot bind the blade.",
+          "tip": "If you cannot cut plywood safely, have the supplier make the straight cuts and a shop cut the seat notches."
+        },
+        {
+          "n": 3,
+          "title": "Sand and drill joinery holes",
+          "text": "Sand cut edges and faces before assembly, easing sharp edges without changing the dimensions. Drill pocket holes in the ends of P4, P8, and P9, then use a dowel jig to drill matching holes for the P3-to-P4 apron corners.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5",
+            "P6",
+            "P7",
+            "P8",
+            "P9",
+            "P10"
+          ],
+          "tools_used": [
+            "Pocket-hole jig",
+            "Dowel jig or dowel centers",
+            "Drill/driver and drill bits",
+            "Random-orbit sander or sanding block"
+          ],
+          "safety": "Wear eye and dust protection; keep loose clothing and hands away from rotating bits and sanding discs.",
+          "tip": "Dry-align the dowel holes with the parts before adding glue; paired holes must line up exactly."
+        },
+        {
+          "n": 4,
+          "title": "Dry-fit and square the desk frame",
+          "text": "Arrange the four P2 legs with P3 at the front and back and P4 at the sides. Check that the outside footprint is 600 × 450 mm and that the apron tops are level at y=732 mm; do not fasten yet.",
+          "parts_used": [
+            "P2",
+            "P3",
+            "P4"
+          ],
+          "tools_used": [
+            "Tape measure, combination square, and pencil",
+            "Clamps"
+          ],
+          "safety": null,
+          "tip": "Measure both frame diagonals; equal measurements mean the rectangular frame is square."
+        },
+        {
+          "n": 5,
+          "title": "Assemble the desk base",
+          "text": "Apply glue to the P3-to-P4 dowel joints and insert two 6 × 30 mm dowels at each corner. Glue and attach each P4 side apron to its P2 legs with two 32 mm pocket screws per connection, driven through P4 into leg side grain; clamp the base square while the glue sets.",
+          "parts_used": [
+            "P2",
+            "P3",
+            "P4"
+          ],
+          "tools_used": [
+            "Drill/driver and drill bits",
+            "Dowel jig or dowel centers",
+            "Clamps"
+          ],
+          "safety": "Wear eye protection while drilling and driving screws. Wipe off glue squeeze-out before it hardens.",
+          "tip": "Check the frame diagonals before the glue sets and make sure the aprons remain level."
+        },
+        {
+          "n": 6,
+          "title": "Fit and fasten the desktop",
+          "text": "Center P1 on the desk base so it aligns with the 600 × 450 mm footprint. Apply a thin glue bead to the apron upper edges; install two angle brackets per apron with #8 × 16 mm screws into the aprons and #8 × 12 mm screws into the top. Add one bracket at each P2 leg-to-P1 contact using two #8 × 16 mm screws into the leg side and two #8 × 12 mm screws into the top.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4"
+          ],
+          "tools_used": [
+            "Drill/driver and drill bits",
+            "Tape measure, combination square, and pencil"
+          ],
+          "safety": "Wear eye protection while drilling upward and support the desktop securely so it cannot slide or tip.",
+          "tip": "Use a depth stop or a short driver setting so no screw breaks through the desktop surface."
+        },
+        {
+          "n": 7,
+          "title": "Assemble the chair frame",
+          "text": "Position P6 at the front and P7 at the rear, then fit P8 between the matching legs and P9 between the front and rear aprons. Glue each wood-to-wood joint and drive two 32 mm pocket screws at each connection into the receiving member’s side grain. Keep the bottoms of the legs level and check that the frame is square.",
+          "parts_used": [
+            "P6",
+            "P7",
+            "P8",
+            "P9"
+          ],
+          "tools_used": [
+            "Drill/driver and drill bits",
+            "Clamps",
+            "Tape measure, combination square, and pencil"
+          ],
+          "safety": "Wear eye protection and keep hands clear while driving screws; use clamps rather than holding a joint close to the bit.",
+          "tip": "Keep the two P7 uprights parallel and spaced to fit P5’s rear notches."
+        },
+        {
+          "n": 8,
+          "title": "Attach the chair seat",
+          "text": "Set P5 on the chair frame with its notches around P7 and its top at y=450 mm. Glue the top edges of P8 and P9, then attach two angle brackets to each apron and side rail from below, using #8 × 16 mm screws into the supports and #8 × 12 mm screws into the seat. Add one bracket at each P6 and P7 contact, fastening into leg or upright side grain and into the seat underside.",
+          "parts_used": [
+            "P5",
+            "P6",
+            "P7",
+            "P8",
+            "P9"
+          ],
+          "tools_used": [
+            "Drill/driver and drill bits",
+            "Clamps"
+          ],
+          "safety": "Support the chair upside down on a padded, stable surface before drilling. Wear eye protection while driving screws upward.",
+          "tip": "Check that both rear uprights clear the notches before adding glue or screws."
+        },
+        {
+          "n": 9,
+          "title": "Attach the backrest",
+          "text": "Center P10 on the rear faces of P7, with its bottom at y=590 mm and its top at y=790 mm. Glue the contact areas, then fasten two angle brackets at each upright with #8 × 16 mm screws—two into the upright and two into the backrest per bracket.",
+          "parts_used": [
+            "P7",
+            "P10"
+          ],
+          "tools_used": [
+            "Drill/driver and drill bits",
+            "Tape measure, combination square, and pencil",
+            "Clamps"
+          ],
+          "safety": "Keep the chair stable and supported while fastening the backrest; wear eye protection.",
+          "tip": "Use a square to keep the backrest level and centered before tightening all screws."
+        },
+        {
+          "n": 10,
+          "title": "Finish and inspect the set",
+          "text": "Fill visible holes if desired, then sand the wood smooth with 180-grit paper and remove dust. Paint the frames black and stain or laminate the desktop; finish the seat and backrest to suit the photo. Follow product labels for ventilation, recoat times, and full cure before use; inspect every bracket and screw after assembly.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5",
+            "P6",
+            "P7",
+            "P8",
+            "P9",
+            "P10"
+          ],
+          "tools_used": [
+            "Random-orbit sander or sanding block",
+            "Paintbrush or small foam roller"
+          ],
+          "safety": "Wear a suitable dust mask while sanding and gloves/ventilation as directed for finishes. Keep finishes away from flames and allow them to cure fully before use.",
+          "tip": "Paint the frames and apply desktop stain before final assembly when practical; mask bracket and glue contact areas."
+        }
+      ],
+      "safety_overview": [
+        "Wear eye protection for cutting, drilling, and sanding; use hearing protection with power saws and a dust mask for plywood dust.",
+        "Clamp work securely and support sheet goods on both sides of a cut to prevent binding or falling offcuts.",
+        "Keep hands clear of blades and drill bits; use clamps to hold small parts rather than gripping them near the tool.",
+        "Use finishes only with good ventilation and follow the label for protective equipment, drying, and cure time.",
+        "The desk and chair are load-bearing furniture: check all joints, brackets, and fasteners periodically, and do not use them as step stools."
+      ],
+      "load_bearing": true
+    }
+  },
+  "latencyMs": 280161,
+  "tokens": 51010,
+  "promptVersion": "plan.v1.3"
+}

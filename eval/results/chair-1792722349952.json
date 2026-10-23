@@ -1,0 +1,758 @@
+{
+  "image": "chair.jpg",
+  "request": {
+    "mode": "build",
+    "units": "metric",
+    "skillLevel": "intermediate",
+    "budget": "balanced",
+    "style": "match_photo",
+    "useMyToolsOnly": false,
+    "currency": "USD",
+    "imageCount": 1
+  },
+  "result": {
+    "title": "Painted Vintage-Style Side Chair",
+    "parts": 7,
+    "steps": 11,
+    "schemaValid": true,
+    "unverified": [
+      "Hardware \"Washer-head wood screws\" qty 16 ≠ joints total 18 (sum of qty_per_joint × count)",
+      "Fastener \"Hex connector bolt, washer, and nut\" used by joints (×4) is missing from the hardware list",
+      "Parts P1 (Rounded seat) and P7 (Rear backrest stiles) touch but have no declared joint",
+      "Parts P1 (Rounded seat) and P7 (Rear backrest stiles) touch but have no declared joint",
+      "Parts P4 (Front and rear aprons) and P7 (Rear backrest stiles) touch but have no declared joint",
+      "Parts P4 (Front and rear aprons) and P7 (Rear backrest stiles) touch but have no declared joint"
+    ],
+    "warnings": [
+      "Hardware \"Hex connector bolts with washers and nuts\" isn't referenced by any joint",
+      "Hardware \"Interior/exterior-rated wood glue\" isn't referenced by any joint",
+      "Part P6: geometry could not be verified for overlap"
+    ],
+    "repairCount": 2,
+    "review": null,
+    "plan": {
+      "title": "Painted Vintage-Style Side Chair",
+      "summary": "An adult-sized chair inspired by the photo, with a rounded solid-wood seat, arched backrest, and warm painted finish. The straight square legs and mortise-and-tenon apron frame are practical substitutes for the photo’s turned legs. The seat and backrest are attached with slotted screws to accommodate seasonal wood movement.",
+      "difficulty": "intermediate",
+      "est_hours": 14,
+      "est_cost": {
+        "low": 170,
+        "high": 310,
+        "currency": "USD"
+      },
+      "overall_dimensions_mm": {
+        "width": 500,
+        "depth": 439,
+        "height": 820
+      },
+      "assumptions": [
+        "Estimated as an adult dining/side chair because no dimensions or scale reference were provided; seat height is 450 mm.",
+        "Use poplar or similarly strong paint-grade hardwood. The seat is a 45 mm-thick glued-up solid panel with its grain running across the chair width.",
+        "The photo’s turned legs are simplified to straight 38 × 38 mm legs. The seat and backrest are shaped with a jigsaw and sanded smooth, not carved.",
+        "Rear backrest stiles sit behind the seat, attach to the rear legs with through-bolts, and have 1 mm clearance behind the seat to avoid restraining its seasonal movement.",
+        "The chair is for normal seated use, not standing, climbing, or leaning back heavily. Confirm the adult-size assumption before cutting if this will be used by a child."
+      ],
+      "clarifying_questions": [
+        "Should this be adult-sized, as planned, or sized for a child?"
+      ],
+      "parts": [
+        {
+          "id": "P1",
+          "name": "Rounded seat",
+          "material": "45 mm glued-up solid poplar panel",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 500,
+          "width_mm": 400,
+          "thickness_mm": 45,
+          "qty": 1,
+          "placements": [
+            {
+              "x": 0,
+              "y": 405,
+              "z": 0,
+              "sx": 500,
+              "sy": 45,
+              "sz": 400
+            }
+          ],
+          "profile": {
+            "type": "path",
+            "d": "M160 0 L340 0 A160 160 0 0 1 500 160 L500 240 A160 160 0 0 1 340 400 L160 400 A160 160 0 0 1 0 240 L0 160 A160 160 0 0 1 160 0 Z",
+            "holes": null
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Grain runs along the 500 mm width. The seat has no leg mortises; it rests on the legs and apron frame and is fastened with slots oriented front-to-back."
+        },
+        {
+          "id": "P2",
+          "name": "Rear legs",
+          "material": "Poplar hardwood",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 405,
+          "width_mm": 38,
+          "thickness_mm": 38,
+          "qty": 2,
+          "placements": [
+            {
+              "x": 50,
+              "y": 0,
+              "z": 363,
+              "sx": 38,
+              "sy": 405,
+              "sz": 38
+            },
+            {
+              "x": 412,
+              "y": 0,
+              "z": 363,
+              "sx": 38,
+              "sy": 405,
+              "sz": 38
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Leg tops support the seat underside at y=405. Rear stiles are separate parts bolted to the rear faces."
+        },
+        {
+          "id": "P3",
+          "name": "Front legs",
+          "material": "Poplar hardwood",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 405,
+          "width_mm": 38,
+          "thickness_mm": 38,
+          "qty": 2,
+          "placements": [
+            {
+              "x": 50,
+              "y": 0,
+              "z": 40,
+              "sx": 38,
+              "sy": 405,
+              "sz": 38
+            },
+            {
+              "x": 412,
+              "y": 0,
+              "z": 40,
+              "sx": 38,
+              "sy": 405,
+              "sz": 38
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Leg tops support the seat underside at y=405."
+        },
+        {
+          "id": "P4",
+          "name": "Front and rear aprons",
+          "material": "Poplar hardwood",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 348,
+          "width_mm": 80,
+          "thickness_mm": 19,
+          "qty": 2,
+          "placements": [
+            {
+              "x": 76,
+              "y": 325,
+              "z": 40,
+              "sx": 348,
+              "sy": 80,
+              "sz": 19
+            },
+            {
+              "x": 76,
+              "y": 325,
+              "z": 382,
+              "sx": 348,
+              "sy": 80,
+              "sz": 19
+            }
+          ],
+          "profile": {
+            "type": "path",
+            "d": "M12 0 L336 0 L336 20 L348 20 L348 60 L336 60 L336 80 L12 80 L12 60 L0 60 L0 20 L12 20 Z",
+            "holes": null
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Each apron has a 324 mm body and 12 mm-long, 40 mm-high tenons at both ends. Reduce each tenon to 8 mm thickness, centered in the 19 mm apron thickness. Front apron at z=40; rear apron at z=382."
+        },
+        {
+          "id": "P5",
+          "name": "Side aprons",
+          "material": "Poplar hardwood",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 309,
+          "width_mm": 80,
+          "thickness_mm": 19,
+          "qty": 2,
+          "placements": [
+            {
+              "x": 50,
+              "y": 325,
+              "z": 66,
+              "sx": 19,
+              "sy": 80,
+              "sz": 309
+            },
+            {
+              "x": 431,
+              "y": 325,
+              "z": 66,
+              "sx": 19,
+              "sy": 80,
+              "sz": 309
+            }
+          ],
+          "profile": {
+            "type": "path",
+            "d": "M12 0 L297 0 L297 20 L309 20 L309 60 L297 60 L297 80 L12 80 L12 60 L0 60 L0 20 L12 20 Z",
+            "holes": null
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Each apron has a 285 mm body and 12 mm-long, 40 mm-high tenons at both ends. Reduce each tenon to 8 mm thickness, centered in the 19 mm apron thickness."
+        },
+        {
+          "id": "P6",
+          "name": "Arched backrest",
+          "material": "Poplar hardwood",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 400,
+          "width_mm": 170,
+          "thickness_mm": 28,
+          "qty": 1,
+          "placements": [
+            {
+              "x": 50,
+              "y": 650,
+              "z": 373,
+              "sx": 400,
+              "sy": 170,
+              "sz": 28
+            }
+          ],
+          "profile": {
+            "type": "path",
+            "d": "M0 0 L400 0 L400 100 C400 140 330 170 280 170 L120 170 C70 170 0 140 0 100 Z",
+            "holes": [
+              "M15 27 A4 4 0 0 1 23 27 L23 43 A4 4 0 0 1 15 43 Z",
+              "M15 127 A4 4 0 0 1 23 127 L23 143 A4 4 0 0 1 15 143 Z",
+              "M15 85 A4 4 0 1 0 23 85 A4 4 0 1 0 15 85 Z",
+              "M377 27 A4 4 0 0 1 385 27 L385 43 A4 4 0 0 1 377 43 Z",
+              "M377 127 A4 4 0 0 1 385 127 L385 143 A4 4 0 0 1 377 143 Z",
+              "M377 85 A4 4 0 1 0 385 85 A4 4 0 1 0 377 85 Z"
+            ]
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Flat jigsaw-cut arch. At each stile position the profile has two vertical 8 × 24 mm slots and one 8 mm round locating hole centered at the backrest height."
+        },
+        {
+          "id": "P7",
+          "name": "Rear backrest stiles",
+          "material": "Poplar hardwood",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 495,
+          "width_mm": 38,
+          "thickness_mm": 38,
+          "qty": 2,
+          "placements": [
+            {
+              "x": 50,
+              "y": 325,
+              "z": 401,
+              "sx": 38,
+              "sy": 495,
+              "sz": 38
+            },
+            {
+              "x": 412,
+              "y": 325,
+              "z": 401,
+              "sx": 38,
+              "sy": 495,
+              "sz": 38
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Each stile overlaps its rear leg along the z-facing side from y=325 to y=405 and extends up to the top of the chair. It is 1 mm behind the seat’s rear edge."
+        }
+      ],
+      "joints": [
+        {
+          "id": "J1",
+          "part_a": "P1",
+          "part_b": "P2",
+          "count": 2,
+          "type": "slotted_screw",
+          "fasteners": [
+            {
+              "name": "Washer-head wood screw",
+              "size": "32 mm",
+              "qty_per_joint": 1
+            }
+          ],
+          "glue": false,
+          "drive_from": "Before setting the seat, drive one screw upward through a front-to-back slot in the top of each rear leg into the seat underside.",
+          "step": 8,
+          "note": "Slots are 8 mm wide and 20 mm long along z. Do not glue; the slots allow seat movement across its grain."
+        },
+        {
+          "id": "J2",
+          "part_a": "P1",
+          "part_b": "P3",
+          "count": 2,
+          "type": "slotted_screw",
+          "fasteners": [
+            {
+              "name": "Washer-head wood screw",
+              "size": "32 mm",
+              "qty_per_joint": 1
+            }
+          ],
+          "glue": false,
+          "drive_from": "Before setting the seat, drive one screw upward through a front-to-back slot in the top of each front leg into the seat underside.",
+          "step": 8,
+          "note": "Slots are 8 mm wide and 20 mm long along z. Do not glue; the slots allow seat movement across its grain."
+        },
+        {
+          "id": "J3",
+          "part_a": "P4",
+          "part_b": "P2",
+          "count": 2,
+          "type": "mortise_tenon",
+          "fasteners": [],
+          "glue": true,
+          "drive_from": "Fit the rear apron tenons into mortises cut from the front-facing sides of the rear legs; clamp across the joint while glue cures.",
+          "step": 7,
+          "note": "Tenons are 12 mm long, 40 mm high, and 8 mm thick. Mortises match and are 12 mm deep."
+        },
+        {
+          "id": "J4",
+          "part_a": "P4",
+          "part_b": "P3",
+          "count": 2,
+          "type": "mortise_tenon",
+          "fasteners": [],
+          "glue": true,
+          "drive_from": "Fit the front apron tenons into mortises cut from the rear-facing sides of the front legs; clamp across the joint while glue cures.",
+          "step": 7,
+          "note": "Tenons are 12 mm long, 40 mm high, and 8 mm thick. Mortises match and are 12 mm deep."
+        },
+        {
+          "id": "J5",
+          "part_a": "P5",
+          "part_b": "P2",
+          "count": 2,
+          "type": "mortise_tenon",
+          "fasteners": [],
+          "glue": true,
+          "drive_from": "Fit the side apron tenons into the inside faces of the rear legs; clamp across each joint while glue cures.",
+          "step": 7,
+          "note": "Tenons are 12 mm long, 40 mm high, and 8 mm thick. Mortises match and are 12 mm deep."
+        },
+        {
+          "id": "J6",
+          "part_a": "P5",
+          "part_b": "P3",
+          "count": 2,
+          "type": "mortise_tenon",
+          "fasteners": [],
+          "glue": true,
+          "drive_from": "Fit the side apron tenons into the inside faces of the front legs; clamp across each joint while glue cures.",
+          "step": 7,
+          "note": "Tenons are 12 mm long, 40 mm high, and 8 mm thick. Mortises match and are 12 mm deep."
+        },
+        {
+          "id": "J7",
+          "part_a": "P1",
+          "part_b": "P4",
+          "count": 2,
+          "type": "slotted_screw",
+          "fasteners": [
+            {
+              "name": "Washer-head wood screw",
+              "size": "32 mm",
+              "qty_per_joint": 2
+            }
+          ],
+          "glue": false,
+          "drive_from": "With the chair upside down, drive two screws upward through front-to-back slots in the top edge of each apron into the seat underside.",
+          "step": 8,
+          "note": "Slots are 12 mm long along z and centered in the 19 mm apron thickness. Do not glue; keep screws centered in the slots."
+        },
+        {
+          "id": "J8",
+          "part_a": "P1",
+          "part_b": "P5",
+          "count": 2,
+          "type": "slotted_screw",
+          "fasteners": [
+            {
+              "name": "Washer-head wood screw",
+              "size": "32 mm",
+              "qty_per_joint": 2
+            }
+          ],
+          "glue": false,
+          "drive_from": "With the chair upside down, drive two screws upward through front-to-back slots in the top edge of each side apron into the seat underside.",
+          "step": 8,
+          "note": "Slots are 12 mm long along z. Do not glue; keep screws centered in the slots."
+        },
+        {
+          "id": "J9",
+          "part_a": "P2",
+          "part_b": "P7",
+          "count": 2,
+          "type": "connector_bolt",
+          "fasteners": [
+            {
+              "name": "Hex connector bolt, washer, and nut",
+              "size": "M8 × 90 mm",
+              "qty_per_joint": 2
+            }
+          ],
+          "glue": false,
+          "drive_from": "Before the seat is attached, drill through the rear stile and rear leg along z; insert bolts from the back of the stile and fit washers and nuts at the front face of the leg.",
+          "step": 6,
+          "note": "Use two bolts per stile at y=345 and y=385. This is a through-bolted face joint; keep the bolt positions clear of the apron tenon."
+        },
+        {
+          "id": "J10",
+          "part_a": "P6",
+          "part_b": "P7",
+          "count": 2,
+          "type": "slotted_screw",
+          "fasteners": [
+            {
+              "name": "Washer-head wood screw",
+              "size": "6 × 60 mm",
+              "qty_per_joint": 3
+            }
+          ],
+          "glue": false,
+          "drive_from": "From the front face of the backrest, drive one screw through the round locating hole and two through the vertical slots into each stile.",
+          "step": 9,
+          "note": "The central round hole locates the backrest; the upper and lower vertical slots allow its cross-grain movement. Tighten only enough to retain it. The 60 mm screws pass through 28 mm of backrest and enter the stile by 32 mm."
+        }
+      ],
+      "hardware": [
+        {
+          "name": "Washer-head wood screws",
+          "size": "32 mm",
+          "qty": 16,
+          "notes": "Four attach the seat to the legs; twelve attach it to the four aprons. Use the specified front-to-back slots."
+        },
+        {
+          "name": "Hex connector bolts with washers and nuts",
+          "size": "M8 × 90 mm",
+          "qty": 4,
+          "notes": "Two through-bolts at each rear stile-to-leg joint."
+        },
+        {
+          "name": "Washer-head wood screws",
+          "size": "6 × 60 mm",
+          "qty": 6,
+          "notes": "Three per stile to attach the backrest through one round locating hole and two vertical slots."
+        },
+        {
+          "name": "Interior/exterior-rated wood glue",
+          "size": null,
+          "qty": 1,
+          "notes": "One small bottle for the eight glued apron-to-leg mortise-and-tenon joints. Do not glue the seat or backrest to the frame."
+        }
+      ],
+      "finishes": [
+        {
+          "name": "Warm cream or pale ochre water-based enamel paint",
+          "qty": "approximately 1 quart",
+          "notes": "Apply over compatible primer."
+        },
+        {
+          "name": "Water-based primer",
+          "qty": "approximately 1 quart",
+          "notes": "Use a primer suitable for paint-grade hardwood."
+        }
+      ],
+      "tools": [
+        {
+          "name": "Tape measure, combination square, and pencil",
+          "required": true,
+          "alternative": null
+        },
+        {
+          "name": "Miter saw or circular saw with a guide",
+          "required": true,
+          "alternative": "A fine-tooth hand saw and a clamped straightedge."
+        },
+        {
+          "name": "Jigsaw",
+          "required": true,
+          "alternative": "Have a local shop cut the curved seat and backrest profiles."
+        },
+        {
+          "name": "Drill/driver with drill bits and countersink",
+          "required": true,
+          "alternative": "A hand drill and manual screwdriver; take extra care to keep holes straight."
+        },
+        {
+          "name": "Sharp chisels and mallet",
+          "required": true,
+          "alternative": "Have a shop cut the mortises, or use a router with a suitable guide if experienced."
+        },
+        {
+          "name": "Clamps",
+          "required": true,
+          "alternative": "Borrow or rent clamps; do not substitute hand pressure while glue cures."
+        },
+        {
+          "name": "Random-orbit sander or sanding block",
+          "required": true,
+          "alternative": "Hand-sand with a flat block."
+        },
+        {
+          "name": "Paintbrush or small foam roller",
+          "required": true,
+          "alternative": null
+        }
+      ],
+      "steps": [
+        {
+          "n": 1,
+          "title": "Prepare and cut the stock",
+          "text": "Select straight, dry poplar and mark every piece with its part ID. Cut the seat, legs, apron blanks, backrest, and stiles to the listed dimensions, including the apron lengths that include their tenons. Keep the seat grain running across the chair width.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5",
+            "P6",
+            "P7"
+          ],
+          "tools_used": [
+            "Tape measure, combination square, and pencil",
+            "Miter saw or circular saw with a guide"
+          ],
+          "safety": "Wear eye and hearing protection when using a saw; support long stock and keep hands clear of the blade.",
+          "tip": "Label matching legs and aprons so their locations stay clear during assembly."
+        },
+        {
+          "n": 2,
+          "title": "Shape the seat and backrest",
+          "text": "Mark and cut the rounded seat outline and the arched backrest with a jigsaw, staying just outside the line. Sand to the line and smooth the edges without changing the seat’s dimensions. Mark the backrest’s screw holes and slots from its profile.",
+          "parts_used": [
+            "P1",
+            "P6"
+          ],
+          "tools_used": [
+            "Jigsaw",
+            "Random-orbit sander or sanding block",
+            "Tape measure, combination square, and pencil"
+          ],
+          "safety": "Wear eye and hearing protection with the jigsaw, and clamp each workpiece before cutting.",
+          "tip": "Make a small test cut in scrap first to check how quickly the blade turns around the seat curves."
+        },
+        {
+          "n": 3,
+          "title": "Cut apron tenons and leg mortises",
+          "text": "Cut each apron tenon 12 mm long and 40 mm high, reducing its thickness to 8 mm and centering it in the 19 mm apron thickness. Mark matching 8 × 40 mm mortises, 12 mm deep, on the leg faces. Remove the waste with a drill and sharp chisels, then test-fit each joint without forcing it.",
+          "parts_used": [
+            "P2",
+            "P3",
+            "P4",
+            "P5"
+          ],
+          "tools_used": [
+            "Drill/driver with drill bits and countersink",
+            "Sharp chisels and mallet",
+            "Tape measure, combination square, and pencil"
+          ],
+          "safety": "Clamp the legs securely; wear eye protection while drilling and keep hands behind the chisel edge.",
+          "tip": "Number each apron end and its matching leg mortise so the frame assembles in the intended orientation."
+        },
+        {
+          "n": 4,
+          "title": "Drill slots and backrest holes",
+          "text": "Cut 8 × 20 mm front-to-back slots in the tops of all four legs, and 12 mm-long front-to-back slots in the apron top edges. Drill the backrest’s two vertical slots and one round locating hole at each stile position. Drill the through-bolt holes in the rear legs and stiles at y=345 and y=385 before assembling them.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5",
+            "P6",
+            "P7"
+          ],
+          "tools_used": [
+            "Drill/driver with drill bits and countersink",
+            "Tape measure, combination square, and pencil"
+          ],
+          "safety": "Clamp each part before drilling and wear eye protection; keep fingers away from the bit and workpiece edges.",
+          "tip": "The slots must run front-to-back (along z) to let the seat move across its grain."
+        },
+        {
+          "n": 5,
+          "title": "Dry-fit the apron frame",
+          "text": "Fit all four aprons between their matching legs without glue. Check that the apron tops are level at y=405 mm, the tenon shoulders seat firmly, and the frame stands square. Correct tight or misaligned joints before assembly.",
+          "parts_used": [
+            "P2",
+            "P3",
+            "P4",
+            "P5"
+          ],
+          "tools_used": [
+            "Tape measure, combination square, and pencil",
+            "Clamps"
+          ],
+          "safety": "Support the dry-fitted frame so it cannot tip while you check it.",
+          "tip": "Measure both diagonals of the rectangular leg frame; equal measurements indicate it is square."
+        },
+        {
+          "n": 6,
+          "title": "Bolt the rear stiles to the rear legs",
+          "text": "Place each P7 stile directly behind a P2 rear leg, with their faces aligned and the bolt holes matching. Insert two M8 × 90 mm bolts from the back of each stile through the rear leg, then fit washers and nuts at the front face of the leg. Tighten firmly but do not crush the wood.",
+          "parts_used": [
+            "P2",
+            "P7"
+          ],
+          "tools_used": [
+            "Drill/driver with drill bits and countersink",
+            "Tape measure, combination square, and pencil"
+          ],
+          "safety": "Wear eye protection while drilling; support the tall stiles so they cannot tip or fall.",
+          "tip": "Check that each stile is vertical before fully tightening the bolts."
+        },
+        {
+          "n": 7,
+          "title": "Glue and assemble the apron frame",
+          "text": "Apply a thin, even coat of wood glue to the apron tenons and mortises. Fit each apron into its matching leg joints and clamp the frame square while the glue cures. Wipe away squeeze-out and follow the glue label for clamping and cure times.",
+          "parts_used": [
+            "P2",
+            "P3",
+            "P4",
+            "P5"
+          ],
+          "tools_used": [
+            "Clamps",
+            "Tape measure, combination square, and pencil"
+          ],
+          "safety": "Keep glue off skin and eyes, and stabilize the frame while clamping.",
+          "tip": "Do not force a dry joint that does not fit; trim the tenon carefully instead of splitting a leg."
+        },
+        {
+          "n": 8,
+          "title": "Attach the seat with movement slots",
+          "text": "Set the seat on the leg tops and apron frame with its underside at y=405 mm and its rear edge 1 mm in front of the stiles. Drive one 32 mm washer-head screw upward through each leg-top slot and two through the slots in each apron. Do not use glue, and center the screws in their slots before tightening.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5"
+          ],
+          "tools_used": [
+            "Drill/driver with drill bits and countersink"
+          ],
+          "safety": "Wear eye protection and support the chair securely while working underneath it.",
+          "tip": "The screws should hold the seat down without pinning the slots; do not overtighten."
+        },
+        {
+          "n": 9,
+          "title": "Attach the arched backrest",
+          "text": "Place the backrest against the front faces of the two stiles, centered at y=650 mm. Drive one 6 × 60 mm washer-head screw through the round locating hole and two through the vertical slots at each stile. Do not glue; tighten only enough to hold the backrest while allowing movement in its slots.",
+          "parts_used": [
+            "P6",
+            "P7"
+          ],
+          "tools_used": [
+            "Drill/driver with drill bits and countersink",
+            "Clamps"
+          ],
+          "safety": "Wear eye protection while driving screws and brace the chair so it cannot tip.",
+          "tip": "Clamp the backrest level and centered before driving the screws."
+        },
+        {
+          "n": 10,
+          "title": "Sand, prime, and paint",
+          "text": "Fill small surface defects, then sand the chair smooth and lightly round sharp edges. Remove dust, apply compatible primer, and follow its label for dry time before applying two thin coats of warm cream or pale ochre enamel. Let the finish cure fully before use.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5",
+            "P6",
+            "P7"
+          ],
+          "tools_used": [
+            "Random-orbit sander or sanding block",
+            "Paintbrush or small foam roller"
+          ],
+          "safety": "Wear a dust mask while sanding and ventilate the room during painting; follow the finish label and keep wet finish away from flames.",
+          "tip": "Avoid thick paint buildup in the movement slots or around moving fasteners."
+        },
+        {
+          "n": 11,
+          "title": "Inspect before use",
+          "text": "After the glue and finish have cured, set the chair on a flat floor and check that all four feet contact evenly. Check the apron joints, through-bolts, seat screws, and backrest screws for movement. Do not use the chair if it rocks or any joint shifts under firm hand pressure.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5",
+            "P6",
+            "P7"
+          ],
+          "tools_used": [
+            "Tape measure, combination square, and pencil"
+          ],
+          "safety": "Use a helper to turn the chair upright if needed, and do not sit on it until the glue and finish are fully cured.",
+          "tip": "A felt pad can correct a slight floor irregularity, but it must not be used to hide a loose joint."
+        }
+      ],
+      "safety_overview": [
+        "Wear safety glasses and hearing protection when cutting or drilling; clamp stock before using power tools.",
+        "Use a dust mask while sanding and keep the work area ventilated when applying primer or paint.",
+        "Keep hands clear of saw blades, drill bits, and chisels; use sharp chisels with controlled cuts.",
+        "Use a helper when lifting or turning the chair, especially while the rear stiles are attached.",
+        "This chair is for normal seated use only; do not stand on it, climb on it, or lean back heavily."
+      ],
+      "load_bearing": true
+    }
+  },
+  "latencyMs": 412421,
+  "tokens": 83997,
+  "promptVersion": "plan.v1.3"
+}

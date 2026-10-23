@@ -1,0 +1,703 @@
+{
+  "image": "coffee-table.jpg",
+  "request": {
+    "mode": "build",
+    "units": "metric",
+    "skillLevel": "intermediate",
+    "budget": "balanced",
+    "style": "match_photo",
+    "useMyToolsOnly": false,
+    "currency": "USD",
+    "imageCount": 1
+  },
+  "result": {
+    "title": "Walnut-Look Console Table with Lower Shelf",
+    "parts": 6,
+    "steps": 10,
+    "schemaValid": true,
+    "unverified": [
+      "Parts P1 (Square legs) and P6 (Lower shelf) touch but have no declared joint",
+      "Parts P1 (Square legs) and P6 (Lower shelf) touch but have no declared joint",
+      "Parts P1 (Square legs) and P6 (Lower shelf) touch but have no declared joint",
+      "Parts P1 (Square legs) and P6 (Lower shelf) touch but have no declared joint"
+    ],
+    "warnings": [],
+    "repairCount": 1,
+    "review": null,
+    "plan": {
+      "title": "Walnut-Look Console Table with Lower Shelf",
+      "summary": "A long, narrow console table inspired by the photo, with a dark wood-look top, four square legs, a deep front apron, and a lower shelf. The lower shelf is supported by rails attached to the legs and has clearance from all four legs.",
+      "difficulty": "intermediate",
+      "est_hours": 10,
+      "est_cost": {
+        "low": 220,
+        "high": 420,
+        "currency": "USD"
+      },
+      "overall_dimensions_mm": {
+        "width": 1500,
+        "depth": 400,
+        "height": 780
+      },
+      "assumptions": [
+        "The photo is treated as a console/display table rather than a bench or dining table. Dimensions are estimated: 1500 mm wide, 400 mm deep, and 780 mm high.",
+        "The dark walnut appearance is made with a pine or poplar edge-glued top and matching boards, stained dark walnut. A balanced-budget build does not use solid walnut.",
+        "The top is 25 mm thick solid edge-glued wood; the lower shelf is 18 mm birch plywood. Slotted tabletop clips allow seasonal movement of the solid-wood top.",
+        "The table is for display and household items, not for sitting, standing, or climbing. The lower shelf is supported around its perimeter.",
+        "The apron and lower front/rear rails attach to the legs with pocket screws. Lower side rails meet the front and rear rails with small metal angle brackets.",
+        "The lower shelf is a rectangular panel set 1 mm inside the legs' inner faces to avoid contact with the legs. If cutting sheet goods at home is inconvenient, ask the supplier to cut it to size."
+      ],
+      "clarifying_questions": [],
+      "parts": [
+        {
+          "id": "P1",
+          "name": "Square legs",
+          "material": "Pine or poplar, stained to match the top; actual 45 x 45 mm stock",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 755,
+          "width_mm": 45,
+          "thickness_mm": 45,
+          "qty": 4,
+          "placements": [
+            {
+              "x": 45,
+              "y": 0,
+              "z": 45,
+              "sx": 45,
+              "sy": 755,
+              "sz": 45
+            },
+            {
+              "x": 1410,
+              "y": 0,
+              "z": 45,
+              "sx": 45,
+              "sy": 755,
+              "sz": 45
+            },
+            {
+              "x": 45,
+              "y": 0,
+              "z": 310,
+              "sx": 45,
+              "sy": 755,
+              "sz": 45
+            },
+            {
+              "x": 1410,
+              "y": 0,
+              "z": 310,
+              "sx": 45,
+              "sy": 755,
+              "sz": 45
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Legs end at y=755; the 25 mm top brings the finished height to 780 mm."
+        },
+        {
+          "id": "P2",
+          "name": "Tabletop",
+          "material": "25 mm edge-glued pine or poplar panel, walnut-stained",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 1500,
+          "width_mm": 400,
+          "thickness_mm": 25,
+          "qty": 1,
+          "placements": [
+            {
+              "x": 0,
+              "y": 755,
+              "z": 0,
+              "sx": 1500,
+              "sy": 25,
+              "sz": 400
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Solid wood. It bears on the legs and apron tops; slotted tabletop clips connect it to the aprons while allowing seasonal movement."
+        },
+        {
+          "id": "P3",
+          "name": "Upper front and rear aprons",
+          "material": "Pine or poplar, actual 20 x 90 mm, walnut-stained",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 1320,
+          "width_mm": 90,
+          "thickness_mm": 20,
+          "qty": 2,
+          "placements": [
+            {
+              "x": 90,
+              "y": 665,
+              "z": 70,
+              "sx": 1320,
+              "sy": 90,
+              "sz": 20
+            },
+            {
+              "x": 90,
+              "y": 665,
+              "z": 310,
+              "sx": 1320,
+              "sy": 90,
+              "sz": 20
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Apron top edges are flush with the leg tops at y=755 and bear against the tabletop underside."
+        },
+        {
+          "id": "P4",
+          "name": "Lower front and rear shelf rails",
+          "material": "Pine or poplar, actual 20 x 45 mm, walnut-stained",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 1320,
+          "width_mm": 45,
+          "thickness_mm": 20,
+          "qty": 2,
+          "placements": [
+            {
+              "x": 90,
+              "y": 235,
+              "z": 70,
+              "sx": 1320,
+              "sy": 45,
+              "sz": 20
+            },
+            {
+              "x": 90,
+              "y": 235,
+              "z": 310,
+              "sx": 1320,
+              "sy": 45,
+              "sz": 20
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "These rails attach to the legs and support the front and rear edges of the lower shelf."
+        },
+        {
+          "id": "P5",
+          "name": "Lower left and right shelf rails",
+          "material": "Pine or poplar, actual 20 x 45 mm, walnut-stained",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 220,
+          "width_mm": 45,
+          "thickness_mm": 20,
+          "qty": 2,
+          "placements": [
+            {
+              "x": 100,
+              "y": 235,
+              "z": 90,
+              "sx": 20,
+              "sy": 45,
+              "sz": 220
+            },
+            {
+              "x": 1380,
+              "y": 235,
+              "z": 90,
+              "sx": 20,
+              "sy": 45,
+              "sz": 220
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "These side rails meet the front and rear lower rails at their ends. They are inset from the legs and support the shelf."
+        },
+        {
+          "id": "P6",
+          "name": "Lower shelf",
+          "material": "18 mm birch plywood",
+          "stock": "sheet",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 1318,
+          "width_mm": 260,
+          "thickness_mm": 18,
+          "qty": 1,
+          "placements": [
+            {
+              "x": 91,
+              "y": 280,
+              "z": 70,
+              "sx": 1318,
+              "sy": 18,
+              "sz": 260
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "The 1 mm clearance from the inner leg faces prevents contact with the legs. It rests on the front/rear rails and the inset side rails."
+        }
+      ],
+      "joints": [
+        {
+          "id": "J1",
+          "part_a": "P1",
+          "part_b": "P3",
+          "count": 4,
+          "type": "pocket_screw",
+          "fasteners": [
+            {
+              "name": "pocket-hole screw",
+              "size": "4 x 50 mm coarse-thread",
+              "qty_per_joint": 2
+            }
+          ],
+          "glue": true,
+          "drive_from": "From the inside face of each apron, through pre-drilled pocket holes into the leg side grain.",
+          "step": 5,
+          "note": "Two screws at each apron-to-leg contact; keep screw tips at least 3 mm inside the visible outside faces."
+        },
+        {
+          "id": "J2",
+          "part_a": "P1",
+          "part_b": "P4",
+          "count": 4,
+          "type": "pocket_screw",
+          "fasteners": [
+            {
+              "name": "pocket-hole screw",
+              "size": "4 x 50 mm coarse-thread",
+              "qty_per_joint": 2
+            }
+          ],
+          "glue": true,
+          "drive_from": "From the inside face of each lower front or rear rail, through pre-drilled pocket holes into the leg side grain.",
+          "step": 6,
+          "note": "Two screws at each rail-to-leg contact. Rail ends meet the inside faces of the legs."
+        },
+        {
+          "id": "J3",
+          "part_a": "P4",
+          "part_b": "P5",
+          "count": 4,
+          "type": "metal_bracket",
+          "fasteners": [
+            {
+              "name": "small steel angle bracket",
+              "size": "25 x 25 mm; 4 screws per bracket, 2 into each rail",
+              "qty_per_joint": 1
+            },
+            {
+              "name": "bracket screw",
+              "size": "3 x 16 mm",
+              "qty_per_joint": 4
+            }
+          ],
+          "glue": true,
+          "drive_from": "From the inside of the lower rail frame, before the shelf is installed; fasten the bracket wings to the vertical faces of the adjoining rails.",
+          "step": 7,
+          "note": "Use one bracket at each end of the two side rails. Pre-drill and ensure screws do not emerge through visible faces."
+        },
+        {
+          "id": "J4",
+          "part_a": "P5",
+          "part_b": "P6",
+          "count": 2,
+          "type": "glue_screw",
+          "fasteners": [
+            {
+              "name": "wood screw",
+              "size": "4 x 40 mm",
+              "qty_per_joint": 2
+            }
+          ],
+          "glue": true,
+          "drive_from": "From above through the shelf into the top face of each side rail; pre-drill clearance holes in the plywood.",
+          "step": 8,
+          "note": "Two screws per side rail; the 40 mm screw penetrates about 22 mm into the 45 mm-tall rail."
+        },
+        {
+          "id": "J5",
+          "part_a": "P4",
+          "part_b": "P6",
+          "count": 2,
+          "type": "glue_screw",
+          "fasteners": [
+            {
+              "name": "wood screw",
+              "size": "4 x 40 mm",
+              "qty_per_joint": 4
+            }
+          ],
+          "glue": true,
+          "drive_from": "From above through the shelf into the top face of each front or rear rail; pre-drill clearance holes in the plywood.",
+          "step": 8,
+          "note": "Four screws per front/rear rail, spaced evenly and kept clear of the legs."
+        },
+        {
+          "id": "J6",
+          "part_a": "P3",
+          "part_b": "P2",
+          "count": 4,
+          "type": "tabletop_fastener",
+          "fasteners": [
+            {
+              "name": "slotted tabletop clip",
+              "size": "standard steel Z-clip for a 20 mm apron",
+              "qty_per_joint": 1
+            },
+            {
+              "name": "clip screw",
+              "size": "4 x 16 mm",
+              "qty_per_joint": 1
+            }
+          ],
+          "glue": false,
+          "drive_from": "Fit each clip into a shallow slot in an apron top before setting the tabletop; then drive its screw upward into the tabletop underside.",
+          "step": 9,
+          "note": "Use two clips per apron. The clips attach to aprons, not leg end grain, and permit solid-top movement."
+        },
+        {
+          "id": "J7",
+          "part_a": "P1",
+          "part_b": "P2",
+          "count": 4,
+          "type": "other",
+          "fasteners": [],
+          "glue": false,
+          "drive_from": "No fastener is driven at this bearing contact; the tabletop is retained by J6 clips attached to the aprons.",
+          "step": 9,
+          "note": "The tabletop rests on the leg tops. Retention is provided by the apron-mounted slotted clips, so do not screw into leg end grain."
+        }
+      ],
+      "hardware": [
+        {
+          "name": "Coarse-thread pocket-hole screws",
+          "size": "4 x 50 mm",
+          "qty": 16,
+          "notes": "Two for each of the four apron-to-leg contacts and four lower front/rear-rail-to-leg contacts."
+        },
+        {
+          "name": "Small steel angle bracket",
+          "size": "25 x 25 mm",
+          "qty": 4,
+          "notes": "One at each end of the two lower side rails."
+        },
+        {
+          "name": "Bracket screws",
+          "size": "3 x 16 mm",
+          "qty": 16,
+          "notes": "Four per angle bracket."
+        },
+        {
+          "name": "Wood screws for shelf",
+          "size": "4 x 40 mm",
+          "qty": 12,
+          "notes": "Four per front/rear rail and two per side rail."
+        },
+        {
+          "name": "Slotted tabletop clips",
+          "size": "standard steel Z-clips for 20 mm apron",
+          "qty": 4,
+          "notes": "Two per apron; fit into shallow slots in the apron upper edges."
+        },
+        {
+          "name": "Clip screws",
+          "size": "4 x 16 mm",
+          "qty": 4,
+          "notes": "One per Z-clip; fasten into the tabletop underside."
+        }
+      ],
+      "finishes": [
+        {
+          "name": "Walnut-colored penetrating stain",
+          "qty": "about 500 ml",
+          "notes": "Test the color on an offcut first; pine can stain unevenly, so use a compatible pre-stain conditioner if needed."
+        },
+        {
+          "name": "Water-based clear topcoat",
+          "qty": "about 1 L",
+          "notes": "Apply 2–3 thin coats to the top and at least 2 coats to the rest; follow the product label for recoat and full-cure times."
+        },
+        {
+          "name": "Wood glue",
+          "qty": "about 250 ml",
+          "notes": "Use at structural wood-to-wood joints; do not glue the solid tabletop to its supports."
+        }
+      ],
+      "tools": [
+        {
+          "name": "Tape measure and pencil",
+          "required": true,
+          "alternative": null
+        },
+        {
+          "name": "Combination square",
+          "required": true,
+          "alternative": "A reliable framing square and careful marking can substitute."
+        },
+        {
+          "name": "Circular saw with straightedge guide",
+          "required": true,
+          "alternative": "Have the store make the straight cuts, or use a hand saw with a clamped guide."
+        },
+        {
+          "name": "Drill/driver with bits and countersink",
+          "required": true,
+          "alternative": "A hand drill and manual screwdriver work, but take extra care to keep holes straight."
+        },
+        {
+          "name": "Pocket-hole jig",
+          "required": true,
+          "alternative": "A simple clamp-on jig is sufficient; alternatively use rated metal angle brackets at the apron-to-leg connections."
+        },
+        {
+          "name": "Clamps",
+          "required": true,
+          "alternative": "Use temporary strap clamps or ask a helper to hold the parts square while fastening."
+        },
+        {
+          "name": "Random-orbit sander",
+          "required": true,
+          "alternative": "Hand-sand with a sanding block, progressing through 120, 180, and 220 grit."
+        },
+        {
+          "name": "Router with a straight bit",
+          "required": true,
+          "alternative": "Cut shallow clip slots with a fine hand saw and chisel, following the clip manufacturer's dimensions."
+        },
+        {
+          "name": "Eye protection and hearing protection",
+          "required": true,
+          "alternative": null
+        },
+        {
+          "name": "Dust mask or respirator",
+          "required": true,
+          "alternative": null
+        },
+        {
+          "name": "Brushes or lint-free finish cloths",
+          "required": true,
+          "alternative": null
+        }
+      ],
+      "steps": [
+        {
+          "n": 1,
+          "title": "Check the materials and mark the parts",
+          "text": "Confirm the lumber is straight and the plywood is flat. Mark each piece with its part ID and finished length; check the table dimensions against the space where it will stand.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5",
+            "P6"
+          ],
+          "tools_used": [
+            "Tape measure and pencil",
+            "Combination square"
+          ],
+          "safety": null,
+          "tip": "Label matching pieces as pairs so the front and rear rails stay the same length."
+        },
+        {
+          "n": 2,
+          "title": "Cut the boards and tabletop",
+          "text": "Cut the legs, aprons, and lower rails to the dimensions listed. Cut the tabletop to 1500 x 400 x 25 mm, or have the supplier cut it square; keep the finished edges free of saw marks.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5"
+          ],
+          "tools_used": [
+            "Circular saw with straightedge guide",
+            "Tape measure and pencil",
+            "Combination square"
+          ],
+          "safety": "Wear eye and hearing protection. Support both sides of each cut, keep hands clear of the blade, and unplug the saw before adjustments.",
+          "tip": "Measure each part twice and make a test cut on scrap before cutting the matching pieces."
+        },
+        {
+          "n": 3,
+          "title": "Cut and dry-fit the lower shelf",
+          "text": "Cut P6 (lower shelf) to 1318 x 260 mm from 18 mm plywood, or have the supplier cut it square. Dry-fit it at y=280 mm; confirm it has 1 mm clearance from each leg and rests on the four lower rails.",
+          "parts_used": [
+            "P1",
+            "P4",
+            "P5",
+            "P6"
+          ],
+          "tools_used": [
+            "Tape measure and pencil",
+            "Circular saw with straightedge guide",
+            "Combination square"
+          ],
+          "safety": "Wear eye protection and a dust mask; clamp the plywood securely before cutting.",
+          "tip": "The shelf is rectangular, not notched. Keep it centered across the table and check leg clearance before assembly."
+        },
+        {
+          "n": 4,
+          "title": "Pre-drill and prepare the joints",
+          "text": "Drill two pocket holes at each end of the upper aprons and lower front/rear rails. Cut shallow slots for the tabletop clips in the upper edges of the aprons, then sand the visible faces and dry-fit the frames.",
+          "parts_used": [
+            "P1",
+            "P3",
+            "P4",
+            "P5",
+            "P6"
+          ],
+          "tools_used": [
+            "Pocket-hole jig",
+            "Drill/driver with bits and countersink",
+            "Router with a straight bit",
+            "Random-orbit sander",
+            "Clamps"
+          ],
+          "safety": "Wear eye protection and a dust mask while drilling, routing, and sanding; clamp parts securely and keep hands clear of cutters.",
+          "tip": "Keep pocket holes on the inside faces and make the clip slots only as deep as the clip manufacturer specifies."
+        },
+        {
+          "n": 5,
+          "title": "Attach the upper aprons to the legs",
+          "text": "Position P3 (upper aprons) between the legs with their top edges flush at y=755 mm and their front/rear faces at the listed positions. Apply glue at each joint and drive two 4 x 50 mm pocket-hole screws from each apron into each leg; clamp the frame square while the glue sets.",
+          "parts_used": [
+            "P1",
+            "P3"
+          ],
+          "tools_used": [
+            "Drill/driver with bits and countersink",
+            "Clamps",
+            "Combination square"
+          ],
+          "safety": "Wear eye protection while driving screws and wipe up glue promptly.",
+          "tip": "Check both diagonals of the leg-and-apron layout; equal diagonals indicate the frame is square."
+        },
+        {
+          "n": 6,
+          "title": "Attach the lower front and rear rails",
+          "text": "Set P4 (lower front and rear rails) between the legs with their top edges at y=280 mm. Apply glue and drive two 4 x 50 mm pocket-hole screws at each rail-to-leg joint from the inside face of the rail; check that the rails are level and the legs remain square.",
+          "parts_used": [
+            "P1",
+            "P4"
+          ],
+          "tools_used": [
+            "Drill/driver with bits and countersink",
+            "Clamps",
+            "Combination square"
+          ],
+          "safety": "Wear eye protection while drilling and driving screws.",
+          "tip": "Keep the lower rails aligned at the same height so the shelf will sit flat."
+        },
+        {
+          "n": 7,
+          "title": "Install the lower side rails and brackets",
+          "text": "Fit P5 (side rails) between the front and rear lower rails, top edges flush at y=280 mm. Apply glue at the four rail-end joints and install one 25 x 25 mm angle bracket at each end, using two 3 x 16 mm screws into each adjoining rail face.",
+          "parts_used": [
+            "P4",
+            "P5"
+          ],
+          "tools_used": [
+            "Drill/driver with bits and countersink",
+            "Clamps"
+          ],
+          "safety": "Wear eye protection and keep fingers clear while holding the rails in position.",
+          "tip": "Pre-drill bracket holes near rail ends to reduce splitting; drive the screws from the open inside of the frame before fitting the shelf."
+        },
+        {
+          "n": 8,
+          "title": "Fit and fasten the lower shelf",
+          "text": "Rest P6 (lower shelf) on the lower rail tops at y=280 mm and confirm the leg clearance. Apply glue along the rail tops, then drive four 4 x 40 mm screws into each front/rear rail and two into each side rail from above.",
+          "parts_used": [
+            "P4",
+            "P5",
+            "P6"
+          ],
+          "tools_used": [
+            "Drill/driver with bits and countersink",
+            "Tape measure and pencil"
+          ],
+          "safety": "Wear eye protection while drilling. Support the shelf fully so it cannot tip while you work.",
+          "tip": "Pre-drill clearance holes through the plywood and countersink lightly so the screw heads sit flush."
+        },
+        {
+          "n": 9,
+          "title": "Set and secure the tabletop",
+          "text": "Center P2 (tabletop) over the leg frame with an even 45 mm overhang at the sides and ends. Seat the four slotted clips in the apron slots, set the top onto the legs and aprons, then drive one 4 x 16 mm screw upward through each clip into the tabletop underside; do not glue the top.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3"
+          ],
+          "tools_used": [
+            "Drill/driver with bits and countersink",
+            "Tape measure and pencil"
+          ],
+          "safety": "Use a helper to lift and turn the tabletop safely; wear eye protection while fastening.",
+          "tip": "Do not overtighten the clips; their slotted shape must remain free to accommodate seasonal wood movement."
+        },
+        {
+          "n": 10,
+          "title": "Sand, stain, and seal",
+          "text": "Fill visible dents, then sand the assembled table to 180–220 grit and remove all dust. Apply the walnut stain evenly, followed by 2–3 thin clear-coat layers on the tabletop and at least two on the rest; allow the label's stated drying time between coats.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5",
+            "P6"
+          ],
+          "tools_used": [
+            "Random-orbit sander",
+            "Brushes or lint-free finish cloths"
+          ],
+          "safety": "Use finishes in a well-ventilated area, wear the finish maker's recommended gloves and respirator, and keep oily cloths spread flat to dry or dispose of them safely.",
+          "tip": "Stain an offcut first; softwood can absorb stain unevenly and may need conditioner."
+        }
+      ],
+      "safety_overview": [
+        "Wear eye protection for cutting, drilling, routing, and fastening; use hearing protection with power tools.",
+        "Clamp work securely and keep hands away from blades and drill bits. Unplug tools before changing blades or bits.",
+        "Wear a dust mask or respirator while sanding; vacuum dust rather than blowing it into the air.",
+        "Use stains and clear coats with strong ventilation and follow the product label for protective equipment and drying times.",
+        "Lift and turn the tabletop with help to avoid strain and prevent the panel from tipping."
+      ],
+      "load_bearing": false
+    }
+  },
+  "latencyMs": 249234,
+  "tokens": 45028,
+  "promptVersion": "plan.v1.3"
+}
