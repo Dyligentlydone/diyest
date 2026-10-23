@@ -1,0 +1,6 @@
+{
+  "scenario": "not-buildable",
+  "ok": false,
+  "kind": "not_buildable",
+  "summary": "This request is for motorcycle fuel-system repair and throttle-body synchronization, not a buildable furniture or home-project plan. The correct procedure, parts, adjustment values, and safety checks depend on the exact motorcycle and its service manual; guessing could cause a fuel leak, fire, or unsafe engine operation."
+}

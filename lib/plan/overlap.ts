@@ -4,16 +4,21 @@
  * Any mesh Manifold can't handle is reported as unverifiable (a warning), so a
  * weird AI part can never crash validation.
  */
-import Module from "manifold-3d";
+import type ManifoldToplevel from "manifold-3d";
 import earcut from "earcut";
 import { sub, cross, dot, type Mesh, type Solid, type Vec3 } from "@/lib/blueprint/solids";
 
-type ManifoldModule = Awaited<ReturnType<typeof Module>>;
+type ManifoldModule = Awaited<ReturnType<typeof ManifoldToplevel>>;
 type ManifoldInstance = InstanceType<ManifoldModule["Manifold"]>;
 
 let modulePromise: Promise<ManifoldModule> | null = null;
 function getModule(): Promise<ManifoldModule> {
-  modulePromise ??= Module().then((m) => (m.setup(), m));
+  // manifold-3d's exports map only declares `import` — a static import breaks
+  // under CJS transpilers (tsx), so load it lazily inside the async path.
+  modulePromise ??= import("manifold-3d").then((m) => {
+    const wasm = m.default();
+    return wasm.then((w) => (w.setup(), w));
+  });
   return modulePromise;
 }
 

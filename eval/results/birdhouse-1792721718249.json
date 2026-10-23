@@ -1,0 +1,943 @@
+{
+  "image": "birdhouse.jpg",
+  "request": {
+    "mode": "build",
+    "units": "metric",
+    "skillLevel": "intermediate",
+    "budget": "balanced",
+    "style": "match_photo",
+    "useMyToolsOnly": false,
+    "currency": "USD",
+    "imageCount": 1
+  },
+  "result": {
+    "title": "Large Woodpecker Nest Box with Lift-Open Lid",
+    "parts": 10,
+    "steps": 11,
+    "schemaValid": true,
+    "unverified": [
+      "P3 (Back panel with strap slots) copy 1: profile path leaves its 411×162 box",
+      "Joint J13 made in step 8 but its parts_used lacks P2",
+      "Fastener \"EPDM seam tape or compatible sealant\" used by joints (×1) is missing from the hardware list",
+      "Bounding box 345×450×260mm ≠ overall_dimensions_mm 240×450×260",
+      "Parts P1 (Front panel with entrance hole) and P4 (Floor panel) touch but have no declared joint",
+      "Parts P2 (Side panels) and P4 (Floor panel) touch but have no declared joint",
+      "Parts P2 (Side panels) and P4 (Floor panel) touch but have no declared joint",
+      "Parts P3 (Back panel with strap slots) and P4 (Floor panel) touch but have no declared joint"
+    ],
+    "warnings": [
+      "Hardware \"Adjustable tree-safe webbing straps with cam buckles\" isn't referenced by any joint",
+      "Hardware \"Exterior wood glue\" isn't referenced by any joint",
+      "Part P1: geometry could not be verified for overlap",
+      "Part P3: geometry could not be verified for overlap"
+    ],
+    "repairCount": 2,
+    "review": null,
+    "plan": {
+      "title": "Large Woodpecker Nest Box with Lift-Open Lid",
+      "summary": "A weather-resistant, tree-mounted nest box inspired by the photo. It has a roughly 50 mm entrance, a removable-for-cleaning lift-open lid, drainage, and no perch. Confirm the entrance size and cavity dimensions suit the bird species in your area before building.",
+      "difficulty": "intermediate",
+      "est_hours": 7,
+      "est_cost": {
+        "low": 65,
+        "high": 110,
+        "currency": "USD"
+      },
+      "overall_dimensions_mm": {
+        "width": 240,
+        "depth": 260,
+        "height": 450
+      },
+      "assumptions": [
+        "Estimated from the photo as a large woodpecker-style nest box. The body is 200 mm wide, 220 mm deep, and 430 mm tall; the 240 mm wide lid gives about 20 mm overhang on each side.",
+        "The pictured bird and local species are not certain. The 50 mm entrance and cavity dimensions are a starting point, not a guarantee of suitability for every woodpecker.",
+        "Use untreated, rough-sawn or lightly textured 19 mm cedar. Dimensions are finished sizes; choose stock thick enough to finish to 19 mm.",
+        "The flat lid is waterproofed with EPDM roofing membrane bonded over its top and wrapped over its edges. The EPDM placement represents the top face; the thin flexible edge returns are described in the part notes.",
+        "Use tree-safe adjustable straps rather than nails or screws into a living tree. Check and loosen or reposition them at least annually as the tree grows.",
+        "Only the exterior receives finish. Leave the cavity and entrance edges unfinished, and allow exterior finish to cure fully before installation."
+      ],
+      "clarifying_questions": [
+        "Which bird species are you targeting? Entrance-hole and cavity requirements vary; verify the 50 mm hole and cavity size with a local birding or wildlife source."
+      ],
+      "parts": [
+        {
+          "id": "P1",
+          "name": "Front panel with entrance hole",
+          "material": "Untreated cedar, 19 mm actual thickness",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 411,
+          "width_mm": 162,
+          "thickness_mm": 19,
+          "qty": 1,
+          "placements": [
+            {
+              "x": 39,
+              "y": 19,
+              "z": 20,
+              "sx": 162,
+              "sy": 411,
+              "sz": 19
+            }
+          ],
+          "profile": {
+            "type": "path",
+            "d": "M0 0 L411 0 L411 162 L0 162 Z",
+            "holes": [
+              "M255 81 A25 25 0 1 0 305 81 A25 25 0 1 0 255 81 Z"
+            ]
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "The 50 mm entrance is centered across the panel and centered 280 mm above its bottom edge (299 mm above the finished box bottom). Roughen the inside face below the opening with shallow horizontal kerfs to help nestlings climb; do not add a perch."
+        },
+        {
+          "id": "P2",
+          "name": "Side panels",
+          "material": "Untreated cedar, 19 mm actual thickness",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 430,
+          "width_mm": 220,
+          "thickness_mm": 19,
+          "qty": 2,
+          "placements": [
+            {
+              "x": 20,
+              "y": 0,
+              "z": 20,
+              "sx": 19,
+              "sy": 430,
+              "sz": 220
+            },
+            {
+              "x": 201,
+              "y": 0,
+              "z": 20,
+              "sx": 19,
+              "sy": 430,
+              "sz": 220
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Full-height rectangular sides; inner faces are at x=39 mm and x=201 mm."
+        },
+        {
+          "id": "P3",
+          "name": "Back panel with strap slots",
+          "material": "Untreated cedar, 19 mm actual thickness",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 411,
+          "width_mm": 162,
+          "thickness_mm": 19,
+          "qty": 1,
+          "placements": [
+            {
+              "x": 39,
+              "y": 19,
+              "z": 221,
+              "sx": 162,
+              "sy": 411,
+              "sz": 19
+            }
+          ],
+          "profile": {
+            "type": "path",
+            "d": "M0 0 L411 0 L411 162 L0 162 Z",
+            "holes": [
+              "M66 80 L96 80 L96 86 L66 86 Z",
+              "M66 300 L96 300 L96 306 L66 306 Z"
+            ]
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Two 6 x 30 mm strap slots are centered across the panel; their lower edges are 80 mm and 300 mm above the panel bottom. Ease the slot edges so they do not abrade the straps."
+        },
+        {
+          "id": "P4",
+          "name": "Floor panel",
+          "material": "Untreated cedar, 19 mm actual thickness",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 180,
+          "width_mm": 160,
+          "thickness_mm": 19,
+          "qty": 1,
+          "placements": [
+            {
+              "x": 40,
+              "y": 19,
+              "z": 40,
+              "sx": 160,
+              "sy": 19,
+              "sz": 180
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Drill four 6 mm drainage holes near the corners, keeping each hole at least 15 mm from an edge. The floor rests on the four support cleats at y=19 mm and has a 1 mm clearance from the wall panels."
+        },
+        {
+          "id": "P5",
+          "name": "Overhanging lift-open lid",
+          "material": "Untreated cedar, 19 mm actual thickness",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 260,
+          "width_mm": 240,
+          "thickness_mm": 19,
+          "qty": 1,
+          "placements": [
+            {
+              "x": 0,
+              "y": 430,
+              "z": 0,
+              "sx": 240,
+              "sy": 19,
+              "sz": 260
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Flat lid with about 20 mm overhang on every side of the 200 x 220 mm body. The waterproof membrane is bonded over the top and folded down the edges; leave access for hinge and catch hardware."
+        },
+        {
+          "id": "P6",
+          "name": "Left-side floor support cleat",
+          "material": "Untreated cedar, 19 mm actual thickness",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 130,
+          "width_mm": 25,
+          "thickness_mm": 19,
+          "qty": 1,
+          "placements": [
+            {
+              "x": 39,
+              "y": 0,
+              "z": 65,
+              "sx": 25,
+              "sy": 19,
+              "sz": 130
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Attached to the inside face of the left side. Its top supports the floor; leave a 1 mm gap at each end from the front and rear cleats."
+        },
+        {
+          "id": "P7",
+          "name": "Right-side floor support cleat",
+          "material": "Untreated cedar, 19 mm actual thickness",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 130,
+          "width_mm": 25,
+          "thickness_mm": 19,
+          "qty": 1,
+          "placements": [
+            {
+              "x": 176,
+              "y": 0,
+              "z": 65,
+              "sx": 25,
+              "sy": 19,
+              "sz": 130
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Attached to the inside face of the right side. Its top supports the floor; leave a 1 mm gap at each end from the front and rear cleats."
+        },
+        {
+          "id": "P8",
+          "name": "Front floor support cleat",
+          "material": "Untreated cedar, 19 mm actual thickness",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 112,
+          "width_mm": 25,
+          "thickness_mm": 19,
+          "qty": 1,
+          "placements": [
+            {
+              "x": 64,
+              "y": 0,
+              "z": 39,
+              "sx": 112,
+              "sy": 19,
+              "sz": 25
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Attached to the inside face of the front panel. Its top supports the floor."
+        },
+        {
+          "id": "P9",
+          "name": "Rear floor support cleat",
+          "material": "Untreated cedar, 19 mm actual thickness",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 112,
+          "width_mm": 25,
+          "thickness_mm": 19,
+          "qty": 1,
+          "placements": [
+            {
+              "x": 64,
+              "y": 0,
+              "z": 196,
+              "sx": 112,
+              "sy": 19,
+              "sz": 25
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Attached to the inside face of the back panel. Its top supports the floor."
+        },
+        {
+          "id": "P10",
+          "name": "EPDM roof membrane",
+          "material": "Outdoor-rated EPDM roofing membrane, about 1.2 mm thick",
+          "stock": "other",
+          "source": "buy",
+          "buy_spec": "1.2 mm EPDM roofing membrane sheet, outdoor-rated, with compatible EPDM adhesive and seam tape",
+          "length_mm": 260,
+          "width_mm": 240,
+          "thickness_mm": 1,
+          "qty": 1,
+          "placements": [
+            {
+              "x": 0,
+              "y": 449,
+              "z": 0,
+              "sx": 240,
+              "sy": 1,
+              "sz": 260
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "The placement shows the membrane on the lid's top face only. Cut the purchased sheet oversized, bond it to the top, and fold it down all four lid edges; cut and seal neat openings around hinge and catch hardware with compatible EPDM seam tape or sealant. Keep the lid able to open."
+        }
+      ],
+      "joints": [
+        {
+          "id": "J1",
+          "part_a": "P1",
+          "part_b": "P2",
+          "count": 2,
+          "type": "pocket_screw",
+          "fasteners": [
+            {
+              "name": "Coarse-thread pocket-hole screw",
+              "size": "32 mm, #8",
+              "qty_per_joint": 4
+            }
+          ],
+          "glue": true,
+          "drive_from": "From the inside face of P1, through pocket holes near each side edge into the inside face of P2.",
+          "step": 5,
+          "note": "Four screws at each front-to-side connection. Pocket screws enter the side panels' face grain, not their end grain."
+        },
+        {
+          "id": "J2",
+          "part_a": "P3",
+          "part_b": "P2",
+          "count": 2,
+          "type": "pocket_screw",
+          "fasteners": [
+            {
+              "name": "Coarse-thread pocket-hole screw",
+              "size": "32 mm, #8",
+              "qty_per_joint": 4
+            }
+          ],
+          "glue": true,
+          "drive_from": "From the inside face of P3, through pocket holes near each side edge into the inside face of P2.",
+          "step": 5,
+          "note": "Four screws at each back-to-side connection. Keep pocket holes clear of the strap slots and cleats."
+        },
+        {
+          "id": "J3",
+          "part_a": "P6",
+          "part_b": "P2",
+          "count": 1,
+          "type": "glue_screw",
+          "fasteners": [
+            {
+              "name": "Exterior-rated wood screw",
+              "size": "38 mm, #8",
+              "qty_per_joint": 3
+            }
+          ],
+          "glue": true,
+          "drive_from": "From the outside face of the left P2 side, through pilot holes into the broad face of P6, while P2 is still separate.",
+          "step": 4,
+          "note": "Use three screws spaced along the cleat. The 38 mm screws pass through the 19 mm side and penetrate 19 mm into the 25 mm cleat, leaving clearance before its far face."
+        },
+        {
+          "id": "J4",
+          "part_a": "P7",
+          "part_b": "P2",
+          "count": 1,
+          "type": "glue_screw",
+          "fasteners": [
+            {
+              "name": "Exterior-rated wood screw",
+              "size": "38 mm, #8",
+              "qty_per_joint": 3
+            }
+          ],
+          "glue": true,
+          "drive_from": "From the outside face of the right P2 side, through pilot holes into the broad face of P7, while P2 is still separate.",
+          "step": 4,
+          "note": "Use three screws spaced along the cleat. The 38 mm screws pass through the 19 mm side and penetrate 19 mm into the 25 mm cleat, leaving clearance before its far face."
+        },
+        {
+          "id": "J5",
+          "part_a": "P8",
+          "part_b": "P1",
+          "count": 1,
+          "type": "glue_screw",
+          "fasteners": [
+            {
+              "name": "Exterior-rated wood screw",
+              "size": "38 mm, #8",
+              "qty_per_joint": 3
+            }
+          ],
+          "glue": true,
+          "drive_from": "From the exterior face of P1, through pilot holes into the broad face of P8, before assembling the shell.",
+          "step": 4,
+          "note": "Use three screws spaced along the cleat. The 38 mm screws pass through the 19 mm panel and penetrate 19 mm into the 25 mm cleat."
+        },
+        {
+          "id": "J6",
+          "part_a": "P9",
+          "part_b": "P3",
+          "count": 1,
+          "type": "glue_screw",
+          "fasteners": [
+            {
+              "name": "Exterior-rated wood screw",
+              "size": "38 mm, #8",
+              "qty_per_joint": 3
+            }
+          ],
+          "glue": true,
+          "drive_from": "From the exterior face of P3, through pilot holes into the broad face of P9, before assembling the shell.",
+          "step": 4,
+          "note": "Use three screws spaced along the cleat. The 38 mm screws pass through the 19 mm panel and penetrate 19 mm into the 25 mm cleat."
+        },
+        {
+          "id": "J7",
+          "part_a": "P4",
+          "part_b": "P6",
+          "count": 1,
+          "type": "other",
+          "fasteners": [],
+          "glue": true,
+          "drive_from": "From above, lower P4 onto the top of P6 and clamp or weight it while the glue cures.",
+          "step": 6,
+          "note": "Glue the floor to the cleat top only; do not glue the solid floor across the front, back, or side walls."
+        },
+        {
+          "id": "J8",
+          "part_a": "P4",
+          "part_b": "P7",
+          "count": 1,
+          "type": "other",
+          "fasteners": [],
+          "glue": true,
+          "drive_from": "From above, lower P4 onto the top of P7 and clamp or weight it while the glue cures.",
+          "step": 6,
+          "note": "Glue the floor to the cleat top only; do not glue the solid floor across the front, back, or side walls."
+        },
+        {
+          "id": "J9",
+          "part_a": "P4",
+          "part_b": "P8",
+          "count": 1,
+          "type": "other",
+          "fasteners": [],
+          "glue": true,
+          "drive_from": "From above, lower P4 onto the top of P8 and clamp or weight it while the glue cures.",
+          "step": 6,
+          "note": "Glue the floor to the cleat top only; do not glue the solid floor across the front, back, or side walls."
+        },
+        {
+          "id": "J10",
+          "part_a": "P4",
+          "part_b": "P9",
+          "count": 1,
+          "type": "other",
+          "fasteners": [],
+          "glue": true,
+          "drive_from": "From above, lower P4 onto the top of P9 and clamp or weight it while the glue cures.",
+          "step": 6,
+          "note": "Glue the floor to the cleat top only; do not glue the solid floor across the front, back, or side walls."
+        },
+        {
+          "id": "J11",
+          "part_a": "P5",
+          "part_b": "P3",
+          "count": 2,
+          "type": "hinge",
+          "fasteners": [
+            {
+              "name": "Outdoor-rated strap hinge",
+              "size": "About 40 mm; screws no longer than 16 mm",
+              "qty_per_joint": 1
+            },
+            {
+              "name": "Hinge screw",
+              "size": "16 mm maximum",
+              "qty_per_joint": 4
+            }
+          ],
+          "glue": false,
+          "drive_from": "From above into the lid for one hinge leaf and from the rear exterior face into P3 for the other leaf, before fitting the membrane.",
+          "step": 8,
+          "note": "Mount two outdoor-rated strap hinges at the back. Use short screws and seal the membrane cuts around the hinge leaves and fasteners with compatible EPDM seam tape or sealant."
+        },
+        {
+          "id": "J12",
+          "part_a": "P5",
+          "part_b": "P1",
+          "count": 1,
+          "type": "other",
+          "fasteners": [
+            {
+              "name": "Outdoor-rated hook-and-eye roof catch",
+              "size": "Small; screws no longer than 16 mm",
+              "qty_per_joint": 1
+            },
+            {
+              "name": "Catch screw",
+              "size": "16 mm maximum",
+              "qty_per_joint": 4
+            }
+          ],
+          "glue": false,
+          "drive_from": "From the front exterior and lid underside, with the lid closed and aligned; fit before membrane, then seal any membrane cut around the lid hardware.",
+          "step": 8,
+          "note": "The catch must release easily for cleaning. Keep the EPDM return clear of moving parts and seal around any fasteners."
+        },
+        {
+          "id": "J13",
+          "part_a": "P5",
+          "part_b": "P2",
+          "count": 2,
+          "type": "other",
+          "fasteners": [],
+          "glue": false,
+          "drive_from": "No fastener; the lid underside rests on the flat tops of the side panels.",
+          "step": 8,
+          "note": "Bearing contact only. The side-panel tops support the lid; do not screw through them."
+        },
+        {
+          "id": "J14",
+          "part_a": "P10",
+          "part_b": "P5",
+          "count": 1,
+          "type": "other",
+          "fasteners": [
+            {
+              "name": "EPDM-compatible roofing adhesive",
+              "size": "As specified by manufacturer",
+              "qty_per_joint": 1
+            },
+            {
+              "name": "EPDM seam tape or compatible sealant",
+              "size": "As specified by manufacturer",
+              "qty_per_joint": 1
+            }
+          ],
+          "glue": false,
+          "drive_from": "Apply adhesive to the clean lid top, lay the membrane from above, fold its returns over the edges, and seal cuts around hardware.",
+          "step": 9,
+          "note": "Use only adhesive and seam products approved for the purchased EPDM. Keep the hinge and catch moving surfaces free of adhesive."
+        }
+      ],
+      "hardware": [
+        {
+          "name": "Coarse-thread pocket-hole screws, #8",
+          "size": "32 mm",
+          "qty": 16,
+          "notes": "For the four front/back-to-side connections; use a pocket-hole jig setting for 19 mm material."
+        },
+        {
+          "name": "Exterior-rated wood screws, #8",
+          "size": "38 mm",
+          "qty": 12,
+          "notes": "Three screws per cleat, driven through the 19 mm wall into the 25 mm cleat. Pilot-drill."
+        },
+        {
+          "name": "Outdoor-rated strap hinges",
+          "size": "About 40 mm",
+          "qty": 2,
+          "notes": "Use four supplied screws per hinge, no longer than 16 mm."
+        },
+        {
+          "name": "Hinge screws",
+          "size": "16 mm maximum",
+          "qty": 8,
+          "notes": "Four per hinge; use supplied screws if they meet the length limit."
+        },
+        {
+          "name": "Outdoor-rated hook-and-eye roof catch",
+          "size": "Small",
+          "qty": 1,
+          "notes": "Use supplied screws no longer than 16 mm."
+        },
+        {
+          "name": "Catch screws",
+          "size": "16 mm maximum",
+          "qty": 4,
+          "notes": "Use supplied screws if they meet the length limit."
+        },
+        {
+          "name": "Adjustable tree-safe webbing straps with cam buckles",
+          "size": "25 mm wide, about 1.5–2 m each",
+          "qty": 2,
+          "notes": "Pass one strap through each back-panel slot and around the trunk. Inspect and loosen or reposition regularly as the tree grows."
+        },
+        {
+          "name": "Exterior wood glue",
+          "size": null,
+          "qty": 1,
+          "notes": "Use at fixed wood-to-wood joints and floor cleats; keep the floor free to move slightly with seasonal humidity."
+        },
+        {
+          "name": "EPDM-compatible roofing adhesive and seam tape or sealant",
+          "size": null,
+          "qty": 1,
+          "notes": "Purchase products approved by the membrane manufacturer; use to bond the roof cover and seal folds and hardware cutouts."
+        }
+      ],
+      "finishes": [
+        {
+          "name": "Exterior water-based wood stain or water-based exterior clear finish",
+          "qty": "About 250 ml",
+          "notes": "Apply two thin coats to exterior wood faces only. Keep the cavity and entrance edges unfinished; follow the label for full cure time. Do not coat the EPDM."
+        }
+      ],
+      "tools": [
+        {
+          "name": "Tape measure, pencil, and combination square",
+          "required": true,
+          "alternative": null
+        },
+        {
+          "name": "Circular saw with guide or table saw",
+          "required": true,
+          "alternative": "Have a lumberyard cut the straight panels; use a handsaw and guide for small adjustments."
+        },
+        {
+          "name": "Jigsaw or handsaw for the entrance and slots",
+          "required": true,
+          "alternative": "Ask a shop to cut the openings, or use a 50 mm hole saw for the entrance and drill small holes to form the strap slots."
+        },
+        {
+          "name": "Drill/driver with bits and countersink",
+          "required": true,
+          "alternative": "Use a hand drill and screwdriver; clamp a guide for straight holes."
+        },
+        {
+          "name": "Pocket-hole jig",
+          "required": true,
+          "alternative": "Use 19 mm-rated metal angle brackets at the shell corners instead, sized and fastened to avoid breaking through outer faces; revise those joints and hardware accordingly."
+        },
+        {
+          "name": "50 mm hole saw and 6 mm drill bit",
+          "required": true,
+          "alternative": "Use a jigsaw to cut the entrance and a small drill bit for drainage holes."
+        },
+        {
+          "name": "Clamps",
+          "required": true,
+          "alternative": "Use temporary corner blocks and a helper to hold panels square while fastening."
+        },
+        {
+          "name": "Sandpaper, 80 and 120 grit",
+          "required": true,
+          "alternative": "Use a sanding block by hand."
+        },
+        {
+          "name": "Safety glasses, hearing protection, and dust mask",
+          "required": true,
+          "alternative": null
+        },
+        {
+          "name": "Paintbrush",
+          "required": true,
+          "alternative": "Use a clean lint-free cloth if the finish label allows it."
+        },
+        {
+          "name": "EPDM roller or firm hand roller",
+          "required": true,
+          "alternative": "Press the membrane firmly with a clean block wrapped in a soft cloth."
+        }
+      ],
+      "steps": [
+        {
+          "n": 1,
+          "title": "Measure and cut the wood parts",
+          "text": "Cut P1, P2, P3, P4, P5, and P6–P9 to the listed finished sizes from untreated 19 mm cedar. Mark every piece and keep the front, back, inside, and outside faces identified. P10 is a purchased flexible membrane; buy enough to cover the lid top and fold down its edges.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5",
+            "P6",
+            "P7",
+            "P8",
+            "P9"
+          ],
+          "tools_used": [
+            "Tape measure, pencil, and combination square",
+            "Circular saw with guide or table saw",
+            "Safety glasses, hearing protection, and dust mask"
+          ],
+          "safety": "Wear eye, hearing, and dust protection. Support stock securely and keep hands clear of the blade.",
+          "tip": "Measure actual stock thickness before cutting; keep the specified 19 mm finished thickness so joints and placements remain accurate."
+        },
+        {
+          "n": 2,
+          "title": "Cut the entrance, strap slots, and drainage",
+          "text": "Cut the 50 mm entrance in P1 and the two 6 x 30 mm strap slots in P3 at the listed positions. Drill four 6 mm drainage holes near the corners of P4. Cut shallow horizontal climbing kerfs on P1's inside face below the entrance.",
+          "parts_used": [
+            "P1",
+            "P3",
+            "P4"
+          ],
+          "tools_used": [
+            "Jigsaw or handsaw for the entrance and slots",
+            "50 mm hole saw and 6 mm drill bit",
+            "Drill/driver with bits and countersink",
+            "Clamps",
+            "Safety glasses, hearing protection, and dust mask"
+          ],
+          "safety": "Clamp each panel before drilling or cutting; wear eye, hearing, and dust protection. Keep hands clear of saw blades and hole-saw teeth.",
+          "tip": "Keep the kerfs shallow and splinter-free. Do not install a perch, which can help predators reach the nest."
+        },
+        {
+          "n": 3,
+          "title": "Drill pocket holes and pilot holes",
+          "text": "Set the pocket-hole jig for 19 mm stock and drill four pocket holes near each end of the inside faces of P1 and P3 for the shell corners. On P2 and P1/P3, mark and predrill the cleat-screw locations through the exterior faces; keep screws clear of panel edges and strap slots. Dry-fit the panels and cleats before applying glue.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P6",
+            "P7",
+            "P8",
+            "P9"
+          ],
+          "tools_used": [
+            "Pocket-hole jig",
+            "Drill/driver with bits and countersink",
+            "Clamps",
+            "Safety glasses"
+          ],
+          "safety": "Clamp the pieces flat while drilling and wear eye protection. Keep fingers away from the drill bit.",
+          "tip": "Keep pocket holes on cavity-side faces and pilot holes square to the panel; do not drill through the far face of a cleat."
+        },
+        {
+          "n": 4,
+          "title": "Attach the floor-support cleats to individual panels",
+          "text": "Apply wood glue to the wall-facing surface of each cleat. Attach P6 and P7 to the inside faces of the two P2 sides, P8 to the inside face of P1, and P9 to the inside face of P3. Drive three 38 mm #8 screws per cleat from each panel's outside face into the cleat, then clamp until the glue sets.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P6",
+            "P7",
+            "P8",
+            "P9"
+          ],
+          "tools_used": [
+            "Drill/driver with bits and countersink",
+            "Clamps",
+            "Safety glasses"
+          ],
+          "safety": "Wear eye protection and clamp each panel securely on a stable bench while driving screws.",
+          "tip": "Install these cleats before assembling the box so the screw heads remain accessible. Confirm each cleat's top edge is exactly 19 mm above the panel bottom."
+        },
+        {
+          "n": 5,
+          "title": "Assemble the four-wall shell",
+          "text": "Apply a thin bead of exterior wood glue at the front-to-side and back-to-side mating edges. Join P1 and P3 between the two P2 sides with four 32 mm #8 coarse-thread pocket screws at each connection, driven from the inside faces of P1 and P3 into the side-panel faces. Clamp the shell square and check both diagonals before the glue sets.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3"
+          ],
+          "tools_used": [
+            "Drill/driver with bits and countersink",
+            "Clamps",
+            "Safety glasses"
+          ],
+          "safety": "Wear eye protection and keep the shell clamped on a stable bench while driving screws. Wipe away squeezed-out glue before it hardens.",
+          "tip": "Keep the bottom of all four walls flush at y=0 and the tops level at y=430."
+        },
+        {
+          "n": 6,
+          "title": "Glue the floor onto its cleats",
+          "text": "Apply glue to the four cleat top edges inside the shell. Lower P4 onto the cleats from above, keeping a 1 mm gap from the wall panels, then check that its drainage holes are open and the panel is level. Clamp or place a broad, even weight on the floor until the glue cures according to its label; no screws need to be driven into the inaccessible underside.",
+          "parts_used": [
+            "P4",
+            "P6",
+            "P7",
+            "P8",
+            "P9"
+          ],
+          "tools_used": [
+            "Clamps",
+            "Combination square",
+            "Safety glasses"
+          ],
+          "safety": "Use a stable work surface and do not lift a heavy weight alone. Keep glue off the entrance and drainage openings.",
+          "tip": "This cleat-supported floor avoids relying on screws into end grain and leaves a small movement gap at the solid-wood walls."
+        },
+        {
+          "n": 7,
+          "title": "Sand and dry-fit the lid",
+          "text": "Lightly sand exterior edges and remove splinters without rounding the body top edges. Set P5 on the box and confirm about 20 mm overhang on each side, with the lid resting on the two P2 side tops. Check that the catch and hinge locations will be clear of the planned membrane folds.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5"
+          ],
+          "tools_used": [
+            "Sandpaper, 80 and 120 grit",
+            "Tape measure, pencil, and combination square",
+            "Safety glasses",
+            "Dust mask"
+          ],
+          "safety": "Wear a dust mask and eye protection while sanding; work outdoors or with good ventilation.",
+          "tip": "Do not sand the cavity smooth; a slightly rough interior helps young birds climb out."
+        },
+        {
+          "n": 8,
+          "title": "Install hinges and catch",
+          "text": "With the lid aligned, attach two outdoor-rated strap hinges at the rear using four supplied screws per hinge, no longer than 16 mm. Fit the hook-and-eye catch at the front with four supplied screws of the same maximum length. Test the lid swing and catch before applying the roof membrane; predrill pilot holes for the hardware.",
+          "parts_used": [
+            "P1",
+            "P3",
+            "P5"
+          ],
+          "tools_used": [
+            "Drill/driver with bits and countersink",
+            "Tape measure, pencil, and combination square"
+          ],
+          "safety": "Support the lid while marking and driving hinge screws; keep fingers clear of hinge pinch points.",
+          "tip": "Keep hinge and catch positions consistent with the membrane edge folds; screws must not pierce through visible wood faces."
+        },
+        {
+          "n": 9,
+          "title": "Apply exterior finish and waterproof the lid",
+          "text": "Apply two thin coats of exterior water-based stain or clear finish to exposed exterior wood only, leaving the cavity and entrance edges unfinished. After the finish cures, bond P10 to the clean lid top using the membrane maker's approved EPDM adhesive and roller. Fold the membrane over the lid edges and seal neat cutouts around hinge and catch hardware with compatible seam tape or sealant; keep adhesive out of moving joints.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5",
+            "P10"
+          ],
+          "tools_used": [
+            "Paintbrush",
+            "EPDM roller or firm hand roller",
+            "Safety glasses"
+          ],
+          "safety": "Use finish and adhesive outdoors or with strong ventilation, wear gloves and eye protection, and follow product labels for ventilation, skin contact, and cure times.",
+          "tip": "Make the membrane folds smooth and continuous. Do not cover the catch opening or bond the moving hinge leaves together."
+        },
+        {
+          "n": 10,
+          "title": "Strap the box to a suitable tree",
+          "text": "Thread one adjustable webbing strap through each P3 slot and wrap the straps around the trunk. Tighten only enough to hold the box steady; do not use nails or screws in a living tree. Check that the lid opens, the entrance faces the intended direction, and the straps do not press on or damage the bark.",
+          "parts_used": [
+            "P3"
+          ],
+          "tools_used": [
+            "Tape measure, pencil, and combination square"
+          ],
+          "safety": "Have a helper support the box while fitting straps. If installation requires a ladder, use a stable ladder and a spotter; do not overreach.",
+          "tip": "Inspect straps at least annually and loosen or reposition them as the trunk grows. Keep the entrance unobstructed and away from easy predator access."
+        },
+        {
+          "n": 11,
+          "title": "Final inspection and seasonal care",
+          "text": "Check that the catch holds, the hinges move freely, the EPDM folds and seams are sealed, drainage holes are open, and the entrance has no splinters. After nesting season, open the lid and clean old nesting material as local wildlife guidance allows. Recheck the straps, wood, and roof covering each year.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5",
+            "P10"
+          ],
+          "tools_used": [
+            "Drill/driver with bits and countersink"
+          ],
+          "safety": "Wear gloves and a dust mask when cleaning an old nest box; do not disturb an active nest, eggs, or young birds.",
+          "tip": "Check local regulations and wildlife guidance before cleaning or moving an occupied nest box."
+        }
+      ],
+      "safety_overview": [
+        "Wear safety glasses for cutting and drilling, hearing protection for powered saws, and a dust mask when cutting or sanding.",
+        "Clamp work securely and keep hands clear of saw blades, hole-saw teeth, and drill bits.",
+        "Use exterior finish and EPDM adhesive outdoors or with strong ventilation; follow their labels and allow full cure before installation.",
+        "Use a helper for mounting. If using a ladder, keep it stable, use a spotter, and do not overreach.",
+        "Do not disturb active nests. Inspect and adjust tree straps regularly so they do not constrict or damage the trunk."
+      ],
+      "load_bearing": false
+    }
+  },
+  "latencyMs": 380331,
+  "tokens": 83148,
+  "promptVersion": "plan.v1.3"
+}

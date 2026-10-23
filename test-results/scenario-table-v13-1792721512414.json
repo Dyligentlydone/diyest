@@ -1,0 +1,641 @@
+{
+  "scenario": "table-v13",
+  "ok": true,
+  "title": "Round Side Table",
+  "parts": 5,
+  "boughtParts": [
+    "P1 Round tabletop",
+    "P2 Tapered splayed leg"
+  ],
+  "joints": 4,
+  "jointTypes": [
+    "pocket_screw",
+    "leg_plate_hanger_bolt",
+    "slotted_screw"
+  ],
+  "hardware": [
+    {
+      "name": "10° splayed leg mounting-plate kit",
+      "size": "compatible with 40 mm tapered square legs and 5/16 in hanger bolts; includes four #10 x 16 mm screws per kit",
+      "qty": 4,
+      "notes": "One kit per leg; orient each plate radially outward. Confirm compatibility with the bought legs."
+    },
+    {
+      "name": "5/16 in hanger bolt",
+      "size": "compatible with bought legs and plates",
+      "qty": 4,
+      "notes": "One per leg; check whether the legs or plates include these before buying."
+    },
+    {
+      "name": "Coarse-thread pocket screws",
+      "size": "32 mm",
+      "qty": 16,
+      "notes": "Eight for P2-to-P4 joints and eight for P4-to-P5 joints; use glue at the wood-to-wood joints."
+    },
+    {
+      "name": "Pan-head wood screws",
+      "size": "4 x 40 mm",
+      "qty": 4,
+      "notes": "For the slotted center cleat; pilot drill through the slots."
+    }
+  ],
+  "steps": 11,
+  "schemaValid": true,
+  "unverified": [
+    "Hardware \"10° splayed leg mounting-plate kit\" qty 4 ≠ joints total 16 (sum of qty_per_joint × count)"
+  ],
+  "warnings": [
+    "Part P3: geometry could not be verified for overlap"
+  ],
+  "repairCount": 2,
+  "review": null,
+  "latencyMs": 235101,
+  "tokens": 61868,
+  "promptVersion": "plan.v1.3",
+  "plan": {
+    "title": "Round Side Table",
+    "summary": "Build a 600 mm diameter round side table with four radially splayed tapered legs, a concealed apron frame to resist wobble, and a small slotted center cleat. It is intended for ordinary household items, not for sitting or standing.",
+    "difficulty": "intermediate",
+    "est_hours": 6,
+    "est_cost": {
+      "low": 160,
+      "high": 270,
+      "currency": "USD"
+    },
+    "overall_dimensions_mm": {
+      "width": 600,
+      "depth": 600,
+      "height": 550
+    },
+    "assumptions": [
+      "The drawing's 600 mm diameter, 550 mm height, 25 mm top, four tapered legs and center cleat are the intended design.",
+      "Use an unfinished, solid-pine 600 mm round tabletop, 25 mm thick, and four nominal 533 mm tapered square pine legs, 40 x 40 mm at the top and 28 x 28 mm at the foot. Square tapered legs allow reliable flat contact with the added apron frame while retaining the slim tapered-leg style.",
+      "Leg centerlines move 64 mm outward in both x and z over a 525 mm drop. This gives about 7° splay in each view and 9.8° total radial splay; use 10° plates oriented toward each leg's radial direction.",
+      "The modeled leg centerline length is 532.745 mm, which rounds to the drawing's nominal 533 mm. The 10° plates and attachment hardware are hidden hardware.",
+      "The added 40 mm high apron frame sits below the tabletop and ties the legs together to resist racking. Its dimensions are located to meet the tapered leg faces near the upper ends.",
+      "The cleat uses actual 19 x 38 mm pine stock, close to the drawing's 22 x 40 mm. Mark the tabletop grain direction before assembly; orient the cleat and its slots perpendicular to the grain so the screws can slide across the grain.",
+      "The table is a light-duty side table. Do not sit, stand, or climb on it; no tested load rating is implied."
+    ],
+    "clarifying_questions": [],
+    "parts": [
+      {
+        "id": "P1",
+        "name": "Round tabletop",
+        "material": "Solid pine, edge-glued panel",
+        "stock": "other",
+        "source": "buy",
+        "buy_spec": "600 mm diameter round solid pine tabletop, 25 mm thick, unfinished",
+        "length_mm": 600,
+        "width_mm": 600,
+        "thickness_mm": 25,
+        "qty": 1,
+        "placements": [
+          {
+            "x": 0,
+            "y": 525,
+            "z": 0,
+            "sx": 600,
+            "sy": 25,
+            "sz": 600
+          }
+        ],
+        "profile": {
+          "type": "circle"
+        },
+        "cross_section": null,
+        "ends": null,
+        "notes": "Finished top face is at y=550; underside is at y=525. Mark the grain direction on the underside before fitting the cleat."
+      },
+      {
+        "id": "P2",
+        "name": "Tapered splayed leg",
+        "material": "Pine",
+        "stock": "other",
+        "source": "buy",
+        "buy_spec": "21 in tapered square table leg, approximately 1-1/2 in square at top to 1-1/8 in square at foot, with 5/16 in hanger-bolt insert; verify compatibility with 10° splayed leg plates",
+        "length_mm": 532.745361,
+        "width_mm": 40,
+        "thickness_mm": 40,
+        "qty": 4,
+        "placements": [
+          {
+            "from": [
+              190,
+              525,
+              190
+            ],
+            "to": [
+              126,
+              0,
+              126
+            ],
+            "roll_deg": null
+          },
+          {
+            "from": [
+              410,
+              525,
+              190
+            ],
+            "to": [
+              474,
+              0,
+              126
+            ],
+            "roll_deg": null
+          },
+          {
+            "from": [
+              190,
+              525,
+              410
+            ],
+            "to": [
+              126,
+              0,
+              474
+            ],
+            "roll_deg": null
+          },
+          {
+            "from": [
+              410,
+              525,
+              410
+            ],
+            "to": [
+              474,
+              0,
+              474
+            ],
+            "roll_deg": null
+          }
+        ],
+        "profile": null,
+        "cross_section": {
+          "shape": "rect",
+          "w": 40,
+          "t": 40,
+          "end_w": 28,
+          "end_t": 28
+        },
+        "ends": "level",
+        "notes": "The to end is the smaller, floor end. Centerline endpoints and lengths are modeled exactly; legs are nominally 533 mm. Install with the 10° plate tilt pointing radially outward."
+      },
+      {
+        "id": "P3",
+        "name": "Slotted center cleat",
+        "material": "Pine",
+        "stock": "board",
+        "source": "make",
+        "buy_spec": null,
+        "length_mm": 280,
+        "width_mm": 38,
+        "thickness_mm": 19,
+        "qty": 1,
+        "placements": [
+          {
+            "x": 281,
+            "y": 506,
+            "z": 160,
+            "sx": 38,
+            "sy": 19,
+            "sz": 280
+          }
+        ],
+        "profile": {
+          "type": "rounded_rect",
+          "radius": 19
+        },
+        "cross_section": null,
+        "ends": null,
+        "notes": "Capsule-shaped cleat. Its long axis and elongated screw slots run along z, perpendicular to the marked tabletop grain direction, assumed to run along x."
+      },
+      {
+        "id": "P4",
+        "name": "Front and back apron",
+        "material": "Pine",
+        "stock": "board",
+        "source": "make",
+        "buy_spec": null,
+        "length_mm": 194,
+        "width_mm": 40,
+        "thickness_mm": 18,
+        "qty": 2,
+        "placements": [
+          {
+            "x": 203,
+            "y": 455,
+            "z": 203,
+            "sx": 194,
+            "sy": 40,
+            "sz": 18
+          },
+          {
+            "x": 203,
+            "y": 455,
+            "z": 379,
+            "sx": 194,
+            "sy": 40,
+            "sz": 18
+          }
+        ],
+        "profile": {
+          "type": "rect"
+        },
+        "cross_section": null,
+        "ends": null,
+        "notes": "Two rails, with their ends meeting the inward-facing flat sides of the tapered square legs. Pocket holes are drilled before assembly."
+      },
+      {
+        "id": "P5",
+        "name": "Left and right apron",
+        "material": "Pine",
+        "stock": "board",
+        "source": "make",
+        "buy_spec": null,
+        "length_mm": 158,
+        "width_mm": 40,
+        "thickness_mm": 18,
+        "qty": 2,
+        "placements": [
+          {
+            "x": 203,
+            "y": 455,
+            "z": 221,
+            "sx": 18,
+            "sy": 40,
+            "sz": 158
+          },
+          {
+            "x": 379,
+            "y": 455,
+            "z": 221,
+            "sx": 18,
+            "sy": 40,
+            "sz": 158
+          }
+        ],
+        "profile": {
+          "type": "rect"
+        },
+        "cross_section": null,
+        "ends": null,
+        "notes": "These rails fit between the front and back aprons. Pocket holes are drilled before assembly."
+      }
+    ],
+    "joints": [
+      {
+        "id": "J1",
+        "part_a": "P2",
+        "part_b": "P4",
+        "count": 4,
+        "type": "pocket_screw",
+        "fasteners": [
+          {
+            "name": "Coarse-thread pocket screws",
+            "size": "32 mm",
+            "qty_per_joint": 2
+          }
+        ],
+        "glue": true,
+        "drive_from": "From the inside face of each P4 apron end, into the flat side grain of the adjoining P2 leg; drill pocket holes before assembly.",
+        "step": 6,
+        "note": "One apron end meets each of four legs. Use glue on the mating faces and two pocket screws at each end; screws enter the leg's side grain, not end grain."
+      },
+      {
+        "id": "J2",
+        "part_a": "P4",
+        "part_b": "P5",
+        "count": 4,
+        "type": "pocket_screw",
+        "fasteners": [
+          {
+            "name": "Coarse-thread pocket screws",
+            "size": "32 mm",
+            "qty_per_joint": 2
+          }
+        ],
+        "glue": true,
+        "drive_from": "From the inside face of each P5 rail end, into the side face of P4; drill pocket holes before assembly.",
+        "step": 7,
+        "note": "Two screws at each of the four rail-to-rail connections. Glue the mating faces; keep the apron frame square while clamping."
+      },
+      {
+        "id": "J3",
+        "part_a": "P1",
+        "part_b": "P2",
+        "count": 4,
+        "type": "leg_plate_hanger_bolt",
+        "fasteners": [
+          {
+            "name": "10° splayed leg mounting-plate kit screws",
+            "size": "#10 x 16 mm, four per plate",
+            "qty_per_joint": 4
+          },
+          {
+            "name": "Hanger bolt",
+            "size": "5/16 in, compatible with plate and leg insert",
+            "qty_per_joint": 1
+          }
+        ],
+        "glue": false,
+        "drive_from": "With P1 upside down and the apron-and-leg frame below it, drive each plate's screws upward from the underside into P1, then thread the leg's hanger bolt into the plate from below.",
+        "step": 8,
+        "note": "Four plate kits, one per leg. Orient each plate radially outward. The plate screws are for attaching the tabletop; the apron frame is the primary tie against racking. Use the plate's slots to permit seasonal movement."
+      },
+      {
+        "id": "J4",
+        "part_a": "P1",
+        "part_b": "P3",
+        "count": 1,
+        "type": "slotted_screw",
+        "fasteners": [
+          {
+            "name": "Pan-head wood screws",
+            "size": "4 x 40 mm",
+            "qty_per_joint": 4
+          }
+        ],
+        "glue": false,
+        "drive_from": "From below, through the elongated slots in P3 and into the underside face of P1.",
+        "step": 9,
+        "note": "Run the cleat and slots perpendicular to the tabletop grain direction. Predrill the slots, keep screws snug rather than clamped, and use no glue so the solid top can move seasonally. The screws pass through 19 mm cleat and embed about 21 mm into the 25 mm top, leaving about 4 mm of cover."
+      }
+    ],
+    "hardware": [
+      {
+        "name": "10° splayed leg mounting-plate kit",
+        "size": "compatible with 40 mm tapered square legs and 5/16 in hanger bolts; includes four #10 x 16 mm screws per kit",
+        "qty": 4,
+        "notes": "One kit per leg; orient each plate radially outward. Confirm compatibility with the bought legs."
+      },
+      {
+        "name": "5/16 in hanger bolt",
+        "size": "compatible with bought legs and plates",
+        "qty": 4,
+        "notes": "One per leg; check whether the legs or plates include these before buying."
+      },
+      {
+        "name": "Coarse-thread pocket screws",
+        "size": "32 mm",
+        "qty": 16,
+        "notes": "Eight for P2-to-P4 joints and eight for P4-to-P5 joints; use glue at the wood-to-wood joints."
+      },
+      {
+        "name": "Pan-head wood screws",
+        "size": "4 x 40 mm",
+        "qty": 4,
+        "notes": "For the slotted center cleat; pilot drill through the slots."
+      }
+    ],
+    "finishes": [
+      {
+        "name": "Water-based clear furniture finish",
+        "qty": "About 250 ml",
+        "notes": "Apply according to the product label; coat the underside as well as the top to help balance moisture uptake."
+      }
+    ],
+    "tools": [
+      {
+        "name": "Tape measure and pencil",
+        "required": true,
+        "alternative": null
+      },
+      {
+        "name": "Combination square",
+        "required": true,
+        "alternative": "A straight ruler and careful marking"
+      },
+      {
+        "name": "Hand saw or miter saw",
+        "required": true,
+        "alternative": "Have the home center cut apron and cleat stock to length"
+      },
+      {
+        "name": "Drill/driver with bits and countersink",
+        "required": true,
+        "alternative": "Hand drill and screwdriver"
+      },
+      {
+        "name": "Pocket-hole jig",
+        "required": true,
+        "alternative": "Have a woodshop drill the pocket holes, or use a suitable commercial pocket-hole jig"
+      },
+      {
+        "name": "Clamps",
+        "required": true,
+        "alternative": "A helper can hold the frame square while tightening screws"
+      },
+      {
+        "name": "Random-orbit sander or sanding block",
+        "required": true,
+        "alternative": "Hand sanding block"
+      },
+      {
+        "name": "Dust mask and eye protection",
+        "required": true,
+        "alternative": null
+      },
+      {
+        "name": "Brush or lint-free cloth for finish",
+        "required": true,
+        "alternative": null
+      }
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "title": "Check parts and mark the top",
+        "text": "Confirm P1 is 600 mm across and 25 mm thick, and that P2 legs fit the selected 10° plates. Turn P1 (round tabletop) upside down, mark its center and mark the tabletop grain direction. Mark four plate centers at x/z coordinates (190,190), (410,190), (190,410) and (410,410).",
+        "parts_used": [
+          "P1",
+          "P2"
+        ],
+        "tools_used": [
+          "Tape measure and pencil",
+          "Combination square"
+        ],
+        "safety": null,
+        "tip": "Keep the plate marks clear of the edge; the feet splay outward."
+      },
+      {
+        "n": 2,
+        "title": "Cut apron and cleat stock",
+        "text": "Cut P4 (front and back aprons) to two 194 mm lengths and P5 (left and right aprons) to two 158 mm lengths, all from actual 18 x 40 mm stock. Cut P3 (center cleat) to 280 mm from actual 19 x 38 mm stock and round its ends to a 19 mm radius. Keep the tabletop grain direction marked so the cleat can be oriented correctly later.",
+        "parts_used": [
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "tools_used": [
+          "Hand saw or miter saw",
+          "Tape measure and pencil"
+        ],
+        "safety": "Wear eye protection and clamp stock before cutting; keep hands clear of the blade.",
+        "tip": "Measure the actual stock thickness before setting cut lengths."
+      },
+      {
+        "n": 3,
+        "title": "Drill the apron pocket holes and cleat slots",
+        "text": "Use a pocket-hole jig to drill two pocket holes at each end of every P4 and P5 apron rail. In P3, drill four elongated screw slots along its 280 mm length; orient the cleat at right angles to the tabletop grain direction. Make each slot long enough for slight seasonal movement while leaving sufficient wood around it.",
+        "parts_used": [
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "tools_used": [
+          "Pocket-hole jig",
+          "Drill/driver with bits and countersink",
+          "Clamps"
+        ],
+        "safety": "Clamp each piece securely and wear eye protection while drilling.",
+        "tip": "All pocket holes must be drilled now, before the frame corners block access."
+      },
+      {
+        "n": 4,
+        "title": "Sand the wood parts",
+        "text": "Lightly sand the exposed faces and edges of P1, P2, P3, P4 and P5, working through medium and fine grits. Ease sharp edges without changing the measured leg or apron mating faces. Wipe off all sanding dust.",
+        "parts_used": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "tools_used": [
+          "Random-orbit sander or sanding block"
+        ],
+        "safety": "Wear eye protection and a dust mask; support the tabletop securely while sanding.",
+        "tip": "Avoid sanding away the grain-direction mark or the apron pocket holes."
+      },
+      {
+        "n": 5,
+        "title": "Finish before assembly",
+        "text": "Apply clear finish to P1, P2, P3, P4 and P5, including the tabletop underside and apron edges. Follow the finish label for coats and drying time, and keep finish out of the screw slots and pocket holes. Let parts dry enough that glue joints can still bond; remove finish from the small apron mating areas if needed.",
+        "parts_used": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "tools_used": [
+          "Brush or lint-free cloth for finish"
+        ],
+        "safety": "Ventilate the area, avoid skin and eye contact, and keep finishes away from flames; follow the product label.",
+        "tip": "Do not finish the surfaces that will be glued together."
+      },
+      {
+        "n": 6,
+        "title": "Attach front and back aprons to the legs",
+        "text": "Lay the four P2 (tapered square legs) in their marked radial arrangement and position the two P4 rails at y=455 mm. Apply glue to each mating face. Drive two 32 mm coarse-thread pocket screws from the inside face of each P4 apron end into the side grain of its adjoining leg, then check that the layout remains symmetric.",
+        "parts_used": [
+          "P2",
+          "P4"
+        ],
+        "tools_used": [
+          "Pocket-hole jig",
+          "Drill/driver with bits and countersink",
+          "Clamps",
+          "Tape measure and pencil"
+        ],
+        "safety": "Wear eye protection while driving screws and keep the leg frame clamped securely.",
+        "tip": "The pocket screws must enter the leg side grain; do not substitute screws driven into leg end grain."
+      },
+      {
+        "n": 7,
+        "title": "Close and square the apron frame",
+        "text": "Fit the two P5 (left and right aprons) between the front and back P4 rails. Apply glue at each meeting face and drive two 32 mm coarse-thread pocket screws at each end from the inside face of P5 into P4. Measure diagonally between opposite frame corners and adjust the clamps until both diagonal measurements match.",
+        "parts_used": [
+          "P4",
+          "P5"
+        ],
+        "tools_used": [
+          "Pocket-hole jig",
+          "Drill/driver with bits and countersink",
+          "Clamps",
+          "Tape measure and pencil"
+        ],
+        "safety": "Wear eye protection while driving screws; keep hands clear of clamp pinch points.",
+        "tip": "Let the apron glue set before lifting the frame."
+      },
+      {
+        "n": 8,
+        "title": "Attach the tabletop and leg plates",
+        "text": "With P1 upside down and supported, attach one 10° plate at each marked position using its four #10 x 16 mm screws, driven upward into the underside; do not use glue. Orient every plate's tilt radially outward. With a helper, position the completed apron-and-leg frame beneath the top and thread each leg's 5/16 in hanger bolt into its plate; tighten securely without forcing the threads.",
+        "parts_used": [
+          "P1",
+          "P2",
+          "P4",
+          "P5"
+        ],
+        "tools_used": [
+          "Drill/driver with bits and countersink",
+          "Tape measure and pencil"
+        ],
+        "safety": "Support the top securely, wear eye protection while drilling, and use a helper to position the frame; keep fingers clear of the plates and legs.",
+        "tip": "The apron frame ties the legs together against wobble; use the plate slots rather than overtightening the plate screws."
+      },
+      {
+        "n": 9,
+        "title": "Fit the center cleat",
+        "text": "Position P3 (slotted center cleat) on the underside of P1, centered at x=281 mm and z=160 mm, with its long axis perpendicular to the marked tabletop grain direction. Pilot-drill through its slots and drive four 4 x 40 mm screws upward into the tabletop; use no glue and leave the screws snug, not clamped. Check that the cleat clears the apron frame.",
+        "parts_used": [
+          "P1",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "tools_used": [
+          "Drill/driver with bits and countersink",
+          "Clamps"
+        ],
+        "safety": "Keep the table stable while working underneath it and wear eye protection when drilling upward.",
+        "tip": "Check grain direction before tightening; the slots must let the top move across its grain."
+      },
+      {
+        "n": 10,
+        "title": "Turn upright and inspect",
+        "text": "With a helper, turn the assembled table upright and set it on a flat floor. Check that all four feet contact the floor, the frame is square and the table does not rock. Recheck the leg plates and fasteners; do not use the table until all connections are secure.",
+        "parts_used": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "tools_used": [
+          "Tape measure and pencil"
+        ],
+        "safety": "The assembly is awkward to lift; use a helper and lift with your legs, not your back.",
+        "tip": "Do not force a rocking leg against the floor; correct the fit before loading the table."
+      },
+      {
+        "n": 11,
+        "title": "Allow the finish to cure",
+        "text": "Leave the table in a clean, ventilated place until the finish has fully cured according to its label. Avoid loading the table during cure. After curing, recheck the cleat screws and leg connections.",
+        "parts_used": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "tools_used": [
+          "Tape measure and pencil"
+        ],
+        "safety": "Continue ventilating the area until finish odors have cleared; keep the table away from ignition sources while finish is curing.",
+        "tip": "Use coasters and do not sit or stand on this light-duty table."
+      }
+    ],
+    "safety_overview": [
+      "Wear eye protection when cutting or drilling, and a dust mask when sanding.",
+      "Clamp work securely; keep hands clear of saw blades, drill bits and clamp pinch points.",
+      "Ventilate the finish area, follow the product label, and keep finishes away from flames.",
+      "Use a helper to turn or move the assembled table; do not sit, stand or climb on it.",
+      "This is a light-duty side table, not a seat or step stool."
+    ],
+    "load_bearing": true
+  }
+}

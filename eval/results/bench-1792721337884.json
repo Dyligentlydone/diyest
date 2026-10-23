@@ -1,0 +1,730 @@
+{
+  "image": "bench.jpg",
+  "request": {
+    "mode": "build",
+    "units": "metric",
+    "skillLevel": "intermediate",
+    "budget": "balanced",
+    "style": "match_photo",
+    "useMyToolsOnly": false,
+    "currency": "USD",
+    "imageCount": 1
+  },
+  "result": {
+    "title": "Rustic Outdoor Slatted Bench",
+    "parts": 7,
+    "steps": 10,
+    "schemaValid": true,
+    "unverified": [],
+    "warnings": [
+      "Hardware \"Waterproof exterior wood glue\" isn't referenced by any joint",
+      "Hardware \"Exterior penetrating wood finish\" isn't referenced by any joint",
+      "Review tip (hardware): The plan says “waterproof wood glue” and “exterior-rated” screws but does not specify materials suited to prolonged outdoor exposure and cedar, whose tannins can corrode some fastener coatings. → Specify an exterior-rated Type I or Type III adhesive for glued joints, and use stainless-steel or manufacturer-approved cedar-compatible exterior fasteners for J1–J6."
+    ],
+    "repairCount": 1,
+    "review": {
+      "verdict": "pass",
+      "issues": [
+        {
+          "severity": "minor",
+          "category": "hardware",
+          "step": null,
+          "joint_id": null,
+          "part_ids": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5",
+            "P6",
+            "P7"
+          ],
+          "problem": "The plan says “waterproof wood glue” and “exterior-rated” screws but does not specify materials suited to prolonged outdoor exposure and cedar, whose tannins can corrode some fastener coatings.",
+          "fix": "Specify an exterior-rated Type I or Type III adhesive for glued joints, and use stainless-steel or manufacturer-approved cedar-compatible exterior fasteners for J1–J6."
+        }
+      ],
+      "tokens": 11000,
+      "latencyMs": 42861
+    },
+    "plan": {
+      "title": "Rustic Outdoor Slatted Bench",
+      "summary": "A freestanding cedar bench inspired by the photo, with a slatted seat, three horizontal backrest boards, and a straightforward screwed frame. The dimensions are estimated because the photo provides no scale reference.",
+      "difficulty": "intermediate",
+      "est_hours": 8,
+      "est_cost": {
+        "low": 220,
+        "high": 350,
+        "currency": "USD"
+      },
+      "overall_dimensions_mm": {
+        "width": 1450,
+        "depth": 550,
+        "height": 740
+      },
+      "assumptions": [
+        "The photo is interpreted as a two-person outdoor bench; the estimated size is 1450 mm wide, 550 mm deep, and 740 mm high.",
+        "The seat height is 450 mm, a typical bench height. The seat has five boards running across the width and three boards form the backrest.",
+        "All wood is exterior-grade cedar, using actual 38 mm thick stock. Board widths are cut to the dimensions listed; buy wider stock and rip it down as needed.",
+        "The drawing is a square-backed approximation of the rustic, possibly weathered bench in the photo; it does not reproduce any sculpted or curved details.",
+        "The bench is for ordinary seating on a level surface, not for standing or climbing. The plan does not certify a specific load rating.",
+        "Use exterior-rated screws and waterproof glue on frame joints. Seat slats are screwed without glue through elongated holes to allow seasonal wood movement."
+      ],
+      "clarifying_questions": [],
+      "parts": [
+        {
+          "id": "P1",
+          "name": "Front legs",
+          "material": "Exterior-grade cedar",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 412,
+          "width_mm": 89,
+          "thickness_mm": 38,
+          "qty": 2,
+          "placements": [
+            {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "sx": 38,
+              "sy": 412,
+              "sz": 89
+            },
+            {
+              "x": 1412,
+              "y": 0,
+              "z": 0,
+              "sx": 38,
+              "sy": 412,
+              "sz": 89
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Cut from actual 38 x 89 mm stock."
+        },
+        {
+          "id": "P2",
+          "name": "Rear posts",
+          "material": "Exterior-grade cedar",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 740,
+          "width_mm": 89,
+          "thickness_mm": 38,
+          "qty": 2,
+          "placements": [
+            {
+              "x": 0,
+              "y": 0,
+              "z": 461,
+              "sx": 38,
+              "sy": 740,
+              "sz": 89
+            },
+            {
+              "x": 1412,
+              "y": 0,
+              "z": 461,
+              "sx": 38,
+              "sy": 740,
+              "sz": 89
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "These posts continue from the floor to the top of the backrest."
+        },
+        {
+          "id": "P3",
+          "name": "Front apron",
+          "material": "Exterior-grade cedar",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 1374,
+          "width_mm": 89,
+          "thickness_mm": 38,
+          "qty": 1,
+          "placements": [
+            {
+              "x": 38,
+              "y": 280,
+              "z": 26,
+              "sx": 1374,
+              "sy": 89,
+              "sz": 38
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Horizontal frame rail between the front legs."
+        },
+        {
+          "id": "P4",
+          "name": "Rear apron",
+          "material": "Exterior-grade cedar",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 1374,
+          "width_mm": 89,
+          "thickness_mm": 38,
+          "qty": 1,
+          "placements": [
+            {
+              "x": 38,
+              "y": 280,
+              "z": 486,
+              "sx": 1374,
+              "sy": 89,
+              "sz": 38
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Horizontal frame rail between the rear posts."
+        },
+        {
+          "id": "P5",
+          "name": "Seat support rails",
+          "material": "Exterior-grade cedar",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 422,
+          "width_mm": 89,
+          "thickness_mm": 38,
+          "qty": 3,
+          "placements": [
+            {
+              "x": 76,
+              "y": 323,
+              "z": 64,
+              "sx": 38,
+              "sy": 89,
+              "sz": 422
+            },
+            {
+              "x": 706,
+              "y": 323,
+              "z": 64,
+              "sx": 38,
+              "sy": 89,
+              "sz": 422
+            },
+            {
+              "x": 1336,
+              "y": 323,
+              "z": 64,
+              "sx": 38,
+              "sy": 89,
+              "sz": 422
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "The rails' top faces support the seat slats. Their ends meet the front and rear aprons."
+        },
+        {
+          "id": "P6",
+          "name": "Seat slats",
+          "material": "Exterior-grade cedar",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 1368,
+          "width_mm": 70,
+          "thickness_mm": 38,
+          "qty": 5,
+          "placements": [
+            {
+              "x": 41,
+              "y": 412,
+              "z": 55,
+              "sx": 1368,
+              "sy": 38,
+              "sz": 70
+            },
+            {
+              "x": 41,
+              "y": 412,
+              "z": 145,
+              "sx": 1368,
+              "sy": 38,
+              "sz": 70
+            },
+            {
+              "x": 41,
+              "y": 412,
+              "z": 235,
+              "sx": 1368,
+              "sy": 38,
+              "sz": 70
+            },
+            {
+              "x": 41,
+              "y": 412,
+              "z": 325,
+              "sx": 1368,
+              "sy": 38,
+              "sz": 70
+            },
+            {
+              "x": 41,
+              "y": 412,
+              "z": 415,
+              "sx": 1368,
+              "sy": 38,
+              "sz": 70
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Five boards with 20 mm gaps. Each slat is 3 mm clear of the legs and rear posts at both ends; cut from wider outdoor boards if 70 mm stock is unavailable."
+        },
+        {
+          "id": "P7",
+          "name": "Backrest slats",
+          "material": "Exterior-grade cedar",
+          "stock": "board",
+          "source": "make",
+          "buy_spec": null,
+          "length_mm": 1374,
+          "width_mm": 70,
+          "thickness_mm": 38,
+          "qty": 3,
+          "placements": [
+            {
+              "x": 38,
+              "y": 490,
+              "z": 506,
+              "sx": 1374,
+              "sy": 70,
+              "sz": 38
+            },
+            {
+              "x": 38,
+              "y": 580,
+              "z": 506,
+              "sx": 1374,
+              "sy": 70,
+              "sz": 38
+            },
+            {
+              "x": 38,
+              "y": 670,
+              "z": 506,
+              "sx": 1374,
+              "sy": 70,
+              "sz": 38
+            }
+          ],
+          "profile": {
+            "type": "rect"
+          },
+          "cross_section": null,
+          "ends": null,
+          "notes": "Three horizontal boards, with 20 mm open gaps; the top board ends exactly at the 740 mm overall height."
+        }
+      ],
+      "joints": [
+        {
+          "id": "J1",
+          "part_a": "P3",
+          "part_b": "P1",
+          "count": 2,
+          "type": "pocket_screw",
+          "fasteners": [
+            {
+              "name": "Exterior-rated coarse-thread pocket-hole screws",
+              "size": "64 mm",
+              "qty_per_joint": 2
+            }
+          ],
+          "glue": true,
+          "drive_from": "From the inside face of P3 into the side faces of P1, before the seat is installed.",
+          "step": 5,
+          "note": "Glue the mating contact; pocket screws enter the leg side grain, not the leg end grain."
+        },
+        {
+          "id": "J2",
+          "part_a": "P4",
+          "part_b": "P2",
+          "count": 2,
+          "type": "pocket_screw",
+          "fasteners": [
+            {
+              "name": "Exterior-rated coarse-thread pocket-hole screws",
+              "size": "64 mm",
+              "qty_per_joint": 2
+            }
+          ],
+          "glue": true,
+          "drive_from": "From the inside face of P4 into the side faces of P2, before the seat is installed.",
+          "step": 5,
+          "note": "Glue the mating contact; pocket screws enter the rear-post side faces."
+        },
+        {
+          "id": "J3",
+          "part_a": "P5",
+          "part_b": "P3",
+          "count": 3,
+          "type": "pocket_screw",
+          "fasteners": [
+            {
+              "name": "Exterior-rated coarse-thread pocket-hole screws",
+              "size": "64 mm",
+              "qty_per_joint": 2
+            }
+          ],
+          "glue": true,
+          "drive_from": "From the pocket holes on the end of each P5 rail into the front face of P3, while the frame is open.",
+          "step": 6,
+          "note": "The support-rail ends meet the apron at z=64 mm."
+        },
+        {
+          "id": "J4",
+          "part_a": "P5",
+          "part_b": "P4",
+          "count": 3,
+          "type": "pocket_screw",
+          "fasteners": [
+            {
+              "name": "Exterior-rated coarse-thread pocket-hole screws",
+              "size": "64 mm",
+              "qty_per_joint": 2
+            }
+          ],
+          "glue": true,
+          "drive_from": "From the pocket holes on the opposite end of each P5 rail into the rear face of P4, before fitting the seat.",
+          "step": 6,
+          "note": "The support-rail ends meet the apron at z=486 mm."
+        },
+        {
+          "id": "J5",
+          "part_a": "P6",
+          "part_b": "P5",
+          "count": 15,
+          "type": "slotted_screw",
+          "fasteners": [
+            {
+              "name": "Exterior-rated deck screws with washers",
+              "size": "5 x 75 mm",
+              "qty_per_joint": 2
+            }
+          ],
+          "glue": false,
+          "drive_from": "From the top of each P6 slat down into P5 through elongated holes in the support-rail tops.",
+          "step": 9,
+          "note": "Make each support-rail hole about 6.5 x 12 mm, elongated along z, to allow seat-board width movement. Use 75 mm screws so at least half the screw length enters the receiving rail after passing through the 38 mm slat. Do not glue."
+        },
+        {
+          "id": "J6",
+          "part_a": "P7",
+          "part_b": "P2",
+          "count": 6,
+          "type": "pocket_screw",
+          "fasteners": [
+            {
+              "name": "Exterior-rated coarse-thread pocket-hole screws",
+              "size": "64 mm",
+              "qty_per_joint": 2
+            }
+          ],
+          "glue": true,
+          "drive_from": "From the rear face of each P7 board into the inside side faces of the rear posts, with the seat not obstructing access.",
+          "step": 8,
+          "note": "Pocket screws enter the post side faces. Glue the board ends to the posts."
+        }
+      ],
+      "hardware": [
+        {
+          "name": "Exterior-rated coarse-thread pocket-hole screws",
+          "size": "64 mm",
+          "qty": 32,
+          "notes": "For apron-to-leg/post joints, support-rail-to-apron joints, and backrest-to-post joints."
+        },
+        {
+          "name": "Exterior-rated deck screws with washers",
+          "size": "5 x 75 mm",
+          "qty": 30,
+          "notes": "For seat slats; use the elongated holes described in J5 and do not glue."
+        },
+        {
+          "name": "Waterproof exterior wood glue",
+          "size": null,
+          "qty": 1,
+          "notes": "One small bottle is sufficient; use only at the structural frame and backrest joints, not under seat slats."
+        },
+        {
+          "name": "Exterior penetrating wood finish",
+          "size": null,
+          "qty": 1,
+          "notes": "One quart/litre-sized container is typically enough for this bench; follow the product label for coverage and recoat time."
+        }
+      ],
+      "finishes": [
+        {
+          "name": "Exterior penetrating oil or outdoor wood stain",
+          "qty": "Approximately 1 quart / 1 litre",
+          "notes": "Apply to clean, dry cedar after assembly. Follow the label for temperature, ventilation, and drying time; recoat as recommended for outdoor exposure."
+        }
+      ],
+      "tools": [
+        {
+          "name": "Tape measure and pencil",
+          "required": true,
+          "alternative": null
+        },
+        {
+          "name": "Circular saw with straightedge guide",
+          "required": true,
+          "alternative": "Hand saw with a clamped guide; or have the lumberyard make the straight cuts."
+        },
+        {
+          "name": "Drill/driver with countersink and pilot bits",
+          "required": true,
+          "alternative": "Hand drill and manual countersink."
+        },
+        {
+          "name": "Pocket-hole jig",
+          "required": true,
+          "alternative": "Use exterior-rated metal angle brackets at the frame connections, with screws sized for the stock; update the joint method accordingly."
+        },
+        {
+          "name": "Router with straight bit, or drill and rasp",
+          "required": true,
+          "alternative": "Make a row of overlapping holes and carefully smooth them into 6.5 x 12 mm slots."
+        },
+        {
+          "name": "Clamps",
+          "required": true,
+          "alternative": "Have a helper hold each joint firmly square while screws are driven."
+        },
+        {
+          "name": "Sander or sanding block",
+          "required": true,
+          "alternative": "Hand-sand with a sanding block."
+        },
+        {
+          "name": "Safety glasses, hearing protection, and dust mask",
+          "required": true,
+          "alternative": null
+        },
+        {
+          "name": "Exterior-finish brush or applicator",
+          "required": true,
+          "alternative": "Use a clean lint-free cloth if permitted by the finish label."
+        }
+      ],
+      "steps": [
+        {
+          "n": 1,
+          "title": "Check the stock and mark the cuts",
+          "text": "Choose straight, sound exterior-grade cedar and check each board for splits or excessive bow. Mark all lengths from the cut list, keeping the 38 mm stock thickness consistent. Allow wet lumber to dry as directed before applying finish.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5",
+            "P6",
+            "P7"
+          ],
+          "tools_used": [
+            "Tape measure and pencil"
+          ],
+          "safety": null,
+          "tip": "Mark the finished dimensions on each piece; do not assume nominal lumber sizes match actual sizes."
+        },
+        {
+          "n": 2,
+          "title": "Cut the pieces to size",
+          "text": "Cut P1 through P7 to the listed dimensions, keeping the cuts square. Rip the seat and backrest boards to 70 mm wide if starting with wider stock. Sand sharp corners lightly so they are comfortable to touch.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5",
+            "P6",
+            "P7"
+          ],
+          "tools_used": [
+            "Circular saw with straightedge guide",
+            "Sander or sanding block",
+            "Safety glasses, hearing protection, and dust mask"
+          ],
+          "safety": "Wear eye, hearing, and dust protection. Support the stock on both sides of each cut and keep hands clear of the blade; unplug the saw before adjustments.",
+          "tip": "Cut one piece first and verify its length before repeating the cut."
+        },
+        {
+          "n": 3,
+          "title": "Drill the pocket holes",
+          "text": "Using the jig settings for 38 mm stock, drill two pocket holes near each end of P3, P4, and each P7 board. Drill two pocket holes at each end of every P5 rail. Keep the holes on the faces specified in the joint notes so they remain accessible during assembly.",
+          "parts_used": [
+            "P3",
+            "P4",
+            "P5",
+            "P7"
+          ],
+          "tools_used": [
+            "Pocket-hole jig",
+            "Drill/driver with countersink and pilot bits",
+            "Safety glasses and hearing protection"
+          ],
+          "safety": "Clamp each piece securely and wear eye and hearing protection while drilling. Keep fingers away from the bit and jig openings.",
+          "tip": "Test one pocket-hole joint on scraps of the same thickness before drilling the finished parts."
+        },
+        {
+          "n": 4,
+          "title": "Make the seat-support slots",
+          "text": "On the top face of each P5 rail, lay out two holes at each P6 slat position. Make each hole about 6.5 mm wide and 12 mm long, with the long direction running front-to-back (z). These elongated holes let the solid-wood seat slats move with humidity changes.",
+          "parts_used": [
+            "P5"
+          ],
+          "tools_used": [
+            "Router with straight bit, or drill and rasp",
+            "Clamps",
+            "Safety glasses and hearing protection"
+          ],
+          "safety": "Clamp the rails firmly and wear eye and hearing protection. Keep hands clear of the router bit or drill; unplug the tool before changing bits.",
+          "tip": "Keep the slots centered across each 38 mm rail and smooth their edges so the screws and washers seat properly."
+        },
+        {
+          "n": 5,
+          "title": "Assemble the front and rear frames",
+          "text": "Position P3 between the two P1 legs and P4 between the two P2 posts at y=280 mm. Apply exterior glue to each mating face, clamp each frame square, then drive two 64 mm pocket screws at each end from the inside face of each apron into the leg or post side face. Leave the frames clamped for the glue label's recommended time.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4"
+          ],
+          "tools_used": [
+            "Drill/driver with countersink and pilot bits",
+            "Clamps"
+          ],
+          "safety": "Wear eye protection while driving screws; keep the frames supported so they cannot tip or fall.",
+          "tip": "Measure both diagonals of each rectangular frame; equal diagonals indicate it is square."
+        },
+        {
+          "n": 6,
+          "title": "Join the seat-support rails to the aprons",
+          "text": "Set the front and rear frames upright and align the three P5 rails between P3 and P4 at the listed x positions. Apply exterior glue at each rail end, then drive two 64 mm pocket screws per end from P5 into the apron face. Keep the P5 top faces level at y=412 mm so all seat slats will sit flat.",
+          "parts_used": [
+            "P3",
+            "P4",
+            "P5"
+          ],
+          "tools_used": [
+            "Drill/driver with countersink and pilot bits",
+            "Clamps"
+          ],
+          "safety": "Wear eye protection while driving screws and keep the partially assembled frame supported against tipping.",
+          "tip": "Use a straightedge across the rail tops before tightening the final screws."
+        },
+        {
+          "n": 7,
+          "title": "Sand the frame and slats",
+          "text": "Sand the accessible faces and edges of the assembled frame, seat slats, and backrest slats. Remove splinters and ease corners without rounding the mating surfaces heavily. Brush or vacuum away the sanding dust before assembly continues.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5",
+            "P6",
+            "P7"
+          ],
+          "tools_used": [
+            "Sander or sanding block",
+            "Safety glasses and dust mask"
+          ],
+          "safety": "Wear eye protection and a dust mask; collect cedar dust and keep the work area ventilated.",
+          "tip": "Sand the hidden faces of the slats now, while they are easy to reach."
+        },
+        {
+          "n": 8,
+          "title": "Fit the backrest boards",
+          "text": "Position the three P7 boards across the rear posts at y=490, 580, and 670 mm. Apply exterior glue at the board ends, clamp them flush with the inside faces of the posts, and drive two 64 mm pocket screws at each end from the rear face of each board into the post side face. Check that the board tops and gaps are level before the glue sets.",
+          "parts_used": [
+            "P2",
+            "P7"
+          ],
+          "tools_used": [
+            "Drill/driver with countersink and pilot bits",
+            "Clamps"
+          ],
+          "safety": "Support the posts and frame so the bench cannot fall over while you work at the back.",
+          "tip": "A spacer block helps keep the gaps between backrest boards even; the top board finishes at y=740 mm."
+        },
+        {
+          "n": 9,
+          "title": "Attach the seat slats",
+          "text": "Lay P6 across the support rails at the listed z positions, leaving 20 mm gaps and maintaining 3 mm clearance from the legs and rear posts at both ends. Drive two 5 x 75 mm exterior deck screws with washers at every slat-to-rail crossing, passing through the elongated holes in P5; do not add glue. Work from the top and keep the screw heads flush without crushing the wood.",
+          "parts_used": [
+            "P5",
+            "P6"
+          ],
+          "tools_used": [
+            "Drill/driver with countersink and pilot bits"
+          ],
+          "safety": "Wear eye protection and keep the bench stable while driving screws. Do not place hands under a slat where a screw may emerge.",
+          "tip": "Use temporary 20 mm spacers between slats and confirm the seat is centered before fastening."
+        },
+        {
+          "n": 10,
+          "title": "Apply the outdoor finish",
+          "text": "Brush or wipe on an exterior penetrating finish according to its label, covering exposed ends and underside edges as well as visible faces. Let the finish dry for the stated time before placing the bench outdoors or sitting on it. Reapply on the schedule recommended for the product and exposure.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5",
+            "P6",
+            "P7"
+          ],
+          "tools_used": [
+            "Exterior-finish brush or applicator"
+          ],
+          "safety": "Work outdoors or with strong ventilation, wear gloves and eye protection, and keep finishes away from flames. Dispose of oily rags exactly as directed on the product label to prevent fire.",
+          "tip": "Do not seal wet lumber; trapped moisture can damage the finish and shorten the bench's service life."
+        }
+      ],
+      "safety_overview": [
+        "Wear eye protection during cutting, drilling, routing, and screw driving; use hearing protection with loud power tools.",
+        "Wear a dust mask while sanding cedar and work with good ventilation.",
+        "Clamp and support lumber before cutting or routing, and keep hands clear of blades and bits.",
+        "Support the partly assembled bench so it cannot tip during assembly.",
+        "Follow the exterior-finish label, keep solvents and oily rags away from ignition sources, and dispose of rags safely."
+      ],
+      "load_bearing": true
+    }
+  },
+  "latencyMs": 217583,
+  "tokens": 50152,
+  "promptVersion": "plan.v1.3"
+}
