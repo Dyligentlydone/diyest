@@ -15,6 +15,7 @@ import {
 } from "@/lib/usage";
 import { dailySpendAlertUsd } from "@/lib/ai/pricing";
 import { isSupabaseConfigured } from "@/lib/env";
+import { cachedPlan, requestHash, storePlan } from "@/lib/plan/cache";
 
 const payloadSchema = z.object({
   description: z.string().max(4000).optional(),
@@ -143,6 +144,21 @@ export async function POST(request: NextRequest) {
     imageCount: imageDataUrls.length,
   };
 
+  // ---- plan cache: identical request → checked plan, zero model calls ----
+  const hash = requestHash(
+    payload as Record<string, unknown>,
+    imageDataUrls,
+    PROMPT_VERSION
+  );
+  let cached: Awaited<ReturnType<typeof cachedPlan>> = null;
+  if (supabase && user) {
+    try {
+      cached = await cachedPlan(supabase, hash);
+    } catch {
+      /* cache unavailable → generate normally */
+    }
+  }
+
   // ---- generate (NDJSON stream: "plan" fast, "final" after review+repair) ----
   const enc = new TextEncoder();
   const stream = new ReadableStream<Uint8Array>({
@@ -150,6 +166,34 @@ export async function POST(request: NextRequest) {
       const send = (ev: GenEvent) =>
         controller.enqueue(enc.encode(JSON.stringify(ev) + "\n"));
       try {
+        if (cached) {
+          const result = {
+            ok: true as const,
+            plan: cached.plan,
+            unverified: cached.unverified,
+            blockers: cached.blockers,
+            warnings: cached.warnings,
+            promptVersion: PROMPT_VERSION,
+            model: "cache",
+            latencyMs: 0,
+            firstMetaMs: 0,
+            firstPlanMs: 0,
+            tokens: 0,
+            costUsd: 0,
+            calls: [],
+            repairCount: 0,
+            improved: false,
+            escalated: null,
+            review: null,
+            reviewPending: cached.reviewPending,
+            raw: "",
+          };
+          send({ type: "meta", title: cached.plan.title, summary: cached.plan.summary });
+          send({ type: "plan", plan: cached.plan, unverified: cached.unverified, warnings: cached.warnings, promptVersion: PROMPT_VERSION, firstPlanMs: 0 });
+          send({ type: "final", result });
+          if (user) void recordUsage(user.id, "plan_generate");
+          return;
+        }
         const result = await generatePlan(
           req,
           imageDataUrls,
@@ -205,6 +249,15 @@ export async function POST(request: NextRequest) {
               : undefined,
             latency_ms: result.review.latencyMs,
             tokens: result.review.tokens,
+          });
+        // cache checked plans for identical future requests
+        if (result.ok && supabase && user)
+          void storePlan(supabase, hash, result.promptVersion, {
+            plan: result.plan,
+            unverified: result.unverified,
+            blockers: result.blockers,
+            warnings: result.warnings,
+            reviewPending: result.reviewPending,
           });
         void checkDailySpend(dailySpendAlertUsd());
         if (user) void recordUsage(user.id, "plan_generate");

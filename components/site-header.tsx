@@ -37,6 +37,12 @@ export function SiteHeader() {
           diyest
         </Link>
         <nav className="flex items-center gap-1 sm:gap-2">
+          <Link
+            href="/gallery"
+            className={buttonVariants({ variant: "ghost", size: "sm" })}
+          >
+            Gallery
+          </Link>
           <Link href="/new" className={buttonVariants({ variant: "ghost", size: "sm" })}>
             New project
           </Link>

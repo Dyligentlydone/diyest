@@ -1,8 +1,12 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+import { Printer } from "lucide-react";
 import { PlanView } from "@/components/plan/plan-view";
+import { JournalSection, type JournalEntry } from "@/components/journal";
+import { ShareToggle } from "./share-toggle";
 import { Card, CardContent } from "@/components/ui/card";
+import { buttonVariants } from "@/components/ui/button";
 import { isSupabaseConfigured } from "@/lib/env";
 import { planSchema } from "@/lib/plan/schema";
 import { createClient } from "@/lib/supabase/server";
@@ -18,7 +22,9 @@ async function ProjectContent({ params }: { params: Promise<{ id: string }> }) {
 
   const { data: project } = await supabase
     .from("projects")
-    .select("id, title, status, plan, input, created_at, shopping_have")
+    .select(
+      "id, title, status, plan, input, created_at, shopping_have, is_public, slug, category"
+    )
     .eq("id", id)
     .maybeSingle();
   if (!project) notFound();
@@ -41,20 +47,72 @@ async function ProjectContent({ params }: { params: Promise<{ id: string }> }) {
     );
   }
 
-  return (
-    <PlanView
-      plan={parsed.data}
-      units={units}
-      kerfMm={typeof profile?.kerf_mm === "number" ? profile.kerf_mm : 3}
-      projectId={project.id}
-      serverHave={(project.shopping_have as string[] | null) ?? []}
-      excludeMaterials={
-        Array.isArray((project.input as Record<string, unknown>)?.materialsOwned)
-          ? ((project.input as Record<string, unknown>)
-              .materialsOwned as string[])
-          : []
+  // done-steps seed build mode across devices
+  const { data: progress } = await supabase
+    .from("step_progress")
+    .select("step_n")
+    .eq("project_id", id)
+    .eq("done", true);
+  const serverDone = (progress ?? []).map((r) => r.step_n);
+
+  // journal entries with signed photo URLs (private bucket)
+  const { data: journal } = await supabase
+    .from("journal_entries")
+    .select("id, note, image_path, created_at")
+    .eq("project_id", id)
+    .order("created_at", { ascending: false });
+  const entries: JournalEntry[] = await Promise.all(
+    (journal ?? []).map(async (e) => {
+      let imageUrl: string | null = null;
+      if (e.image_path) {
+        const { data: signed } = await supabase.storage
+          .from("project-images")
+          .createSignedUrl(e.image_path, 3600);
+        imageUrl = signed?.signedUrl ?? null;
       }
-    />
+      return {
+        id: e.id,
+        note: e.note,
+        imageUrl,
+        created_at: e.created_at,
+      };
+    })
+  );
+
+  return (
+    <div className="space-y-8">
+      <div className="flex flex-wrap items-center justify-end gap-2">
+        <ShareToggle
+          projectId={project.id}
+          isPublic={project.is_public}
+          slug={project.slug}
+          category={project.category}
+        />
+        <Link
+          href={`/projects/${project.id}/print`}
+          className={buttonVariants({ variant: "outline", size: "sm" })}
+        >
+          <Printer className="mr-1.5 h-3.5 w-3.5" /> Export PDF
+        </Link>
+      </div>
+
+      <PlanView
+        plan={parsed.data}
+        units={units}
+        kerfMm={typeof profile?.kerf_mm === "number" ? profile.kerf_mm : 3}
+        projectId={project.id}
+        serverHave={(project.shopping_have as string[] | null) ?? []}
+        excludeMaterials={
+          Array.isArray((project.input as Record<string, unknown>)?.materialsOwned)
+            ? ((project.input as Record<string, unknown>)
+                .materialsOwned as string[])
+            : []
+        }
+        serverDone={serverDone}
+      />
+
+      <JournalSection projectId={project.id} entries={entries} />
+    </div>
   );
 }
 

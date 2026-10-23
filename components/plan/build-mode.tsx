@@ -43,9 +43,12 @@ function readDone(key: string): number[] {
 export function BuildMode({
   plan,
   projectId,
+  serverDone = [],
 }: {
   plan: Plan;
   projectId?: string | null;
+  /** saved project's done-steps — merged with device-local progress */
+  serverDone?: number[];
 }) {
   const [active, setActive] = useState(false);
   const [idx, setIdx] = useState(0);
@@ -54,8 +57,10 @@ export function BuildMode({
   const key = useMemo(() => storageKey(projectId, plan), [projectId, plan]);
 
   function enter() {
-    // restore saved progress, resume at first unfinished step
-    const saved = readDone(key);
+    // restore saved progress — device-local ∪ server — resume at first open step
+    const saved = [...new Set([...readDone(key), ...serverDone])].filter((n) =>
+      steps.some((s) => s.n === n)
+    );
     setDone(saved);
     const next = steps.findIndex((s) => !saved.includes(s.n));
     setIdx(next === -1 ? Math.max(0, steps.length - 1) : next);
@@ -88,6 +93,13 @@ export function BuildMode({
     } catch {
       /* storage full / private mode — progress just won't persist */
     }
+    // saved project → sync for the dashboard's % done
+    if (projectId)
+      void fetch(`/api/projects/${projectId}/progress`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ steps: next }),
+      }).catch(() => {});
     if (idx < steps.length - 1) setIdx(idx + 1);
   }
 

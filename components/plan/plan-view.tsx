@@ -16,7 +16,9 @@ import {
 } from "lucide-react";
 import { BlueprintSheet } from "@/components/plan/blueprint-sheet";
 import { BuildMode } from "@/components/plan/build-mode";
+import { Preview3D } from "@/components/plan/preview-3d";
 import { CutListView } from "@/components/plan/cutlist-view";
+import { PlanFeedback, StepFeedback } from "@/components/plan/feedback";
 import { GlossedText } from "@/components/plan/glossed-text";
 import { ModifyBar, type ModifyResult } from "@/components/plan/modify-bar";
 import { ShoppingList } from "@/components/plan/shopping-list";
@@ -74,6 +76,7 @@ export function PlanView({
   projectId,
   serverHave = [],
   excludeMaterials = [],
+  serverDone = [],
 }: {
   plan: Plan;
   units: Units;
@@ -94,6 +97,8 @@ export function PlanView({
   serverHave?: string[];
   /** leftovers mode — materials the user owns are dropped from the list */
   excludeMaterials?: string[];
+  /** saved project's done-steps — seeds build mode on other devices */
+  serverDone?: number[];
 }) {
   const [units, setUnits] = useState<Units>(initialUnits);
   const [selId, setSelId] = useState<string | null>(null);
@@ -172,6 +177,12 @@ export function PlanView({
         </p>
       </section>
 
+      {/* 3D preview — same geometry, drag to rotate, slider to explode */}
+      <section>
+        <h2 className="mb-3 text-lg font-semibold">3D preview</h2>
+        <Preview3D plan={shown} />
+      </section>
+
       <ModifyBar
         plan={shown}
         units={units}
@@ -179,6 +190,8 @@ export function PlanView({
         disabled={checking}
         onModified={setMod}
       />
+
+      {!checking && <PlanFeedback projectId={projectId} />}
 
       {shownPending && (
         <div className="rounded-md border border-amber-500/50 bg-amber-500/10 p-4 text-sm">
@@ -394,7 +407,7 @@ export function PlanView({
               </Badge>
             )}
             <span className="ml-auto">
-              <BuildMode plan={shown} projectId={projectId} />
+              <BuildMode plan={shown} projectId={projectId} serverDone={serverDone} />
             </span>
           </h2>
           <div className="space-y-3">
@@ -480,6 +493,9 @@ export function PlanView({
                               <strong>Tip:</strong> {s.tip}
                             </p>
                           )}
+                          <div className="mt-2">
+                            <StepFeedback projectId={projectId} stepN={s.n} />
+                          </div>
                         </div>
                       </div>
                     </CardContent>

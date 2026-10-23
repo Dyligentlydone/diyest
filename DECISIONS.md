@@ -66,3 +66,14 @@ Log of architecture choices and anything ambiguous in the brief, newest first.
 - **"I'm stuck" chat** (`/api/chat`, Luna; Sol when the user flags "didn't help"): full plan JSON + current step + 8-turn history + optional progress photo. `safety_related` replies get a badge.
 - **Build mode**: fullscreen stepper, step checkboxes persist to localStorage keyed by project+plan-hash, screen Wake Lock, per-step "I'm stuck" chat carrying step context.
 - **Allowances** (`lib/limits.ts`): per-plan counters on projects (`access_level`, `modifications_used`, `chat_messages_used`). Basic: 0 mods / 3 chats; Intermediate: 3 mods / 10 chats; Pro: unlimited. M4 tracks + reports usage only — M6 enforces.
+
+## Milestone 5 (cache, PDF, 3D, dashboard, journal, sharing, gallery, feedback)
+
+- **Plan cache**: `plan_cache` table (migration 0006) — hash of mode+inputs; a hit replays `meta`/`partial`/`final` events from the cached plan instead of calling the model, logged as `plan_cache_hit`.
+- **Blueprint extras**: `renderBlueprint` gains a `print` variant (dark lines on white). `lib/blueprint/explode.ts` — painter-sorted iso projection powering the static exploded view, dashboard thumbnails, OG images and the interactive `Preview3D` (drag-rotate + explode slider). `lib/blueprint/sheets.ts` — per-part shop drawings (orthographic box views / scaled profile path) and full-size printable templates for shaped parts, tiled across pages with mm rulers and registration marks.
+- **PDF export** is `/projects/[id]/print` — a print-styled server page covering overview, blueprint, part sheets, cut list, shopping list, exploded view, steps and templates; users print to PDF from the browser.
+- **Dashboard**: `/projects` cards show iso thumbnails, % done from `step_progress`, and a status badge/changer via `PATCH /api/projects/[id]`.
+- **Journal**: `journal_entries` + `/api/projects/[id]/journal` + timeline UI with optional photos (Supabase storage `project-images`, signed URLs); also rendered on shared pages.
+- **Sharing**: `is_public` + `slug` + `category`/`is_featured` → `/p/[slug]` public read-only plan page (journal included), OG image via `opengraph-image.tsx` iso render, "Build this yourself" → clone for signed-in users (`/api/projects/[id]/clone`) or login redirect. `/gallery` + `/gallery/[category]` index shared plans with SEO titles/descriptions.
+- **Feedback**: `plan_feedback` table + `/api/feedback` — plan thumbs up/down and per-step "report an issue" into `category`/`note`.
+- **Cache Components**: pages that read runtime data (params/cookies) wrap all of it inside `<Suspense>` children — `await params` at page top-level fails prerendering in this Next.js version.

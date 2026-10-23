@@ -378,7 +378,14 @@ function partCut(part: Part, fmt: (mm: number) => string) {
   return (t && cuts[t]) || "SQUARE";
 }
 
-export function renderBlueprint(plan: Plan, units: Units, highlightPartId?: string): string {
+export type BlueprintVariant = "blueprint" | "print";
+
+export function renderBlueprint(
+  plan: Plan,
+  units: Units,
+  highlightPartId?: string,
+  variant: BlueprintVariant = "blueprint"
+): string {
   const fmt = (mm: number) => formatDimension(mm, units);
   const solids = solidsOf(plan),
     B = bounds(solids);
@@ -413,9 +420,13 @@ export function renderBlueprint(plan: Plan, units: Units, highlightPartId?: stri
     <pattern id="g2" width="50" height="50" patternUnits="userSpaceOnUse"><rect width="50" height="50" fill="url(#g1)"/><path d="M50 0H0V50" fill="none" stroke="var(--grid-major)" stroke-width="1"/></pattern>
     <marker id="a" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0 2L10 5L0 8Z" fill="var(--line)"/></marker>
     <style>
-      svg { --bp: #0b4f9c; --line: #eaf3ff; --grid: rgba(255,255,255,0.08); --grid-major: rgba(255,255,255,0.16); }
+      ${
+        variant === "print"
+          ? "svg { --bp: #ffffff; --line: #1a1a1a; --grid: rgba(0,0,0,0.07); --grid-major: rgba(0,0,0,0.14); }"
+          : "svg { --bp: #0b4f9c; --line: #eaf3ff; --grid: rgba(255,255,255,0.08); --grid-major: rgba(255,255,255,0.16); }"
+      }
       .vis { fill: none; stroke: var(--line); stroke-width: 1.4; stroke-linejoin: round; stroke-linecap: round; }
-      .hlt { fill: none; stroke: #ffb020; stroke-width: 2.6; stroke-linejoin: round; stroke-linecap: round; }
+      .hlt { fill: none; stroke: ${variant === "print" ? "#c26a00" : "#ffb020"}; stroke-width: 2.6; stroke-linejoin: round; stroke-linecap: round; }
       .hid { fill: none; stroke: var(--line); stroke-width: .8; stroke-dasharray: 5 4; opacity: .45; }
       .ext { stroke: var(--line); stroke-width: .7; stroke-dasharray: 3 3; opacity: .75; }
       .dim { stroke: var(--line); stroke-width: .9; }

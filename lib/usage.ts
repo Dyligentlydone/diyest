@@ -14,7 +14,8 @@ export type UsageKind =
   | "plan_modify"
   | "chat_message"
   | "diagnosis"
-  | "ideas";
+  | "ideas"
+  | "plan_clone";
 
 export function anonGenerationsUsed(request: NextRequest): number {
   const v = Number(request.cookies.get(ANON_COOKIE)?.value ?? "0");
