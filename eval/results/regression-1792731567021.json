@@ -1,0 +1,3134 @@
+{
+  "at": "2026-10-23T04:59:27.021Z",
+  "rows": [
+    {
+      "name": "bench",
+      "title": "Rustic Outdoor Slatted Garden Bench",
+      "ok": true,
+      "tUsefulS": 56.98,
+      "tPartialS": 93.063,
+      "tFirstPlanS": 195.253,
+      "tFinalS": 306.433,
+      "calls": "4×6-luna,1×6.1-sol",
+      "tokens": 68084,
+      "costUsd": 0.04896421,
+      "repairs": 1,
+      "escalated": null,
+      "verdict": "fix",
+      "reviewModel": "gpt-6.1-sol",
+      "blockers": 0,
+      "unverified": 4,
+      "notes": ""
+    },
+    {
+      "name": "birdhouse",
+      "title": "Woodpecker Nest Box",
+      "ok": true,
+      "tUsefulS": 32.224,
+      "tPartialS": 40.262,
+      "tFirstPlanS": 101.565,
+      "tFinalS": 428.921,
+      "calls": "3×6-luna,4×6.1-sol",
+      "tokens": 62844,
+      "costUsd": 0.15899305,
+      "repairs": 1,
+      "escalated": null,
+      "verdict": "fix",
+      "reviewModel": "gpt-6.1-sol",
+      "blockers": 2,
+      "unverified": 8,
+      "notes": ""
+    },
+    {
+      "name": "chair",
+      "title": "Painted Spindle-Back Wooden Chair",
+      "ok": true,
+      "tUsefulS": 45.417,
+      "tPartialS": 87.889,
+      "tFirstPlanS": 177.015,
+      "tFinalS": 620.846,
+      "calls": "4×6-luna,4×6.1-sol",
+      "tokens": 103667,
+      "costUsd": 0.19782218999999998,
+      "repairs": 1,
+      "escalated": "gpt-6.1-sol",
+      "verdict": "fix",
+      "reviewModel": "gpt-6.1-sol",
+      "blockers": 1,
+      "unverified": 1,
+      "notes": ""
+    }
+  ],
+  "results": {
+    "bench": {
+      "plan": {
+        "title": "Rustic Outdoor Slatted Garden Bench",
+        "summary": "A sturdy, weather-resistant garden bench with a plank seat, simple upright backrest, and broad armrests. The dimensions and rustic, heavy-board appearance are estimated from the photo.",
+        "difficulty": "intermediate",
+        "overall_dimensions_mm": {
+          "width": 1500,
+          "depth": 550,
+          "height": 850
+        },
+        "assumptions": [
+          "Bench size is estimated from the photo; no scale reference or target dimensions were provided.",
+          "The photo does not clearly show the full backrest or frame, so this plan interprets it as a conventional outdoor bench with an upright slatted back and armrests.",
+          "Use balanced-budget, exterior-rated pine or spruce lumber, approximately 38 mm thick, with actual stock dimensions as listed.",
+          "The seat boards run front-to-back as suggested by the visible plank direction in the photo.",
+          "Use exterior-rated adhesive and finish; protect all end grain and allow drainage gaps between seat boards.",
+          "The seat rails and cross supports are joined with suitable exterior screws or bolts; the armrest ends butt against the rear posts. These joints are fastening locations, not overlapping wood.",
+          "Dimensions are for the finished, assembled bench. The weathered appearance in the photo can be approximated with an exterior stain and brushed finish."
+        ],
+        "clarifying_questions": [],
+        "parts": [
+          {
+            "id": "P1",
+            "name": "Front legs",
+            "material": "Exterior-rated pine or spruce",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 620,
+            "width_mm": 140,
+            "thickness_mm": 70,
+            "qty": 2,
+            "placements": [
+              {
+                "x": 0,
+                "y": 0,
+                "z": 50,
+                "sx": 70,
+                "sy": 620,
+                "sz": 140
+              },
+              {
+                "x": 1430,
+                "y": 0,
+                "z": 50,
+                "sx": 70,
+                "sy": 620,
+                "sz": 140
+              }
+            ],
+            "profile": {
+              "type": "rect"
+            },
+            "cross_section": null,
+            "ends": null,
+            "notes": "Square-cut legs; bottoms rest on the floor."
+          },
+          {
+            "id": "P2",
+            "name": "Rear back posts",
+            "material": "Exterior-rated pine or spruce",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 850,
+            "width_mm": 140,
+            "thickness_mm": 70,
+            "qty": 2,
+            "placements": [
+              {
+                "x": 0,
+                "y": 0,
+                "z": 450,
+                "sx": 70,
+                "sy": 850,
+                "sz": 140
+              },
+              {
+                "x": 1430,
+                "y": 0,
+                "z": 450,
+                "sx": 70,
+                "sy": 850,
+                "sz": 140
+              }
+            ],
+            "profile": {
+              "type": "rect"
+            },
+            "cross_section": null,
+            "ends": null,
+            "notes": "Posts reach the floor and support the back slats. Their inner faces align with the ends of the back slats."
+          },
+          {
+            "id": "P3",
+            "name": "Longitudinal seat rails",
+            "material": "Exterior-rated pine or spruce",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 400,
+            "width_mm": 89,
+            "thickness_mm": 38,
+            "qty": 2,
+            "placements": [
+              {
+                "x": 70,
+                "y": 323,
+                "z": 120,
+                "sx": 38,
+                "sy": 89,
+                "sz": 400
+              },
+              {
+                "x": 1392,
+                "y": 323,
+                "z": 120,
+                "sx": 38,
+                "sy": 89,
+                "sz": 400
+              }
+            ],
+            "profile": {
+              "type": "rect"
+            },
+            "cross_section": null,
+            "ends": null,
+            "notes": "Rails fit between the front-leg and rear-post regions and support the ends of the seat cross supports."
+          },
+          {
+            "id": "P4",
+            "name": "Seat cross supports",
+            "material": "Exterior-rated pine or spruce",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 1284,
+            "width_mm": 89,
+            "thickness_mm": 38,
+            "qty": 3,
+            "placements": [
+              {
+                "x": 108,
+                "y": 323,
+                "z": 120,
+                "sx": 1284,
+                "sy": 89,
+                "sz": 38
+              },
+              {
+                "x": 108,
+                "y": 323,
+                "z": 321,
+                "sx": 1284,
+                "sy": 89,
+                "sz": 38
+              },
+              {
+                "x": 108,
+                "y": 323,
+                "z": 482,
+                "sx": 1284,
+                "sy": 89,
+                "sz": 38
+              }
+            ],
+            "profile": {
+              "type": "rect"
+            },
+            "cross_section": null,
+            "ends": null,
+            "notes": "Each support ends flush against the inner faces of the longitudinal seat rails. Their top faces contact the undersides of the seat boards."
+          },
+          {
+            "id": "P5",
+            "name": "Front-to-back seat boards",
+            "material": "Exterior-rated pine or spruce",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 520,
+            "width_mm": 184,
+            "thickness_mm": 38,
+            "qty": 7,
+            "placements": [
+              {
+                "x": 76,
+                "y": 412,
+                "z": 40,
+                "sx": 184,
+                "sy": 38,
+                "sz": 520
+              },
+              {
+                "x": 270,
+                "y": 412,
+                "z": 40,
+                "sx": 184,
+                "sy": 38,
+                "sz": 520
+              },
+              {
+                "x": 464,
+                "y": 412,
+                "z": 40,
+                "sx": 184,
+                "sy": 38,
+                "sz": 520
+              },
+              {
+                "x": 658,
+                "y": 412,
+                "z": 40,
+                "sx": 184,
+                "sy": 38,
+                "sz": 520
+              },
+              {
+                "x": 852,
+                "y": 412,
+                "z": 40,
+                "sx": 184,
+                "sy": 38,
+                "sz": 520
+              },
+              {
+                "x": 1046,
+                "y": 412,
+                "z": 40,
+                "sx": 184,
+                "sy": 38,
+                "sz": 520
+              },
+              {
+                "x": 1240,
+                "y": 412,
+                "z": 40,
+                "sx": 184,
+                "sy": 38,
+                "sz": 520
+              }
+            ],
+            "profile": {
+              "type": "rect"
+            },
+            "cross_section": null,
+            "ends": null,
+            "notes": "Boards have 10 mm gaps across the bench width and 6 mm margins inside the side supports. Each rests on all three cross supports."
+          },
+          {
+            "id": "P6",
+            "name": "Armrests",
+            "material": "Exterior-rated pine or spruce",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 330,
+            "width_mm": 70,
+            "thickness_mm": 38,
+            "qty": 2,
+            "placements": [
+              {
+                "x": 0,
+                "y": 620,
+                "z": 120,
+                "sx": 70,
+                "sy": 38,
+                "sz": 330
+              },
+              {
+                "x": 1430,
+                "y": 620,
+                "z": 120,
+                "sx": 70,
+                "sy": 38,
+                "sz": 330
+              }
+            ],
+            "profile": {
+              "type": "rect"
+            },
+            "cross_section": null,
+            "ends": null,
+            "notes": "Armrests sit on the front legs and butt against the front faces of the rear posts."
+          },
+          {
+            "id": "P7",
+            "name": "Backrest slats",
+            "material": "Exterior-rated pine or spruce",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 1360,
+            "width_mm": 89,
+            "thickness_mm": 38,
+            "qty": 2,
+            "placements": [
+              {
+                "x": 70,
+                "y": 610,
+                "z": 552,
+                "sx": 1360,
+                "sy": 89,
+                "sz": 38
+              },
+              {
+                "x": 70,
+                "y": 740,
+                "z": 552,
+                "sx": 1360,
+                "sy": 89,
+                "sz": 38
+              }
+            ],
+            "profile": {
+              "type": "rect"
+            },
+            "cross_section": null,
+            "ends": null,
+            "notes": "Back slats contact the inner faces of both rear posts. The 41 mm vertical gap between slats allows drainage and airflow."
+          }
+        ],
+        "consumables": [
+          {
+            "name": "Exterior-rated wood glue",
+            "qty": "250 ml",
+            "note": "Use only at close-fitting wood joints; supplement structural joints with suitable exterior fasteners."
+          },
+          {
+            "name": "Exterior wood stain or penetrating oil",
+            "qty": "1 L",
+            "note": "Apply to all faces and especially the end grain; choose a weathered gray-brown tone to approximate the photo."
+          },
+          {
+            "name": "Sandpaper",
+            "qty": "A few sheets each of 80, 120, and 180 grit",
+            "note": "Ease sharp edges and prepare the wood for the exterior finish."
+          }
+        ],
+        "load_bearing": true,
+        "joints": [
+          {
+            "id": "J1",
+            "part_a": "P1",
+            "part_b": "P3",
+            "count": 2,
+            "type": "pocket_screw",
+            "fasteners": [
+              {
+                "name": "Exterior-rated pocket-hole screws #8",
+                "size": "64 mm",
+                "qty_per_joint": 2
+              },
+              {
+                "name": "Simpson Strong-Tie A35Z ZMAX angle connector",
+                "size": "A35Z",
+                "qty_per_joint": 2
+              },
+              {
+                "name": "Simpson Strong-Drive SD Connector screws #9",
+                "size": "25 mm",
+                "qty_per_joint": 16
+              }
+            ],
+            "drive_from": "Drive pocket screws from the inward face of P3 into the side grain of P1. Fit the two A35Z connectors on the inside faces of the side frame, before the seat is installed.",
+            "step": 4,
+            "note": "Use two pocket screws plus two A35Z structural angle connectors at each contact. Fasten each connector with eight manufacturer-approved 25 mm SD screws, four into each part; do not use glue as a substitute for the connectors. The connectors stiffen the side-frame corner against racking."
+          },
+          {
+            "id": "J2",
+            "part_a": "P1",
+            "part_b": "P6",
+            "count": 2,
+            "type": "metal_bracket",
+            "fasteners": [
+              {
+                "name": "Simpson Strong-Tie A35Z ZMAX angle connector",
+                "size": "A35Z",
+                "qty_per_joint": 2
+              },
+              {
+                "name": "Simpson Strong-Drive SD Connector screws #9",
+                "size": "25 mm",
+                "qty_per_joint": 16
+              }
+            ],
+            "drive_from": "From below P6, before the seat is installed; position the connectors on the concealed inside faces of the leg and armrest.",
+            "step": 5,
+            "note": "Use two A35Z connectors per contact, each with eight approved 25 mm SD screws, four into P1 and four into P6. These are specified structural connectors, not generic light-duty brackets. Do not glue the end-grain butt contact."
+          },
+          {
+            "id": "J3",
+            "part_a": "P2",
+            "part_b": "P3",
+            "count": 2,
+            "type": "pocket_screw",
+            "fasteners": [
+              {
+                "name": "Exterior-rated pocket-hole screws #8",
+                "size": "64 mm",
+                "qty_per_joint": 2
+              },
+              {
+                "name": "Simpson Strong-Tie A35Z ZMAX angle connector",
+                "size": "A35Z",
+                "qty_per_joint": 2
+              },
+              {
+                "name": "Simpson Strong-Drive SD Connector screws #9",
+                "size": "25 mm",
+                "qty_per_joint": 16
+              }
+            ],
+            "drive_from": "Drive pocket screws from the inward face of P3 into the side grain of P2. Fit the two A35Z connectors on the inside faces of the side frame, before the seat is installed.",
+            "step": 4,
+            "note": "Use two pocket screws plus two A35Z structural angle connectors at each contact. Fasten each connector with eight manufacturer-approved 25 mm SD screws, four into each part. The connectors stiffen the rear corner of each side frame against racking."
+          },
+          {
+            "id": "J4",
+            "part_a": "P2",
+            "part_b": "P6",
+            "count": 2,
+            "type": "metal_bracket",
+            "fasteners": [
+              {
+                "name": "Simpson Strong-Tie A35Z ZMAX angle connector",
+                "size": "A35Z",
+                "qty_per_joint": 2
+              },
+              {
+                "name": "Simpson Strong-Drive SD Connector screws #9",
+                "size": "25 mm",
+                "qty_per_joint": 16
+              }
+            ],
+            "drive_from": "From below P6, before the back slats are attached; position the connectors on the concealed inside faces of the post and armrest.",
+            "step": 5,
+            "note": "Use two A35Z connectors per contact, each with eight approved 25 mm SD screws, four into P2 and four into P6. Do not glue the end-grain butt contact."
+          },
+          {
+            "id": "J5",
+            "part_a": "P2",
+            "part_b": "P7",
+            "count": 4,
+            "type": "connector_bolt",
+            "fasteners": [
+              {
+                "name": "Exterior stainless-steel through bolts",
+                "size": "M8 x 110 mm",
+                "qty_per_joint": 2
+              },
+              {
+                "name": "Exterior stainless-steel washers",
+                "size": "M8",
+                "qty_per_joint": 4
+              },
+              {
+                "name": "Exterior stainless-steel nyloc nuts",
+                "size": "M8",
+                "qty_per_joint": 2
+              }
+            ],
+            "drive_from": "From the exposed rear face of each P7 through the slat and P2; fit washers and nuts on the accessible front/inside face of the posts.",
+            "step": 6,
+            "note": "Use two M8 through-bolts at every slat-end contact, with one washer under each bolt head and nut. Drill clearance holes through the slat and post; these bolts clamp the slats to the side-grain of the posts and reinforce the widthwise back frame. Do not glue this outdoor bolted joint."
+          },
+          {
+            "id": "J6",
+            "part_a": "P3",
+            "part_b": "P4",
+            "count": 6,
+            "type": "metal_bracket",
+            "fasteners": [
+              {
+                "name": "Simpson Strong-Tie LUS24Z ZMAX joist hanger",
+                "size": "38 x 89 mm lumber",
+                "qty_per_joint": 1
+              },
+              {
+                "name": "Simpson Strong-Drive SD Connector screws #9",
+                "size": "38 mm",
+                "qty_per_joint": 10
+              }
+            ],
+            "drive_from": "Attach each hanger to the inside face of P3 while the side frames are accessible, before placing P4. Then seat P4 fully in the hanger and drive the approved connector screws from the exposed hanger faces.",
+            "step": 7,
+            "note": "Use one LUS24Z ZMAX hanger per P4 end and fill its required round holes with the specified manufacturer-approved screws; confirm the model's current installation schedule and hole count before installation. The hanger provides bearing support rather than relying on end-grain glue or pocket screws. Design intent: a 250 kg evenly distributed seating load for the bench; verify the assembled hanger schedule meets or exceeds that load."
+          },
+          {
+            "id": "J7",
+            "part_a": "P3",
+            "part_b": "P5",
+            "count": 2,
+            "type": "tabletop_fastener",
+            "fasteners": [
+              {
+                "name": "Stainless-steel surface-mount slotted tabletop expansion clip",
+                "size": "40 mm slot, supplied 4 x 16 mm screws",
+                "qty_per_joint": 3
+              }
+            ],
+            "drive_from": "From below the seat, fasten each clip to the top face of P3 and the underside of P5. Orient the 40 mm slot across the bench width.",
+            "step": 8,
+            "note": "Use three surface-mount clips at each listed rail-to-seat contact; no groove or pocket is required. The slot must run across the seat-board width so P5 can expand and contract across its grain. Use the supplied 4 x 16 mm screws and do not glue the seat to the frame."
+          },
+          {
+            "id": "J8",
+            "part_a": "P4",
+            "part_b": "P5",
+            "count": 21,
+            "type": "tabletop_fastener",
+            "fasteners": [
+              {
+                "name": "Stainless-steel surface-mount slotted tabletop expansion clip",
+                "size": "40 mm slot, supplied 4 x 16 mm screws",
+                "qty_per_joint": 1
+              }
+            ],
+            "drive_from": "From below the seat, fasten each clip to the top face of P4 and the underside of P5. Orient the 40 mm slot across the bench width.",
+            "step": 8,
+            "note": "Fit one surface-mount clip at each listed support-to-board contact. The slot runs across the seat-board width to allow cross-grain movement. Use the supplied 4 x 16 mm screws; do not glue or clamp the seat boards rigidly to the supports."
+          },
+          {
+            "id": "J9",
+            "part_a": "P2",
+            "part_b": "WALL",
+            "count": 2,
+            "type": "stud_screw",
+            "fasteners": [
+              {
+                "name": "Anti-tip furniture strap kit with stud screws",
+                "size": "Rated for at least 100 kg lateral load per strap",
+                "qty_per_joint": 1
+              }
+            ],
+            "drive_from": "From the rear of each P2 into a wall stud after the bench is in its final position.",
+            "step": 12,
+            "note": "Optional restraint for the 850 mm-tall freestanding bench. Fasten each strap into a stud or an appropriately rated masonry fixing; drywall alone is not suitable. The kit includes its own screws."
+          }
+        ],
+        "steps": [
+          {
+            "n": 1,
+            "title": "Buy, mill, cut, and label the lumber",
+            "text": "Buy exterior-rated pine or spruce rough stock: two leg blanks at least 75 x 150 mm; two post blanks at least 75 x 150 mm; 50 x 100 mm stock for P3, P4, and P7; 50 x 200 mm stock for P5; and 50 x 100 mm stock for P6. Plane and rip to the fixed finished sections, then crosscut P1: 2 at 620 mm, P2: 2 at 850 mm, P3: 2 at 400 mm, P4: 3 at 1284 mm, P5: 7 at 520 mm, P6: 2 at 330 mm, and P7: 2 at 1360 mm. Mark each part ID and its inside/front face; do not alter the finished dimensions or placements.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7"
+            ],
+            "tools_used": [
+              "Tape measure",
+              "Combination square",
+              "Pencil",
+              "Table saw",
+              "Thickness planer",
+              "Miter saw"
+            ],
+            "safety": "Wear eye and hearing protection and a dust mask. Use guards, push sticks, and stable infeed/outfeed support; never feed short stock by hand near a saw blade. A lumber supplier can mill and cut the exact finished sections if you do not have the machines.",
+            "tip": "The wide leg and post sections are not assumed to be standard finished stock; have the supplier confirm the rough blanks can yield the stated finished sizes."
+          },
+          {
+            "n": 2,
+            "title": "Sand and ease the edges",
+            "text": "Sand all parts with 80 grit, then 120 and 180 grit. Ease sharp exposed edges and pay special attention to end grain, but keep mating faces flat so the joints close properly. Sand the faces that will become inaccessible before assembly.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7"
+            ],
+            "tools_used": [
+              "Random-orbit sander",
+              "Sanding block"
+            ],
+            "safety": "Wear eye protection and a dust mask; use dust extraction or work outdoors and keep loose clothing clear of the sander.",
+            "tip": "Sand the last pass with the grain to reduce scratches visible under stain."
+          },
+          {
+            "n": 3,
+            "title": "Pre-drill and lay out connectors",
+            "text": "Drill two pocket holes at each P3-to-leg/post connection and mark the A35Z connector positions on the inside faces of the side frames. Drill the M8 clearance holes through each P7 end and matching P2 post; keep the bolt pattern centered in the slat end and clear of the post edges. Mark the P4 hanger locations and the seat-clip positions, but do not cut grooves: the specified surface-mount clips need none.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7"
+            ],
+            "tools_used": [
+              "Drill/driver",
+              "Pocket-hole jig",
+              "Drill-bit set",
+              "Pencil",
+              "Combination square",
+              "Clamps"
+            ],
+            "safety": "Clamp parts before drilling, wear eye protection, and keep hands clear of bits. Check hole locations against the hardware before drilling the full batch.",
+            "tip": "Test the 64 mm pocket screws in an offcut of the same thickness and confirm they cannot emerge from a visible face."
+          },
+          {
+            "n": 4,
+            "title": "Assemble and gusset the side frames",
+            "text": "Position each P3 (longitudinal seat rail) between its P1 (front leg) and P2 (rear post) according to the fixed layout. Apply exterior-rated glue to the wood mating faces and drive two 64 mm pocket screws at each rail-to-leg and rail-to-post contact from the inward face of P3. Add two Simpson Strong-Tie A35Z connectors at each contact and fasten each connector with eight 25 mm approved SD connector screws, four into each part; clamp square while the glue sets.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3"
+            ],
+            "tools_used": [
+              "Drill/driver",
+              "Pocket-hole driver bit",
+              "Clamps",
+              "Combination square"
+            ],
+            "safety": "Wear eye protection and keep fingers clear while clamping and driving screws. Support the frames so they cannot fall over.",
+            "tip": "Check each side frame for square before tightening the connectors; measure both diagonals."
+          },
+          {
+            "n": 5,
+            "title": "Secure the armrests",
+            "text": "Set each P6 (armrest) onto its P1 front leg and against its P2 rear post. At each contact, fit two A35Z connectors on the concealed underside/inside faces and drive eight 25 mm approved SD screws per connector, four into each part. Do not glue the end-grain butt contacts; keep the connector faces accessible until all screws are installed.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P6"
+            ],
+            "tools_used": [
+              "Drill/driver",
+              "Clamps",
+              "Combination square"
+            ],
+            "safety": "Wear eye protection and support each armrest so it cannot slip or fall during fastening.",
+            "tip": "Check both armrests for matching height and level before tightening the connectors."
+          },
+          {
+            "n": 6,
+            "title": "Bolt on the backrest slats",
+            "text": "Position both P7 (backrest slats) between the P2 rear posts with the specified 41 mm vertical gap. At each slat-end contact, fit two M8 x 110 mm stainless through-bolts with washers under the heads and nuts; tighten them evenly from the exposed rear and front/inside faces. Do not glue these bolted outdoor joints.",
+            "parts_used": [
+              "P2",
+              "P7"
+            ],
+            "tools_used": [
+              "Drill/driver",
+              "Drill-bit set",
+              "Wrenches",
+              "Clamps",
+              "Tape measure"
+            ],
+            "safety": "Wear eye protection and support the slats and frame during fastening; do not lean the partly assembled bench where it can fall.",
+            "tip": "Use equal 41 mm spacer blocks to keep the slat gap consistent while bolting."
+          },
+          {
+            "n": 7,
+            "title": "Install the structural seat-support hangers",
+            "text": "Keep the side frames accessible and install one Simpson Strong-Tie LUS24Z ZMAX hanger at each P4 end on the inside faces of P3. Fasten each hanger with the specified 38 mm manufacturer-approved SD connector screws, following the current LUS24Z hole schedule and filling all required round holes. Seat the three P4 (cross supports) fully in their hangers; the specified intention is a 250 kg evenly distributed seating load, so verify the hanger schedule meets that load before use.",
+            "parts_used": [
+              "P3",
+              "P4"
+            ],
+            "tools_used": [
+              "Drill/driver",
+              "Clamps",
+              "Combination square"
+            ],
+            "safety": "Wear eye protection and support the frame securely while fitting the connectors. Do not use a hanger if its model or approved fastener schedule does not match the lumber.",
+            "tip": "Confirm every support is fully seated and its top is level before moving on; do not add glue to the hanger connection."
+          },
+          {
+            "n": 8,
+            "title": "Attach the seat boards with movement allowance",
+            "text": "Place the seven P5 (seat boards) with the fixed 10 mm gaps and 6 mm side margins. From below, install three surface-mount slotted expansion clips at each P3-to-P5 contact and one at every P4-to-P5 contact, using the supplied 4 x 16 mm screws. At both kinds of contact, point each 40 mm slot across the bench width; do not glue the solid seat boards to the frame.",
+            "parts_used": [
+              "P3",
+              "P4",
+              "P5"
+            ],
+            "tools_used": [
+              "Drill/driver",
+              "Tape measure",
+              "Spacers"
+            ],
+            "safety": "Wear eye protection and get help positioning the seat or turning the frame if it is awkward to lift. Keep fingers clear while aligning boards.",
+            "tip": "Use 10 mm spacers and check the side margins before driving any clip screws."
+          },
+          {
+            "n": 9,
+            "title": "Inspect and touch up",
+            "text": "Check that the frame is square, the bench does not rock, the back bolts are tight, and every hanger and connector is fully fastened. Hand-sand rough spots with 180 grit and fill only nonstructural surface defects with exterior-compatible filler. Keep sanding dust and filler out of the slotted seat clips.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7"
+            ],
+            "tools_used": [
+              "Combination square",
+              "Sanding block",
+              "180-grit sandpaper",
+              "Wrenches"
+            ],
+            "safety": "Wear a dust mask and eye protection while sanding; do not load the bench until the glue has fully cured.",
+            "tip": "Do not tighten the seat clips so firmly that they prevent the slots from allowing movement."
+          },
+          {
+            "n": 10,
+            "title": "Apply the exterior finish",
+            "text": "Apply exterior stain or penetrating oil to all accessible faces and especially exposed end grain, following the product label. Allow the labeled recoat time between coats, at least 24 hours before handling, and at least 48 hours before regular use unless the label requires longer. Keep the bench sheltered and ventilated while it dries.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7"
+            ],
+            "tools_used": [
+              "Brushes",
+              "Clean rags",
+              "Drop cloth"
+            ],
+            "safety": "Wear gloves and eye protection and provide ventilation. Spread stain-soaked rags flat outdoors to dry or dispose of them as directed; they can self-heat.",
+            "tip": "Brush finish out of the seat gaps and wipe away pooled finish so water is not trapped."
+          },
+          {
+            "n": 11,
+            "title": "Position the finished bench",
+            "text": "Move the cured bench to a firm, level location and check that all four legs bear evenly. If the 850 mm-tall bench will stand against a wall, locate the studs before installing the optional anti-tip straps. Do not use straps as a substitute for a stable floor.",
+            "parts_used": [
+              "P1",
+              "P2"
+            ],
+            "tools_used": [
+              "Stud finder",
+              "Level"
+            ],
+            "safety": "Use a helper for lifting and keep the route clear; do not lift the bench by its armrests or back slats.",
+            "tip": "A small level pad under a leg can correct a minor floor irregularity without twisting the frame."
+          },
+          {
+            "n": 12,
+            "title": "Fit optional anti-tip straps",
+            "text": "If the bench is against a wall, attach one anti-tip strap to each P2 rear post and fasten each wall end into a stud using the kit screws. Use straps rated for at least 100 kg lateral load per strap and follow the kit instructions for screw embedment. If you cannot locate suitable studs or rated masonry fixing points, do not attach the straps to drywall alone.",
+            "parts_used": [
+              "P2"
+            ],
+            "tools_used": [
+              "Drill/driver",
+              "Stud finder"
+            ],
+            "safety": "Wear eye protection, have a helper steady the bench, and check for wiring or plumbing before drilling into a wall.",
+            "tip": "Keep each strap snug enough to restrain tipping without pulling the bench out of level."
+          }
+        ],
+        "tools": [
+          {
+            "name": "Tape measure",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Combination square",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Pencil",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Random-orbit sander",
+            "required": false,
+            "alternative": "Sanding block and hand sanding"
+          },
+          {
+            "name": "Sanding block",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Drill/driver",
+            "required": true,
+            "alternative": "A hand drill and screwdriver can be used, but take extra care to keep holes straight."
+          },
+          {
+            "name": "Pocket-hole jig",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Drill-bit set",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Pocket-hole driver bit",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Clamps",
+            "required": true,
+            "alternative": "Strap clamps can substitute if they hold the joints square and cannot slip."
+          },
+          {
+            "name": "Spacers",
+            "required": true,
+            "alternative": "Cut scrap pieces to 10 mm for the seat-board gaps."
+          },
+          {
+            "name": "Brushes",
+            "required": true,
+            "alternative": "A clean stain pad suitable for the chosen finish"
+          },
+          {
+            "name": "Clean rags",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Drop cloth",
+            "required": true,
+            "alternative": "Flattened cardboard"
+          },
+          {
+            "name": "Stud finder",
+            "required": false,
+            "alternative": "Locate studs using a reliable wall-plan or inspection method; do not guess."
+          },
+          {
+            "name": "Level",
+            "required": true,
+            "alternative": "A straightedge and careful comparison on a known-level surface"
+          },
+          {
+            "name": "Safety glasses",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Dust mask",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Work gloves",
+            "required": true,
+            "alternative": null
+          }
+        ],
+        "safety_overview": [
+          "Wear safety glasses whenever drilling or fastening; clamp parts securely and keep hands clear of drill bits and driver tips.",
+          "Wear a suitable dust mask when sanding and work with good dust extraction or outdoors.",
+          "Use gloves and good ventilation with exterior stain or oil; manage finish-soaked rags exactly as directed on the product label because they can self-heat.",
+          "Lift the assembled bench with a helper, support it against tipping during assembly, and never lift it by the armrests or back slats.",
+          "For optional anti-tip straps, check for hidden wiring or plumbing and fasten into studs or rated masonry fixings, not drywall alone."
+        ],
+        "est_hours": 12,
+        "est_cost": {
+          "low": 150,
+          "high": 260,
+          "currency": "USD"
+        },
+        "hardware": [
+          {
+            "name": "Anti-tip furniture strap kit with stud screws",
+            "size": "Rated for at least 100 kg lateral load per strap",
+            "qty": 2
+          },
+          {
+            "name": "Exterior stainless-steel nyloc nuts",
+            "size": "M8",
+            "qty": 8
+          },
+          {
+            "name": "Exterior stainless-steel through bolts",
+            "size": "M8 x 110 mm",
+            "qty": 8
+          },
+          {
+            "name": "Exterior stainless-steel washers",
+            "size": "M8",
+            "qty": 16
+          },
+          {
+            "name": "Exterior-rated pocket-hole screws #8",
+            "size": "64 mm",
+            "qty": 8
+          },
+          {
+            "name": "Simpson Strong-Drive SD Connector screws #9",
+            "size": "25 mm",
+            "qty": 128
+          },
+          {
+            "name": "Simpson Strong-Drive SD Connector screws #9",
+            "size": "38 mm",
+            "qty": 60
+          },
+          {
+            "name": "Simpson Strong-Tie A35Z ZMAX angle connector",
+            "size": "A35Z",
+            "qty": 16
+          },
+          {
+            "name": "Simpson Strong-Tie LUS24Z ZMAX joist hanger",
+            "size": "38 x 89 mm lumber",
+            "qty": 6
+          },
+          {
+            "name": "Stainless-steel surface-mount slotted tabletop expansion clip",
+            "size": "40 mm slot, supplied 4 x 16 mm screws",
+            "qty": 27
+          }
+        ]
+      },
+      "review": {
+        "verdict": "fix",
+        "summary": "The plan needs stronger seat-support connections and positive racking resistance before it is suitable for outdoor seating. Clip installation, stock preparation, and the seat-assembly sequence also need clarification.",
+        "issues": [
+          {
+            "severity": "major",
+            "category": "joint_strength",
+            "step": 7,
+            "joint_id": "J6",
+            "part_ids": [
+              "P3",
+              "P4"
+            ],
+            "problem": "The load-bearing seat supports are butt-jointed to the rails using only two #8 pocket screws per end and glue on end grain. There is no bearing ledge or specified structural connector beneath the support ends. Repeated seating loads and outdoor moisture cycling can loosen these connections; the glue should not be counted on to carry this load.",
+            "fix": "Replace J6 with exterior-rated joist hangers sized for P4, or provide bearing cleats beneath every P4 end with a specified structural fastening schedule into P3. Install the connectors while the side frames remain accessible, before fitting P4 and the seat boards. Specify connector models, approved fasteners, and an intended seating load."
+          },
+          {
+            "severity": "major",
+            "category": "stability",
+            "step": 6,
+            "joint_id": null,
+            "part_ids": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P6",
+              "P7"
+            ],
+            "problem": "The frame has no diagonal bracing or other positive racking restraint. It relies on pocket-screwed rail and backrest joints and small, unspecified armrest brackets to resist people leaning back or shifting sideways. The separately clipped seat boards do not form a rigid diaphragm. These connections can loosen outdoors and allow the bench to sway.",
+            "fix": "Add a defined bracing system in both the side frames and the widthwise frame, such as exterior-rated structural corner gussets or diagonal braces with specified connections. Install these before the seat restricts access. Identify the armrest bracket model and fastening schedule rather than treating generic 50 mm brackets as structural bracing. Update the parts, joints, hardware, and steps accordingly."
+          },
+          {
+            "severity": "major",
+            "category": "hardware",
+            "step": 3,
+            "joint_id": "J7",
+            "part_ids": [
+              "P3",
+              "P4",
+              "P5"
+            ],
+            "problem": "The plan calls for Z-clips but never provides their required rail grooves or pockets, nor a tool or operation to make them. Describing clips as suitable 'for 38 mm frame stock' does not establish their mounting offset or groove requirements. The J8 slotted clips are also unspecified, so the builder cannot determine their mounting faces or movement direction from the instructions.",
+            "fix": "Select exact exterior-suitable clip models for J7 and J8. In step 3, machine the Z-clip grooves to the manufacturer's specified height and depth using a listed router or suitable saw, before assembling P3. Alternatively, specify surface-mounted movement fasteners that require no grooves. Show each clip's mounting face, screw sizes, and orientation so P5 can move across its width without binding."
+          },
+          {
+            "severity": "major",
+            "category": "sourcing",
+            "step": 1,
+            "joint_id": null,
+            "part_ids": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7"
+            ],
+            "problem": "All parts are listed as 'make,' but the instructions start with finished-size pieces and contain no cutting operation or cutting tools. In particular, the specified 70 × 140 mm leg/post stock and 38 × 70 mm armrest stock cannot be assumed to be standard finished sizes at a typical supplier. A builder may need ripping or thickness preparation that the plan does not acknowledge.",
+            "fix": "Provide a purchasing and cutting schedule identifying available stock and any ripping or planing required. Either specify a supplier that delivers these exact finished sections cut to length, or add the appropriate saws, preparation steps, and safety instructions. If substituting locally available stock, revise the affected connections and hardware details before issuing the plan."
+          },
+          {
+            "severity": "minor",
+            "category": "clarity",
+            "step": 8,
+            "joint_id": "J8",
+            "part_ids": [
+              "P3",
+              "P4",
+              "P5"
+            ],
+            "problem": "Step 7 leaves the frame upside down, but step 8 says to lay the boards in place and fasten from below without explaining how the boards are supported or how the assembly is oriented. A builder must improvise while keeping seven loose boards aligned.",
+            "fix": "Specify placing P5 upside down on a clean, padded, flat surface with spacers and alignment stops, then lowering the inverted frame onto them with a helper. Clamp the assembly without distorting it, install the clips from the exposed underside, and turn the completed bench upright with assistance."
+          }
+        ],
+        "model": "gpt-6.1-sol",
+        "latencyMs": 50374,
+        "tokens": 8102
+      },
+      "unverified": [
+        "[REVIEW major · joint_strength] Step 7 / J6 / P3+P4: The load-bearing seat supports are butt-jointed to the rails using only two #8 pocket screws per end and glue on end grain. There is no bearing ledge or specified structural connector beneath the support ends. Repeated seating loads and outdoor moisture cycling can loosen these connections; the glue should not be counted on to carry this load. → Replace J6 with exterior-rated joist hangers sized for P4, or provide bearing cleats beneath every P4 end with a specified structural fastening schedule into P3. Install the connectors while the side frames remain accessible, before fitting P4 and the seat boards. Specify connector models, approved fasteners, and an intended seating load.",
+        "[REVIEW major · stability] Step 6 / P1+P2+P3+P4+P6+P7: The frame has no diagonal bracing or other positive racking restraint. It relies on pocket-screwed rail and backrest joints and small, unspecified armrest brackets to resist people leaning back or shifting sideways. The separately clipped seat boards do not form a rigid diaphragm. These connections can loosen outdoors and allow the bench to sway. → Add a defined bracing system in both the side frames and the widthwise frame, such as exterior-rated structural corner gussets or diagonal braces with specified connections. Install these before the seat restricts access. Identify the armrest bracket model and fastening schedule rather than treating generic 50 mm brackets as structural bracing. Update the parts, joints, hardware, and steps accordingly.",
+        "[REVIEW major · hardware] Step 3 / J7 / P3+P4+P5: The plan calls for Z-clips but never provides their required rail grooves or pockets, nor a tool or operation to make them. Describing clips as suitable 'for 38 mm frame stock' does not establish their mounting offset or groove requirements. The J8 slotted clips are also unspecified, so the builder cannot determine their mounting faces or movement direction from the instructions. → Select exact exterior-suitable clip models for J7 and J8. In step 3, machine the Z-clip grooves to the manufacturer's specified height and depth using a listed router or suitable saw, before assembling P3. Alternatively, specify surface-mounted movement fasteners that require no grooves. Show each clip's mounting face, screw sizes, and orientation so P5 can move across its width without binding.",
+        "[REVIEW major · sourcing] Step 1 / P1+P2+P3+P4+P5+P6+P7: All parts are listed as 'make,' but the instructions start with finished-size pieces and contain no cutting operation or cutting tools. In particular, the specified 70 × 140 mm leg/post stock and 38 × 70 mm armrest stock cannot be assumed to be standard finished sizes at a typical supplier. A builder may need ripping or thickness preparation that the plan does not acknowledge. → Provide a purchasing and cutting schedule identifying available stock and any ripping or planing required. Either specify a supplier that delivers these exact finished sections cut to length, or add the appropriate saws, preparation steps, and safety instructions. If substituting locally available stock, revise the affected connections and hardware details before issuing the plan."
+      ],
+      "blockers": [],
+      "warnings": [
+        "Review tip (clarity): Step 7 leaves the frame upside down, but step 8 says to lay the boards in place and fasten from below without explaining how the boards are supported or how the assembly is oriented. A builder must improvise while keeping seven loose boards aligned. → Specify placing P5 upside down on a clean, padded, flat surface with spacers and alignment stops, then lowering the inverted frame onto them with a helper. Clamp the assembly without distorting it, install the clips from the exposed underside, and turn the completed bench upright with assistance."
+      ],
+      "tokens": 68084,
+      "costUsd": 0.04896421,
+      "calls": [
+        {
+          "stage": "stage1",
+          "model": "gpt-6-luna",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 3441,
+            "cachedTokens": 1792,
+            "outputTokens": 9080,
+            "reasoningTokens": 6567
+          },
+          "costUsd": 0.00472282,
+          "latencyMs": 70771
+        },
+        {
+          "stage": "stage1_geomrepair",
+          "model": "gpt-6-luna",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 8987,
+            "cachedTokens": 0,
+            "outputTokens": 3084,
+            "reasoningTokens": 1236
+          },
+          "costUsd": 0.0024406999999999996,
+          "latencyMs": 22283
+        },
+        {
+          "stage": "stage2",
+          "model": "gpt-6-luna",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 3662,
+            "cachedTokens": 1823,
+            "outputTokens": 10161,
+            "reasoningTokens": 5420
+          },
+          "costUsd": 0.00528263,
+          "latencyMs": 102190
+        },
+        {
+          "stage": "review",
+          "model": "gpt-6.1-sol",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 6240,
+            "cachedTokens": 0,
+            "outputTokens": 1862,
+            "reasoningTokens": 776
+          },
+          "costUsd": 0.0311,
+          "latencyMs": 50374
+        },
+        {
+          "stage": "repair_joints",
+          "model": "gpt-6-luna",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 13023,
+            "cachedTokens": 1736,
+            "outputTokens": 8544,
+            "reasoningTokens": 3567
+          },
+          "costUsd": 0.00541806,
+          "latencyMs": 60800
+        }
+      ],
+      "latencyMs": 306433,
+      "firstPlanMs": 195253,
+      "firstMetaMs": 56980,
+      "repairCount": 1,
+      "improved": true,
+      "escalated": null,
+      "reviewPending": false
+    },
+    "birdhouse": {
+      "plan": {
+        "title": "Woodpecker Nest Box",
+        "summary": "A simple, deep wooden nest box with a round entrance, removable overhanging roof, and flat rear for mounting to a tree. No exterior perch is included.",
+        "difficulty": "intermediate",
+        "overall_dimensions_mm": {
+          "width": 270,
+          "depth": 270,
+          "height": 449
+        },
+        "assumptions": [
+          "Dimensions are estimated from the photo; the roof overhang sets the 270 mm overall width and depth.",
+          "Balanced-material choice: 19 mm cedar boards, with rough-sawn inner face of the front panel to help birds climb inside.",
+          "The box body is 230 mm wide, 230 mm deep, and 430 mm high. The flat roof sits on the body and is removable for cleanout.",
+          "A 55 mm entrance hole is an approximate general woodpecker opening; the correct diameter depends on the local species.",
+          "Mount the back directly to a suitable tree using outdoor-rated screws. Fasteners and mounting location are not included as physical parts.",
+          "Glue the fixed body joints; retain the roof with removable outdoor-rated screws. Keep the inside unfinished and do not add a perch."
+        ],
+        "clarifying_questions": [
+          "Which woodpecker species or region is this for? The entrance-hole diameter should be matched to the target species."
+        ],
+        "parts": [
+          {
+            "id": "P1",
+            "name": "Side panels",
+            "material": "Cedar",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 430,
+            "width_mm": 230,
+            "thickness_mm": 19,
+            "qty": 2,
+            "placements": [
+              {
+                "x": 20,
+                "y": 0,
+                "z": 20,
+                "sx": 19,
+                "sy": 430,
+                "sz": 230
+              },
+              {
+                "x": 231,
+                "y": 0,
+                "z": 20,
+                "sx": 19,
+                "sy": 430,
+                "sz": 230
+              }
+            ],
+            "profile": null,
+            "cross_section": null,
+            "ends": null,
+            "notes": "Side panels span the body depth and touch the front, back, floor, and roof."
+          },
+          {
+            "id": "P2",
+            "name": "Front panel with entrance hole",
+            "material": "Cedar",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 430,
+            "width_mm": 192,
+            "thickness_mm": 19,
+            "qty": 1,
+            "placements": [
+              {
+                "x": 39,
+                "y": 0,
+                "z": 20,
+                "sx": 192,
+                "sy": 430,
+                "sz": 19
+              }
+            ],
+            "profile": {
+              "type": "path",
+              "d": "M0 0 L430 0 L430 192 L0 192 Z",
+              "holes": [
+                "M310 68.5 A27.5 27.5 0 1 0 310 123.5 A27.5 27.5 0 1 0 310 68.5 Z"
+              ]
+            },
+            "cross_section": null,
+            "ends": null,
+            "notes": "The 55 mm diameter entrance is centered across the panel and 310 mm above the box bottom. Local profile coordinates use height as u and panel width as v."
+          },
+          {
+            "id": "P3",
+            "name": "Back panel",
+            "material": "Cedar",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 430,
+            "width_mm": 192,
+            "thickness_mm": 19,
+            "qty": 1,
+            "placements": [
+              {
+                "x": 39,
+                "y": 0,
+                "z": 231,
+                "sx": 192,
+                "sy": 430,
+                "sz": 19
+              }
+            ],
+            "profile": null,
+            "cross_section": null,
+            "ends": null,
+            "notes": "Rear face is flat for direct attachment to a tree."
+          },
+          {
+            "id": "P4",
+            "name": "Floor panel",
+            "material": "Cedar",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 192,
+            "width_mm": 192,
+            "thickness_mm": 19,
+            "qty": 1,
+            "placements": [
+              {
+                "x": 39,
+                "y": 0,
+                "z": 39,
+                "sx": 192,
+                "sy": 19,
+                "sz": 192
+              }
+            ],
+            "profile": null,
+            "cross_section": null,
+            "ends": null,
+            "notes": "Fits between the front, back, and side panels; its edges meet the surrounding walls."
+          },
+          {
+            "id": "P5",
+            "name": "Overhanging removable roof",
+            "material": "Cedar",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 270,
+            "width_mm": 270,
+            "thickness_mm": 19,
+            "qty": 1,
+            "placements": [
+              {
+                "x": 0,
+                "y": 430,
+                "z": 0,
+                "sx": 270,
+                "sy": 19,
+                "sz": 270
+              }
+            ],
+            "profile": null,
+            "cross_section": null,
+            "ends": null,
+            "notes": "Flat approximation of the slightly pitched roof in the photo; it bears on the tops of all four walls and overhangs the body by 20 mm on each side."
+          }
+        ],
+        "consumables": [
+          {
+            "name": "Exterior-rated wood glue",
+            "qty": "about 100 mL",
+            "note": "For fixed body joints only; do not glue the removable roof."
+          },
+          {
+            "name": "Exterior finish",
+            "qty": "about 250 mL",
+            "note": "Optional; apply only to exterior surfaces and allow it to cure fully. Leave the interior unfinished."
+          }
+        ],
+        "load_bearing": false,
+        "joints": [
+          {
+            "id": "J1",
+            "part_a": "P1",
+            "part_b": "P5",
+            "count": 2,
+            "type": "metal_bracket",
+            "fasteners": [
+              {
+                "name": "Stainless steel slotted roof angle bracket",
+                "size": "25 x 25 mm, slotted roof leg",
+                "qty_per_joint": 1
+              },
+              {
+                "name": "Stainless steel pan-head wood screws #8",
+                "size": "16 mm",
+                "qty_per_joint": 4
+              },
+              {
+                "name": "Stainless steel washers",
+                "size": "#8, 16 mm outside diameter",
+                "qty_per_joint": 2
+              }
+            ],
+            "drive_from": "Attach each bracket to the underside of P5 while P5 is upside down on the bench; after setting P5 on the body, drive the two wall-side screws from the outside face of each P1.",
+            "step": 7,
+            "note": "One bracket at each side. Use two pan-head screws and washers through the bracket's slots into P5; orient the slots left-to-right, across P5's stated front-to-back grain. The slots allow roof movement; do not overtighten. Drive the two wall-side screws through bracket clearance holes into cedar, not into the metal. No glue. Remove both wall-side screws at each side to release the roof."
+          },
+          {
+            "id": "J2",
+            "part_a": "P2",
+            "part_b": "P5",
+            "count": 1,
+            "type": "metal_bracket",
+            "fasteners": [
+              {
+                "name": "Stainless steel slotted roof angle bracket",
+                "size": "25 x 25 mm, slotted roof leg with center locating hole",
+                "qty_per_joint": 1
+              },
+              {
+                "name": "Stainless steel pan-head wood screws #8",
+                "size": "16 mm",
+                "qty_per_joint": 4
+              },
+              {
+                "name": "Stainless steel washers",
+                "size": "#8, 16 mm outside diameter",
+                "qty_per_joint": 2
+              }
+            ],
+            "drive_from": "With P5 upside down on the bench, attach the bracket to its underside; after setting P5 on the body, drive the two wall-side screws from the outside face of P2.",
+            "step": 7,
+            "note": "Center this bracket on P2, clear of the entrance. Use one pan-head screw and washer in the bracket's round center hole as the roof locating attachment, and one in its slot oriented left-to-right across P5's grain. The two wall-side screws pass through bracket clearance holes into cedar, not into the metal. No glue. Remove both P2 wall-side screws and the four side wall-side screws to release the roof; the rear remains free of hardware."
+          },
+          {
+            "id": "J4",
+            "part_a": "P1",
+            "part_b": "P2",
+            "count": 2,
+            "type": "pocket_screw",
+            "fasteners": [
+              {
+                "name": "Exterior-rated wood screws #8",
+                "size": "40 mm stainless steel",
+                "qty_per_joint": 3
+              },
+              {
+                "name": "Exterior-rated pocket-hole screws",
+                "size": "32 mm stainless steel, coarse thread",
+                "qty_per_joint": 2
+              }
+            ],
+            "drive_from": "Drive the three 40 mm screws through each P1 side panel into the adjoining P2 edge from the outside face; drive the pocket screws from the inside face of P2 into the face of P1 before closing the box.",
+            "step": 4,
+            "note": "Glue the full vertical mating seam with exterior-rated wood glue. Use three evenly spaced, predrilled #8 x 40 mm screws per seam, at least 50 mm from the ends, plus two pocket screws driven into the side-panel face so the joint does not rely on screws in end grain. Clamp square while the glue cures."
+          },
+          {
+            "id": "J5",
+            "part_a": "P1",
+            "part_b": "P3",
+            "count": 2,
+            "type": "pocket_screw",
+            "fasteners": [
+              {
+                "name": "Exterior-rated wood screws #8",
+                "size": "40 mm stainless steel",
+                "qty_per_joint": 3
+              },
+              {
+                "name": "Exterior-rated pocket-hole screws",
+                "size": "32 mm stainless steel, coarse thread",
+                "qty_per_joint": 2
+              }
+            ],
+            "drive_from": "Drive the three 40 mm screws through each P1 side panel into the adjoining P3 edge from the outside face; drive pocket screws from the inside face of P3 into the face of P1 before closing the box.",
+            "step": 4,
+            "note": "Glue the full vertical mating seam with exterior-rated wood glue. Use three evenly spaced, predrilled #8 x 40 mm screws per seam, at least 50 mm from the ends, plus two pocket screws driven into the side-panel face so the joint does not rely on screws in end grain. Clamp square while the glue cures."
+          },
+          {
+            "id": "J6",
+            "part_a": "P4",
+            "part_b": "P1",
+            "count": 2,
+            "type": "slotted_screw",
+            "fasteners": [
+              {
+                "name": "Cedar floor-support cleat stock",
+                "size": "19 x 19 mm, cut to fit",
+                "qty_per_joint": 1
+              },
+              {
+                "name": "Stainless steel wood screws #8",
+                "size": "32 mm",
+                "qty_per_joint": 3
+              },
+              {
+                "name": "Stainless steel pan-head wood screws #8",
+                "size": "25 mm",
+                "qty_per_joint": 2
+              },
+              {
+                "name": "Stainless steel washers",
+                "size": "#8, 16 mm outside diameter",
+                "qty_per_joint": 2
+              }
+            ],
+            "drive_from": "Attach each cleat to the inside face of P1 before placing P4; then drive the two floor screws upward from below through the cleat's cross-grain slots into P4.",
+            "step": 5,
+            "note": "Fit one cleat to each side wall beneath P4, with its top level with the other supports. Glue and screw each cleat to the wall using three 32 mm screws; the cleats are not glued to P4. Leave about 2 mm clearance at the floor perimeter. The two floor screws per side go through slots oriented left-to-right, allowing P4's stated front-to-back grain to move across its width; use washers and do not overtighten."
+          },
+          {
+            "id": "J7",
+            "part_a": "P4",
+            "part_b": "P2",
+            "count": 1,
+            "type": "slotted_screw",
+            "fasteners": [
+              {
+                "name": "Cedar floor-support cleat stock",
+                "size": "19 x 19 mm, cut to fit",
+                "qty_per_joint": 1
+              },
+              {
+                "name": "Stainless steel wood screws #8",
+                "size": "32 mm",
+                "qty_per_joint": 3
+              },
+              {
+                "name": "Stainless steel pan-head wood screws #8",
+                "size": "25 mm",
+                "qty_per_joint": 3
+              },
+              {
+                "name": "Stainless steel washers",
+                "size": "#8, 16 mm outside diameter",
+                "qty_per_joint": 3
+              }
+            ],
+            "drive_from": "Attach the cleat to the inside face of P2 before placing P4; drive the three floor screws upward from below through the cleat into P4.",
+            "step": 5,
+            "note": "Glue and screw this cleat to P2 with three 32 mm screws. Do not glue P4 to the cleat or walls. Use three pan-head screws and washers through left-to-right slots; this is a movement-compatible floor attachment."
+          },
+          {
+            "id": "J8",
+            "part_a": "P4",
+            "part_b": "P3",
+            "count": 1,
+            "type": "slotted_screw",
+            "fasteners": [
+              {
+                "name": "Cedar floor-support cleat stock",
+                "size": "19 x 19 mm, cut to fit",
+                "qty_per_joint": 1
+              },
+              {
+                "name": "Stainless steel wood screws #8",
+                "size": "32 mm",
+                "qty_per_joint": 3
+              },
+              {
+                "name": "Stainless steel pan-head wood screws #8",
+                "size": "25 mm",
+                "qty_per_joint": 3
+              },
+              {
+                "name": "Stainless steel washers",
+                "size": "#8, 16 mm outside diameter",
+                "qty_per_joint": 3
+              }
+            ],
+            "drive_from": "Attach the cleat to the inside face of P3 before placing P4; drive the three floor screws upward from below through the cleat into P4.",
+            "step": 5,
+            "note": "Glue and screw this cleat to P3 with three 32 mm screws. The center floor screw is the locating attachment; put the other two through left-to-right slots with washers and leave them just snug. Do not glue P4 to the cleat or walls."
+          },
+          {
+            "id": "J9",
+            "part_a": "P3",
+            "part_b": "WALL",
+            "count": 1,
+            "type": "other",
+            "fasteners": [
+              {
+                "name": "Outdoor-rated adjustable tree-strap and stand-off mounting kit",
+                "size": "Rated for the box plus wet nesting material; follow kit specifications",
+                "qty_per_joint": 1
+              }
+            ],
+            "drive_from": "Fasten the kit's stand-off brackets to the outside face of P3 before assembling the box; fit the supplied adjustable strap around the tree from a stable position after the box is complete.",
+            "step": 3,
+            "note": "Use a purpose-made outdoor-rated kit with corrosion-resistant hardware and tree-protective strap; follow its specified load rating and installation instructions. The stand-offs keep the rear mounting surface clear for drainage and inspection. Check strap tension, tree growth, fasteners, and box stability at least twice yearly and after severe weather; loosen or reposition as the tree grows."
+          }
+        ],
+        "steps": [
+          {
+            "n": 1,
+            "title": "Buy stock and cut the panels",
+            "text": "Buy straight, untreated 19 mm cedar boards wide enough for the specified panels; lay out P1 (side panels), P2 (front panel), P3 (back panel), P4 (floor panel), and P5 (roof) to their given dimensions. Cut the panels square, keeping P2's inside face rough-sawn and marking the long-grain direction on every panel. Dry-check the dimensions and label each part before assembly.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5"
+            ],
+            "tools_used": [
+              "Tape measure",
+              "Combination square",
+              "Pencil",
+              "Straightedge",
+              "Circular saw",
+              "Clamps"
+            ],
+            "safety": "Wear eye and hearing protection. Clamp the stock, support both sides of each cut, keep hands clear of the blade, and follow the saw manufacturer's instructions; use a handsaw if preferred.",
+            "tip": "Keep P5 grain running front-to-back, and mark the front edge so the drainage slope is oriented correctly."
+          },
+          {
+            "n": 2,
+            "title": "Bore the entrance, vents, and drainage; shape the roof",
+            "text": "Bore P2's 55 mm entrance with its center 310 mm above the box bottom and centered across its width; clamp a backing board behind it to reduce tear-out. Drill four 6 mm drainage holes through P4, spaced near its corners, and two 6 mm protected ventilation holes near the top of each P1, below the roof line. Bevel P5's upper face so it falls 7 mm from back to front across the 230 mm body depth, and cut a shallow drip kerf on its underside near the front edge; keep the bottom bearing face flat.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P4",
+              "P5"
+            ],
+            "tools_used": [
+              "Tape measure",
+              "Combination square",
+              "Pencil",
+              "55 mm hole saw",
+              "Drill/driver",
+              "6 mm drill bit",
+              "Clamps",
+              "Circular saw",
+              "Straightedge"
+            ],
+            "safety": "Wear eye protection and hearing protection. Clamp panels and backing board securely; keep hands clear of the hole saw and saw blade, and do not hold small work by hand while drilling.",
+            "tip": "Confirm the entrance diameter for the local species before boring. Keep the ventilation holes high and under the roof overhang so rain is less likely to blow in."
+          },
+          {
+            "n": 3,
+            "title": "Sand, predrill, and prepare the tree mount",
+            "text": "Ease exposed edges, but leave P2's inner climbing face rough and keep the interior unfinished. Mark and predrill the three #8 x 40 mm screws along each P1-to-P2 and P1-to-P3 seam; make pocket holes for two 32 mm pocket screws at each seam. Attach the adjustable tree-strap stand-off kit to the outside of P3 before the box is assembled, following its template and supplied fasteners.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5"
+            ],
+            "tools_used": [
+              "Sanding block",
+              "Tape measure",
+              "Combination square",
+              "Pencil",
+              "Drill/driver",
+              "Pilot drill bit",
+              "Pocket-hole jig",
+              "Clamps"
+            ],
+            "safety": "Wear eye protection and clamp the panels before drilling. Remove the drill battery before changing bits and keep hands clear of the bit.",
+            "tip": "Dry-fit the mount against a flat surface to confirm its stand-offs sit evenly and do not block the rear roof edge or box interior."
+          },
+          {
+            "n": 4,
+            "title": "Glue and assemble the walls square",
+            "text": "Apply exterior-rated glue to the vertical mating seams and clamp P2 (front) and P3 (back) between the two P1 side panels. At each P1-to-P2 and P1-to-P3 seam, drive three stainless #8 x 40 mm screws through P1 into the adjoining panel edge, plus two 32 mm pocket screws from the inside face of the front or back panel into the side-panel face. Check for square before the glue sets and leave the clamps on for the glue maker's full clamp time, typically 30–60 minutes; allow 24 hours before loading the joints.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3"
+            ],
+            "tools_used": [
+              "Exterior-rated wood glue",
+              "Clamps",
+              "Drill/driver",
+              "Driver bit",
+              "Combination square"
+            ],
+            "safety": "Wear eye protection while driving screws and keep the box stable in the clamps. Wipe squeeze-out promptly without smearing glue onto the unfinished interior climbing face.",
+            "tip": "Pilot holes and moderate driver torque help prevent cedar splitting; do not overtighten or let the box rack out of square."
+          },
+          {
+            "n": 5,
+            "title": "Install floor-support cleats and the movable floor",
+            "text": "Glue and screw 19 x 19 mm cedar cleats to the inside faces of P1, P2, and P3, using three stainless #8 x 32 mm screws per cleat; set their tops level to support P4. Place P4 on the cleats with about 2 mm clearance at its edges and no glue. Drive two #8 x 25 mm pan-head screws with washers through left-to-right slots in each side cleat, three through similar slots in the front cleat, and three through the back cleat; use the center back screw as the locating attachment and leave all slotted screws just snug.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4"
+            ],
+            "tools_used": [
+              "Tape measure",
+              "Pencil",
+              "Drill/driver",
+              "Driver bit",
+              "Clamps"
+            ],
+            "safety": "Wear eye protection and support the box securely while driving screws upward. Keep fingers clear beneath the cleats and use a depth stop or careful control so screws do not break through P4.",
+            "tip": "The slots let the solid-wood floor expand across its grain. Do not glue the floor perimeter or tighten the slotted screws hard against the washers."
+          },
+          {
+            "n": 6,
+            "title": "Fit all roof brackets while the roof is loose",
+            "text": "Lay P5 upside down on a bench and mark three bracket positions: one centered above each P1 side and one centered above P2, clear of the entrance. Orient every slotted roof leg left-to-right across P5's front-to-back grain; put the round locating hole of the front bracket at the center. Pilot-drill and attach each bracket to P5 with two 16 mm pan-head screws and washers, using the round hole only at the front center; leave the slotted attachments snug enough to slide.",
+            "parts_used": [
+              "P5"
+            ],
+            "tools_used": [
+              "Tape measure",
+              "Combination square",
+              "Pencil",
+              "Drill/driver",
+              "Pilot drill bit",
+              "Driver bit",
+              "Clamps"
+            ],
+            "safety": "Wear eye protection, clamp P5 securely, and remove the drill battery before changing bits. Keep hands clear of the bit and confirm the screws will not emerge through the roof's top face.",
+            "tip": "All underside bracket work happens before the roof is placed on the body; do not add a rear bracket, which would interfere with tree mounting and cleaning."
+          },
+          {
+            "n": 7,
+            "title": "Place and secure the removable roof",
+            "text": "Set P5 on the assembled box with its beveled top falling 7 mm toward the front and its overhang even on all sides. Drive two stainless #8 x 16 mm pan-head screws with washers through the clearance holes of each side bracket into P1, and two through the front bracket into P2; the screws pass through the metal into cedar. Do not glue the roof, and leave the slotted roof attachments able to move; remove the six wall-side screws to lift off the roof for cleaning.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P5"
+            ],
+            "tools_used": [
+              "Tape measure",
+              "Drill/driver",
+              "Driver bit",
+              "Clamps"
+            ],
+            "safety": "Wear eye protection and support P5 against slipping while aligning it and driving screws. Keep the driver straight to avoid slipping into the entrance opening.",
+            "tip": "The front-center screw in the round bracket hole locates the roof; do not add a rear fastener or overtighten the slotted connections."
+          },
+          {
+            "n": 8,
+            "title": "Apply optional exterior finish and mount the box",
+            "text": "Apply exterior finish only to outside surfaces, following the product label; leave the inside and entrance climbing surface unfinished. Let the finish cure fully, typically 48–72 hours or longer if the label requires. Attach the completed box to a suitable tree with the preinstalled adjustable strap and stand-off kit, using the kit's instructions, then verify drainage, strap tension, and stability.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5"
+            ],
+            "tools_used": [
+              "Brush",
+              "Disposable gloves",
+              "Stable step ladder"
+            ],
+            "safety": "Work outdoors or with strong ventilation and wear suitable gloves and eye protection. Keep finish and solvent-soaked rags away from flames; use a stable ladder with a helper, and do not overreach while mounting.",
+            "tip": "Inspect the strap and tree-contact points regularly, allow for tree growth, and do not place the box where the roof slope directs runoff into the entrance."
+          }
+        ],
+        "tools": [
+          {
+            "name": "Tape measure",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Combination square",
+            "required": true,
+            "alternative": "A framing square or a straightedge and protractor"
+          },
+          {
+            "name": "Pencil",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Sanding block",
+            "required": true,
+            "alternative": "Folded sandpaper wrapped around a flat scrap of wood"
+          },
+          {
+            "name": "Drill/driver",
+            "required": true,
+            "alternative": "A hand drill and manual screwdriver"
+          },
+          {
+            "name": "2.5 mm drill bit",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Driver bit",
+            "required": true,
+            "alternative": "A matching manual screwdriver"
+          },
+          {
+            "name": "Clamps",
+            "required": true,
+            "alternative": "A helper can hold the panels steady"
+          },
+          {
+            "name": "Brush",
+            "required": false,
+            "alternative": "A disposable foam applicator"
+          },
+          {
+            "name": "Disposable gloves",
+            "required": false,
+            "alternative": "Reusable chemical-resistant gloves suitable for the finish"
+          }
+        ],
+        "safety_overview": [
+          "Wear safety glasses when drilling or driving screws; clamp or firmly support panels so they cannot shift.",
+          "Keep hands clear of drill bits and driver bits, and remove the drill battery before changing bits.",
+          "Wear suitable gloves and work with good ventilation when applying exterior finish; keep finish and solvent-soaked rags away from ignition sources.",
+          "Support the roof while fitting or removing it so it cannot slide or fall."
+        ],
+        "est_hours": 3.5,
+        "est_cost": {
+          "low": 30,
+          "high": 60,
+          "currency": "USD"
+        },
+        "hardware": [
+          {
+            "name": "Cedar floor-support cleat stock",
+            "size": "19 x 19 mm, cut to fit",
+            "qty": 4
+          },
+          {
+            "name": "Exterior-rated pocket-hole screws",
+            "size": "32 mm stainless steel, coarse thread",
+            "qty": 8
+          },
+          {
+            "name": "Exterior-rated wood screws #8",
+            "size": "40 mm stainless steel",
+            "qty": 12
+          },
+          {
+            "name": "Outdoor-rated adjustable tree-strap and stand-off mounting kit",
+            "size": "Rated for the box plus wet nesting material; follow kit specifications",
+            "qty": 1
+          },
+          {
+            "name": "Stainless steel pan-head wood screws #8",
+            "size": "16 mm",
+            "qty": 12
+          },
+          {
+            "name": "Stainless steel pan-head wood screws #8",
+            "size": "25 mm",
+            "qty": 10
+          },
+          {
+            "name": "Stainless steel slotted roof angle bracket",
+            "size": "25 x 25 mm, slotted roof leg",
+            "qty": 2
+          },
+          {
+            "name": "Stainless steel slotted roof angle bracket",
+            "size": "25 x 25 mm, slotted roof leg with center locating hole",
+            "qty": 1
+          },
+          {
+            "name": "Stainless steel washers",
+            "size": "#8, 16 mm outside diameter",
+            "qty": 16
+          },
+          {
+            "name": "Stainless steel wood screws #8",
+            "size": "32 mm",
+            "qty": 12
+          }
+        ]
+      },
+      "review": {
+        "verdict": "fix",
+        "summary": "The plan cannot produce an assembled box as written: body joinery is explicitly omitted. Roof-bracket installation, tree mounting, wood movement, fabrication instructions, and weather protection also need correction before this is suitable for a home builder.",
+        "issues": [
+          {
+            "severity": "blocker",
+            "category": "joint_strength",
+            "step": 2,
+            "joint_id": null,
+            "part_ids": [
+              "P1",
+              "P2",
+              "P3",
+              "P4"
+            ],
+            "problem": "Step 2 explicitly prohibits assembling the body, while steps 4–6 require a separately assembled body. There are no wall-to-wall or floor-support joints, fasteners, or assembly instructions. The roof brackets cannot substitute for these missing connections.",
+            "fix": "Add body joints to the joints array and hardware list. Specify three spaced, pilot-drilled stainless #8 x 40 mm screws through each side panel into each adjoining front/back panel edge, with exterior glue on these long-grain wall seams. Add screwed support cleats beneath P4 and a movement-compatible floor attachment. Rewrite step 2 to assemble and square the walls, install the supported floor, and allow the glue to cure before fitting the roof."
+          },
+          {
+            "severity": "major",
+            "category": "tool_access",
+            "step": 5,
+            "joint_id": "J2",
+            "part_ids": [
+              "P1",
+              "P2",
+              "P3",
+              "P5"
+            ],
+            "problem": "Step 4 secures the roof to both sides before steps 5 and 6 require driving screws upward into its underside. At that point, the walls obstruct normal drill/driver access to the front and back roof-bracket screws.",
+            "fix": "With P5 loose and upside down on the bench, mark, pilot-drill, and install every retained roof bracket. Only then place the complete roof assembly on the body and install the accessible wall-side screws. Rewrite steps 3–6 around this sequence."
+          },
+          {
+            "severity": "major",
+            "category": "hardware",
+            "step": 3,
+            "joint_id": "J1",
+            "part_ids": [
+              "P1",
+              "P2",
+              "P3",
+              "P5"
+            ],
+            "problem": "The bracket instructions are inconsistent. Step 3 marks only two bracket positions on the roof and treats the two P1 side panels as one wall location. Steps 5 and 6 describe driving wood screws 'into the bracket,' rather than through the bracket into wood. Step 6 also gives an incorrect roof-release instruction relative to the specified wall-side fasteners.",
+            "fix": "Provide a bracket layout identifying every individual bracket and its orientation. State that each wall-side screw passes through a bracket clearance hole and threads into the cedar, not into the metal. Make the pilot-hole instructions, release instructions, joint counts, and hardware quantities agree with the final bracket arrangement."
+          },
+          {
+            "severity": "major",
+            "category": "stability",
+            "step": 2,
+            "joint_id": "J3",
+            "part_ids": [
+              "P3",
+              "P5"
+            ],
+            "problem": "Tree mounting is a stated function, but the plan expressly omits the mounting joint and hardware. In addition, J3 places removable fasteners on the rear face that is supposed to sit directly against the tree. Those screws will be inaccessible for cleanout, and an exterior rear bracket interferes with the intended flat mounting face.",
+            "fix": "Specify an outdoor-rated tree-mounting system, its fasteners, installation sequence, and inspection requirements. One workable approach is a purpose-made adjustable tree strap and stand-off system attached to P3 before body assembly, following its manufacturer's instructions. Eliminate J3 and retain the roof with accessible front/side hardware, or redesign the mount to provide deliberate rear service clearance. Update the hardware list accordingly."
+          },
+          {
+            "severity": "major",
+            "category": "wood_movement",
+            "step": 2,
+            "joint_id": null,
+            "part_ids": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5"
+            ],
+            "problem": "The assumptions call for gluing all fixed body joints, which would restrain the solid-wood floor across its grain. J1–J3 also rigidly attach the broad solid-wood roof at all four edges. Outdoor moisture cycling can split these panels or loosen their attachments.",
+            "fix": "Declare grain directions. Support P4 on cleats without gluing its perimeter, leave seasonal clearance, and secure it using a locating attachment plus slotted attachments that allow cross-grain movement. For P5, use a locating attachment and slotted metal-bracket holes aligned with roof movement, with suitable pan-head screws and washers rather than screws locked tightly into countersunk slots. Document these details in the joints and steps."
+          },
+          {
+            "severity": "major",
+            "category": "clarity",
+            "step": 1,
+            "joint_id": null,
+            "part_ids": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5"
+            ],
+            "problem": "Every panel is listed as 'make,' but the procedure begins with completed panels and an existing entrance hole. No stock purchasing specification, cutting procedure, saw, or entrance-cutting tool is provided. A builder buying cedar boards cannot get from the materials list to step 1 using the listed instructions.",
+            "fix": "Either specify that all panels are supplied cut to size with the entrance already bored, or add stock selection, panel cutting, and entrance-boring steps. List a suitable saw and straightedge, the appropriate hole saw, a backing board, clamps, and cutting/drilling safety instructions. Bore the entrance before assembling the body."
+          },
+          {
+            "severity": "major",
+            "category": "safety",
+            "step": 2,
+            "joint_id": null,
+            "part_ids": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5"
+            ],
+            "problem": "The closed floor has no drainage, and the box has no specified protected ventilation. The flat roof also has no deliberate runoff detail. Rain entering through the entrance or roof joints can collect inside, wet nesting material, and shorten the box's service life.",
+            "fix": "Before assembly, add several small drainage holes through P4 and protected high-level ventilation openings under the roof overhang, sized for the target species. Give the roof a positive outward drainage slope and a weather-shedding edge detail while keeping it removable. Update the affected parts, fabrication instructions, and joints."
+          },
+          {
+            "severity": "minor",
+            "category": "clarity",
+            "step": 1,
+            "joint_id": null,
+            "part_ids": [
+              "P2"
+            ],
+            "problem": "The plan acknowledges that the entrance is only an approximate general woodpecker size, but still directs the builder to accept the finished opening. The target species remains unresolved, so suitability as a nest box has not been established.",
+            "fix": "Resolve the target species and region before cutting P2. Reference local wildlife-agency guidance for the entrance, internal arrangement, ventilation, mounting location, and any recommended nesting substrate; then replace the provisional specification with the selected requirements."
+          }
+        ],
+        "model": "gpt-6.1-sol",
+        "latencyMs": 50291,
+        "tokens": 6072
+      },
+      "unverified": [
+        "Parts P3 (Back panel) and P5 (Overhanging removable roof) touch but have no declared joint",
+        "[REVIEW blocker · joint_strength] Step 2 / P1+P2+P3+P4: Step 2 explicitly prohibits assembling the body, while steps 4–6 require a separately assembled body. There are no wall-to-wall or floor-support joints, fasteners, or assembly instructions. The roof brackets cannot substitute for these missing connections. → Add body joints to the joints array and hardware list. Specify three spaced, pilot-drilled stainless #8 x 40 mm screws through each side panel into each adjoining front/back panel edge, with exterior glue on these long-grain wall seams. Add screwed support cleats beneath P4 and a movement-compatible floor attachment. Rewrite step 2 to assemble and square the walls, install the supported floor, and allow the glue to cure before fitting the roof.",
+        "[REVIEW major · tool_access] Step 5 / J2 / P1+P2+P3+P5: Step 4 secures the roof to both sides before steps 5 and 6 require driving screws upward into its underside. At that point, the walls obstruct normal drill/driver access to the front and back roof-bracket screws. → With P5 loose and upside down on the bench, mark, pilot-drill, and install every retained roof bracket. Only then place the complete roof assembly on the body and install the accessible wall-side screws. Rewrite steps 3–6 around this sequence.",
+        "[REVIEW major · hardware] Step 3 / J1 / P1+P2+P3+P5: The bracket instructions are inconsistent. Step 3 marks only two bracket positions on the roof and treats the two P1 side panels as one wall location. Steps 5 and 6 describe driving wood screws 'into the bracket,' rather than through the bracket into wood. Step 6 also gives an incorrect roof-release instruction relative to the specified wall-side fasteners. → Provide a bracket layout identifying every individual bracket and its orientation. State that each wall-side screw passes through a bracket clearance hole and threads into the cedar, not into the metal. Make the pilot-hole instructions, release instructions, joint counts, and hardware quantities agree with the final bracket arrangement.",
+        "[REVIEW major · stability] Step 2 / J3 / P3+P5: Tree mounting is a stated function, but the plan expressly omits the mounting joint and hardware. In addition, J3 places removable fasteners on the rear face that is supposed to sit directly against the tree. Those screws will be inaccessible for cleanout, and an exterior rear bracket interferes with the intended flat mounting face. → Specify an outdoor-rated tree-mounting system, its fasteners, installation sequence, and inspection requirements. One workable approach is a purpose-made adjustable tree strap and stand-off system attached to P3 before body assembly, following its manufacturer's instructions. Eliminate J3 and retain the roof with accessible front/side hardware, or redesign the mount to provide deliberate rear service clearance. Update the hardware list accordingly.",
+        "[REVIEW major · wood_movement] Step 2 / P1+P2+P3+P4+P5: The assumptions call for gluing all fixed body joints, which would restrain the solid-wood floor across its grain. J1–J3 also rigidly attach the broad solid-wood roof at all four edges. Outdoor moisture cycling can split these panels or loosen their attachments. → Declare grain directions. Support P4 on cleats without gluing its perimeter, leave seasonal clearance, and secure it using a locating attachment plus slotted attachments that allow cross-grain movement. For P5, use a locating attachment and slotted metal-bracket holes aligned with roof movement, with suitable pan-head screws and washers rather than screws locked tightly into countersunk slots. Document these details in the joints and steps.",
+        "[REVIEW major · clarity] Step 1 / P1+P2+P3+P4+P5: Every panel is listed as 'make,' but the procedure begins with completed panels and an existing entrance hole. No stock purchasing specification, cutting procedure, saw, or entrance-cutting tool is provided. A builder buying cedar boards cannot get from the materials list to step 1 using the listed instructions. → Either specify that all panels are supplied cut to size with the entrance already bored, or add stock selection, panel cutting, and entrance-boring steps. List a suitable saw and straightedge, the appropriate hole saw, a backing board, clamps, and cutting/drilling safety instructions. Bore the entrance before assembling the body.",
+        "[REVIEW major · safety] Step 2 / P1+P2+P3+P4+P5: The closed floor has no drainage, and the box has no specified protected ventilation. The flat roof also has no deliberate runoff detail. Rain entering through the entrance or roof joints can collect inside, wet nesting material, and shorten the box's service life. → Before assembly, add several small drainage holes through P4 and protected high-level ventilation openings under the roof overhang, sized for the target species. Give the roof a positive outward drainage slope and a weather-shedding edge detail while keeping it removable. Update the affected parts, fabrication instructions, and joints."
+      ],
+      "blockers": [
+        "Parts P3 (Back panel) and P5 (Overhanging removable roof) touch but have no declared joint",
+        "[REVIEW blocker · joint_strength] Step 2 explicitly prohibits assembling the body, while steps 4–6 require a separately assembled body. There are no wall-to-wall or floor-support joints, fasteners, or assembly instructions. The roof brackets cannot substitute for these missing connections."
+      ],
+      "warnings": [
+        "Part P2: geometry could not be verified for overlap",
+        "Review tip (clarity): The plan acknowledges that the entrance is only an approximate general woodpecker size, but still directs the builder to accept the finished opening. The target species remains unresolved, so suitability as a nest box has not been established. → Resolve the target species and region before cutting P2. Reference local wildlife-agency guidance for the entrance, internal arrangement, ventilation, mounting location, and any recommended nesting substrate; then replace the provisional specification with the selected requirements."
+      ],
+      "tokens": 62844,
+      "costUsd": 0.15899305,
+      "calls": [
+        {
+          "stage": "stage1",
+          "model": "gpt-6-luna",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 3594,
+            "cachedTokens": 2816,
+            "outputTokens": 5323,
+            "reasoningTokens": 3810
+          },
+          "costUsd": 0.0027674600000000002,
+          "latencyMs": 40220
+        },
+        {
+          "stage": "stage2",
+          "model": "gpt-6-luna",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 3007,
+            "cachedTokens": 1823,
+            "outputTokens": 5981,
+            "reasoningTokens": 3343
+          },
+          "costUsd": 0.00312713,
+          "latencyMs": 61294
+        },
+        {
+          "stage": "review",
+          "model": "gpt-6.1-sol",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 4069,
+            "cachedTokens": 0,
+            "outputTokens": 2003,
+            "reasoningTokens": 436
+          },
+          "costUsd": 0.028168,
+          "latencyMs": 50291
+        },
+        {
+          "stage": "repair_joints",
+          "model": "gpt-6-luna",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 9074,
+            "cachedTokens": 1736,
+            "outputTokens": 6794,
+            "reasoningTokens": 3082
+          },
+          "costUsd": 0.00414816,
+          "latencyMs": 52912
+        },
+        {
+          "stage": "escalate1",
+          "model": "gpt-6.1-sol",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 3594,
+            "cachedTokens": 0,
+            "outputTokens": 3810,
+            "reasoningTokens": 1535
+          },
+          "costUsd": 0.045288,
+          "latencyMs": 81171
+        },
+        {
+          "stage": "escalate2",
+          "model": "gpt-6.1-sol",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 3710,
+            "cachedTokens": 1823,
+            "outputTokens": 4825,
+            "reasoningTokens": 1023
+          },
+          "costUsd": 0.052206300000000004,
+          "latencyMs": 108189
+        },
+        {
+          "stage": "review",
+          "model": "gpt-6.1-sol",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 5914,
+            "cachedTokens": 0,
+            "outputTokens": 1146,
+            "reasoningTokens": 346
+          },
+          "costUsd": 0.023288,
+          "latencyMs": 34763
+        }
+      ],
+      "latencyMs": 428921,
+      "firstPlanMs": 101565,
+      "firstMetaMs": 32224,
+      "repairCount": 1,
+      "improved": true,
+      "escalated": null,
+      "reviewPending": false
+    },
+    "chair": {
+      "plan": {
+        "title": "Painted Spindle-Back Wooden Chair",
+        "summary": "An adult-size wooden chair inspired by the photograph, with a rounded seat, five back spindles, a curved-outline crest rail and an orange painted finish. Straight legs and a flat, shaped crest simplify the photographed turned and curved details into an intermediate-level build.",
+        "difficulty": "intermediate",
+        "overall_dimensions_mm": {
+          "width": 440,
+          "depth": 420,
+          "height": 830
+        },
+        "assumptions": [
+          "The photograph is a close-up and does not reveal the entire chair. Dimensions are estimated for an adult chair: 450 mm seat height, 440 mm seat width and 830 mm overall height.",
+          "The original appears to have turned spindles, shaped legs and a curved crest. This version uses readily available straight hardwood dowels, square legs and a flat crest with a curved outline; it does not reproduce the original turning or steam-bent curvature.",
+          "Use beech for the structural parts and 30 mm edge-glued beech panels for the seat and crest. This is a paint-grade, balanced-budget material choice.",
+          "The seat remains flat rather than carved or dished. Its plan outline has 70 mm corner radii.",
+          "Back spindles enter blind sockets 20 mm into the seat and 30 mm into the crest. These intentional joinery overlaps are included in the geometry.",
+          "Apron and stretcher connections require properly fitted loose-tenon or dowelled joints, not screws driven only into end grain. Joint machining and fastener selection are reserved for the next planning stage.",
+          "The proposed dimensions are not a certified load rating. Chair joints must be checked and the assembled chair tested cautiously before use."
+        ],
+        "clarifying_questions": [
+          "Is the pictured chair intended to be adult-size or child-size?",
+          "Are straight legs and plain dowel spindles acceptable, or is reproducing the turned details essential?"
+        ],
+        "parts": [
+          {
+            "id": "P1",
+            "name": "Rounded seat",
+            "material": "Edge-glued beech",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 440,
+            "width_mm": 420,
+            "thickness_mm": 30,
+            "qty": 1,
+            "placements": [
+              {
+                "x": 0,
+                "y": 420,
+                "z": 0,
+                "sx": 440,
+                "sy": 30,
+                "sz": 420
+              }
+            ],
+            "profile": {
+              "type": "rounded_rect",
+              "radius": 70
+            },
+            "cross_section": null,
+            "ends": null,
+            "notes": "Underside rests directly on the legs and aprons. Five 28 mm blind spindle sockets open from the upper face at the spindle centerlines and extend down to y = 430."
+          },
+          {
+            "id": "P2",
+            "name": "Square chair legs",
+            "material": "Solid beech",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 420,
+            "width_mm": 38,
+            "thickness_mm": 38,
+            "qty": 4,
+            "placements": [
+              {
+                "x": 40,
+                "y": 0,
+                "z": 40,
+                "sx": 38,
+                "sy": 420,
+                "sz": 38
+              },
+              {
+                "x": 362,
+                "y": 0,
+                "z": 40,
+                "sx": 38,
+                "sy": 420,
+                "sz": 38
+              },
+              {
+                "x": 40,
+                "y": 0,
+                "z": 342,
+                "sx": 38,
+                "sy": 420,
+                "sz": 38
+              },
+              {
+                "x": 362,
+                "y": 0,
+                "z": 342,
+                "sx": 38,
+                "sy": 420,
+                "sz": 38
+              }
+            ],
+            "profile": null,
+            "cross_section": null,
+            "ends": null,
+            "notes": "Mill from larger hardwood square stock. All four feet sit on y = 0 and all four upper ends contact the seat underside."
+          },
+          {
+            "id": "P3",
+            "name": "Front and rear seat aprons",
+            "material": "Solid beech",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 284,
+            "width_mm": 90,
+            "thickness_mm": 18,
+            "qty": 2,
+            "placements": [
+              {
+                "x": 78,
+                "y": 330,
+                "z": 50,
+                "sx": 284,
+                "sy": 90,
+                "sz": 18
+              },
+              {
+                "x": 78,
+                "y": 330,
+                "z": 352,
+                "sx": 284,
+                "sy": 90,
+                "sz": 18
+              }
+            ],
+            "profile": null,
+            "cross_section": null,
+            "ends": null,
+            "notes": "Fit between the left and right legs. Upper edges contact the seat underside. Use loose-tenon or dowelled joints at both ends."
+          },
+          {
+            "id": "P4",
+            "name": "Side seat aprons",
+            "material": "Solid beech",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 264,
+            "width_mm": 90,
+            "thickness_mm": 18,
+            "qty": 2,
+            "placements": [
+              {
+                "x": 50,
+                "y": 330,
+                "z": 78,
+                "sx": 18,
+                "sy": 90,
+                "sz": 264
+              },
+              {
+                "x": 372,
+                "y": 330,
+                "z": 78,
+                "sx": 18,
+                "sy": 90,
+                "sz": 264
+              }
+            ],
+            "profile": null,
+            "cross_section": null,
+            "ends": null,
+            "notes": "Fit between the front and rear legs. Upper edges contact the seat underside. Offset joint machining from that of the adjacent front and rear aprons."
+          },
+          {
+            "id": "P5",
+            "name": "Front and rear lower stretchers",
+            "material": "Solid beech",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 284,
+            "width_mm": 28,
+            "thickness_mm": 28,
+            "qty": 2,
+            "placements": [
+              {
+                "x": 78,
+                "y": 180,
+                "z": 45,
+                "sx": 284,
+                "sy": 28,
+                "sz": 28
+              },
+              {
+                "x": 78,
+                "y": 180,
+                "z": 347,
+                "sx": 284,
+                "sy": 28,
+                "sz": 28
+              }
+            ],
+            "profile": null,
+            "cross_section": null,
+            "ends": null,
+            "notes": "Both ends contact the legs. Provide glued loose-tenon or dowelled joints to resist frame racking."
+          },
+          {
+            "id": "P6",
+            "name": "Side lower stretchers",
+            "material": "Solid beech",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 264,
+            "width_mm": 28,
+            "thickness_mm": 28,
+            "qty": 2,
+            "placements": [
+              {
+                "x": 45,
+                "y": 130,
+                "z": 78,
+                "sx": 28,
+                "sy": 28,
+                "sz": 264
+              },
+              {
+                "x": 367,
+                "y": 130,
+                "z": 78,
+                "sx": 28,
+                "sy": 28,
+                "sz": 264
+              }
+            ],
+            "profile": null,
+            "cross_section": null,
+            "ends": null,
+            "notes": "Placed below the front and rear stretchers so their joint mortises do not intersect inside the legs."
+          },
+          {
+            "id": "P7",
+            "name": "Plain round back spindles",
+            "material": "Beech hardwood dowel",
+            "stock": "dowel",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 330,
+            "width_mm": 28,
+            "thickness_mm": 28,
+            "qty": 5,
+            "placements": [
+              {
+                "from": [
+                  60,
+                  430,
+                  355
+                ],
+                "to": [
+                  60,
+                  760,
+                  355
+                ],
+                "roll_deg": null
+              },
+              {
+                "from": [
+                  140,
+                  430,
+                  355
+                ],
+                "to": [
+                  140,
+                  760,
+                  355
+                ],
+                "roll_deg": null
+              },
+              {
+                "from": [
+                  220,
+                  430,
+                  355
+                ],
+                "to": [
+                  220,
+                  760,
+                  355
+                ],
+                "roll_deg": null
+              },
+              {
+                "from": [
+                  300,
+                  430,
+                  355
+                ],
+                "to": [
+                  300,
+                  760,
+                  355
+                ],
+                "roll_deg": null
+              },
+              {
+                "from": [
+                  380,
+                  430,
+                  355
+                ],
+                "to": [
+                  380,
+                  760,
+                  355
+                ],
+                "roll_deg": null
+              }
+            ],
+            "profile": null,
+            "cross_section": {
+              "shape": "round",
+              "d": 28,
+              "end_d": null
+            },
+            "ends": "square",
+            "notes": "Cut from standard 28 mm hardwood dowel stock. Each spindle intentionally overlaps the seat by 20 mm and the crest by 30 mm inside matching glued blind sockets. Exposed length is 280 mm."
+          },
+          {
+            "id": "P8",
+            "name": "Curved-outline back crest",
+            "material": "Edge-glued beech",
+            "stock": "board",
+            "source": "make",
+            "buy_spec": null,
+            "length_mm": 440,
+            "width_mm": 100,
+            "thickness_mm": 30,
+            "qty": 1,
+            "placements": [
+              {
+                "x": 0,
+                "y": 730,
+                "z": 340,
+                "sx": 440,
+                "sy": 100,
+                "sz": 30
+              }
+            ],
+            "profile": {
+              "type": "path",
+              "d": "M0 20 Q0 0 20 0 L420 0 Q440 0 440 20 L440 55 Q440 75 420 80 Q320 100 220 100 Q120 100 20 80 Q0 75 0 55 Z",
+              "holes": []
+            },
+            "cross_section": null,
+            "ends": null,
+            "notes": "Flat sawn crest, not a bent rail. Grain runs along x. Drill five 28 mm blind sockets upward from y = 730 to y = 760, centered at x = 60, 140, 220, 300 and 380, all at z = 355. These sockets receive the intentional spindle overlaps."
+          }
+        ],
+        "consumables": [
+          {
+            "name": "Interior wood glue",
+            "qty": "250 ml",
+            "note": "For the frame joints and spindle sockets; keep seat movement allowances in the fastening design."
+          },
+          {
+            "name": "Sandpaper",
+            "qty": "3 sheets each of 120, 180 and 220 grit",
+            "note": "Ease exposed edges and sand before painting."
+          },
+          {
+            "name": "Paintable wood filler",
+            "qty": "100 g",
+            "note": "For minor cosmetic defects only, not structural joint gaps."
+          },
+          {
+            "name": "Wood primer",
+            "qty": "500 ml",
+            "note": "Use a primer compatible with the chosen furniture enamel."
+          },
+          {
+            "name": "Orange furniture enamel",
+            "qty": "750 ml",
+            "note": "Apply two thin coats for the bright painted appearance in the photograph; allow full cure before use."
+          }
+        ],
+        "load_bearing": true,
+        "joints": [
+          {
+            "id": "J1",
+            "part_a": "P1",
+            "part_b": "P2",
+            "count": 4,
+            "type": "other",
+            "fasteners": [],
+            "drive_from": "No fastener is driven at the leg tops; position the inverted base on the seat underside before securing the apron fasteners.",
+            "step": 9,
+            "note": "Dry bearing contact supports vertical loads. Do not glue or screw the seat to the leg end grain. J2 and J3 retain the seat while allowing seasonal movement; the mortise-and-tenon apron frame stabilizes the legs."
+          },
+          {
+            "id": "J2",
+            "part_a": "P1",
+            "part_b": "P3",
+            "count": 2,
+            "type": "tabletop_fastener",
+            "fasteners": [
+              {
+                "name": "Figure-8 tabletop fastener",
+                "size": "Approximately 30 long x 16 wide x 3 thick; countersunk holes for 4 mm screws",
+                "qty_per_joint": 2
+              },
+              {
+                "name": "Countersunk wood screws",
+                "size": "4 x 20 mm",
+                "qty_per_joint": 4
+              }
+            ],
+            "drive_from": "First into the exposed apron top edges with the base upright; then into the seat underside with the seat face down and the base inverted.",
+            "step": 9,
+            "note": "Two fasteners per apron, approximately 60 mm from each end, projecting inward. Recess to the actual hardware thickness and leave rotation clearance. No glue between seat and apron. Seat grain runs along its 440 mm dimension; accommodate approximately 4 mm of seasonal movement across its depth."
+          },
+          {
+            "id": "J3",
+            "part_a": "P1",
+            "part_b": "P4",
+            "count": 2,
+            "type": "tabletop_fastener",
+            "fasteners": [
+              {
+                "name": "Figure-8 tabletop fastener",
+                "size": "Approximately 30 long x 16 wide x 3 thick; countersunk holes for 4 mm screws",
+                "qty_per_joint": 2
+              },
+              {
+                "name": "Countersunk wood screws",
+                "size": "4 x 20 mm",
+                "qty_per_joint": 4
+              }
+            ],
+            "drive_from": "First into the exposed apron top edges with the base upright; then into the seat underside with the seat face down and the base inverted.",
+            "step": 9,
+            "note": "Two fasteners per apron, approximately 60 mm from each end, projecting inward. Leave rotation clearance and do not glue the bearing surfaces. Use hardware whose countersinks accept the specified screws without protruding heads."
+          },
+          {
+            "id": "J4",
+            "part_a": "P1",
+            "part_b": "P7",
+            "count": 5,
+            "type": "mortise_tenon",
+            "fasteners": [],
+            "drive_from": "Insert each spindle vertically into the exposed upper face of P1 before fitting P8.",
+            "step": 10,
+            "note": "Glue the existing 28 mm spindle ends into matching 20 mm-deep blind sockets. These are round-tenon joints, not screws into end grain. Keep the sockets snug without requiring hammer blows."
+          },
+          {
+            "id": "J5",
+            "part_a": "P2",
+            "part_b": "P3",
+            "count": 4,
+            "type": "mortise_tenon",
+            "fasteners": [
+              {
+                "name": "Beech loose tenons",
+                "size": "8 thick x 12 high x 40 long mm",
+                "qty_per_joint": 2
+              }
+            ],
+            "drive_from": "Insert tenons into the open apron-end mortises, then bring the legs onto them horizontally while the front or rear frame lies on the bench.",
+            "step": 7,
+            "note": "Two glued loose tenons per apron end, each embedded 20 mm into both members. Mortise centers are at heights 348 and 382, centered through the apron thickness. Matching leg mortises are centered at z=59 for the front and z=361 for the rear. Offset from J6 to prevent intersecting mortises. Use accurately machined mortises, not freehand slots."
+          },
+          {
+            "id": "J6",
+            "part_a": "P2",
+            "part_b": "P4",
+            "count": 4,
+            "type": "mortise_tenon",
+            "fasteners": [
+              {
+                "name": "Beech loose tenons",
+                "size": "8 thick x 12 high x 40 long mm",
+                "qty_per_joint": 2
+              }
+            ],
+            "drive_from": "Insert into the exposed side-apron ends and leg mortises before bringing the front and rear frames together.",
+            "step": 8,
+            "note": "Two glued loose tenons per end, with 20 mm embedment in each member. Centers are at heights 365 and 405, centered through apron thickness; matching leg mortises are centered at x=59 or x=381. The staggered elevations keep these mortises clear of J5. This jig-guided mortise-and-tenon frame avoids structural end-grain screws."
+          },
+          {
+            "id": "J7",
+            "part_a": "P2",
+            "part_b": "P5",
+            "count": 4,
+            "type": "mortise_tenon",
+            "fasteners": [
+              {
+                "name": "Beech loose tenons",
+                "size": "8 thick x 18 high x 40 long mm",
+                "qty_per_joint": 1
+              }
+            ],
+            "drive_from": "Insert into the exposed stretcher ends and mating leg mortises during front and rear frame assembly.",
+            "step": 7,
+            "note": "One glued loose tenon per end, embedded 20 mm into each member. Center at height 194 and at the stretcher thickness center: z=59 or z=361. The broad glued tenon transfers load through its side faces."
+          },
+          {
+            "id": "J8",
+            "part_a": "P2",
+            "part_b": "P6",
+            "count": 4,
+            "type": "mortise_tenon",
+            "fasteners": [
+              {
+                "name": "Beech loose tenons",
+                "size": "8 thick x 18 high x 40 long mm",
+                "qty_per_joint": 1
+              }
+            ],
+            "drive_from": "Insert into the exposed stretcher ends and mating leg mortises before closing the front and rear frames together.",
+            "step": 8,
+            "note": "One glued loose tenon per end, embedded 20 mm into each member. Center at height 144 and x=59 or x=381. This elevation remains clear of the front and rear stretcher mortises."
+          },
+          {
+            "id": "J9",
+            "part_a": "P7",
+            "part_b": "P8",
+            "count": 5,
+            "type": "mortise_tenon",
+            "fasteners": [],
+            "drive_from": "Lower P8 over the five exposed spindle tops while the chair stands upright.",
+            "step": 10,
+            "note": "Glue spindle ends into the specified 28 mm-diameter, 30 mm-deep crest sockets. The 30 mm-thick crest leaves only 1 mm nominal wood on each side of each bore: drill with rigid guidance, reject breakout or cracks, and never force an oversized spindle into a socket."
+          }
+        ],
+        "steps": [
+          {
+            "n": 1,
+            "title": "Prepare and label the fixed parts",
+            "text": "Prepare P1 (rounded seat), P2 (square chair legs), P3 (front and rear seat aprons), P4 (side seat aprons), P5 (front and rear lower stretchers), P6 (side lower stretchers), P7 (plain round back spindles), and P8 (curved-outline back crest) to the supplied dimensions. Mark every copy's location and reference faces, keeping P1 and P8 grain along their 440 mm dimensions. Obtain or accurately machine the specified beech loose tenons; a loose tenon is a separate hardwood tongue glued into matching slots.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7",
+              "P8"
+            ],
+            "tools_used": [
+              "Measuring tape, square and marking tools",
+              "Saw and stock-preparation equipment",
+              "Clamps and stable workbench"
+            ],
+            "safety": "Wear eye and hearing protection for powered cutting, use dust extraction, and keep guards fitted. Have a timber supplier mill the stock if you cannot safely produce square, accurate parts.",
+            "tip": "Do not shorten aprons or stretchers to allow for tenons: the separate loose tenons enter mortises within the fixed-length parts."
+          },
+          {
+            "n": 2,
+            "title": "Shape and pre-sand the exposed parts",
+            "text": "Cut P1 (rounded seat) to its 70 mm corner radii and P8 (curved-outline back crest) to the supplied profile. Sand P1 through P8 with 120 then 180 grit, lightly easing exposed edges without rounding joint shoulders or tenon ends. Keep all future glue surfaces bare and square.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7",
+              "P8"
+            ],
+            "tools_used": [
+              "Jigsaw",
+              "Sanding block and abrasive paper",
+              "Clamps and stable workbench"
+            ],
+            "safety": "Clamp parts before sawing and keep hands outside the blade path. Wear eye protection and a suitable dust respirator when cutting or sanding beech.",
+            "tip": "Mark glue areas before sanding so rounded edges do not create visible gaps at the frame joints."
+          },
+          {
+            "n": 3,
+            "title": "Machine the staggered frame mortises",
+            "text": "Cut matching 20 mm-deep mortises in P2 (square chair legs) and the ends of P3, P4, P5 and P6 using a rigid jig. For P3 use 8 x 12 mortises centered at heights 348 and 382; for P4 use heights 365 and 405, keeping each mortise centered through the 18 mm apron thickness. For P5 and P6 use one 8 x 18 mortise per end, centered at heights 194 and 144 respectively and centered through their 28 mm thickness. Transfer each layout to its matching leg face and verify the adjacent apron mortises do not intersect.",
+            "parts_used": [
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6"
+            ],
+            "tools_used": [
+              "Measuring tape, square and marking tools",
+              "Router with 8 mm cutter and mortising jig",
+              "Clamps and stable workbench"
+            ],
+            "safety": "Unplug the router for adjustments, clamp the jig and workpiece, and cut in shallow passes with extraction. Never hold these small parts by hand against a rotating cutter.",
+            "tip": "The listed heights are measured from the floor in the finished chair; convert them carefully when marking a loose leg."
+          },
+          {
+            "n": 4,
+            "title": "Drill the spindle sockets with rigid guidance",
+            "text": "Drill five 28 mm sockets in P1 (rounded seat), centered at x=60, 140, 220, 300 and 380 and z=355, to a depth of 20. Drill the corresponding sockets 30 deep into the lower edge of P8 (curved-outline back crest), centered through its 30 mm thickness. Use a drill press, a rigid vertical holding fixture for P8, and positive depth stops; inspect the crest's thin socket walls closely. Check each P7 (plain round back spindle) end for a snug sliding fit without forcing it.",
+            "parts_used": [
+              "P1",
+              "P7",
+              "P8"
+            ],
+            "tools_used": [
+              "Drill press with 28 mm Forstner bit and depth stop",
+              "Measuring tape, square and marking tools",
+              "Clamps and stable workbench"
+            ],
+            "safety": "Clamp both the work and its supporting fixture; never hand-hold the crest during drilling. Stop immediately if the bit wanders, the wood cracks, or a socket breaks through a side.",
+            "tip": "Practice on matching 30 mm-thick scrap first: the crest sockets leave only 1 mm nominal side walls."
+          },
+          {
+            "n": 5,
+            "title": "Prepare the moving seat attachments",
+            "text": "Lay out two figure-8 fasteners on each P3 (front and rear seat apron) and P4 (side seat apron), approximately 60 mm from each end and projecting toward the frame interior. Make shallow recesses in their top edges to suit the actual fastener thickness, with clearance for each plate to rotate. Pilot-drill for the 4 x 20 screws, but leave all hardware off until the frame is glued.",
+            "parts_used": [
+              "P3",
+              "P4"
+            ],
+            "tools_used": [
+              "Measuring tape, square and marking tools",
+              "Drill and pilot bits with depth stops",
+              "Sharp chisels and mallet",
+              "Clamps and stable workbench"
+            ],
+            "safety": "Clamp aprons for drilling and chiseling, keep hands behind the cutting edge, and wear eye protection.",
+            "tip": "Test the actual hardware on scrap; the apron must still bear directly against the seat without a proud metal plate holding it apart."
+          },
+          {
+            "n": 6,
+            "title": "Dry-fit the complete chair",
+            "text": "Assemble P2 through P6 with their loose tenons but without glue, and check the base for square, level top edges and four-foot contact. Set P1 (rounded seat) on the base and dry-fit all five P7 (plain round back spindles) with P8 (curved-outline back crest). Confirm full socket engagement and sufficient working space inside the frame for a screwdriver before taking everything apart.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7",
+              "P8"
+            ],
+            "tools_used": [
+              "Measuring tape, square and marking tools",
+              "Clamps and stable workbench",
+              "Manual screwdriver"
+            ],
+            "safety": "Support the unglued assembly and do not sit on it. Get help moving it if the loose parts cannot be controlled safely.",
+            "tip": "Label each fitted tenon and joint; a joint should close under moderate clamp pressure, not heavy hammering."
+          },
+          {
+            "n": 7,
+            "title": "Glue the front and rear frames",
+            "text": "Join each P3 (front or rear seat apron) to its two P2 (square chair legs) using two 8 x 12 x 40 beech loose tenons per end, inserted horizontally into the open mortises. At the same time, fit the matching P5 (front or rear lower stretcher) using one 8 x 18 x 40 beech loose tenon per end. Brush glue onto mortise walls and tenon faces, clamp each frame square, and remove squeeze-out. Keep clamped at least 60 minutes at approximately 20 °C, or longer if the glue label requires, and allow overnight before the next glue-up.",
+            "parts_used": [
+              "P2",
+              "P3",
+              "P5"
+            ],
+            "tools_used": [
+              "Clamps and stable workbench",
+              "Measuring tape, square and marking tools",
+              "Glue brush and cleanup cloths"
+            ],
+            "safety": "Support both frames securely and keep fingers clear as clamps close.",
+            "tip": "Measure frame diagonals before the glue starts to set; equal diagonals indicate a square frame."
+          },
+          {
+            "n": 8,
+            "title": "Connect the frames with the side members",
+            "text": "Join P4 (side seat aprons) to P2 (square chair legs) using two glued 8 x 12 x 40 beech loose tenons per end, inserted through the still-open ends before bringing the front and rear frames together. Fit P6 (side lower stretchers) at the same time using one glued 8 x 18 x 40 beech loose tenon per end. Apply glue to all mortise walls and tenon faces, close the frame evenly, and clamp square with all four feet on a verified flat surface. Leave clamped at least 60 minutes and allow at least 24 hours, or the glue manufacturer's longer full-strength time, before loading the base.",
+            "parts_used": [
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6"
+            ],
+            "tools_used": [
+              "Clamps and stable workbench",
+              "Measuring tape, square and marking tools",
+              "Glue brush and cleanup cloths"
+            ],
+            "safety": "Use a helper if needed to control the two frames during closure. Do not lift the wet assembly by one apron or stretcher.",
+            "tip": "Check for twist as well as square; tightening one clamp excessively can lift a foot."
+          },
+          {
+            "n": 9,
+            "title": "Attach the seat without restricting movement",
+            "text": "With the base upright, attach two figure-8 fasteners to each P3 (front and rear seat apron) and each P4 (side seat apron), using one 4 x 20 countersunk wood screw per fastener into the prepared top-edge pilots. Place P1 (rounded seat) face down on padding, invert and locate the base at its fixed positions, then pilot-drill and drive one further 4 x 20 screw through each fastener into the seat underside. This uses eight figure-8 fasteners and sixteen screws total, driven from the open underside with a short manual screwdriver. Leave every P1-to-P2 leg-top contact and all seat-to-apron bearing surfaces unglued, and check that the plates can pivot without loose screw heads.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6"
+            ],
+            "tools_used": [
+              "Drill and pilot bits with depth stops",
+              "Manual screwdriver",
+              "Measuring tape, square and marking tools",
+              "Clamps and stable workbench"
+            ],
+            "safety": "Get help inverting the base if necessary and support the seat on a stable padded surface. Use depth stops to prevent drilling through the seat.",
+            "tip": "Keep the drill above the open frame interior when making seat pilots; do not try to work through an apron."
+          },
+          {
+            "n": 10,
+            "title": "Glue the spindle back",
+            "text": "Stand the chair upright and apply a thin, even glue film to the walls of P1's five sockets and the lower ends of all P7 (plain round back spindles); insert each spindle 20 deep from above. Apply glue to the upper spindle ends and the sockets in P8 (curved-outline back crest), then lower the crest evenly until all five ends engage 30 deep. Use padded clamps and a straight caul to seat the crest gently, with no screws or wedges. Keep clamped at least 60 minutes and leave undisturbed for at least 24 hours or the adhesive's longer full-strength time.",
+            "parts_used": [
+              "P1",
+              "P7",
+              "P8"
+            ],
+            "tools_used": [
+              "Clamps and stable workbench",
+              "Padded cauls",
+              "Measuring tape, square and marking tools",
+              "Glue brush and cleanup cloths"
+            ],
+            "safety": "Secure the chair against tipping during clamping. Stop if a thin crest socket wall starts to split; clamps must not be used to force a poor fit.",
+            "tip": "Use only a thin glue film in blind sockets so trapped glue does not prevent the spindles from seating."
+          },
+          {
+            "n": 11,
+            "title": "Prepare the assembled chair for paint",
+            "text": "Inspect P1 through P8 for glue residue, gaps, cracks and sharp edges. Fill cosmetic defects only, allow the filler to dry as labeled, then hand-sand with 180 and 220 grit and remove all dust. Keep the figure-8 pivot clearances free of filler and paint buildup.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7",
+              "P8"
+            ],
+            "tools_used": [
+              "Sanding block and abrasive paper",
+              "Vacuum and dust brush"
+            ],
+            "safety": "Wear a suitable dust respirator and eye protection while sanding. Do not disguise a split or loose structural joint with filler.",
+            "tip": "Inspect under angled light: dried glue patches can remain visible through a painted finish."
+          },
+          {
+            "n": 12,
+            "title": "Prime and paint orange",
+            "text": "Apply one compatible primer coat to P1 through P8, including accessible undersides, and allow approximately 4–6 hours to dry or the label's longer interval. Lightly sand with 220 grit, remove dust, and apply two thin orange furniture-enamel coats approximately 16–24 hours apart unless the product specifies otherwise. Keep moving hardware free of paint bridges and allow the finish to cure fully, typically 7–14 days, before normal use.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7",
+              "P8"
+            ],
+            "tools_used": [
+              "Paintbrushes or small roller",
+              "Sanding block and abrasive paper",
+              "Vacuum and dust brush"
+            ],
+            "safety": "Ventilate the finishing area and follow the product safety data for gloves and respiratory protection. Keep finishes away from ignition sources and dispose of contaminated materials as directed.",
+            "tip": "Brush lightly around spindle sockets and underside corners to prevent runs."
+          },
+          {
+            "n": 13,
+            "title": "Inspect and cautiously test",
+            "text": "After full adhesive and finish cure, inspect P1 through P8 for movement, cracks and uneven foot contact, and check all sixteen seat-fastener screws with a manual screwdriver. On a level floor, apply modest downward pressure to the seat first, then cautiously test normal seated use with another adult nearby; stop at any creak, opening joint or instability. This chair has no certified load rating: do not stand on it, rock onto two legs, or use the crest as a lifting handle.",
+            "parts_used": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7",
+              "P8"
+            ],
+            "tools_used": [
+              "Manual screwdriver",
+              "Measuring tape, square and marking tools"
+            ],
+            "safety": "Do not use a person to test an obviously defective joint or apply impact loads. A tall back alone does not require a wall tether on a movable chair, but the chair must never be used as a climbing aid.",
+            "tip": "Recheck the frame and seat fasteners after the first week and at seasonal humidity changes."
+          }
+        ],
+        "tools": [
+          {
+            "name": "Measuring tape, square and marking tools",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Saw and stock-preparation equipment",
+            "required": false,
+            "alternative": "Order accurately dimensioned and square beech parts from a timber supplier; a handsaw and shooting plane can handle final trimming."
+          },
+          {
+            "name": "Jigsaw",
+            "required": false,
+            "alternative": "Use a coping saw and rasp, or have the seat and crest profiles cut by a woodworking shop."
+          },
+          {
+            "name": "Router with 8 mm cutter and mortising jig",
+            "required": false,
+            "alternative": "Have a joinery shop machine the specified staggered mortises; alternatively use guided drilling followed by careful hand-chisel work."
+          },
+          {
+            "name": "Drill press with 28 mm Forstner bit and depth stop",
+            "required": false,
+            "alternative": "Have a woodworking shop drill the sockets using a rigid fixture; freehand drilling is unsuitable for the crest's thin socket walls."
+          },
+          {
+            "name": "Drill and pilot bits with depth stops",
+            "required": false,
+            "alternative": "Use a hand drill with suitable pilot bits and positive depth collars."
+          },
+          {
+            "name": "Sharp chisels and mallet",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Clamps and stable workbench",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Padded cauls",
+            "required": true,
+            "alternative": "Use straight scrap battens with clean protective padding."
+          },
+          {
+            "name": "Manual screwdriver",
+            "required": true,
+            "alternative": "A compact ratcheting screwdriver is useful inside the assembled base."
+          },
+          {
+            "name": "Glue brush and cleanup cloths",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Sanding block and abrasive paper",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Vacuum and dust brush",
+            "required": false,
+            "alternative": "Use a soft brush and slightly damp lint-free cloth for final cleanup; powered machining still requires suitable dust control."
+          },
+          {
+            "name": "Paintbrushes or small roller",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Eye protection, hearing protection and dust respirator",
+            "required": true,
+            "alternative": null
+          },
+          {
+            "name": "Finish-compatible protective gloves",
+            "required": true,
+            "alternative": null
+          }
+        ],
+        "safety_overview": [
+          "Wear eye protection for cutting, drilling and chiseling, hearing protection with loud machinery, and suitable respiratory protection for beech dust.",
+          "Clamp small parts and drilling fixtures securely. The crest's 28 mm sockets leave only 1 mm nominal side walls; inaccurate drilling or a forced spindle can split them.",
+          "Use accurately fitted, glued mortise-and-tenon frame joints. Never substitute screws into apron, stretcher or leg end grain as the primary structural connection.",
+          "Ventilate during finishing, follow product safety instructions, and allow both glue and paint to cure fully before use.",
+          "Support the chair during inversion and clamping. Inspect before cautious testing; the dimensions and assembly are not a certified adult load rating.",
+          "Do not stand on the chair, rock it onto two legs, or treat its tall back as a climbing aid. Stop using it immediately if a joint loosens or cracks."
+        ],
+        "est_hours": 24,
+        "est_cost": {
+          "low": 250,
+          "high": 420,
+          "currency": "USD"
+        },
+        "hardware": [
+          {
+            "name": "Beech loose tenons",
+            "size": "8 thick x 12 high x 40 long mm",
+            "qty": 16
+          },
+          {
+            "name": "Beech loose tenons",
+            "size": "8 thick x 18 high x 40 long mm",
+            "qty": 8
+          },
+          {
+            "name": "Countersunk wood screws",
+            "size": "4 x 20 mm",
+            "qty": 16
+          },
+          {
+            "name": "Figure-8 tabletop fastener",
+            "size": "Approximately 30 long x 16 wide x 3 thick; countersunk holes for 4 mm screws",
+            "qty": 8
+          }
+        ]
+      },
+      "review": {
+        "verdict": "fix",
+        "summary": "The frame joinery, assembly sequence, tool access and movement-friendly seat attachment are generally workable. However, the crest's extremely thin socket walls are unsuitable for a load-bearing chair back and must be redesigned before building.",
+        "issues": [
+          {
+            "severity": "blocker",
+            "category": "joint_strength",
+            "step": 4,
+            "joint_id": "J9",
+            "part_ids": [
+              "P7",
+              "P8"
+            ],
+            "problem": "P8's spindle sockets leave only 1 mm of wood on the front and rear faces. These walls must resist the spindle ends levering against them when someone leans back. Accurate drilling and a gentle glue-up cannot make those walls structurally adequate; they can split or break out during ordinary use.",
+            "fix": "Increase P8 to at least 45 mm front-to-back thickness and center the existing 28 mm sockets through that thickness, leaving substantial continuous wood on both faces. Select straight-grained, defect-free stock around every socket. Update P8's stock specification, J9, step 4's holding fixture and drilling instructions, and step 10's assembly instructions accordingly. Remove language treating the original 1 mm walls as acceptable if drilled carefully."
+          }
+        ],
+        "model": "gpt-6.1-sol",
+        "latencyMs": 24046,
+        "tokens": 8679
+      },
+      "unverified": [
+        "[REVIEW blocker · joint_strength] Step 4 / J9 / P7+P8: P8's spindle sockets leave only 1 mm of wood on the front and rear faces. These walls must resist the spindle ends levering against them when someone leans back. Accurate drilling and a gentle glue-up cannot make those walls structurally adequate; they can split or break out during ordinary use. → Increase P8 to at least 45 mm front-to-back thickness and center the existing 28 mm sockets through that thickness, leaving substantial continuous wood on both faces. Select straight-grained, defect-free stock around every socket. Update P8's stock specification, J9, step 4's holding fixture and drilling instructions, and step 10's assembly instructions accordingly. Remove language treating the original 1 mm walls as acceptable if drilled carefully."
+      ],
+      "blockers": [
+        "[REVIEW blocker · joint_strength] P8's spindle sockets leave only 1 mm of wood on the front and rear faces. These walls must resist the spindle ends levering against them when someone leans back. Accurate drilling and a gentle glue-up cannot make those walls structurally adequate; they can split or break out during ordinary use."
+      ],
+      "warnings": [],
+      "tokens": 103667,
+      "costUsd": 0.19782218999999998,
+      "calls": [
+        {
+          "stage": "stage1",
+          "model": "gpt-6-luna",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 3594,
+            "cachedTokens": 2816,
+            "outputTokens": 7527,
+            "reasoningTokens": 5098
+          },
+          "costUsd": 0.00386946,
+          "latencyMs": 58191
+        },
+        {
+          "stage": "stage1_geomrepair",
+          "model": "gpt-6-luna",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 9159,
+            "cachedTokens": 0,
+            "outputTokens": 3593,
+            "reasoningTokens": 1778
+          },
+          "costUsd": 0.0027124000000000002,
+          "latencyMs": 29651
+        },
+        {
+          "stage": "stage2",
+          "model": "gpt-6-luna",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 3647,
+            "cachedTokens": 1823,
+            "outputTokens": 8878,
+            "reasoningTokens": 4095
+          },
+          "costUsd": 0.0046396300000000005,
+          "latencyMs": 89126
+        },
+        {
+          "stage": "review",
+          "model": "gpt-6.1-sol",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 6413,
+            "cachedTokens": 0,
+            "outputTokens": 1632,
+            "reasoningTokens": 458
+          },
+          "costUsd": 0.029146,
+          "latencyMs": 43604
+        },
+        {
+          "stage": "repair_full",
+          "model": "gpt-6-luna",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 15659,
+            "cachedTokens": 0,
+            "outputTokens": 15937,
+            "reasoningTokens": 9240
+          },
+          "costUsd": 0.0095344,
+          "latencyMs": 123217
+        },
+        {
+          "stage": "escalate1",
+          "model": "gpt-6.1-sol",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 3594,
+            "cachedTokens": 0,
+            "outputTokens": 3849,
+            "reasoningTokens": 1024
+          },
+          "costUsd": 0.045678,
+          "latencyMs": 81506
+        },
+        {
+          "stage": "escalate2",
+          "model": "gpt-6.1-sol",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 4051,
+            "cachedTokens": 1823,
+            "outputTokens": 7455,
+            "reasoningTokens": 1536
+          },
+          "costUsd": 0.0791883,
+          "latencyMs": 171431
+        },
+        {
+          "stage": "review",
+          "model": "gpt-6.1-sol",
+          "tier": "standard",
+          "usage": {
+            "inputTokens": 7967,
+            "cachedTokens": 0,
+            "outputTokens": 712,
+            "reasoningTokens": 427
+          },
+          "costUsd": 0.023054,
+          "latencyMs": 24046
+        }
+      ],
+      "latencyMs": 620846,
+      "firstPlanMs": 177015,
+      "firstMetaMs": 45417,
+      "repairCount": 1,
+      "improved": true,
+      "escalated": "gpt-6.1-sol",
+      "reviewPending": false
+    }
+  }
+}

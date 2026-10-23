@@ -1,0 +1,16 @@
+Reviewer benchmark: 5 flawed plans × 2 models × 3 runs
+
+flaw                              | flaw type              | luna | sol
+------------------------------------------------------------------------------------------
+bad-table                         | end-grain screws       | 3/3  | 1/3
+bad-table                         | cross-grain glue-up    | 3/3  | 3/3
+bad-table                         | blocked tool access    | 1/3  | 3/3
+no-antitip-bookcase               | missing anti-tip       | 3/3  | 3/3
+missing-tool                      | tool not owned         | 3/3  | 3/3
+floating-shelf                    | unsupported shelf      | 3/3  | 3/3
+glued-solid-top                   | cross-grain glue-up    | 3/3  | 3/3
+------------------------------------------------------------------------------------------
+gpt-6-luna                        | catch rate: 19/21 (90%)
+gpt-6.1-sol                       | catch rate: 19/21 (90%)
+
+detail → eval/results/reviewer-bench-*.json

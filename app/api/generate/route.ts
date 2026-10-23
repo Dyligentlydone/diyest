@@ -9,9 +9,11 @@ import {
   ANON_COOKIE,
   anonGenerationsUsed,
   canGenerate,
+  checkDailySpend,
   logGeneration,
   recordUsage,
 } from "@/lib/usage";
+import { dailySpendAlertUsd } from "@/lib/ai/pricing";
 import { isSupabaseConfigured } from "@/lib/env";
 
 const payloadSchema = z.object({
@@ -150,6 +152,26 @@ export async function POST(request: NextRequest) {
           latency_ms: result.ok ? result.latencyMs : undefined,
           tokens: result.ok ? result.tokens : undefined,
         });
+        // §8: one row per model call — model/tier/stage/token split/$ cost
+        if (result.ok)
+          for (const c of result.calls)
+            void logGeneration({
+              user_id: user?.id,
+              prompt_version: result.promptVersion,
+              stage: c.stage,
+              model: c.model,
+              tier: c.tier,
+              input_tokens: c.usage.inputTokens,
+              cached_tokens: c.usage.cachedTokens,
+              output_tokens: c.usage.outputTokens,
+              reasoning_tokens: c.usage.reasoningTokens,
+              cost_usd: c.costUsd,
+              latency_ms: c.latencyMs,
+              tokens: c.usage.inputTokens + c.usage.outputTokens,
+              validation_errors: result.blockers.length
+                ? { blockers: result.blockers }
+                : undefined,
+            });
         if (result.ok && result.review)
           void logGeneration({
             user_id: user?.id,
@@ -161,6 +183,7 @@ export async function POST(request: NextRequest) {
             latency_ms: result.review.latencyMs,
             tokens: result.review.tokens,
           });
+        void checkDailySpend(dailySpendAlertUsd());
         if (user) void recordUsage(user.id, "plan_generate");
       } catch (e) {
         console.error("[generate] failed", e);

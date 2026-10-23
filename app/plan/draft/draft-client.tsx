@@ -21,11 +21,15 @@ const subscribeNoop = () => () => {};
 interface Draft {
   plan: Plan;
   unverified: string[];
+  blockers: string[];
   warnings: string[];
   images: string[];
   input: Record<string, unknown>;
   promptVersion?: string;
   improved?: boolean;
+  reviewPending?: boolean;
+  /** true while stage 2/joints are still generating (blueprint-only view) */
+  partial?: boolean;
   savedId: string | null;
 }
 
@@ -98,6 +102,7 @@ export function DraftClient({ isAuthed, units }: { isAuthed: boolean; units: Uni
   const [genFinished, setGenFinished] = useState(false); // stream ended (or never ran)
   const [checking, setChecking] = useState(false);
   const [genError, setGenError] = useState<{ msg: string; kind?: string } | null>(null);
+  const [meta, setMeta] = useState<{ title?: string; summary?: string; partsReceived?: number }>({});
   const startedRef = useRef(false);
   // "generating" = a pending request exists and the stream hasn't finished
   const generating = !!pending && !genFinished;
@@ -112,11 +117,28 @@ export function DraftClient({ isAuthed, units }: { isAuthed: boolean; units: Uni
     pending.images.forEach((d, i) => body.append("images", dataUrlToBlob(d), `input-${i}.jpg`));
 
     void streamGenerate(body, {
+      onMeta: (ev) => {
+        setMeta((m) => ({ ...m, ...ev }));
+      },
+      onPartial: (ev) => {
+        // geometry done — show the blueprint while joints/steps generate
+        setDraft({
+          plan: ev.plan,
+          unverified: [],
+          blockers: [],
+          warnings: [],
+          images: pending.images,
+          input: pending.payload,
+          partial: true,
+          savedId: null,
+        });
+      },
       onPlan: (ev) => {
         sessionStorage.removeItem(PENDING_KEY);
         setDraft({
           plan: ev.plan,
           unverified: ev.unverified,
+          blockers: [],
           warnings: ev.warnings,
           images: pending.images,
           input: pending.payload,
@@ -129,11 +151,13 @@ export function DraftClient({ isAuthed, units }: { isAuthed: boolean; units: Uni
         setDraft({
           plan: r.plan,
           unverified: r.unverified,
+          blockers: r.blockers,
           warnings: r.warnings,
           images: pending.images,
           input: pending.payload,
           promptVersion: r.promptVersion,
           improved: r.improved,
+          reviewPending: r.reviewPending,
           savedId: null,
         });
         setChecking(false);
@@ -176,10 +200,18 @@ export function DraftClient({ isAuthed, units }: { isAuthed: boolean; units: Uni
       return (
         <main className="mx-auto max-w-2xl px-4 py-24 text-center">
           <div className="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-muted border-t-primary" />
-          <h1 className="mt-6 text-xl font-semibold">Drawing up your plan…</h1>
+          <h1 className="mt-6 text-xl font-semibold">
+            {meta.title ?? "Drawing up your plan…"}
+          </h1>
           <p className="mt-2 text-muted-foreground">
-            Reading the photo, laying out parts and joinery, writing the steps.
+            {meta.summary ??
+              "Reading the photo, laying out parts and joinery, writing the steps."}
           </p>
+          {meta.partsReceived != null && (
+            <p className="mt-4 text-sm text-muted-foreground">
+              Laying out parts… {meta.partsReceived} so far
+            </p>
+          )}
         </main>
       );
     }
@@ -218,8 +250,11 @@ export function DraftClient({ isAuthed, units }: { isAuthed: boolean; units: Uni
       );
 
       await streamGenerate(body, {
+        onPartial: (ev) => {
+          setDraft({ ...draft!, plan: ev.plan, unverified: [], blockers: [], warnings: [], partial: true });
+        },
         onPlan: (ev) => {
-          setDraft({ ...draft!, plan: ev.plan, unverified: ev.unverified, warnings: ev.warnings });
+          setDraft({ ...draft!, plan: ev.plan, unverified: ev.unverified, blockers: [], warnings: ev.warnings, partial: false });
           setChecking(true);
         },
         onFinal: (r) => {
@@ -227,9 +262,12 @@ export function DraftClient({ isAuthed, units }: { isAuthed: boolean; units: Uni
             ...draft!,
             plan: r.plan,
             unverified: r.unverified,
+            blockers: r.blockers,
             warnings: r.warnings,
             promptVersion: r.promptVersion,
             improved: r.improved,
+            reviewPending: r.reviewPending,
+            partial: false,
           });
           setChecking(false);
         },
@@ -304,8 +342,18 @@ export function DraftClient({ isAuthed, units }: { isAuthed: boolean; units: Uni
     }
   }
 
+  const isPartial = !!draft.partial;
   return (
     <main className="mx-auto w-full max-w-4xl px-4 py-10">
+      {isPartial && (
+        <div className="mb-6 flex items-center gap-3 rounded-md border border-primary/40 bg-primary/5 p-4 text-sm">
+          <div className="h-4 w-4 animate-spin rounded-full border-2 border-muted border-t-primary" />
+          <span>
+            <strong>Geometry done — joinery in progress…</strong> Here&apos;s the
+            blueprint; we&apos;re choosing joints and writing the build steps.
+          </span>
+        </div>
+      )}
       {checking && (
         <div className="mb-6 flex items-center gap-3 rounded-md border border-primary/40 bg-primary/5 p-4 text-sm">
           <div className="h-4 w-4 animate-spin rounded-full border-2 border-muted border-t-primary" />
@@ -364,7 +412,9 @@ export function DraftClient({ isAuthed, units }: { isAuthed: boolean; units: Uni
         plan={draft.plan}
         units={units}
         unverified={draft.unverified}
+        blockers={draft.blockers}
         warnings={draft.warnings}
+        reviewPending={draft.reviewPending}
       />
 
       <div className="sticky bottom-4 mt-8 flex justify-center">

@@ -82,11 +82,47 @@ export async function logGeneration(entry: {
   validation_errors?: unknown;
   latency_ms?: number;
   tokens?: number;
+  /** §8 per-call cost columns (migration 0003) */
+  stage?: string;
+  model?: string;
+  tier?: string;
+  input_tokens?: number;
+  cached_tokens?: number;
+  output_tokens?: number;
+  reasoning_tokens?: number;
+  cost_usd?: number;
 }): Promise<void> {
   try {
     const supabase = createServiceClient();
     await supabase.from("generation_logs").insert(entry);
   } catch {
     // logging must never break generation
+  }
+}
+
+/**
+ * §8 daily spend alert — sums today's generation_logs cost_usd. When the
+ * threshold is crossed we log loudly; wire an email provider (Resend/Postmark)
+ * into notifyOwner() when one exists.
+ */
+export async function checkDailySpend(thresholdUsd: number): Promise<void> {
+  try {
+    const supabase = createServiceClient();
+    const dayStart = new Date();
+    dayStart.setUTCHours(0, 0, 0, 0);
+    const { data } = await supabase
+      .from("generation_logs")
+      .select("cost_usd")
+      .gte("created_at", dayStart.toISOString());
+    const total = (data ?? []).reduce(
+      (s, r) => s + (Number((r as { cost_usd?: number }).cost_usd) || 0),
+      0
+    );
+    if (total > thresholdUsd)
+      console.error(
+        `[SPEND ALERT] diyest daily AI spend $${total.toFixed(2)} exceeds DAILY_SPEND_ALERT_USD $${thresholdUsd} — notify owner`
+      );
+  } catch {
+    // never break generation on alerting
   }
 }

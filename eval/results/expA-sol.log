@@ -1,0 +1,25 @@
+Running 8 regression plans (concurrency 4)…
+
+  done: coffee-table (331s, pass)
+  done: birdhouse (334s, fix)
+  done: bench (373s, fix)
+  done: chair (391s, pass)
+  done: not-buildable (10s, not_buildable)
+  done: step-stool (180s, pass)
+  done: desk (212s, pass)
+  done: round-table (232s, fix)
+
+blueprint → test-results/blueprint-table-v14.svg
+
+name          | t_plan | t_final | tokens | repairs | verdict       | unverified | title
+---------------------------------------------------------------------------------------------------------
+bench         |    229 |     373 |  54027 |       1 | fix           |          2 | Slatted Timber Garden Bench with Arms
+birdhouse     |    202 |     334 |  44884 |       1 | fix           |          3 | Rustic Shed-Roof Bird Nest Box
+chair         |    211 |     391 |  60942 |       1 | pass          |          0 | Painted Spindle-Back Dining Chair
+coffee-table  |    239 |     331 |  54741 |       1 | pass          |          0 | Warm-Wood Entry Bench with Lower Shelf
+desk          |    182 |     212 |  23315 |       0 | pass          |          0 | Classroom-Style Chair with Attached Writing Desk
+not-buildable |      — |      10 |      0 |       0 | not_buildable |          0 | —
+round-table   |    152 |     232 |  39072 |       1 | fix           |          1 | Round Side Table with Four Splayed Legs
+step-stool    |    166 |     180 |  20840 |       0 | pass          |          0 | Two-Step Stool with Curved Treads
+
+results → eval/results/regression-1792727710758.json

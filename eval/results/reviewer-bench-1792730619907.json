@@ -1,0 +1,320 @@
+{
+  "detail": [
+    {
+      "plan": "bad-table",
+      "model": "gpt-6-luna",
+      "run": 2,
+      "verdict": "fix",
+      "caught": [
+        "end-grain screws",
+        "cross-grain glue-up",
+        "blocked tool access"
+      ],
+      "missed": []
+    },
+    {
+      "plan": "bad-table",
+      "model": "gpt-6-luna",
+      "run": 1,
+      "verdict": "fix",
+      "caught": [
+        "end-grain screws",
+        "cross-grain glue-up"
+      ],
+      "missed": [
+        "blocked tool access"
+      ]
+    },
+    {
+      "plan": "bad-table",
+      "model": "gpt-6-luna",
+      "run": 0,
+      "verdict": "fix",
+      "caught": [
+        "end-grain screws",
+        "cross-grain glue-up"
+      ],
+      "missed": [
+        "blocked tool access"
+      ]
+    },
+    {
+      "plan": "bad-table",
+      "model": "gpt-6.1-sol",
+      "run": 0,
+      "verdict": "fix",
+      "caught": [
+        "cross-grain glue-up",
+        "blocked tool access"
+      ],
+      "missed": [
+        "end-grain screws"
+      ]
+    },
+    {
+      "plan": "bad-table",
+      "model": "gpt-6.1-sol",
+      "run": 1,
+      "verdict": "fix",
+      "caught": [
+        "end-grain screws",
+        "cross-grain glue-up",
+        "blocked tool access"
+      ],
+      "missed": []
+    },
+    {
+      "plan": "bad-table",
+      "model": "gpt-6.1-sol",
+      "run": 2,
+      "verdict": "fix",
+      "caught": [
+        "cross-grain glue-up",
+        "blocked tool access"
+      ],
+      "missed": [
+        "end-grain screws"
+      ]
+    },
+    {
+      "plan": "no-antitip-bookcase",
+      "model": "gpt-6-luna",
+      "run": 0,
+      "verdict": "fix",
+      "caught": [
+        "missing anti-tip"
+      ],
+      "missed": []
+    },
+    {
+      "plan": "no-antitip-bookcase",
+      "model": "gpt-6-luna",
+      "run": 1,
+      "verdict": "fix",
+      "caught": [
+        "missing anti-tip"
+      ],
+      "missed": []
+    },
+    {
+      "plan": "no-antitip-bookcase",
+      "model": "gpt-6-luna",
+      "run": 2,
+      "verdict": "fix",
+      "caught": [
+        "missing anti-tip"
+      ],
+      "missed": []
+    },
+    {
+      "plan": "no-antitip-bookcase",
+      "model": "gpt-6.1-sol",
+      "run": 1,
+      "verdict": "fix",
+      "caught": [
+        "missing anti-tip"
+      ],
+      "missed": []
+    },
+    {
+      "plan": "no-antitip-bookcase",
+      "model": "gpt-6.1-sol",
+      "run": 0,
+      "verdict": "fix",
+      "caught": [
+        "missing anti-tip"
+      ],
+      "missed": []
+    },
+    {
+      "plan": "no-antitip-bookcase",
+      "model": "gpt-6.1-sol",
+      "run": 2,
+      "verdict": "fix",
+      "caught": [
+        "missing anti-tip"
+      ],
+      "missed": []
+    },
+    {
+      "plan": "missing-tool",
+      "model": "gpt-6-luna",
+      "run": 0,
+      "verdict": "fix",
+      "caught": [
+        "tool not owned"
+      ],
+      "missed": []
+    },
+    {
+      "plan": "missing-tool",
+      "model": "gpt-6-luna",
+      "run": 1,
+      "verdict": "fix",
+      "caught": [
+        "tool not owned"
+      ],
+      "missed": []
+    },
+    {
+      "plan": "missing-tool",
+      "model": "gpt-6-luna",
+      "run": 2,
+      "verdict": "fix",
+      "caught": [
+        "tool not owned"
+      ],
+      "missed": []
+    },
+    {
+      "plan": "missing-tool",
+      "model": "gpt-6.1-sol",
+      "run": 0,
+      "verdict": "fix",
+      "caught": [
+        "tool not owned"
+      ],
+      "missed": []
+    },
+    {
+      "plan": "missing-tool",
+      "model": "gpt-6.1-sol",
+      "run": 1,
+      "verdict": "fix",
+      "caught": [
+        "tool not owned"
+      ],
+      "missed": []
+    },
+    {
+      "plan": "floating-shelf",
+      "model": "gpt-6-luna",
+      "run": 0,
+      "verdict": "fix",
+      "caught": [
+        "unsupported shelf"
+      ],
+      "missed": []
+    },
+    {
+      "plan": "missing-tool",
+      "model": "gpt-6.1-sol",
+      "run": 2,
+      "verdict": "fix",
+      "caught": [
+        "tool not owned"
+      ],
+      "missed": []
+    },
+    {
+      "plan": "floating-shelf",
+      "model": "gpt-6-luna",
+      "run": 1,
+      "verdict": "fix",
+      "caught": [
+        "unsupported shelf"
+      ],
+      "missed": []
+    },
+    {
+      "plan": "floating-shelf",
+      "model": "gpt-6-luna",
+      "run": 2,
+      "verdict": "fix",
+      "caught": [
+        "unsupported shelf"
+      ],
+      "missed": []
+    },
+    {
+      "plan": "floating-shelf",
+      "model": "gpt-6.1-sol",
+      "run": 0,
+      "verdict": "fix",
+      "caught": [
+        "unsupported shelf"
+      ],
+      "missed": []
+    },
+    {
+      "plan": "floating-shelf",
+      "model": "gpt-6.1-sol",
+      "run": 1,
+      "verdict": "fix",
+      "caught": [
+        "unsupported shelf"
+      ],
+      "missed": []
+    },
+    {
+      "plan": "glued-solid-top",
+      "model": "gpt-6-luna",
+      "run": 0,
+      "verdict": "fix",
+      "caught": [
+        "cross-grain glue-up"
+      ],
+      "missed": []
+    },
+    {
+      "plan": "floating-shelf",
+      "model": "gpt-6.1-sol",
+      "run": 2,
+      "verdict": "fix",
+      "caught": [
+        "unsupported shelf"
+      ],
+      "missed": []
+    },
+    {
+      "plan": "glued-solid-top",
+      "model": "gpt-6-luna",
+      "run": 1,
+      "verdict": "fix",
+      "caught": [
+        "cross-grain glue-up"
+      ],
+      "missed": []
+    },
+    {
+      "plan": "glued-solid-top",
+      "model": "gpt-6-luna",
+      "run": 2,
+      "verdict": "fix",
+      "caught": [
+        "cross-grain glue-up"
+      ],
+      "missed": []
+    },
+    {
+      "plan": "glued-solid-top",
+      "model": "gpt-6.1-sol",
+      "run": 1,
+      "verdict": "fix",
+      "caught": [
+        "cross-grain glue-up"
+      ],
+      "missed": []
+    },
+    {
+      "plan": "glued-solid-top",
+      "model": "gpt-6.1-sol",
+      "run": 0,
+      "verdict": "fix",
+      "caught": [
+        "cross-grain glue-up"
+      ],
+      "missed": []
+    },
+    {
+      "plan": "glued-solid-top",
+      "model": "gpt-6.1-sol",
+      "run": 2,
+      "verdict": "fix",
+      "caught": [
+        "cross-grain glue-up"
+      ],
+      "missed": []
+    }
+  ]
+}

@@ -18,6 +18,35 @@ export function reviewModel(): string {
   return process.env.AI_MODEL_REVIEW || planModel();
 }
 
+/**
+ * Escalation model (model routing plan §3 step 6): when a plan still has
+ * blocker-level issues after the repair pass, stages 1+2 are re-run on this
+ * (stronger) model — subject to the per-plan cost cap. Empty/unset or equal
+ * to AI_MODEL_PLAN = no escalation.
+ */
+export function escalationModel(): string | null {
+  const v = process.env.AI_MODEL_ESCALATE;
+  return v && v !== planModel() ? v : null;
+}
+
+/** Chat ("I'm stuck") and ideas models — wired when those routes land. */
+export function chatModel(): string {
+  return process.env.AI_MODEL_CHAT || planModel();
+}
+export function ideasModel(): string {
+  return process.env.AI_MODEL_IDEAS || planModel();
+}
+/** Safety-critical diagnosis (electrical/gas/structural) — strongest model. */
+export function diagnoseModel(): string {
+  return process.env.AI_MODEL_DIAGNOSE || reviewModel();
+}
+
+/** Service tier for the review call — "flex" is ~half price but slower. */
+export function reviewTier(): string | undefined {
+  const v = process.env.AI_REVIEW_TIER;
+  return v === "flex" || v === "priority" ? v : undefined;
+}
+
 export type ReviewMode = "all" | "load_bearing" | "off";
 export function reviewMode(): ReviewMode {
   const v = process.env.REVIEW_MODE;

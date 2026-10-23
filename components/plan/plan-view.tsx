@@ -47,12 +47,18 @@ export function PlanView({
   plan,
   units: initialUnits,
   unverified = [],
+  blockers = [],
   warnings = [],
+  reviewPending = false,
 }: {
   plan: Plan;
   units: Units;
   unverified?: string[];
+  /** blocker-level residuals → friendly "tricky" banner, details collapsed */
+  blockers?: string[];
   warnings?: string[];
+  /** configured review model failed — plan is not fully checked */
+  reviewPending?: boolean;
 }) {
   const [units, setUnits] = useState<Units>(initialUnits);
   const currency = plan.est_cost.currency;
@@ -120,20 +126,53 @@ export function PlanView({
         </p>
       </section>
 
-      {unverified.length > 0 && (
-        <div className="rounded-md border border-destructive/50 bg-destructive/10 p-4">
-          <p className="flex items-center gap-2 font-medium text-destructive">
-            <AlertTriangle className="h-4 w-4" /> Unverified plan
+      {reviewPending && (
+        <div className="rounded-md border border-amber-500/50 bg-amber-500/10 p-4 text-sm">
+          <strong>Carpenter review pending.</strong> Our strongest checker
+          didn&apos;t run on this plan — treat it as unchecked and verify
+          joinery and fasteners before building.
+        </div>
+      )}
+
+      {blockers.length > 0 ? (
+        <div className="rounded-md border border-amber-500/50 bg-amber-500/10 p-4">
+          <p className="flex items-center gap-2 font-medium">
+            <AlertTriangle className="h-4 w-4" /> This one&apos;s tricky.
           </p>
           <p className="mt-1 text-sm text-muted-foreground">
-            Automatic checks found issues the AI couldn&apos;t fix. Verify these by hand:
+            Here&apos;s our best plan — but the carpenter review flagged{" "}
+            {blockers.length} item{blockers.length > 1 ? "s" : ""} we
+            couldn&apos;t fully resolve. Check the flagged items carefully
+            before cutting.
           </p>
-          <ul className="mt-2 list-inside list-disc space-y-1 text-sm">
-            {unverified.map((e, i) => (
-              <li key={i}>{e}</li>
-            ))}
-          </ul>
+          <details className="mt-2 text-sm">
+            <summary className="cursor-pointer text-muted-foreground">
+              Show {unverified.length} flagged item{unverified.length > 1 ? "s" : ""}
+            </summary>
+            <ul className="mt-2 list-inside list-disc space-y-1 text-muted-foreground">
+              {unverified.map((e, i) => (
+                <li key={i}>{e}</li>
+              ))}
+            </ul>
+          </details>
         </div>
+      ) : (
+        unverified.length > 0 && (
+          <div className="rounded-md border border-destructive/50 bg-destructive/10 p-4">
+            <p className="flex items-center gap-2 font-medium text-destructive">
+              <AlertTriangle className="h-4 w-4" /> Unverified plan
+            </p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Automatic checks found issues the AI couldn&apos;t fix. Verify
+              these by hand:
+            </p>
+            <ul className="mt-2 list-inside list-disc space-y-1 text-sm">
+              {unverified.map((e, i) => (
+                <li key={i}>{e}</li>
+              ))}
+            </ul>
+          </div>
+        )
       )}
       {warnings.length > 0 && (
         <div className="rounded-md border p-4 text-sm">

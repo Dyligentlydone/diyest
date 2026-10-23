@@ -47,6 +47,65 @@ const sorted = (xs: number[]) => [...xs].sort((a, b) => a - b);
 const close = (a: number, b: number, tol = MM_TOL) => Math.abs(a - b) <= tol;
 const axisLen = (p: AxisPlacement) => len(sub(p.to, p.from));
 
+export const pairKeyOf = (a: string, b: string) => [a, b].sort().join("|");
+
+interface Aabb {
+  lo: Vec3Like;
+  hi: Vec3Like;
+}
+
+const aabbsTouch = (a: Aabb, b: Aabb) =>
+  a.lo[0] <= b.hi[0] + MM_TOL &&
+  a.hi[0] >= b.lo[0] - MM_TOL &&
+  a.lo[1] <= b.hi[1] + MM_TOL &&
+  a.hi[1] >= b.lo[1] - MM_TOL &&
+  a.lo[2] <= b.hi[2] + MM_TOL &&
+  a.hi[2] >= b.lo[2] - MM_TOL;
+
+export interface ContactPair {
+  part_a: string;
+  part_b: string;
+  name_a: string;
+  name_b: string;
+  /** how many solid copies of the two parts touch */
+  touches: number;
+}
+
+/**
+ * The exact list of part pairs whose solids touch (AABB within 1mm) — every
+ * one needs a declared joint. Excludes same-part contacts and pairs where
+ * both parts rest on the floor (incidental ground contact needs no joinery).
+ * Used by two-stage generation to hand the model a complete joinery checklist.
+ */
+export function contactPairs(plan: Pick<Plan, "parts">): ContactPair[] {
+  const solids = solidsOf(plan as Plan);
+  const boxes = solids.map(aabb);
+  const pairs = new Map<string, ContactPair>();
+  for (let i = 0; i < solids.length; i++) {
+    for (let j = i + 1; j < solids.length; j++) {
+      const A = solids[i],
+        B = solids[j];
+      if (A.part.id === B.part.id) continue;
+      const a = boxes[i],
+        b = boxes[j];
+      if (a.lo[1] <= MM_TOL && b.lo[1] <= MM_TOL) continue;
+      if (!aabbsTouch(a, b)) continue;
+      const key = pairKeyOf(A.part.id, B.part.id);
+      const existing = pairs.get(key);
+      if (existing) existing.touches++;
+      else
+        pairs.set(key, {
+          part_a: A.part.id,
+          part_b: B.part.id,
+          name_a: A.part.name,
+          name_b: B.part.name,
+          touches: 1,
+        });
+    }
+  }
+  return [...pairs.values()];
+}
+
 function aabb(s: Solid): { lo: Vec3Like; hi: Vec3Like } {
   const lo: Vec3Like = [Infinity, Infinity, Infinity];
   const hi: Vec3Like = [-Infinity, -Infinity, -Infinity];
@@ -151,10 +210,22 @@ function checkAxis(part: Part, pl: AxisPlacement, tag: string, errors: string[])
     errors.push(`${tag}: ends "level" but neither end reaches the floor (y≈0)`);
 }
 
+export interface ValidateOpts {
+  /**
+   * "geometry": stage-1 check — structure, per-part dims/placements/profiles,
+   * solid overlap, floating parts, bounds, target dims. Skips everything that
+   * needs joints/steps/tools (those don't exist yet in two-stage gen).
+   * "full" (default): all checks.
+   */
+  stage?: "geometry" | "full";
+}
+
 export async function validatePlan(
   plan: Plan,
-  ctx: ValidationContext = {}
+  ctx: ValidationContext = {},
+  opts: ValidateOpts = {}
 ): Promise<ValidationResult> {
+  const geoOnly = opts.stage === "geometry";
   const errors: string[] = [];
   const warnings: string[] = [];
   const issues: ValidationIssue[] = [];
@@ -183,16 +254,18 @@ export async function validatePlan(
   const ids = new Set(plan.parts.map((p) => p.id));
   if (ids.size !== plan.parts.length) issue("geometry", "Duplicate part ids");
 
-  const used = new Set(plan.steps.flatMap((s) => s.parts_used));
-  for (const s of plan.steps)
-    for (const pid of s.parts_used)
-      if (!ids.has(pid)) issue("lists", `Step ${s.n} references unknown part "${pid}"`);
-  for (const p of plan.parts)
-    if (!used.has(p.id)) issue("lists", `Part ${p.id} (${p.name}) is not used in any step`);
+  if (!geoOnly) {
+    const used = new Set(plan.steps.flatMap((s) => s.parts_used));
+    for (const s of plan.steps)
+      for (const pid of s.parts_used)
+        if (!ids.has(pid)) issue("lists", `Step ${s.n} references unknown part "${pid}"`);
+    for (const p of plan.parts)
+      if (!used.has(p.id)) issue("lists", `Part ${p.id} (${p.name}) is not used in any step`);
 
-  const stepNums = plan.steps.map((s) => s.n);
-  if (new Set(stepNums).size !== stepNums.length)
-    issue("lists", "Duplicate step numbers");
+    const stepNums = plan.steps.map((s) => s.n);
+    if (new Set(stepNums).size !== stepNums.length)
+      issue("lists", "Duplicate step numbers");
+  }
 
   // ---- per-part checks ----
   const targetMax = ctx.targetDimensionsMm
@@ -212,8 +285,9 @@ export async function validatePlan(
   // ---- joints: structural declarations must cover reality ----
   const jointIds = new Set<string>();
   const jointPairs = new Set<string>();
-  const pairKey = (a: string, b: string) => [a, b].sort().join("|");
-  for (const j of plan.joints) {
+  const pairKey = pairKeyOf;
+  if (!geoOnly)
+    for (const j of plan.joints) {
     if (jointIds.has(j.id)) issue("lists", `Duplicate joint id ${j.id}`);
     jointIds.add(j.id);
     if (!ids.has(j.part_a))
@@ -290,7 +364,9 @@ export async function validatePlan(
     // within 1mm) must have a declared joint between their part ids.
     // Exempted: same-part contacts, and pairs where both parts rest on the
     // floor (incidental ground-level contact needs no joinery).
-    for (let i = 0; i < solids.length; i++) {
+    // Skipped in geometry stage — joints don't exist yet.
+    if (!geoOnly)
+      for (let i = 0; i < solids.length; i++) {
       for (let j = i + 1; j < solids.length; j++) {
         const A = solids[i],
           Bs = solids[j];
@@ -298,14 +374,7 @@ export async function validatePlan(
         const a = boxes[i],
           b = boxes[j];
         if (a.lo[1] <= MM_TOL && b.lo[1] <= MM_TOL) continue;
-        const touching =
-          a.lo[0] <= b.hi[0] + MM_TOL &&
-          a.hi[0] >= b.lo[0] - MM_TOL &&
-          a.lo[1] <= b.hi[1] + MM_TOL &&
-          a.hi[1] >= b.lo[1] - MM_TOL &&
-          a.lo[2] <= b.hi[2] + MM_TOL &&
-          a.hi[2] >= b.lo[2] - MM_TOL;
-        if (touching && !jointPairs.has(pairKey(A.part.id, Bs.part.id)))
+        if (aabbsTouch(a, b) && !jointPairs.has(pairKey(A.part.id, Bs.part.id)))
           issue(
             "lists",
             `Parts ${A.part.id} (${A.part.name}) and ${Bs.part.id} (${Bs.part.name}) touch but have no declared joint`
@@ -331,7 +400,7 @@ export async function validatePlan(
         );
   }
 
-  if (ctx.useMyToolsOnly && ctx.toolsOwned?.length) {
+  if (!geoOnly && ctx.useMyToolsOnly && ctx.toolsOwned?.length) {
     const owned = new Set(ctx.toolsOwned.map((s) => s.toLowerCase()));
     for (const tool of plan.tools)
       if (tool.required && !owned.has(tool.name.toLowerCase()))
@@ -356,7 +425,7 @@ export async function validatePlan(
           `${p.id} (${p.name}): load-bearing horizontal part is only ${p.thickness_mm}mm thick (<18mm minimum)`
         );
     }
-    if (!plan.steps.some((s) => s.safety))
+    if (!geoOnly && !plan.steps.some((s) => s.safety))
       warnings.push("load_bearing plan has no step-level safety notes");
   }
 

@@ -1,0 +1,17 @@
+Running 3 regression plans (concurrency 3)…
+
+  done: bench (306s, fix)
+  done: birdhouse (429s, fix)
+  done: chair (621s, fix)
+
+name          | useful | partial | plan | final | calls           | tokens | cost$ | rep | esc | verdict    | blk | title
+---------------------------------------------------------------------------------------------------------------------------------------
+bench         |     57 |      93 |  195 |   306 | 4×6-luna,1×6.1-sol |  68084 | $0.049 |   1 |   - | fix        |   0 | Rustic Outdoor Slatted Garden Bench
+birdhouse     |     32 |      40 |  102 |   429 | 3×6-luna,4×6.1-sol |  62844 | $0.159 |   1 |   - | fix        |   2 | Woodpecker Nest Box
+chair         |     45 |      88 |  177 |   621 | 4×6-luna,4×6.1-sol | 103667 | $0.198 |   1 |   Y | fix        |   1 | Painted Spindle-Back Wooden Chair
+
+AVERAGES: useful 45s · full plan 158s · final 452s · cost $0.135 · tokens 78198
+MEDIANS:  useful 45s · full plan 177s · final 429s
+escalations: 1/3 · blocker-free finals: 1/3
+
+results → eval/results/regression-1792731567021.json

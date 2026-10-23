@@ -1,0 +1,29 @@
+Running 8 regression plans (concurrency 4)…
+
+  done: birdhouse (284s, exception)
+  done: coffee-table (296s, fix)
+  done: step-stool (181s, fix)
+  done: chair (546s, exception)
+  done: not-buildable (3s, not_buildable)
+  done: desk (287s, fix)
+  done: bench (700s, exception)
+  done: round-table (225s, fix)
+
+blueprint → test-results/blueprint-table-v14.svg
+
+name          | useful | partial | plan | final | calls           | tokens | cost$ | rep | esc | verdict    | blk | title
+---------------------------------------------------------------------------------------------------------------------------------------
+bench         |      — |       — |    — |   700 |                 |      0 | $0.000 |   0 |   - | exception  |   0 | —
+birdhouse     |      — |       — |    — |   284 |                 |      0 | $0.000 |   0 |   - | exception  |   0 | —
+chair         |      — |       — |    — |   546 |                 |      0 | $0.000 |   0 |   - | exception  |   0 | —
+coffee-table  |     44 |      54 |  149 |   296 | 3×6-luna,2×6.1-sol |  58042 | $0.074 |   1 |   - | fix        |   0 | Low Two-Tier Walnut-Style Display Table
+desk          |     44 |      73 |  173 |   287 | 4×6-luna,2×6.1-sol |  84010 | $0.078 |   1 |   - | fix        |   0 | Classroom Desk and Chair Set
+not-buildable |      — |       — |    — |     3 |                 |      0 | $0.000 |   0 |   - | not_buildable |   0 | —
+round-table   |     40 |      46 |  110 |   225 | 3×6-luna,2×6.1-sol |  45149 | $0.051 |   1 |   - | fix        |   0 | Round Side Table
+step-stool    |     42 |      48 |  120 |   181 | 3×6-luna,1×6.1-sol |  37325 | $0.032 |   1 |   - | fix        |   0 | Two-Step Wooden Step Stool
+
+AVERAGES: useful 42s · full plan 138s · final 248s · cost $0.059 · tokens 56132
+MEDIANS:  useful 44s · full plan 149s · final 287s
+escalations: 0/4 · blocker-free finals: 4/4
+
+results → eval/results/regression-1792730921845.json

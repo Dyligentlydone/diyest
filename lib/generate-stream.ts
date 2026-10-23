@@ -18,6 +18,10 @@ export interface StreamError {
 }
 
 export interface StreamHandlers {
+  /** stage-1 fields as they stream in — title/summary/parts count */
+  onMeta?: (ev: Extract<GenEvent, { type: "meta" }>) => void;
+  /** blueprint-ready geometry (stage 1 done, stage 2 running) */
+  onPartial?: (ev: Extract<GenEvent, { type: "partial" }>) => void;
   onPlan?: (ev: Extract<GenEvent, { type: "plan" }>) => void;
   onFinal?: (result: GenerateSuccess) => void;
   onError?: (result: StreamError) => void;
@@ -79,7 +83,9 @@ export async function streamGenerate(
       } catch {
         continue;
       }
-      if (ev.type === "plan") handlers.onPlan?.(ev);
+      if (ev.type === "meta") handlers.onMeta?.(ev);
+      else if (ev.type === "partial") handlers.onPartial?.(ev);
+      else if (ev.type === "plan") handlers.onPlan?.(ev);
       else if (ev.type === "final") handlers.onFinal?.(ev.result);
       else if (ev.type === "error")
         handlers.onError?.(
