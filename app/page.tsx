@@ -10,7 +10,7 @@ export default function Home() {
           Snap a photo. Get a plan you can actually build.
         </h1>
         <p className="mt-6 max-w-xl text-lg text-muted-foreground">
-          BuildIt turns a picture or a description into a complete woodworking plan:
+          diyest turns a picture or a description into a complete woodworking plan:
           measured drawings, a materials and cut list, and step-by-step instructions
           matched to your skill level and tools.
         </p>

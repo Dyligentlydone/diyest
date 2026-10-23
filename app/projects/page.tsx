@@ -5,7 +5,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { isSupabaseConfigured } from "@/lib/env";
 import { createClient } from "@/lib/supabase/server";
 
-export const metadata = { title: "My projects — BuildIt" };
+export const metadata = { title: "My projects — diyest" };
 
 async function ProjectList() {
   const supabase = await createClient();

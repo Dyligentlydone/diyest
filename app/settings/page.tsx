@@ -12,7 +12,7 @@ import { createClient } from "@/lib/supabase/server";
 import type { Profile } from "@/lib/types";
 import { SettingsForm } from "./settings-form";
 
-export const metadata = { title: "Settings — BuildIt" };
+export const metadata = { title: "Settings — diyest" };
 
 async function SettingsContent() {
   if (!isSupabaseConfigured()) {

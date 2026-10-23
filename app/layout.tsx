@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: { default: "BuildIt — AI DIY project plans", template: "%s — BuildIt" },
+  title: { default: "diyest — AI DIY project plans", template: "%s — diyest" },
   description:
     "Turn a photo or idea into a complete, buildable DIY plan: blueprint, materials, cut list and step-by-step instructions.",
 };

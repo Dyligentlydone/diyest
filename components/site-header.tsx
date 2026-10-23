@@ -34,7 +34,7 @@ export function SiteHeader() {
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2 font-semibold">
           <Hammer className="h-5 w-5" aria-hidden />
-          BuildIt
+          diyest
         </Link>
         <nav className="flex items-center gap-1 sm:gap-2">
           <Link href="/new" className={buttonVariants({ variant: "ghost", size: "sm" })}>

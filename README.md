@@ -1,4 +1,4 @@
-# BuildIt
+# diyest
 
 AI DIY project planner: show the app a photo or describe what you want to make, and
 get a complete buildable plan — dimensioned blueprint, materials/cut lists, tools,

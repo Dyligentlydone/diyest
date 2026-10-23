@@ -50,8 +50,10 @@ export async function updateSession(request: NextRequest) {
   }
 
   if (user && pathname === "/login") {
+    const next = request.nextUrl.searchParams.get("next");
     const url = request.nextUrl.clone();
-    url.pathname = "/projects";
+    // honor safe internal return targets (e.g. anon draft → save flow)
+    url.pathname = next?.startsWith("/") && !next.startsWith("//") ? next : "/projects";
     url.search = "";
     return NextResponse.redirect(url);
   }
