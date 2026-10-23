@@ -1,0 +1,66 @@
+import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
+import { createClient } from "@/lib/supabase/server";
+import { planSchema } from "@/lib/plan/schema";
+import { isSupabaseConfigured } from "@/lib/env";
+
+const saveSchema = z.object({
+  id: z.string().uuid(),
+  title: z.string().min(1).max(120),
+  mode: z.enum(["build", "fix", "space", "leftovers"]).default("build"),
+  plan: planSchema,
+  input: z.record(z.string(), z.unknown()).default({}),
+  prompt_version: z.string().default("plan.v1.2"),
+  imagePaths: z.array(z.string().max(500)).max(8).default([]),
+});
+
+export async function POST(request: NextRequest) {
+  if (!isSupabaseConfigured())
+    return NextResponse.json({ error: "Not configured" }, { status: 503 });
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user)
+    return NextResponse.json({ error: "Sign in to save projects" }, { status: 401 });
+
+  let body: z.infer<typeof saveSchema>;
+  try {
+    body = saveSchema.parse(await request.json());
+  } catch (e) {
+    const msg = e instanceof z.ZodError ? e.issues[0]?.message : "Invalid plan data";
+    return NextResponse.json({ error: msg }, { status: 400 });
+  }
+
+  // Only accept image paths inside the caller's own storage folder.
+  const paths = body.imagePaths.filter((p) => p.startsWith(`${user.id}/`));
+
+  const { error } = await supabase.from("projects").insert({
+    id: body.id,
+    user_id: user.id,
+    title: body.title,
+    mode: body.mode,
+    plan: body.plan,
+    input: body.input,
+    prompt_version: body.prompt_version,
+    status: "planned",
+  });
+  if (error) {
+    console.error("[projects] insert failed", error);
+    return NextResponse.json({ error: "Could not save project" }, { status: 500 });
+  }
+
+  if (paths.length) {
+    const { error: imgError } = await supabase.from("project_images").insert(
+      paths.map((storage_path) => ({
+        project_id: body.id,
+        storage_path,
+        kind: "input",
+      }))
+    );
+    if (imgError) console.error("[projects] image rows failed", imgError);
+  }
+
+  return NextResponse.json({ id: body.id });
+}
