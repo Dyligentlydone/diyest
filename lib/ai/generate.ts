@@ -20,6 +20,7 @@ import type { ChatCompletionMessageParam } from "openai/resources/chat/completio
 import { z } from "zod";
 import {
   buildJointRepairMessage,
+  buildModifyMessage,
   buildPlanUserMessage,
   buildRepairMessage,
   jointRepairSchema,
@@ -58,7 +59,9 @@ import {
   supportsTemperature,
 } from "./openai";
 import { costUsd, planCostCapUsd, type CallRecord, type TokenUsage } from "./pricing";
+import { usageOf } from "./usage-of";
 import {
+  genPlanSchema,
   NOT_BUILDABLE_TITLE,
   type GenPlan,
   type Plan,
@@ -67,6 +70,7 @@ import { finalizePlan } from "@/lib/plan/derive";
 import {
   contactPairs,
   validatePlan,
+  type ValidationContext,
 } from "@/lib/plan/validate";
 
 const CALL_TIMEOUT_MS = 120_000; // review/repair calls
@@ -151,7 +155,7 @@ export type GenEvent =
 // model calls
 // ---------------------------------------------------------------------------
 
-interface CallOpts {
+export interface CallOpts {
   model?: string;
   tier?: string;
   effort?: "low" | "medium" | "high" | null;
@@ -162,7 +166,7 @@ interface CallOpts {
   timeoutMs?: number;
 }
 
-interface CallResult<T> {
+export interface CallResult<T> {
   raw: string;
   parsed: T | null;
   usage: TokenUsage;
@@ -176,22 +180,7 @@ const ZERO_USAGE: TokenUsage = {
   reasoningTokens: 0,
 };
 
-function usageOf(u: {
-  prompt_tokens?: number;
-  completion_tokens?: number;
-  prompt_tokens_details?: { cached_tokens?: number } | null;
-  completion_tokens_details?: { reasoning_tokens?: number } | null;
-} | null | undefined): TokenUsage {
-  if (!u) return { ...ZERO_USAGE };
-  return {
-    inputTokens: u.prompt_tokens ?? 0,
-    cachedTokens: u.prompt_tokens_details?.cached_tokens ?? 0,
-    outputTokens: u.completion_tokens ?? 0,
-    reasoningTokens: u.completion_tokens_details?.reasoning_tokens ?? 0,
-  };
-}
-
-async function callModel<T>(
+export async function callModel<T>(
   messages: ChatCompletionMessageParam[],
   imageDataUrls: string[],
   schemaName: string,
@@ -861,5 +850,138 @@ const stage1FullSchema = stage1Schema.extend({
   est_hours: stage2Schema.shape.est_hours,
   est_cost: stage2Schema.shape.est_cost,
 });
+
+// ---------------------------------------------------------------------------
+// modify (M4 — "Fit my space" / cheaper / upgrade / restyle / free-text)
+// ---------------------------------------------------------------------------
+
+export interface ModifyResult {
+  ok: boolean;
+  plan?: Plan;
+  unverified: string[];
+  blockers: string[];
+  warnings: string[];
+  reviewPending: boolean;
+  error?: string;
+  calls: CallRecord[];
+  /** step numbers the repair changed after the modification */
+  changedSteps: number[];
+}
+
+/**
+ * Apply a user-requested change to an existing plan, then run the same
+ * validate → dual review → merged repair path as generation (brief §6.2:
+ * "Runs the full validate → review → repair path"). No escalation — a failed
+ * modification reports blockers instead of burning more credits.
+ */
+export async function modifyPlan(
+  plan: Plan,
+  instruction: string,
+  req: PlanRequest,
+  ctx: ValidationContext
+): Promise<ModifyResult> {
+  const calls: CallRecord[] = [];
+  const model = planModel();
+  const tier = genTier();
+  const track = (stage: string, res: CallResult<unknown>) =>
+    calls.push({
+      stage,
+      model,
+      tier: tier ?? "standard",
+      usage: res.usage,
+      costUsd: costUsd(model, res.usage, tier),
+      latencyMs: res.latencyMs,
+    });
+
+  const gen = await callModel<GenPlan>(
+    [
+      { role: "system", content: STAGE2_SYSTEM_PROMPT },
+      {
+        role: "user",
+        content: buildModifyMessage(JSON.stringify(plan), instruction),
+      },
+    ],
+    [],
+    "plan",
+    genPlanSchema,
+    { model, tier }
+  );
+  track("modify", gen);
+  if (!gen.parsed)
+    return {
+      ok: false,
+      unverified: [],
+      blockers: [],
+      warnings: [],
+      reviewPending: false,
+      error: "The modification couldn't be applied — try rephrasing it.",
+      calls,
+      changedSteps: [],
+    };
+
+  let current = finalizePlan(gen.parsed);
+
+  // ---- validate ∥ dual review ----
+  const mode = reviewMode();
+  const shouldReview = mode === "all" || (mode === "load_bearing" && current.load_bearing);
+  const [validation, reviewOut] = await Promise.all([
+    validatePlan(current, ctx),
+    shouldReview
+      ? reviewBoth(JSON.stringify(current), req)
+      : Promise.resolve({ review: null, pending: false, calls: [] } as ReviewOutcome),
+  ]);
+  calls.push(...reviewOut.calls);
+  const review = reviewOut.review;
+
+  // ---- one merged repair on the modified plan ----
+  const reviewLines = review
+    ? reviewIssuesForRepair({ verdict: review.verdict, summary: "", issues: review.issues } as Review)
+    : [];
+  const mergedIssues = [...validation.errors, ...reviewLines];
+  if (mergedIssues.length) {
+    const rep = await callModel<GenPlan>(
+      [
+        { role: "system", content: STAGE2_SYSTEM_PROMPT },
+        { role: "user", content: JSON.stringify(current) },
+        { role: "user", content: buildRepairMessage(JSON.stringify(current), mergedIssues) },
+      ],
+      [],
+      "plan",
+      genPlanSchema,
+      { model, tier }
+    );
+    track("modify_repair", rep);
+    if (rep.parsed) current = finalizePlan(rep.parsed);
+    const v2 = await validatePlan(current, ctx);
+    validation.errors = v2.errors;
+    validation.warnings = v2.warnings;
+  }
+
+  const blockers = computeBlockers(validation.errors, review);
+  const tips =
+    review?.issues
+      .filter((i) => i.severity === "minor")
+      .map((i) => `Review tip (${i.category}): ${i.problem} → ${i.fix}`) ?? [];
+
+  // which steps differ from the pre-modify plan (title or text changed)
+  const byN = new Map(plan.steps.map((s) => [s.n, s]));
+  const changedSteps = current.steps
+    .filter((s) => {
+      const b = byN.get(s.n);
+      return !b || b.title !== s.title || b.text !== s.text;
+    })
+    .map((s) => s.n);
+
+  return {
+    ok: true,
+    plan: current,
+    unverified: validation.errors,
+    blockers,
+    warnings: [...validation.warnings, ...tips],
+    reviewPending: reviewOut.pending,
+    calls,
+    changedSteps,
+  };
+}
 
 // (end of file)

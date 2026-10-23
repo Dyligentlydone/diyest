@@ -346,7 +346,10 @@ export function DraftClient({
         body: JSON.stringify({
           id: projectId,
           title: draft.plan.title,
-          mode: "build",
+          mode:
+            typeof draft.input?.mode === "string"
+              ? draft.input.mode
+              : "build",
           plan: draft.plan,
           input: draft.input,
           prompt_version: draft.promptVersion ?? "plan.v1.5",
@@ -441,6 +444,12 @@ export function DraftClient({
         checking={checking || isPartial}
         changedSteps={draft.changedSteps ?? []}
         kerfMm={kerfMm}
+        projectId={draft.savedId}
+        excludeMaterials={
+          Array.isArray(draft.input?.materialsOwned)
+            ? (draft.input.materialsOwned as string[])
+            : []
+        }
       />
 
       <div className="sticky bottom-4 mt-8 flex justify-center">

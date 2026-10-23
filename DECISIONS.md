@@ -56,3 +56,13 @@ Log of architecture choices and anything ambiguous in the brief, newest first.
 - **shadcn preset:** installed via the new `shadcn` CLI defaults (base-nova
   preset, neutral base color, CSS variables). Components live in
   `components/ui/`.
+
+## Milestone 4 (modes, modifiers, chat, build mode)
+
+- **Tool inventory is canonical**: `lib/tools.ts` holds a grouped checklist (measuring/hand/power/clamping/safety) + alias map. `canonicalTool()` maps AI-emitted names (e.g. "skill saw" → "circular saw") to canonical names; `normalizeTools()` dedupes and keeps unknowns as custom. Settings and the /new form render the checklist; custom tools go in a free-text field.
+- **Shopping "already have"**: localStorage is the pre-login device cache via `useSyncExternalStore` (hydration-safe). Saved projects persist `projects.shopping_have`; the union of server+local marks is pushed up once per project view.
+- **Entry modes** on /new: build / describe / fix / space / leftovers as tabs. fix → /api/diagnose (Sol, photo required) → shows diagnosis, refuses licensed-trade work, then generates a repair plan with the diagnosis in context. space/leftovers → /api/ideas (Luna) → pick an idea → generate with `chosenIdea` + `spaceConstraintsMm`/`materialsOwned`. Leftover materials are token-matched out of the shopping list's material sections.
+- **Modifiers** (`/api/modify`, Luna): fit_space (dims), cheaper, upgrade, restyle (5 styles), custom text — all produce a new full plan via the same validate → dual-review → repair path; `changedSteps` reports which steps differ. Saved projects get the modified plan + `modifications_used` incremented.
+- **"I'm stuck" chat** (`/api/chat`, Luna; Sol when the user flags "didn't help"): full plan JSON + current step + 8-turn history + optional progress photo. `safety_related` replies get a badge.
+- **Build mode**: fullscreen stepper, step checkboxes persist to localStorage keyed by project+plan-hash, screen Wake Lock, per-step "I'm stuck" chat carrying step context.
+- **Allowances** (`lib/limits.ts`): per-plan counters on projects (`access_level`, `modifications_used`, `chat_messages_used`). Basic: 0 mods / 3 chats; Intermediate: 3 mods / 10 chats; Pro: unlimited. M4 tracks + reports usage only — M6 enforces.

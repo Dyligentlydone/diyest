@@ -26,7 +26,7 @@ export type Units = "metric" | "imperial";
 export type SkillLevel = "beginner" | "intermediate" | "advanced";
 export type Budget = "budget" | "balanced" | "premium";
 export type Style = "match_photo" | "rustic" | "modern" | "scandinavian" | "industrial";
-export type Mode = "build" | "fix" | "space" | "leftovers";
+export type Mode = "build" | "fix" | "space" | "leftovers" | "describe";
 
 export interface PlanRequest {
   mode: Mode;

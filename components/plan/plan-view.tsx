@@ -15,9 +15,12 @@ import {
   Wrench,
 } from "lucide-react";
 import { BlueprintSheet } from "@/components/plan/blueprint-sheet";
+import { BuildMode } from "@/components/plan/build-mode";
 import { CutListView } from "@/components/plan/cutlist-view";
 import { GlossedText } from "@/components/plan/glossed-text";
+import { ModifyBar, type ModifyResult } from "@/components/plan/modify-bar";
 import { ShoppingList } from "@/components/plan/shopping-list";
+import { StuckChat } from "@/components/plan/stuck-chat";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -68,6 +71,9 @@ export function PlanView({
   checking = false,
   changedSteps = [],
   kerfMm = 3,
+  projectId,
+  serverHave = [],
+  excludeMaterials = [],
 }: {
   plan: Plan;
   units: Units;
@@ -83,18 +89,32 @@ export function PlanView({
   changedSteps?: number[];
   /** saw kerf from user profile — used by the cut-list optimizer */
   kerfMm?: number;
+  /** saved project → shopping "already have" marks persist server-side */
+  projectId?: string | null;
+  serverHave?: string[];
+  /** leftovers mode — materials the user owns are dropped from the list */
+  excludeMaterials?: string[];
 }) {
   const [units, setUnits] = useState<Units>(initialUnits);
   const [selId, setSelId] = useState<string | null>(null);
   const toggle = (id: string) => setSelId((s) => (s === id ? null : id));
-  const currency = plan.est_cost.currency;
+  // a successful modify swaps in the re-checked plan + its review state
+  const [mod, setMod] = useState<ModifyResult | null>(null);
+  const shown = mod?.plan ?? plan;
+  const shownUnverified = mod ? mod.unverified : unverified;
+  const shownBlockers = mod ? mod.blockers : blockers;
+  const shownWarnings = mod ? mod.warnings : warnings;
+  const shownPending = mod ? mod.reviewPending : reviewPending;
+  const shownChanged = mod ? mod.changedSteps : changedSteps;
+
+  const currency = shown.est_cost.currency;
   const money = (n: number) =>
     new Intl.NumberFormat("en-US", { style: "currency", currency, maximumFractionDigits: 0 }).format(n);
 
-  const requiredTools = plan.tools.filter((t) => t.required);
-  const optionalTools = plan.tools.filter((t) => !t.required);
-  const cutParts = plan.parts.filter((p) => p.source !== "buy");
-  const buyParts = plan.parts.filter((p) => p.source === "buy");
+  const requiredTools = shown.tools.filter((t) => t.required);
+  const optionalTools = shown.tools.filter((t) => !t.required);
+  const cutParts = shown.parts.filter((p) => p.source !== "buy");
+  const buyParts = shown.parts.filter((p) => p.source === "buy");
 
   return (
     <div className="space-y-8">
@@ -102,8 +122,8 @@ export function PlanView({
       <section>
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold sm:text-3xl">{plan.title}</h1>
-            <p className="mt-2 max-w-2xl text-muted-foreground">{plan.summary}</p>
+            <h1 className="text-2xl font-bold sm:text-3xl">{shown.title}</h1>
+            <p className="mt-2 max-w-2xl text-muted-foreground">{shown.summary}</p>
           </div>
           <button
             onClick={() => setUnits(units === "metric" ? "imperial" : "metric")}
@@ -116,25 +136,25 @@ export function PlanView({
 
         <div className="mt-4 flex flex-wrap gap-2">
           <Badge variant="secondary" className="capitalize">
-            {plan.difficulty}
+            {shown.difficulty}
           </Badge>
           <Badge variant="secondary">
-            <Clock className="mr-1 h-3 w-3" /> ~{plan.est_hours}h
+            <Clock className="mr-1 h-3 w-3" /> ~{shown.est_hours}h
           </Badge>
           <Badge variant="secondary">
-            {money(plan.est_cost.low)}–{money(plan.est_cost.high)}
+            {money(shown.est_cost.low)}–{money(shown.est_cost.high)}
           </Badge>
           <Badge variant="secondary">
-            {formatDimensions(plan.overall_dimensions_mm, units)}
+            {formatDimensions(shown.overall_dimensions_mm, units)}
           </Badge>
-          {plan.load_bearing && (
+          {shown.load_bearing && (
             <Badge variant="destructive">
               <ShieldAlert className="mr-1 h-3 w-3" /> Load-bearing
             </Badge>
           )}
         </div>
 
-        {plan.load_bearing && (
+        {shown.load_bearing && (
           <div className="mt-4 rounded-md border border-amber-500/50 bg-amber-500/10 p-4 text-sm">
             <strong>Safety:</strong> this project carries weight or people. Verify all
             measurements, fasteners and anchoring before use, and consult a
@@ -145,14 +165,22 @@ export function PlanView({
 
       {/* blueprint */}
       <section>
-        <BlueprintSheet plan={plan} units={units} highlightPartId={selId} />
+        <BlueprintSheet plan={shown} units={units} highlightPartId={selId} />
         <p className="mt-2 text-xs text-muted-foreground">
           Blueprint generated from plan geometry — measured views, not an
           illustration. Tap a part in any list to highlight it everywhere.
         </p>
       </section>
 
-      {reviewPending && (
+      <ModifyBar
+        plan={shown}
+        units={units}
+        projectId={projectId}
+        disabled={checking}
+        onModified={setMod}
+      />
+
+      {shownPending && (
         <div className="rounded-md border border-amber-500/50 bg-amber-500/10 p-4 text-sm">
           <strong>Carpenter review pending.</strong> Our strongest checker
           didn&apos;t run on this plan — treat it as unchecked and verify
@@ -160,30 +188,30 @@ export function PlanView({
         </div>
       )}
 
-      {blockers.length > 0 ? (
+      {shownBlockers.length > 0 ? (
         <div className="rounded-md border border-amber-500/50 bg-amber-500/10 p-4">
           <p className="flex items-center gap-2 font-medium">
             <AlertTriangle className="h-4 w-4" /> This one&apos;s tricky.
           </p>
           <p className="mt-1 text-sm text-muted-foreground">
             Here&apos;s our best plan — but the carpenter review flagged{" "}
-            {blockers.length} item{blockers.length > 1 ? "s" : ""} we
+            {shownBlockers.length} item{shownBlockers.length > 1 ? "s" : ""} we
             couldn&apos;t fully resolve. Check the flagged items carefully
             before cutting.
           </p>
           <details className="mt-2 text-sm">
             <summary className="cursor-pointer text-muted-foreground">
-              Show {unverified.length} flagged item{unverified.length > 1 ? "s" : ""}
+              Show {shownUnverified.length} flagged item{shownUnverified.length > 1 ? "s" : ""}
             </summary>
             <ul className="mt-2 list-inside list-disc space-y-1 text-muted-foreground">
-              {unverified.map((e, i) => (
+              {shownUnverified.map((e, i) => (
                 <li key={i}>{e}</li>
               ))}
             </ul>
           </details>
         </div>
       ) : (
-        unverified.length > 0 && (
+        shownUnverified.length > 0 && (
           <div className="rounded-md border border-destructive/50 bg-destructive/10 p-4">
             <p className="flex items-center gap-2 font-medium text-destructive">
               <AlertTriangle className="h-4 w-4" /> Unverified plan
@@ -193,32 +221,32 @@ export function PlanView({
               these by hand:
             </p>
             <ul className="mt-2 list-inside list-disc space-y-1 text-sm">
-              {unverified.map((e, i) => (
+              {shownUnverified.map((e, i) => (
                 <li key={i}>{e}</li>
               ))}
             </ul>
           </div>
         )
       )}
-      {warnings.length > 0 && (
+      {shownWarnings.length > 0 && (
         <div className="rounded-md border p-4 text-sm">
           <p className="font-medium">Heads up</p>
           <ul className="mt-1 list-inside list-disc space-y-1 text-muted-foreground">
-            {warnings.map((w, i) => (
+            {shownWarnings.map((w, i) => (
               <li key={i}>{w}</li>
             ))}
           </ul>
         </div>
       )}
 
-      {plan.assumptions.length > 0 && (
+      {shown.assumptions.length > 0 && (
         <details className="group rounded-md border p-4">
           <summary className="flex cursor-pointer items-center justify-between text-sm font-medium">
-            Assumptions diyest made ({plan.assumptions.length})
+            Assumptions diyest made ({shown.assumptions.length})
             <ChevronDown className="h-4 w-4 transition-transform group-open:rotate-180" />
           </summary>
           <ul className="mt-3 list-inside list-disc space-y-1 text-sm text-muted-foreground">
-            {plan.assumptions.map((a, i) => (
+            {shown.assumptions.map((a, i) => (
               <li key={i}>{a}</li>
             ))}
           </ul>
@@ -279,7 +307,7 @@ export function PlanView({
       {/* cut list */}
       {cutParts.length > 0 && (
         <CutListView
-          plan={plan}
+          plan={shown}
           units={units}
           kerfMm={kerfMm}
           selectedPart={selId}
@@ -288,10 +316,17 @@ export function PlanView({
       )}
 
       {/* shopping list */}
-      <ShoppingList plan={plan} units={units} kerfMm={kerfMm} />
+      <ShoppingList
+        plan={shown}
+        units={units}
+        kerfMm={kerfMm}
+        projectId={projectId}
+        serverHave={serverHave}
+        excludeMaterials={excludeMaterials}
+      />
 
       {/* tools */}
-      {plan.tools.length > 0 && (
+      {shown.tools.length > 0 && (
         <section>
           <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold">
             <Wrench className="h-5 w-5" /> Tools
@@ -335,13 +370,13 @@ export function PlanView({
       )}
 
       {/* safety */}
-      {plan.safety_overview.length > 0 && (
+      {shown.safety_overview.length > 0 && (
         <section className="rounded-md border border-amber-500/40 bg-amber-500/5 p-4">
           <h2 className="mb-2 flex items-center gap-2 font-semibold">
             <ShieldAlert className="h-5 w-5" /> Safety first
           </h2>
           <ul className="list-inside list-disc space-y-1 text-sm">
-            {plan.safety_overview.map((s, i) => (
+            {shown.safety_overview.map((s, i) => (
               <li key={i}>{s}</li>
             ))}
           </ul>
@@ -349,7 +384,7 @@ export function PlanView({
       )}
 
       {/* steps */}
-      {plan.steps.length > 0 && (
+      {shown.steps.length > 0 && (
         <section>
           <h2 className="mb-3 flex flex-wrap items-center gap-3 text-lg font-semibold">
             Build steps
@@ -358,9 +393,12 @@ export function PlanView({
                 Draft — carpenter check in progress
               </Badge>
             )}
+            <span className="ml-auto">
+              <BuildMode plan={shown} projectId={projectId} />
+            </span>
           </h2>
           <div className="space-y-3">
-            {[...plan.steps]
+            {[...shown.steps]
               .sort((a, b) => a.n - b.n)
               .map((s) => {
                 const usesSel = selId != null && s.parts_used.includes(selId);
@@ -368,7 +406,7 @@ export function PlanView({
                   <Card
                     key={s.n}
                     className={
-                      changedSteps.includes(s.n)
+                      shownChanged.includes(s.n)
                         ? "border-amber-500/60 bg-amber-500/5"
                         : usesSel
                           ? "border-primary/60 bg-primary/5"
@@ -383,7 +421,7 @@ export function PlanView({
                         <div className="min-w-0 flex-1">
                           <h3 className="font-medium">
                             <GlossedText text={s.title} />
-                            {changedSteps.includes(s.n) && (
+                            {shownChanged.includes(s.n) && (
                               <Badge variant="secondary" className="ml-2 text-[10px]">
                                 updated by review
                               </Badge>
@@ -478,6 +516,8 @@ export function PlanView({
         This plan was generated by AI. Verify every measurement against your actual
         materials before cutting.
       </p>
+
+      <StuckChat plan={shown} projectId={projectId} />
     </div>
   );
 }

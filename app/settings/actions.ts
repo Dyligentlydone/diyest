@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
+import { toolsFromFormData } from "@/components/tool-checklist";
 
 export type SettingsState = { error?: string; saved?: boolean };
 
@@ -11,7 +12,7 @@ const settingsSchema = z.object({
   units: z.enum(["metric", "imperial"]),
   skill_level: z.enum(["beginner", "intermediate", "advanced"]),
   kerf_mm: z.coerce.number().min(0).max(10).default(3),
-  tools_owned: z.array(z.string().trim().min(1).max(80)).max(60).default([]),
+  tools_owned: z.array(z.string().trim().min(1).max(80)).max(80).default([]),
 });
 
 export async function updateSettings(
@@ -29,10 +30,7 @@ export async function updateSettings(
     units: formData.get("units"),
     skill_level: formData.get("skill_level"),
     kerf_mm: formData.get("kerf_mm"),
-    tools_owned: String(formData.get("tools_owned") ?? "")
-      .split("\n")
-      .map((s) => s.trim())
-      .filter(Boolean),
+    tools_owned: toolsFromFormData(formData),
   });
   if (!parsed.success) return { error: "Check the form values and try again." };
 

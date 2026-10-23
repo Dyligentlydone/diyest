@@ -220,6 +220,12 @@ export function buildStage2UserMessage(
   lines.push("");
   lines.push("REQUEST CONTEXT:");
   lines.push(`MODE: ${req.mode}`);
+  if (req.mode === "fix" && req.diagnosis)
+    lines.push(`ACCEPTED DIAGNOSIS: ${req.diagnosis}`);
+  if ((req.mode === "space" || req.mode === "leftovers") && req.chosenIdea)
+    lines.push(`CHOSEN PROJECT IDEA: ${req.chosenIdea}`);
+  if (req.materialsOwned?.length)
+    lines.push(`MATERIALS THE USER ALREADY HAS: ${req.materialsOwned.join("; ")}`);
   if (req.description) lines.push(`USER DESCRIPTION: ${req.description}`);
   lines.push(`SKILL LEVEL: ${req.skillLevel}`);
   lines.push(`BUDGET: ${req.budget}`);

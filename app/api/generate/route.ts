@@ -39,6 +39,18 @@ const payloadSchema = z.object({
   currency: z.string().length(3).default("USD"),
   useMyToolsOnly: z.boolean().default(false),
   toolsOwned: z.array(z.string().max(80)).max(60).optional(),
+  // M4 entry modes
+  mode: z.enum(["build", "fix", "space", "leftovers", "describe"]).default("build"),
+  chosenIdea: z.string().max(400).optional(),
+  diagnosis: z.string().max(2000).optional(),
+  materialsOwned: z.array(z.string().max(200)).max(20).optional(),
+  spaceConstraintsMm: z
+    .object({
+      width: z.number().positive().optional(),
+      depth: z.number().positive().optional(),
+      height: z.number().positive().optional(),
+    })
+    .optional(),
 });
 
 const MAX_IMAGES = 4;
@@ -113,8 +125,12 @@ export async function POST(request: NextRequest) {
 
   // ---- generate ----
   const req: PlanRequest = {
-    mode: "build",
+    mode: payload.mode,
     description: payload.description,
+    chosenIdea: payload.chosenIdea,
+    diagnosis: payload.diagnosis,
+    materialsOwned: payload.materialsOwned,
+    spaceConstraintsMm: payload.spaceConstraintsMm,
     targetDimensionsMm: payload.targetDimensionsMm,
     units: payload.units,
     skillLevel: payload.skillLevel,

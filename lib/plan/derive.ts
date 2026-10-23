@@ -4,6 +4,7 @@
  * parts_used coverage for joints, and the consumables merge.
  */
 import type { Consumable, GenPlan, HardwareItem, Plan } from "./schema";
+import { canonicalTool, normalizeTools } from "@/lib/tools";
 
 const norm = (s: string) => s.trim().toLowerCase().replace(/\s+/g, " ");
 
@@ -55,5 +56,12 @@ export function consumablesOf(plan: Plan): Consumable[] {
 export function finalizePlan(gen: GenPlan): Plan {
   const plan: Plan = { ...gen, hardware: deriveHardware(gen.joints) };
   applyJointPartsToSteps(plan);
+  // canonical tool names so the checklist, validator and UI all speak one
+  // vocabulary ("power drill" → "drill/driver")
+  plan.tools = plan.tools.map((t) => ({
+    ...t,
+    name: canonicalTool(t.name) ?? t.name,
+  }));
+  for (const s of plan.steps) s.tools_used = normalizeTools(s.tools_used);
   return plan;
 }

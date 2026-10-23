@@ -13,7 +13,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { Profile } from "@/lib/types";
+import { ALL_TOOLS, canonicalTool } from "@/lib/tools";
+import { ToolChecklist } from "@/components/tool-checklist";
 import { updateSettings, type SettingsState } from "./actions";
+
+const CANON_SET = new Set(ALL_TOOLS.map((t) => t.toLowerCase()));
+const canonicalToolsOf = (tools: string[]) =>
+  tools.filter((t) => CANON_SET.has(t.toLowerCase()));
+const customToolsOf = (tools: string[]) =>
+  tools
+    .filter((t) => !CANON_SET.has(t.toLowerCase()))
+    .map((t) => canonicalTool(t) ?? t)
+    .join("\n");
 
 export function SettingsForm({ profile, email }: { profile: Profile; email: string }) {
   const [state, formAction, pending] = useActionState<SettingsState, FormData>(
@@ -91,18 +102,14 @@ export function SettingsForm({ profile, email }: { profile: Profile; email: stri
       </div>
 
       <div className="space-y-1.5">
-        <Label htmlFor="tools_owned">Tools you own</Label>
-        <textarea
-          id="tools_owned"
-          name="tools_owned"
-          rows={6}
-          defaultValue={(profile.tools_owned ?? []).join("\n")}
-          placeholder={"drill/driver\ncircular saw\norbital sander\nclamps"}
-          className="w-full rounded-md border bg-transparent px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        <Label>Tools you own</Label>
+        <ToolChecklist
+          defaultChecked={canonicalToolsOf(profile.tools_owned ?? [])}
+          defaultCustom={customToolsOf(profile.tools_owned ?? [])}
         />
         <p className="text-xs text-muted-foreground">
-          One tool per line. When you check &quot;use my tools only&quot; on a new
-          plan, the plan avoids tools not on this list (or gives workarounds).
+          When you check &quot;use my tools only&quot; on a new plan, the plan
+          avoids tools not on this list (or gives workarounds).
         </p>
       </div>
 

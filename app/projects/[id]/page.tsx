@@ -18,7 +18,7 @@ async function ProjectContent({ params }: { params: Promise<{ id: string }> }) {
 
   const { data: project } = await supabase
     .from("projects")
-    .select("id, title, status, plan, created_at")
+    .select("id, title, status, plan, input, created_at, shopping_have")
     .eq("id", id)
     .maybeSingle();
   if (!project) notFound();
@@ -46,6 +46,14 @@ async function ProjectContent({ params }: { params: Promise<{ id: string }> }) {
       plan={parsed.data}
       units={units}
       kerfMm={typeof profile?.kerf_mm === "number" ? profile.kerf_mm : 3}
+      projectId={project.id}
+      serverHave={(project.shopping_have as string[] | null) ?? []}
+      excludeMaterials={
+        Array.isArray((project.input as Record<string, unknown>)?.materialsOwned)
+          ? ((project.input as Record<string, unknown>)
+              .materialsOwned as string[])
+          : []
+      }
     />
   );
 }

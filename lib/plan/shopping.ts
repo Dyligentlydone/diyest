@@ -57,10 +57,26 @@ function estFrom(table: [RegExp, number][], name: string, qty: number, fallback:
 
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 
+/**
+ * Materials the user already has (leftovers mode) → filtered from the list.
+ * Matches on material tokens ("birch plywood" hits "… plywood sheet"); only
+ * applied to material sections — hardware and glue/finish are always kept.
+ */
+function matchesMaterial(name: string, owned: string[]): boolean {
+  const n = name.toLowerCase();
+  return owned.some((o) =>
+    o
+      .toLowerCase()
+      .split(/[^a-z0-9]+/)
+      .some((tok) => tok.length >= 3 && !/^\d/.test(tok) && n.includes(tok))
+  );
+}
+
 export function buildShoppingList(
   plan: Plan,
   cut: CutList,
-  units: Units = "metric"
+  units: Units = "metric",
+  excludeMaterials: string[] = []
 ): ShoppingList {
   const items: ShopItem[] = [];
 
@@ -143,11 +159,27 @@ export function buildShoppingList(
   const sections = order
     .map((name) => ({ name, items: items.filter((i) => i.section === name) }))
     .filter((s) => s.items.length);
+  // leftovers mode: drop material-section items the user already owns
+  const MATERIAL_SECTIONS = new Set(["lumber", "sheet goods", "bought parts"]);
+  const kept = excludeMaterials.length
+    ? sections
+        .map((s) =>
+          MATERIAL_SECTIONS.has(s.name)
+            ? {
+                ...s,
+                items: s.items.filter(
+                  (i) => !matchesMaterial(i.name, excludeMaterials)
+                ),
+              }
+            : s
+        )
+        .filter((s) => s.items.length)
+    : sections;
   const estTotalUsd = Math.round(
-    items.reduce((s, i) => s + (i.estUsd ?? 0), 0) * 100
+    kept.flatMap((s) => s.items).reduce((s, i) => s + (i.estUsd ?? 0), 0) * 100
   ) / 100;
 
-  return { sections, estTotalUsd };
+  return { sections: kept, estTotalUsd };
 }
 
 /** Plain-text copy for clipboard/print. */

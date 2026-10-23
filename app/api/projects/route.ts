@@ -7,7 +7,9 @@ import { isSupabaseConfigured } from "@/lib/env";
 const saveSchema = z.object({
   id: z.string().uuid(),
   title: z.string().min(1).max(120),
-  mode: z.enum(["build", "fix", "space", "leftovers"]).default("build"),
+  mode: z
+    .enum(["build", "fix", "space", "leftovers", "describe"])
+    .default("build"),
   plan: planSchema,
   input: z.record(z.string(), z.unknown()).default({}),
   prompt_version: z.string().default("plan.v1.2"),
