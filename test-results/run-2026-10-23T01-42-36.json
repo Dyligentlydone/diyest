@@ -1,0 +1,538 @@
+{
+  "base": "http://localhost:3003",
+  "at": "2026-10-23T01:42:36.634Z",
+  "request": {
+    "description": "A simple freestanding pine bookcase with 3 shelves, butt joints and screws",
+    "targetDimensionsMm": {
+      "width": 800,
+      "height": 1800,
+      "depth": 300
+    },
+    "units": "metric",
+    "skillLevel": "beginner",
+    "budget": "budget",
+    "style": "modern",
+    "currency": "USD",
+    "image": null
+  },
+  "wallMs": 62660,
+  "httpStatus": 200,
+  "checks": [
+    {
+      "name": "GET / → 200",
+      "pass": true,
+      "detail": "got 200"
+    },
+    {
+      "name": "GET /new → 200",
+      "pass": true,
+      "detail": "got 200"
+    },
+    {
+      "name": "GET /plan/draft → 200",
+      "pass": true,
+      "detail": "got 200"
+    },
+    {
+      "name": "POST /api/generate → 200",
+      "pass": true,
+      "detail": "got 200"
+    },
+    {
+      "name": "anonymous usage cookie incremented",
+      "pass": true,
+      "detail": "diyest_anon_gens=1"
+    },
+    {
+      "name": "result.ok === true",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "plan re-parses against planSchema",
+      "pass": true
+    },
+    {
+      "name": "overall width ≈ 800mm (±5%)",
+      "pass": true,
+      "detail": "got 800"
+    },
+    {
+      "name": "overall height ≈ 1800mm (±5%)",
+      "pass": true,
+      "detail": "got 1800"
+    },
+    {
+      "name": "overall depth ≈ 300mm (±5%)",
+      "pass": true,
+      "detail": "got 300"
+    },
+    {
+      "name": "no unverified issues",
+      "pass": true,
+      "detail": "[]"
+    }
+  ],
+  "response": {
+    "ok": true,
+    "plan": {
+      "title": "Freestanding Pine Bookcase",
+      "summary": "A simple 800 mm wide bookcase with two sides, a top, a bottom, three fixed shelves, front stiffening rails, and a plywood back. Butt joints are fastened with predrilled screws; the back and anti-tip straps help keep the tall case square and secure.",
+      "difficulty": "beginner",
+      "est_hours": 7,
+      "est_cost": {
+        "low": 100,
+        "high": 180,
+        "currency": "USD"
+      },
+      "overall_dimensions_mm": {
+        "width": 800,
+        "depth": 300,
+        "height": 1800
+      },
+      "assumptions": [
+        "The three shelves are interior shelves; the top and bottom are separate panels.",
+        "Dimensions are finished outside dimensions. Pine parts are 18 mm thick; the back is 6 mm plywood.",
+        "The sides and horizontal panels use straight, square butt joints with screws. The shelf front rails reduce the unsupported shelf span and help resist sag under books.",
+        "Pine board is assumed to be actual 18 x 300 mm stock. If only 286 mm-wide stock is available, use it and accept a slightly shallower case, or source wider stock.",
+        "The case is freestanding but must be secured to a suitable wall stud with anti-tip straps. Wall construction and stud locations are not known.",
+        "The shelves are fixed at evenly spaced heights; the clear openings are approximately 412 mm high before accounting for the front rails."
+      ],
+      "clarifying_questions": [],
+      "parts": [
+        {
+          "id": "P1",
+          "name": "Side panels",
+          "material": "18 mm pine board",
+          "stock": "board",
+          "length_mm": 1800,
+          "width_mm": 294,
+          "thickness_mm": 18,
+          "qty": 2,
+          "placements": [
+            {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "sx": 18,
+              "sy": 1800,
+              "sz": 294
+            },
+            {
+              "x": 782,
+              "y": 0,
+              "z": 0,
+              "sx": 18,
+              "sy": 1800,
+              "sz": 294
+            }
+          ],
+          "profile": null,
+          "cross_section": null,
+          "ends": null,
+          "notes": "The rear edges finish at z=294; the 6 mm back brings total depth to 300 mm."
+        },
+        {
+          "id": "P2",
+          "name": "Top and bottom panels",
+          "material": "18 mm pine board",
+          "stock": "board",
+          "length_mm": 764,
+          "width_mm": 294,
+          "thickness_mm": 18,
+          "qty": 2,
+          "placements": [
+            {
+              "x": 18,
+              "y": 0,
+              "z": 0,
+              "sx": 764,
+              "sy": 18,
+              "sz": 294
+            },
+            {
+              "x": 18,
+              "y": 1782,
+              "z": 0,
+              "sx": 764,
+              "sy": 18,
+              "sz": 294
+            }
+          ],
+          "profile": null,
+          "cross_section": null,
+          "ends": null,
+          "notes": "Fit between the side panels. The bottom occupies y=0–18 and the top y=1782–1800."
+        },
+        {
+          "id": "P3",
+          "name": "Interior shelves",
+          "material": "18 mm pine board",
+          "stock": "board",
+          "length_mm": 764,
+          "width_mm": 294,
+          "thickness_mm": 18,
+          "qty": 3,
+          "placements": [
+            {
+              "x": 18,
+              "y": 450,
+              "z": 0,
+              "sx": 764,
+              "sy": 18,
+              "sz": 294
+            },
+            {
+              "x": 18,
+              "y": 900,
+              "z": 0,
+              "sx": 764,
+              "sy": 18,
+              "sz": 294
+            },
+            {
+              "x": 18,
+              "y": 1350,
+              "z": 0,
+              "sx": 764,
+              "sy": 18,
+              "sz": 294
+            }
+          ],
+          "profile": null,
+          "cross_section": null,
+          "ends": null,
+          "notes": "Fixed shelves, evenly spaced. Each shelf meets both sides and the back panel."
+        },
+        {
+          "id": "P4",
+          "name": "Shelf front stiffening rails",
+          "material": "38 x 38 mm pine",
+          "stock": "board",
+          "length_mm": 764,
+          "width_mm": 38,
+          "thickness_mm": 38,
+          "qty": 3,
+          "placements": [
+            {
+              "x": 18,
+              "y": 412,
+              "z": 0,
+              "sx": 764,
+              "sy": 38,
+              "sz": 38
+            },
+            {
+              "x": 18,
+              "y": 862,
+              "z": 0,
+              "sx": 764,
+              "sy": 38,
+              "sz": 38
+            },
+            {
+              "x": 18,
+              "y": 1312,
+              "z": 0,
+              "sx": 764,
+              "sy": 38,
+              "sz": 38
+            }
+          ],
+          "profile": null,
+          "cross_section": null,
+          "ends": null,
+          "notes": "Rails sit directly under the front edge of each interior shelf and between the sides."
+        },
+        {
+          "id": "P5",
+          "name": "Back panel",
+          "material": "6 mm plywood",
+          "stock": "sheet",
+          "length_mm": 1800,
+          "width_mm": 800,
+          "thickness_mm": 6,
+          "qty": 1,
+          "placements": [
+            {
+              "x": 0,
+              "y": 0,
+              "z": 294,
+              "sx": 800,
+              "sy": 1800,
+              "sz": 6
+            }
+          ],
+          "profile": null,
+          "cross_section": null,
+          "ends": null,
+          "notes": "Covers the full rear face and makes the case more resistant to racking."
+        }
+      ],
+      "hardware": [
+        {
+          "name": "Coarse-thread wood screws, #8",
+          "size": "50 mm",
+          "qty": 42,
+          "notes": "For the top, bottom, shelves, and rail ends. Predrill near board ends to reduce splitting."
+        },
+        {
+          "name": "Coarse-thread wood screws, #8",
+          "size": "40 mm",
+          "qty": 12,
+          "notes": "Four screws through each shelf into its front stiffening rail."
+        },
+        {
+          "name": "Wood screws, #6",
+          "size": "20 mm",
+          "qty": 50,
+          "notes": "For attaching the 6 mm back panel around its perimeter and across the shelf and rail lines."
+        },
+        {
+          "name": "Anti-tip furniture strap kit",
+          "size": "Two straps with fasteners suitable for a wall stud",
+          "qty": 1,
+          "notes": "Secure the case to at least one wall stud; use the kit's specified fasteners."
+        },
+        {
+          "name": "PVA wood glue",
+          "size": "Standard bottle",
+          "qty": 1,
+          "notes": "Apply a thin film to the butt-joint faces and rail-to-shelf contact."
+        }
+      ],
+      "finishes": [
+        {
+          "name": "Water-based clear polyurethane",
+          "qty": "Approximately 1 L",
+          "notes": "Apply 2–3 thin coats, following the product label for recoat and cure times."
+        }
+      ],
+      "tools": [
+        {
+          "name": "Tape measure and pencil",
+          "required": true,
+          "alternative": null
+        },
+        {
+          "name": "Combination square",
+          "required": true,
+          "alternative": "A reliable framing square"
+        },
+        {
+          "name": "Circular saw with straightedge guide",
+          "required": true,
+          "alternative": "Have the lumberyard cut the panels to size, or use a handsaw with a clamped guide"
+        },
+        {
+          "name": "Drill/driver with drill bits and countersink bit",
+          "required": true,
+          "alternative": "A hand drill and manual countersink"
+        },
+        {
+          "name": "Clamps",
+          "required": true,
+          "alternative": "Temporary corner blocks and a helper to hold panels square"
+        },
+        {
+          "name": "Random-orbit sander",
+          "required": false,
+          "alternative": "Sanding block and sandpaper"
+        },
+        {
+          "name": "Stud finder and level",
+          "required": true,
+          "alternative": "Confirm a stud location by another reliable method; use a long level or plumb line"
+        },
+        {
+          "name": "Paintbrush or finish applicator",
+          "required": true,
+          "alternative": "A clean lint-free cloth if the finish label permits"
+        }
+      ],
+      "steps": [
+        {
+          "n": 1,
+          "title": "Check and mark the cuts",
+          "text": "Mark P1–P4 to the listed dimensions, checking each cut line with the square. Ask the store to cut P5 to 800 x 1800 mm if you cannot safely cut sheet goods at home. Keep the saw kerf on the waste side of each line.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5"
+          ],
+          "tools_used": [
+            "Tape measure and pencil",
+            "Combination square",
+            "Circular saw with straightedge guide"
+          ],
+          "safety": "Wear eye and hearing protection and a dust mask when cutting. Support the stock so the offcut cannot pinch the blade; unplug or remove the battery before adjusting the saw.",
+          "tip": "Label each matching part as a pair or set so the shelves and rails do not get mixed up."
+        },
+        {
+          "n": 2,
+          "title": "Cut and inspect the parts",
+          "text": "Cut the pine panels and rails to length, then cut the back panel if needed. Check that paired edges are square and that the sides are exactly the same height. Test-fit the top, bottom, and shelves between the sides; each should fit the 764 mm opening without force.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5"
+          ],
+          "tools_used": [
+            "Circular saw with straightedge guide",
+            "Tape measure and pencil",
+            "Combination square"
+          ],
+          "safety": "Use eye and hearing protection and keep hands away from the blade path. Secure small parts before cutting, or have the store make these cuts.",
+          "tip": "A clean, square cut makes the butt joints easier to assemble and helps the case stay square."
+        },
+        {
+          "n": 3,
+          "title": "Sand and predrill",
+          "text": "Sand exposed faces and edges, beginning with 120-grit paper and finishing with 180-grit. On the outside faces of P1, mark three screw positions for each top, bottom, and shelf joint, keeping them centered on the 18 mm panel edges. Drill pilot holes and countersinks at the marks; mark two pilot-hole positions at each end of every P4 rail.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5"
+          ],
+          "tools_used": [
+            "Random-orbit sander",
+            "Drill/driver with drill bits and countersink bit",
+            "Tape measure and pencil",
+            "Combination square"
+          ],
+          "safety": "Wear a dust mask and eye protection while sanding and drilling. Clamp parts securely and keep fingers clear of the drill bit.",
+          "tip": "Use a depth stop or tape on the bit so pilot holes do not break through the inside face."
+        },
+        {
+          "n": 4,
+          "title": "Assemble the case sides and horizontals",
+          "text": "Lay one P1 side flat with its inside face up. Apply a thin film of glue to the ends of P2 and P3, position them between the sides at y=0, 450, 900, 1350, and 1782 mm, then drive the 50 mm screws through the predrilled side holes. Fit the second P1 side over the other ends and clamp the case loosely before tightening.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3"
+          ],
+          "tools_used": [
+            "Drill/driver with drill bits and countersink bit",
+            "Clamps",
+            "Tape measure and pencil",
+            "Combination square"
+          ],
+          "safety": "Use eye protection while driving screws and keep the case supported so it cannot tip or fall. Lift the large panels with a helper if needed.",
+          "tip": "Measure the diagonals of the case; adjust the clamps until both diagonals match before tightening all screws."
+        },
+        {
+          "n": 5,
+          "title": "Fit the shelf stiffening rails",
+          "text": "Place each P4 directly under the front edge of its P3 shelf, centered between the sides. Glue the rail-to-shelf contact and the rail ends, then drive two 50 mm screws through each side into each rail end. Drive four 40 mm screws down through each shelf into its rail, spaced evenly along the width.",
+          "parts_used": [
+            "P1",
+            "P3",
+            "P4"
+          ],
+          "tools_used": [
+            "Drill/driver with drill bits and countersink bit",
+            "Clamps",
+            "Tape measure and pencil"
+          ],
+          "safety": "Wear eye protection and clamp the rails before drilling. Keep the driver straight to avoid slipping off the screw head.",
+          "tip": "Make the rail flush with the shelf's front edge; a recessed or projecting rail will be noticeable."
+        },
+        {
+          "n": 6,
+          "title": "Square the case and attach the back",
+          "text": "Set the case face down on a flat, protected surface and recheck its diagonals. Align P5 flush with the outside edges and rear face, then clamp it in place. Drive the 20 mm screws around the perimeter and into the backs of the top, bottom, shelves, and rails, using roughly 150 mm spacing and the 50 screws provided.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5"
+          ],
+          "tools_used": [
+            "Drill/driver with drill bits and countersink bit",
+            "Clamps",
+            "Tape measure and pencil",
+            "Combination square"
+          ],
+          "safety": "Use a helper to turn or position the case; it is large and can shift unexpectedly. Wear eye protection while driving screws.",
+          "tip": "Keep checking that the back edges stay flush and the case remains square as you fasten the panel."
+        },
+        {
+          "n": 7,
+          "title": "Fill and sand for finishing",
+          "text": "Check for proud screw heads, splinters, and small gaps; tighten screws and fill minor defects with suitable wood filler. Once the filler is dry, lightly sand visible surfaces with 180-grit paper and remove all dust. Do not sand through the thin plywood back.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5"
+          ],
+          "tools_used": [
+            "Random-orbit sander"
+          ],
+          "safety": "Wear a dust mask and eye protection while sanding. Keep the sander moving to avoid creating low spots.",
+          "tip": "Ease sharp exposed corners with a few hand-sanding strokes rather than rounding them heavily."
+        },
+        {
+          "n": 8,
+          "title": "Apply the finish",
+          "text": "Apply 2–3 thin coats of water-based clear polyurethane to the accessible wood surfaces, following the label's drying and recoat times. Lightly sand between coats only if the product instructions call for it. Let the final coat cure fully before loading the shelves.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5"
+          ],
+          "tools_used": [
+            "Paintbrush or finish applicator"
+          ],
+          "safety": "Work with good ventilation, wear gloves, and keep finish away from flames and children. Follow the product label for protective equipment and disposal.",
+          "tip": "Thin coats are less likely to run or dry with a rough, uneven surface."
+        },
+        {
+          "n": 9,
+          "title": "Stand the case and secure it against tipping",
+          "text": "With a helper, raise the fully assembled case upright and place it in its final location. Use a level to check it, adding firm shims under the bottom if the floor is uneven. Attach the anti-tip straps to the case and into a wall stud with the kit's specified fasteners, then confirm the straps are snug before loading books.",
+          "parts_used": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5"
+          ],
+          "tools_used": [
+            "Stud finder and level",
+            "Drill/driver with drill bits and countersink bit"
+          ],
+          "safety": "Use two people to lift and stand the bookcase. Wear eye protection when drilling the wall, verify the stud location, and do not rely on drywall-only fasteners for the anti-tip connection.",
+          "tip": "Load heavier books on the lower shelves to keep the center of gravity low."
+        }
+      ],
+      "safety_overview": [
+        "Wear safety glasses for cutting, drilling, and screw driving; use hearing protection and a dust mask when cutting or sanding.",
+        "Clamp work securely and keep hands clear of saw blades and drill bits. Disconnect power before adjusting cutting tools.",
+        "Use a helper to move or stand the assembled bookcase; the tall case can tip during handling.",
+        "Secure the finished bookcase to a wall stud with anti-tip hardware before loading it.",
+        "Use finishes with good ventilation and follow the product label for gloves, drying, and disposal."
+      ],
+      "load_bearing": true
+    },
+    "unverified": [],
+    "warnings": [],
+    "promptVersion": "plan.v1.2",
+    "model": "gpt-6-luna",
+    "latencyMs": 62642,
+    "tokens": 10026,
+    "repaired": false,
+    "raw": "{\n  \"title\": \"Freestanding Pine Bookcase\",\n  \"summary\": \"A simple 800 mm wide bookcase with two sides, a top, a bottom, three fixed shelves, front stiffening rails, and a plywood back. Butt joints are fastened with predrilled screws; the back and anti-tip straps help keep the tall case square and secure.\",\n  \"difficulty\": \"beginner\",\n  \"est_hours\": 7,\n  \"est_cost\": {\n    \"low\": 100,\n    \"high\": 180,\n    \"currency\": \"USD\"\n  },\n  \"overall_dimensions_mm\": {\n    \"width\": 800,\n    \"depth\": 300,\n    \"height\": 1800\n  },\n  \"assumptions\": [\n    \"The three shelves are interior shelves; the top and bottom are separate panels.\",\n    \"Dimensions are finished outside dimensions. Pine parts are 18 mm thick; the back is 6 mm plywood.\",\n    \"The sides and horizontal panels use straight, square butt joints with screws. The shelf front rails reduce the unsupported shelf span and help resist sag under books.\",\n    \"Pine board is assumed to be actual 18 x 300 mm stock. If only 286 mm-wide stock is available, use it and accept a slightly shallower case, or source wider stock.\",\n    \"The case is freestanding but must be secured to a suitable wall stud with anti-tip straps. Wall construction and stud locations are not known.\",\n    \"The shelves are fixed at evenly spaced heights; the clear openings are approximately 412 mm high before accounting for the front rails.\"\n  ],\n  \"clarifying_questions\": [],\n  \"parts\": [\n    {\n      \"id\": \"P1\",\n      \"name\": \"Side panels\",\n      \"material\": \"18 mm pine board\",\n      \"stock\": \"board\",\n      \"length_mm\": 1800,\n      \"width_mm\": 294,\n      \"thickness_mm\": 18,\n      \"qty\": 2,\n      \"placements\": [\n        {\n          \"x\": 0,\n          \"y\": 0,\n          \"z\": 0,\n          \"sx\": 18,\n          \"sy\": 1800,\n          \"sz\": 294\n        },\n        {\n          \"x\": 782,\n          \"y\": 0,\n          \"z\": 0,\n          \"sx\": 18,\n          \"sy\": 1800,\n          \"sz\": 294\n        }\n      ],\n      \"profile\": null,\n      \"cross_section\": null,\n      \"ends\": null,\n      \"notes\": \"The rear edges finish at z=294; the 6 mm back brings total depth to 300 mm.\"\n    },\n    {\n      \"id\": \"P2\",\n      \"name\": \"Top and bottom panels\",\n      \"material\": \"18 mm pine board\",\n      \"stock\": \"board\",\n      \"length_mm\": 764,\n      \"width_mm\": 294,\n      \"thickness_mm\": 18,\n      \"qty\": 2,\n      \"placements\": [\n        {\n          \"x\": 18,\n          \"y\": 0,\n          \"z\": 0,\n          \"sx\": 764,\n          \"sy\": 18,\n          \"sz\": 294\n        },\n        {\n          \"x\": 18,\n          \"y\": 1782,\n          \"z\": 0,\n          \"sx\": 764,\n          \"sy\": 18,\n          \"sz\": 294\n        }\n      ],\n      \"profile\": null,\n      \"cross_section\": null,\n      \"ends\": null,\n      \"notes\": \"Fit between the side panels. The bottom occupies y=0–18 and the top y=1782–1800.\"\n    },\n    {\n      \"id\": \"P3\",\n      \"name\": \"Interior shelves\",\n      \"material\": \"18 mm pine board\",\n      \"stock\": \"board\",\n      \"length_mm\": 764,\n      \"width_mm\": 294,\n      \"thickness_mm\": 18,\n      \"qty\": 3,\n      \"placements\": [\n        {\n          \"x\": 18,\n          \"y\": 450,\n          \"z\": 0,\n          \"sx\": 764,\n          \"sy\": 18,\n          \"sz\": 294\n        },\n        {\n          \"x\": 18,\n          \"y\": 900,\n          \"z\": 0,\n          \"sx\": 764,\n          \"sy\": 18,\n          \"sz\": 294\n        },\n        {\n          \"x\": 18,\n          \"y\": 1350,\n          \"z\": 0,\n          \"sx\": 764,\n          \"sy\": 18,\n          \"sz\": 294\n        }\n      ],\n      \"profile\": null,\n      \"cross_section\": null,\n      \"ends\": null,\n      \"notes\": \"Fixed shelves, evenly spaced. Each shelf meets both sides and the back panel.\"\n    },\n    {\n      \"id\": \"P4\",\n      \"name\": \"Shelf front stiffening rails\",\n      \"material\": \"38 x 38 mm pine\",\n      \"stock\": \"board\",\n      \"length_mm\": 764,\n      \"width_mm\": 38,\n      \"thickness_mm\": 38,\n      \"qty\": 3,\n      \"placements\": [\n        {\n          \"x\": 18,\n          \"y\": 412,\n          \"z\": 0,\n          \"sx\": 764,\n          \"sy\": 38,\n          \"sz\": 38\n        },\n        {\n          \"x\": 18,\n          \"y\": 862,\n          \"z\": 0,\n          \"sx\": 764,\n          \"sy\": 38,\n          \"sz\": 38\n        },\n        {\n          \"x\": 18,\n          \"y\": 1312,\n          \"z\": 0,\n          \"sx\": 764,\n          \"sy\": 38,\n          \"sz\": 38\n        }\n      ],\n      \"profile\": null,\n      \"cross_section\": null,\n      \"ends\": null,\n      \"notes\": \"Rails sit directly under the front edge of each interior shelf and between the sides.\"\n    },\n    {\n      \"id\": \"P5\",\n      \"name\": \"Back panel\",\n      \"material\": \"6 mm plywood\",\n      \"stock\": \"sheet\",\n      \"length_mm\": 1800,\n      \"width_mm\": 800,\n      \"thickness_mm\": 6,\n      \"qty\": 1,\n      \"placements\": [\n        {\n          \"x\": 0,\n          \"y\": 0,\n          \"z\": 294,\n          \"sx\": 800,\n          \"sy\": 1800,\n          \"sz\": 6\n        }\n      ],\n      \"profile\": null,\n      \"cross_section\": null,\n      \"ends\": null,\n      \"notes\": \"Covers the full rear face and makes the case more resistant to racking.\"\n    }\n  ],\n  \"hardware\": [\n    {\n      \"name\": \"Coarse-thread wood screws, #8\",\n      \"size\": \"50 mm\",\n      \"qty\": 42,\n      \"notes\": \"For the top, bottom, shelves, and rail ends. Predrill near board ends to reduce splitting.\"\n    },\n    {\n      \"name\": \"Coarse-thread wood screws, #8\",\n      \"size\": \"40 mm\",\n      \"qty\": 12,\n      \"notes\": \"Four screws through each shelf into its front stiffening rail.\"\n    },\n    {\n      \"name\": \"Wood screws, #6\",\n      \"size\": \"20 mm\",\n      \"qty\": 50,\n      \"notes\": \"For attaching the 6 mm back panel around its perimeter and across the shelf and rail lines.\"\n    },\n    {\n      \"name\": \"Anti-tip furniture strap kit\",\n      \"size\": \"Two straps with fasteners suitable for a wall stud\",\n      \"qty\": 1,\n      \"notes\": \"Secure the case to at least one wall stud; use the kit's specified fasteners.\"\n    },\n    {\n      \"name\": \"PVA wood glue\",\n      \"size\": \"Standard bottle\",\n      \"qty\": 1,\n      \"notes\": \"Apply a thin film to the butt-joint faces and rail-to-shelf contact.\"\n    }\n  ],\n  \"finishes\": [\n    {\n      \"name\": \"Water-based clear polyurethane\",\n      \"qty\": \"Approximately 1 L\",\n      \"notes\": \"Apply 2–3 thin coats, following the product label for recoat and cure times.\"\n    }\n  ],\n  \"tools\": [\n    {\n      \"name\": \"Tape measure and pencil\",\n      \"required\": true,\n      \"alternative\": null\n    },\n    {\n      \"name\": \"Combination square\",\n      \"required\": true,\n      \"alternative\": \"A reliable framing square\"\n    },\n    {\n      \"name\": \"Circular saw with straightedge guide\",\n      \"required\": true,\n      \"alternative\": \"Have the lumberyard cut the panels to size, or use a handsaw with a clamped guide\"\n    },\n    {\n      \"name\": \"Drill/driver with drill bits and countersink bit\",\n      \"required\": true,\n      \"alternative\": \"A hand drill and manual countersink\"\n    },\n    {\n      \"name\": \"Clamps\",\n      \"required\": true,\n      \"alternative\": \"Temporary corner blocks and a helper to hold panels square\"\n    },\n    {\n      \"name\": \"Random-orbit sander\",\n      \"required\": false,\n      \"alternative\": \"Sanding block and sandpaper\"\n    },\n    {\n      \"name\": \"Stud finder and level\",\n      \"required\": true,\n      \"alternative\": \"Confirm a stud location by another reliable method; use a long level or plumb line\"\n    },\n    {\n      \"name\": \"Paintbrush or finish applicator\",\n      \"required\": true,\n      \"alternative\": \"A clean lint-free cloth if the finish label permits\"\n    }\n  ],\n  \"steps\": [\n    {\n      \"n\": 1,\n      \"title\": \"Check and mark the cuts\",\n      \"text\": \"Mark P1–P4 to the listed dimensions, checking each cut line with the square. Ask the store to cut P5 to 800 x 1800 mm if you cannot safely cut sheet goods at home. Keep the saw kerf on the waste side of each line.\",\n      \"parts_used\": [\n        \"P1\",\n        \"P2\",\n        \"P3\",\n        \"P4\",\n        \"P5\"\n      ],\n      \"tools_used\": [\n        \"Tape measure and pencil\",\n        \"Combination square\",\n        \"Circular saw with straightedge guide\"\n      ],\n      \"safety\": \"Wear eye and hearing protection and a dust mask when cutting. Support the stock so the offcut cannot pinch the blade; unplug or remove the battery before adjusting the saw.\",\n      \"tip\": \"Label each matching part as a pair or set so the shelves and rails do not get mixed up.\"\n    },\n    {\n      \"n\": 2,\n      \"title\": \"Cut and inspect the parts\",\n      \"text\": \"Cut the pine panels and rails to length, then cut the back panel if needed. Check that paired edges are square and that the sides are exactly the same height. Test-fit the top, bottom, and shelves between the sides; each should fit the 764 mm opening without force.\",\n      \"parts_used\": [\n        \"P1\",\n        \"P2\",\n        \"P3\",\n        \"P4\",\n        \"P5\"\n      ],\n      \"tools_used\": [\n        \"Circular saw with straightedge guide\",\n        \"Tape measure and pencil\",\n        \"Combination square\"\n      ],\n      \"safety\": \"Use eye and hearing protection and keep hands away from the blade path. Secure small parts before cutting, or have the store make these cuts.\",\n      \"tip\": \"A clean, square cut makes the butt joints easier to assemble and helps the case stay square.\"\n    },\n    {\n      \"n\": 3,\n      \"title\": \"Sand and predrill\",\n      \"text\": \"Sand exposed faces and edges, beginning with 120-grit paper and finishing with 180-grit. On the outside faces of P1, mark three screw positions for each top, bottom, and shelf joint, keeping them centered on the 18 mm panel edges. Drill pilot holes and countersinks at the marks; mark two pilot-hole positions at each end of every P4 rail.\",\n      \"parts_used\": [\n        \"P1\",\n        \"P2\",\n        \"P3\",\n        \"P4\",\n        \"P5\"\n      ],\n      \"tools_used\": [\n        \"Random-orbit sander\",\n        \"Drill/driver with drill bits and countersink bit\",\n        \"Tape measure and pencil\",\n        \"Combination square\"\n      ],\n      \"safety\": \"Wear a dust mask and eye protection while sanding and drilling. Clamp parts securely and keep fingers clear of the drill bit.\",\n      \"tip\": \"Use a depth stop or tape on the bit so pilot holes do not break through the inside face.\"\n    },\n    {\n      \"n\": 4,\n      \"title\": \"Assemble the case sides and horizontals\",\n      \"text\": \"Lay one P1 side flat with its inside face up. Apply a thin film of glue to the ends of P2 and P3, position them between the sides at y=0, 450, 900, 1350, and 1782 mm, then drive the 50 mm screws through the predrilled side holes. Fit the second P1 side over the other ends and clamp the case loosely before tightening.\",\n      \"parts_used\": [\n        \"P1\",\n        \"P2\",\n        \"P3\"\n      ],\n      \"tools_used\": [\n        \"Drill/driver with drill bits and countersink bit\",\n        \"Clamps\",\n        \"Tape measure and pencil\",\n        \"Combination square\"\n      ],\n      \"safety\": \"Use eye protection while driving screws and keep the case supported so it cannot tip or fall. Lift the large panels with a helper if needed.\",\n      \"tip\": \"Measure the diagonals of the case; adjust the clamps until both diagonals match before tightening all screws.\"\n    },\n    {\n      \"n\": 5,\n      \"title\": \"Fit the shelf stiffening rails\",\n      \"text\": \"Place each P4 directly under the front edge of its P3 shelf, centered between the sides. Glue the rail-to-shelf contact and the rail ends, then drive two 50 mm screws through each side into each rail end. Drive four 40 mm screws down through each shelf into its rail, spaced evenly along the width.\",\n      \"parts_used\": [\n        \"P1\",\n        \"P3\",\n        \"P4\"\n      ],\n      \"tools_used\": [\n        \"Drill/driver with drill bits and countersink bit\",\n        \"Clamps\",\n        \"Tape measure and pencil\"\n      ],\n      \"safety\": \"Wear eye protection and clamp the rails before drilling. Keep the driver straight to avoid slipping off the screw head.\",\n      \"tip\": \"Make the rail flush with the shelf's front edge; a recessed or projecting rail will be noticeable.\"\n    },\n    {\n      \"n\": 6,\n      \"title\": \"Square the case and attach the back\",\n      \"text\": \"Set the case face down on a flat, protected surface and recheck its diagonals. Align P5 flush with the outside edges and rear face, then clamp it in place. Drive the 20 mm screws around the perimeter and into the backs of the top, bottom, shelves, and rails, using roughly 150 mm spacing and the 50 screws provided.\",\n      \"parts_used\": [\n        \"P1\",\n        \"P2\",\n        \"P3\",\n        \"P4\",\n        \"P5\"\n      ],\n      \"tools_used\": [\n        \"Drill/driver with drill bits and countersink bit\",\n        \"Clamps\",\n        \"Tape measure and pencil\",\n        \"Combination square\"\n      ],\n      \"safety\": \"Use a helper to turn or position the case; it is large and can shift unexpectedly. Wear eye protection while driving screws.\",\n      \"tip\": \"Keep checking that the back edges stay flush and the case remains square as you fasten the panel.\"\n    },\n    {\n      \"n\": 7,\n      \"title\": \"Fill and sand for finishing\",\n      \"text\": \"Check for proud screw heads, splinters, and small gaps; tighten screws and fill minor defects with suitable wood filler. Once the filler is dry, lightly sand visible surfaces with 180-grit paper and remove all dust. Do not sand through the thin plywood back.\",\n      \"parts_used\": [\n        \"P1\",\n        \"P2\",\n        \"P3\",\n        \"P4\",\n        \"P5\"\n      ],\n      \"tools_used\": [\n        \"Random-orbit sander\"\n      ],\n      \"safety\": \"Wear a dust mask and eye protection while sanding. Keep the sander moving to avoid creating low spots.\",\n      \"tip\": \"Ease sharp exposed corners with a few hand-sanding strokes rather than rounding them heavily.\"\n    },\n    {\n      \"n\": 8,\n      \"title\": \"Apply the finish\",\n      \"text\": \"Apply 2–3 thin coats of water-based clear polyurethane to the accessible wood surfaces, following the label's drying and recoat times. Lightly sand between coats only if the product instructions call for it. Let the final coat cure fully before loading the shelves.\",\n      \"parts_used\": [\n        \"P1\",\n        \"P2\",\n        \"P3\",\n        \"P4\",\n        \"P5\"\n      ],\n      \"tools_used\": [\n        \"Paintbrush or finish applicator\"\n      ],\n      \"safety\": \"Work with good ventilation, wear gloves, and keep finish away from flames and children. Follow the product label for protective equipment and disposal.\",\n      \"tip\": \"Thin coats are less likely to run or dry with a rough, uneven surface.\"\n    },\n    {\n      \"n\": 9,\n      \"title\": \"Stand the case and secure it against tipping\",\n      \"text\": \"With a helper, raise the fully assembled case upright and place it in its final location. Use a level to check it, adding firm shims under the bottom if the floor is uneven. Attach the anti-tip straps to the case and into a wall stud with the kit's specified fasteners, then confirm the straps are snug before loading books.\",\n      \"parts_used\": [\n        \"P1\",\n        \"P2\",\n        \"P3\",\n        \"P4\",\n        \"P5\"\n      ],\n      \"tools_used\": [\n        \"Stud finder and level\",\n        \"Drill/driver with drill bits and countersink bit\"\n      ],\n      \"safety\": \"Use two people to lift and stand the bookcase. Wear eye protection when drilling the wall, verify the stud location, and do not rely on drywall-only fasteners for the anti-tip connection.\",\n      \"tip\": \"Load heavier books on the lower shelves to keep the center of gravity low.\"\n    }\n  ],\n  \"safety_overview\": [\n    \"Wear safety glasses for cutting, drilling, and screw driving; use hearing protection and a dust mask when cutting or sanding.\",\n    \"Clamp work securely and keep hands clear of saw blades and drill bits. Disconnect power before adjusting cutting tools.\",\n    \"Use a helper to move or stand the assembled bookcase; the tall case can tip during handling.\",\n    \"Secure the finished bookcase to a wall stud with anti-tip hardware before loading it.\",\n    \"Use finishes with good ventilation and follow the product label for gloves, drying, and disposal.\"\n  ],\n  \"load_bearing\": true\n}"
+  }
+}
