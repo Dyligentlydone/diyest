@@ -21,21 +21,27 @@ const MODES = [
   { key: "leftovers", label: "Leftovers", active: false },
 ];
 
-async function defaults(): Promise<{ units: Units; skillLevel: SkillLevel }> {
-  if (!isSupabaseConfigured()) return { units: "metric", skillLevel: "beginner" };
+async function defaults(): Promise<{
+  units: Units;
+  skillLevel: SkillLevel;
+  toolsOwned: string[];
+}> {
+  if (!isSupabaseConfigured())
+    return { units: "metric", skillLevel: "beginner", toolsOwned: [] };
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return { units: "metric", skillLevel: "beginner" };
+  if (!user) return { units: "metric", skillLevel: "beginner", toolsOwned: [] };
   const { data: p } = await supabase
     .from("profiles")
-    .select("units, skill_level")
+    .select("units, skill_level, tools_owned")
     .eq("id", user.id)
     .maybeSingle();
   return {
     units: p?.units === "imperial" ? "imperial" : "metric",
     skillLevel: (p?.skill_level as SkillLevel) ?? "beginner",
+    toolsOwned: (p?.tools_owned as string[] | null) ?? [],
   };
 }
 

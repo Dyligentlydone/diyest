@@ -244,3 +244,45 @@ Residual blockers (1–3 per ~2/7 plans) are real but edge-grade critiques — t
 - **Flex tier is a dead end** on this account — pure 429s, not latency.
 - **Luna review fallback** accidentally produced a 7/7 clean run at $0.019 avg — cheapest possible config if Sol review ever needs cutting.
 - **Speed is reasoning-bound, not quality-bound** — stage calls spend most latency in reasoning tokens (40–60k total/plan); effort knobs help stage-1 but stages 2/review dominate.
+
+---
+
+## 13 · Milestone 3 — plan UX (shipped, mock/static verified)
+
+Finalized AI setup (per user decision):
+- Two-stage Luna generation; stage-1 effort `low`, stage-2 `medium`.
+- **Dual parallel review** (Luna + Sol) on every plan; issues merged by
+  step/joint/category dedupe, higher severity wins; merged list feeds repair.
+- Luna stages + repairs on **Fast tier**; Sol on Standard. Sol escalation only
+  after repair leaves blockers, subject to the $0.60 cap.
+- `plan.v1.5` default — stage-2 prevention rules for the top-3 logged issue
+  categories (joint_strength 21, hardware 20, clarity 17).
+- UX: partial plan shows overview/blueprint/cut list/shopping immediately;
+  steps labeled "Draft — carpenter check in progress" until review lands;
+  repair-changed steps highlighted ("updated by review").
+- `notifyOwner()` remains stubbed pending a Resend key.
+
+Milestone 3 features shipped:
+- **Cut-list optimizer** (`lib/plan/cutlist.ts`): 1D board packing (fewest
+  pieces, least waste across stock lengths), 2D sheet shelf-packing, kerf,
+  editable stock sizes, buy-parts excluded, shaped parts → bounding rect +
+  trace note, true end-cut angles on `ends:"level"` members.
+- **Shopping list** (`lib/plan/shopping.ts` + component): store-section
+  grouping, per-line est. costs + total, "already have" (localStorage),
+  copy + print, `affiliateUrl` plumbed (empty until M6).
+- **Units**: mm internal, imperial fractions (1/16″) at display; stock labels
+  snap to nominal inches only when within ~2mm; units toggle throughout.
+- **Tools**: `profiles.tools_owned` (migration 0004) + settings UI; "use my
+  tools only" on /new feeds prompt + validator.
+- **Plan info**: PPE per step (`step.ppe`, icon badges); ~90-term glossary
+  (`lib/glossary.ts` + `GlossedText` inlining + collapsible section).
+- **Blueprint polish**: part highlighting across blueprint/parts/cut
+  list/steps; SVG + PNG download buttons; joint callouts, BUY marks and
+  title-block fitting already in.
+
+Verification: `tsc` clean, ESLint clean, **55/55 vitest** (10 new cut-list /
+shopping tests), `next build` clean, SSR smoke-check of the full PlanView
+(cut list packs, shopping sections, imperial labels) verified on :3003.
+
+Still open for M3 polish/next: PNG export is canvas-based (verified logic,
+not pixel-diffed); no live generation run since API credits ran out.

@@ -173,6 +173,9 @@ export const partSchema = z.object({
   notes: z.string().nullable().optional(),
 });
 
+export const ppeSchema = z.enum(["glasses", "hearing", "mask", "gloves"]);
+export type Ppe = z.infer<typeof ppeSchema>;
+
 export const stepSchema = z.object({
   n: z.number().int().positive(),
   title: z.string().min(1),
@@ -180,6 +183,8 @@ export const stepSchema = z.object({
   parts_used: z.array(z.string()),
   tools_used: z.array(z.string()),
   safety: z.string().nullable().optional(),
+  /** PPE icons for this step (glasses/hearing/mask/gloves). */
+  ppe: z.array(ppeSchema).nullable().optional(),
   tip: z.string().nullable().optional(),
 });
 export type Step = z.infer<typeof stepSchema>;

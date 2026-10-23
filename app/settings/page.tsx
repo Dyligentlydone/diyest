@@ -48,6 +48,7 @@ async function SettingsContent() {
     skill_level: "beginner",
     kerf_mm: 3,
     stock_sizes: {},
+    tools_owned: [],
     plan_tier: "free",
     stripe_customer_id: null,
     created_at: "",

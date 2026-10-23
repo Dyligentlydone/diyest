@@ -24,12 +24,13 @@ const PENDING_KEY = "diyest_pending_gen";
 export function BuildForm({
   defaults,
 }: {
-  defaults: { units: Units; skillLevel: SkillLevel };
+  defaults: { units: Units; skillLevel: SkillLevel; toolsOwned: string[] };
 }) {
   const router = useRouter();
   const fileRef = useRef<HTMLInputElement>(null);
   const [images, setImages] = useState<string[]>([]); // compressed data URLs
   const [units, setUnits] = useState<Units>(defaults.units);
+  const [useMyToolsOnly, setUseMyToolsOnly] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -72,6 +73,13 @@ export function BuildForm({
       budget: fd.get("budget"),
       style: fd.get("style"),
       currency: "USD",
+      useMyToolsOnly,
+      toolsOwned: useMyToolsOnly
+        ? String(fd.get("toolsOwned") ?? "")
+            .split("\n")
+            .map((s) => s.trim())
+            .filter(Boolean)
+        : undefined,
     };
 
     // Hand the request to the draft page — it owns the streamed generation
@@ -207,6 +215,35 @@ export function BuildForm({
             </SelectContent>
           </Select>
         </div>
+      </div>
+
+      {/* tools */}
+      <div className="space-y-2">
+        <label className="flex items-center gap-2 text-sm">
+          <input
+            type="checkbox"
+            checked={useMyToolsOnly}
+            onChange={(e) => setUseMyToolsOnly(e.target.checked)}
+            className="h-4 w-4 rounded border"
+          />
+          Use only the tools I own
+        </label>
+        {useMyToolsOnly && (
+          <textarea
+            name="toolsOwned"
+            rows={4}
+            defaultValue={defaults.toolsOwned.join("\n")}
+            placeholder={"drill/driver\ncircular saw\norbital sander"}
+            className="w-full rounded-md border bg-transparent px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          />
+        )}
+        {useMyToolsOnly && (
+          <p className="text-xs text-muted-foreground">
+            {defaults.toolsOwned.length
+              ? "Prefilled from your tool inventory — edit for this plan only. Update the saved list in Settings."
+              : "No saved tool inventory — list what you own, one per line (saved list lives in Settings)."}
+          </p>
+        )}
       </div>
 
       {error && (

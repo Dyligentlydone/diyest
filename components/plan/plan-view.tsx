@@ -3,20 +3,35 @@
 import { useState } from "react";
 import {
   AlertTriangle,
+  Biohazard,
+  BookOpen,
   ChevronDown,
   Clock,
+  Ear,
+  Glasses,
   Hammer,
+  Hand,
   ShieldAlert,
   Wrench,
 } from "lucide-react";
 import { BlueprintSheet } from "@/components/plan/blueprint-sheet";
+import { CutListView } from "@/components/plan/cutlist-view";
+import { GlossedText } from "@/components/plan/glossed-text";
+import { ShoppingList } from "@/components/plan/shopping-list";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { consumablesOf } from "@/lib/plan/derive";
-import type { Plan } from "@/lib/plan/schema";
+import { GLOSSARY, GLOSSARY_TERMS } from "@/lib/glossary";
+import type { Plan, Ppe } from "@/lib/plan/schema";
 import { formatDimension, formatDimensions } from "@/lib/units";
 import type { Units } from "@/lib/types";
+
+const PPE_ICON: Record<Ppe, { icon: typeof Glasses; label: string }> = {
+  glasses: { icon: Glasses, label: "safety glasses" },
+  hearing: { icon: Ear, label: "hearing protection" },
+  mask: { icon: Biohazard, label: "dust mask / respirator" },
+  gloves: { icon: Hand, label: "gloves" },
+};
 
 function PartSize({ part, units }: { part: Plan["parts"][number]; units: Units }) {
   const pl = part.placements[0];
@@ -52,6 +67,7 @@ export function PlanView({
   reviewPending = false,
   checking = false,
   changedSteps = [],
+  kerfMm = 3,
 }: {
   plan: Plan;
   units: Units;
@@ -65,8 +81,12 @@ export function PlanView({
   checking?: boolean;
   /** step numbers the carpenter-review repair changed */
   changedSteps?: number[];
+  /** saw kerf from user profile — used by the cut-list optimizer */
+  kerfMm?: number;
 }) {
   const [units, setUnits] = useState<Units>(initialUnits);
+  const [selId, setSelId] = useState<string | null>(null);
+  const toggle = (id: string) => setSelId((s) => (s === id ? null : id));
   const currency = plan.est_cost.currency;
   const money = (n: number) =>
     new Intl.NumberFormat("en-US", { style: "currency", currency, maximumFractionDigits: 0 }).format(n);
@@ -125,10 +145,10 @@ export function PlanView({
 
       {/* blueprint */}
       <section>
-        <BlueprintSheet plan={plan} units={units} />
+        <BlueprintSheet plan={plan} units={units} highlightPartId={selId} />
         <p className="mt-2 text-xs text-muted-foreground">
           Blueprint generated from plan geometry — measured views, not an
-          illustration.
+          illustration. Tap a part in any list to highlight it everywhere.
         </p>
       </section>
 
@@ -208,169 +228,110 @@ export function PlanView({
       {/* materials */}
       <section>
         <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold">
-          <Hammer className="h-5 w-5" /> Materials &amp; hardware
+          <Hammer className="h-5 w-5" /> Parts
         </h2>
-        <div className="grid gap-4 lg:grid-cols-2">
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm">Parts to cut</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="text-left text-xs uppercase tracking-wide text-muted-foreground">
-                    <th className="py-1 pr-2">ID</th>
-                    <th className="py-1 pr-2">Part</th>
-                    <th className="py-1 pr-2">Material</th>
-                    <th className="py-1 pr-2">Size</th>
-                    <th className="py-1 text-right">Qty</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {cutParts.map((p) => (
-                    <tr key={p.id} className="border-t">
-                      <td className="py-1.5 pr-2 font-mono text-xs">{p.id}</td>
-                      <td className="py-1.5 pr-2">{p.name}</td>
-                      <td className="py-1.5 pr-2 text-muted-foreground">{p.material}</td>
-                      <td className="py-1.5 pr-2 font-mono text-xs">
+        <Card>
+          <CardContent className="pt-4">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-left text-xs uppercase tracking-wide text-muted-foreground">
+                  <th className="py-1 pr-2">ID</th>
+                  <th className="py-1 pr-2">Part</th>
+                  <th className="py-1 pr-2">Material</th>
+                  <th className="py-1 pr-2">Size</th>
+                  <th className="py-1 pr-2">Source</th>
+                  <th className="py-1 text-right">Qty</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[...cutParts, ...buyParts].map((p) => (
+                  <tr
+                    key={p.id}
+                    onClick={() => toggle(p.id)}
+                    className={`cursor-pointer border-t transition-colors hover:bg-primary/5 ${
+                      selId === p.id ? "bg-primary/10" : ""
+                    }`}
+                  >
+                    <td className="py-1.5 pr-2 font-mono text-xs">{p.id}</td>
+                    <td className="py-1.5 pr-2">
+                      <GlossedText text={p.name} />
+                    </td>
+                    <td className="py-1.5 pr-2 text-muted-foreground">{p.material}</td>
+                    <td className="py-1.5 pr-2 font-mono text-xs">
+                      {p.source === "buy" ? (
+                        <span className="text-muted-foreground">{p.buy_spec ?? "—"}</span>
+                      ) : (
                         <PartSize part={p} units={units} />
-                      </td>
-                      <td className="py-1.5 text-right">{p.qty}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </CardContent>
-          </Card>
+                      )}
+                    </td>
+                    <td className="py-1.5 pr-2 text-xs text-muted-foreground">
+                      {p.source === "buy" ? "BUY" : "cut"}
+                    </td>
+                    <td className="py-1.5 text-right">{p.qty}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </CardContent>
+        </Card>
+      </section>
 
-          <div className="space-y-4">
-            {buyParts.length > 0 && (
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm">Buy these parts</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-1.5 text-sm">
-                    {buyParts.map((p) => (
-                      <li key={p.id} className="flex justify-between gap-3">
-                        <span>
-                          {p.name}
-                          <span className="block text-xs text-muted-foreground">
-                            {p.buy_spec ?? "off-the-shelf"}
-                          </span>
-                        </span>
-                        <span className="shrink-0 text-muted-foreground">×{p.qty}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            )}
-            {plan.hardware.length > 0 && (
+      {/* cut list */}
+      {cutParts.length > 0 && (
+        <CutListView
+          plan={plan}
+          units={units}
+          kerfMm={kerfMm}
+          selectedPart={selId}
+          onPartSelect={setSelId}
+        />
+      )}
+
+      {/* shopping list */}
+      <ShoppingList plan={plan} units={units} kerfMm={kerfMm} />
+
+      {/* tools */}
+      {plan.tools.length > 0 && (
+        <section>
+          <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold">
+            <Wrench className="h-5 w-5" /> Tools
+          </h2>
+          <div className="grid gap-4 sm:grid-cols-2">
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm">Hardware</CardTitle>
+                <CardTitle className="text-sm">Required</CardTitle>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-1.5 text-sm">
-                  {plan.hardware.map((h, i) => (
-                    <li key={i} className="flex justify-between gap-3">
-                      <span>
-                        {h.name}
-                        {h.size ? ` — ${h.size}` : ""}
-                        {h.notes && (
-                          <span className="block text-xs text-muted-foreground">
-                            {h.notes}
-                          </span>
-                        )}
-                      </span>
-                      <span className="shrink-0 text-muted-foreground">×{h.qty}</span>
+                  {requiredTools.map((t, i) => (
+                    <li key={i}>
+                      {t.name}
+                      {t.alternative && (
+                        <span className="block text-xs text-muted-foreground">
+                          Alternative: {t.alternative}
+                        </span>
+                      )}
                     </li>
                   ))}
                 </ul>
               </CardContent>
             </Card>
-            )}
-
-            {consumablesOf(plan).length > 0 && (
+            {optionalTools.length > 0 && (
               <Card>
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-sm">Consumables</CardTitle>
+                  <CardTitle className="text-sm">Nice to have</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-1.5 text-sm">
-                    {consumablesOf(plan).map((f, i) => (
-                      <li key={i} className="flex justify-between gap-3">
-                        <span>
-                          {f.name}
-                          {f.note && (
-                            <span className="block text-xs text-muted-foreground">
-                              {f.note}
-                            </span>
-                          )}
-                        </span>
-                        {f.qty && (
-                          <span className="shrink-0 text-muted-foreground">{f.qty}</span>
-                        )}
-                      </li>
+                    {optionalTools.map((t, i) => (
+                      <li key={i}>{t.name}</li>
                     ))}
                   </ul>
                 </CardContent>
               </Card>
             )}
-
-            <div className="rounded-md border p-4 text-sm">
-              <span className="text-muted-foreground">Estimated total: </span>
-              <span className="font-medium">
-                {money(plan.est_cost.low)}–{money(plan.est_cost.high)}
-              </span>
-            </div>
           </div>
-        </div>
-      </section>
-
-      {/* tools */}
-      {plan.tools.length > 0 && (
-      <section>
-        <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold">
-          <Wrench className="h-5 w-5" /> Tools
-        </h2>
-        <div className="grid gap-4 sm:grid-cols-2">
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm">Required</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-1.5 text-sm">
-                {requiredTools.map((t, i) => (
-                  <li key={i}>
-                    {t.name}
-                    {t.alternative && (
-                      <span className="block text-xs text-muted-foreground">
-                        Alternative: {t.alternative}
-                      </span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-          {optionalTools.length > 0 && (
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm">Nice to have</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-1.5 text-sm">
-                  {optionalTools.map((t, i) => (
-                    <li key={i}>{t.name}</li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          )}
-        </div>
-      </section>
+        </section>
       )}
 
       {/* safety */}
@@ -389,76 +350,128 @@ export function PlanView({
 
       {/* steps */}
       {plan.steps.length > 0 && (
-      <section>
-        <h2 className="mb-3 flex flex-wrap items-center gap-3 text-lg font-semibold">
-          Build steps
-          {checking && (
-            <Badge variant="outline" className="border-primary/50 text-xs font-normal">
-              Draft — carpenter check in progress
-            </Badge>
-          )}
-        </h2>
-        <div className="space-y-3">
-          {[...plan.steps]
-            .sort((a, b) => a.n - b.n)
-            .map((s) => (
-              <Card
-                key={s.n}
-                className={
-                  changedSteps.includes(s.n)
-                    ? "border-amber-500/60 bg-amber-500/5"
-                    : undefined
-                }
-              >
-                <CardContent className="pt-5">
-                  <div className="flex gap-4">
-                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary font-mono text-sm font-bold text-primary-foreground">
-                      {s.n}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <h3 className="font-medium">
-                        {s.title}
-                        {changedSteps.includes(s.n) && (
-                          <Badge variant="secondary" className="ml-2 text-[10px]">
-                            updated by review
-                          </Badge>
-                        )}
-                      </h3>
-                      <p className="mt-1 text-sm text-muted-foreground">{s.text}</p>
-                      {s.parts_used.length > 0 && (
-                        <p className="mt-2 text-xs text-muted-foreground">
-                          Parts:{" "}
-                          {s.parts_used
-                            .map(
-                              (id) =>
-                                `${id} (${plan.parts.find((p) => p.id === id)?.name ?? "?"})`
-                            )
-                            .join(", ")}
-                        </p>
-                      )}
-                      {s.tools_used.length > 0 && (
-                        <p className="text-xs text-muted-foreground">
-                          Tools: {s.tools_used.join(", ")}
-                        </p>
-                      )}
-                      {s.safety && (
-                        <p className="mt-2 rounded border-l-2 border-amber-500 bg-amber-500/10 px-3 py-1.5 text-xs">
-                          <strong>Safety:</strong> {s.safety}
-                        </p>
-                      )}
-                      {s.tip && (
-                        <p className="mt-2 rounded border-l-2 border-primary/50 bg-primary/5 px-3 py-1.5 text-xs">
-                          <strong>Tip:</strong> {s.tip}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-        </div>
-      </section>
+        <section>
+          <h2 className="mb-3 flex flex-wrap items-center gap-3 text-lg font-semibold">
+            Build steps
+            {checking && (
+              <Badge variant="outline" className="border-primary/50 text-xs font-normal">
+                Draft — carpenter check in progress
+              </Badge>
+            )}
+          </h2>
+          <div className="space-y-3">
+            {[...plan.steps]
+              .sort((a, b) => a.n - b.n)
+              .map((s) => {
+                const usesSel = selId != null && s.parts_used.includes(selId);
+                return (
+                  <Card
+                    key={s.n}
+                    className={
+                      changedSteps.includes(s.n)
+                        ? "border-amber-500/60 bg-amber-500/5"
+                        : usesSel
+                          ? "border-primary/60 bg-primary/5"
+                          : undefined
+                    }
+                  >
+                    <CardContent className="pt-5">
+                      <div className="flex gap-4">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary font-mono text-sm font-bold text-primary-foreground">
+                          {s.n}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <h3 className="font-medium">
+                            <GlossedText text={s.title} />
+                            {changedSteps.includes(s.n) && (
+                              <Badge variant="secondary" className="ml-2 text-[10px]">
+                                updated by review
+                              </Badge>
+                            )}
+                          </h3>
+                          <p className="mt-1 text-sm text-muted-foreground">
+                            <GlossedText text={s.text} />
+                          </p>
+                          {s.ppe && s.ppe.length > 0 && (
+                            <div className="mt-2 flex flex-wrap gap-1.5">
+                              {s.ppe.map((p) => {
+                                const { icon: Icon, label } = PPE_ICON[p];
+                                return (
+                                  <Badge
+                                    key={p}
+                                    variant="outline"
+                                    className="gap-1 border-amber-500/50 text-[10px] font-normal"
+                                    title={label}
+                                  >
+                                    <Icon className="h-3 w-3" aria-label={label} />
+                                    {label}
+                                  </Badge>
+                                );
+                              })}
+                            </div>
+                          )}
+                          {s.parts_used.length > 0 && (
+                            <p className="mt-2 flex flex-wrap gap-1 text-xs">
+                              {s.parts_used.map((id) => (
+                                <button
+                                  key={id}
+                                  onClick={() => toggle(id)}
+                                  className={`rounded border px-1.5 py-0.5 font-mono transition-colors hover:bg-primary/10 ${
+                                    selId === id
+                                      ? "border-primary bg-primary/10"
+                                      : "border-muted-foreground/30 text-muted-foreground"
+                                  }`}
+                                >
+                                  {id}
+                                </button>
+                              ))}
+                            </p>
+                          )}
+                          {s.tools_used.length > 0 && (
+                            <p className="text-xs text-muted-foreground">
+                              Tools: {s.tools_used.join(", ")}
+                            </p>
+                          )}
+                          {s.safety && (
+                            <p className="mt-2 rounded border-l-2 border-amber-500 bg-amber-500/10 px-3 py-1.5 text-xs">
+                              <strong>Safety:</strong> {s.safety}
+                            </p>
+                          )}
+                          {s.tip && (
+                            <p className="mt-2 rounded border-l-2 border-primary/50 bg-primary/5 px-3 py-1.5 text-xs">
+                              <strong>Tip:</strong> {s.tip}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+          </div>
+        </section>
       )}
+
+      {/* glossary */}
+      <section>
+        <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold">
+          <BookOpen className="h-5 w-5" /> Glossary
+        </h2>
+        <Card>
+          <CardContent className="grid gap-x-6 gap-y-1 pt-4 sm:grid-cols-2 lg:grid-cols-3">
+            {GLOSSARY_TERMS.map((term) => (
+              <details key={term} className="text-sm">
+                <summary className="cursor-pointer py-1 font-medium capitalize">
+                  {term}
+                </summary>
+                <p className="pb-2 pl-1 text-xs text-muted-foreground">
+                  {GLOSSARY[term]}
+                </p>
+              </details>
+            ))}
+          </CardContent>
+        </Card>
+      </section>
 
       <Separator />
       <p className="text-xs text-muted-foreground">

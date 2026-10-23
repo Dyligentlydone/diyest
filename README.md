@@ -4,6 +4,14 @@ AI DIY project planner: show the app a photo or describe what you want to make, 
 get a complete buildable plan — dimensioned blueprint, materials/cut lists, tools,
 and step-by-step instructions.
 
+Plans stream in progressively: overview → blueprint → cut list & shopping list →
+steps (marked draft until the dual-model carpenter review finishes). The plan
+view includes a code-generated blueprint (SVG/PNG download, tap-to-highlight
+parts), a kerf-aware cut-list optimizer with editable stock sizes, a
+store-section shopping list with estimates and "already have" marks, tool
+inventory + "use my tools only" support, per-step PPE badges, a woodworking
+glossary, and metric/imperial display throughout.
+
 ## Stack
 
 - Next.js 16 (App Router) + TypeScript strict

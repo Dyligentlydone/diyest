@@ -37,6 +37,8 @@ const payloadSchema = z.object({
     .max(6)
     .optional(),
   currency: z.string().length(3).default("USD"),
+  useMyToolsOnly: z.boolean().default(false),
+  toolsOwned: z.array(z.string().max(80)).max(60).optional(),
 });
 
 const MAX_IMAGES = 4;
@@ -118,7 +120,8 @@ export async function POST(request: NextRequest) {
     skillLevel: payload.skillLevel,
     budget: payload.budget,
     style: payload.style,
-    useMyToolsOnly: false,
+    useMyToolsOnly: payload.useMyToolsOnly,
+    toolsOwned: payload.toolsOwned,
     clarificationAnswers: payload.clarificationAnswers,
     currency: payload.currency,
     imageCount: imageDataUrls.length,
@@ -134,7 +137,11 @@ export async function POST(request: NextRequest) {
         const result = await generatePlan(
           req,
           imageDataUrls,
-          { targetDimensionsMm: payload.targetDimensionsMm },
+          {
+            targetDimensionsMm: payload.targetDimensionsMm,
+            toolsOwned: payload.toolsOwned,
+            useMyToolsOnly: payload.useMyToolsOnly,
+          },
           send
         );
 

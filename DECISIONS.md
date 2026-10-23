@@ -2,6 +2,34 @@
 
 Log of architecture choices and anything ambiguous in the brief, newest first.
 
+## 2026-10-23 — Milestone 3 (plan UX)
+
+- **Cut-list optimizer is pure code** (`lib/plan/cutlist.ts`): 1D first-fit
+  decreasing for boards/dowels (tries every stock length, fewest pieces then
+  least waste wins), 2D shelf packing for sheet goods, kerf-aware. Bought parts
+  never appear; profiled parts pack as bounding rectangles with a "trace shape
+  inside" note; `ends: "level"` members report their true end-cut angle.
+- **Shopping list derives from the optimizer**, not the AI: lumber/sheet lines
+  are the actual stock pieces to buy, hardware from derived totals, consumables
+  and `source:"buy"` parts included. Rough per-line USD estimates are labeled
+  "est."; `affiliateUrl` is plumbed but empty until M6.
+- **"Already have" marks persist in localStorage** — no account needed; the
+  shopping section is per-device (deliberate: works pre-login).
+- **Tool inventory lives on `profiles.tools_owned`** (migration 0004). The
+  `/new` form's "use my tools only" checkbox prefills it and sends
+  `toolsOwned` + `useMyToolsOnly` to `/api/generate`; both the prompt and the
+  validator enforce it.
+- **PPE is per-step data** (`step.ppe` ⊆ glasses/hearing/mask/gloves) so step
+  cards can show icon badges; also in `safety_overview` text.
+- **Glossary is a static ~90-term dictionary** (`lib/glossary.ts`) —
+  `GlossedText` underlines terms in step text and a collapsible glossary
+  section renders them all. No AI call, no hover required (tap = mobile).
+- **Part selection is single-source UI state** (`selId` in PlanView): parts
+  table rows, cut-list rows and step part chips all toggle it; the blueprint
+  re-renders with that part highlighted.
+- **Stock labels are unit-aware**: imperial snaps to nominal inches only when
+  within ~2mm (1220mm→48″, but 19mm→¾″), avoiding "48 1/16″ plywood" noise.
+
 ## 2026-10-22 — Milestone 1 (Foundation)
 
 - **Project lives in `buildit/` subdirectory.** The workspace folder "DIY App" is

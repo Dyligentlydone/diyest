@@ -143,11 +143,17 @@ function depthBuffer(solids: Solid[], view: View, box: ViewBox, res: number) {
 export interface DrawnView {
   visible: Vec2[][];
   hidden: Vec2[][];
+  /** visible edges of the highlighted part (drawn in accent color) */
+  highlight: Vec2[][];
   box: ViewBox;
 }
 
 // Returns { visible, hidden } polylines in view (u, v) coordinates.
-export function drawView(solids: Solid[], viewName: keyof typeof VIEWS): DrawnView {
+export function drawView(
+  solids: Solid[],
+  viewName: keyof typeof VIEWS,
+  highlightPartId?: string
+): DrawnView {
   const view = VIEWS[viewName];
   let u0 = Infinity,
     u1 = -Infinity,
@@ -172,9 +178,11 @@ export function drawView(solids: Solid[], viewName: keyof typeof VIEWS): DrawnVi
   const eps = Math.max(0.8, (dmax - dmin) * 0.002) + 1.5 / res;
   const look = view.dir,
     vis: [Vec2, Vec2][] = [],
-    hid: [Vec2, Vec2][] = [];
+    hid: [Vec2, Vec2][] = [],
+    hlt: [Vec2, Vec2][] = [];
   for (const s of solids) {
     const m = s.mesh;
+    const bucket = s.part.id === highlightPartId ? hlt : vis;
     for (const e of edgesOf(m)) {
       // which edges belong on a drawing: outline/creases, plus silhouettes of
       // curved surfaces
@@ -200,7 +208,7 @@ export function drawView(solids: Solid[], viewName: keyof typeof VIEWS): DrawnVi
           t1 = i / n;
         const P0: Vec2 = [A[0] + (B[0] - A[0]) * t0, A[1] + (B[1] - A[1]) * t0],
           P1: Vec2 = [A[0] + (B[0] - A[0]) * t1, A[1] + (B[1] - A[1]) * t1];
-        (runVis ? vis : hid).push([P0, P1]);
+        (runVis ? bucket : hid).push([P0, P1]);
       };
       for (let i = 0; i <= n; i++) {
         const t = i / n,
@@ -232,7 +240,7 @@ export function drawView(solids: Solid[], viewName: keyof typeof VIEWS): DrawnVi
       flush(n);
     }
   }
-  return { visible: chain(vis), hidden: chain(hid), box };
+  return { visible: chain(vis), hidden: chain(hid), highlight: chain(hlt), box };
 }
 
 // join touching segments into polylines so curves and dashes look continuous
@@ -283,7 +291,10 @@ function placeView(drawn: DrawnView, ox: number, oy: number, s: number) {
     lines
       .map((l) => `<polyline points="${l.map((q) => T(q).map(r1).join(",")).join(" ")}" class="${cls}"/>`)
       .join("");
-  return { T, svg: pl(drawn.hidden, "hid") + pl(drawn.visible, "vis") };
+  return {
+    T,
+    svg: pl(drawn.hidden, "hid") + pl(drawn.visible, "vis") + pl(drawn.highlight, "hlt"),
+  };
 }
 
 function dimH(x1: number, x2: number, y: number, ext: number, label: string) {
@@ -367,7 +378,7 @@ function partCut(part: Part, fmt: (mm: number) => string) {
   return (t && cuts[t]) || "SQUARE";
 }
 
-export function renderBlueprint(plan: Plan, units: Units): string {
+export function renderBlueprint(plan: Plan, units: Units, highlightPartId?: string): string {
   const fmt = (mm: number) => formatDimension(mm, units);
   const solids = solidsOf(plan),
     B = bounds(solids);
@@ -375,10 +386,10 @@ export function renderBlueprint(plan: Plan, units: Units): string {
     H = B.hi[1] - B.lo[1],
     D = B.hi[2] - B.lo[2];
   const views = {
-    front: drawView(solids, "front"),
-    top: drawView(solids, "top"),
-    side: drawView(solids, "side"),
-    iso: drawView(solids, "iso"),
+    front: drawView(solids, "front", highlightPartId),
+    top: drawView(solids, "top", highlightPartId),
+    side: drawView(solids, "side", highlightPartId),
+    iso: drawView(solids, "iso", highlightPartId),
   };
 
   const marginL = 110,
@@ -404,6 +415,7 @@ export function renderBlueprint(plan: Plan, units: Units): string {
     <style>
       svg { --bp: #0b4f9c; --line: #eaf3ff; --grid: rgba(255,255,255,0.08); --grid-major: rgba(255,255,255,0.16); }
       .vis { fill: none; stroke: var(--line); stroke-width: 1.4; stroke-linejoin: round; stroke-linecap: round; }
+      .hlt { fill: none; stroke: #ffb020; stroke-width: 2.6; stroke-linejoin: round; stroke-linecap: round; }
       .hid { fill: none; stroke: var(--line); stroke-width: .8; stroke-dasharray: 5 4; opacity: .45; }
       .ext { stroke: var(--line); stroke-width: .7; stroke-dasharray: 3 3; opacity: .75; }
       .dim { stroke: var(--line); stroke-width: .9; }
@@ -587,8 +599,11 @@ export function renderBlueprint(plan: Plan, units: Units): string {
   svg += `<rect x="${tx}" y="${ty}" width="${tw}" height="${th}" fill="var(--bp)" stroke="var(--line)" stroke-width="1.5"/>`;
   [head, ...rows].forEach((r, ri) => {
     const ry = ty + rowH * ri;
-    if (ri)
+    if (ri) {
       svg += `<line x1="${tx}" y1="${ry}" x2="${tx + tw}" y2="${ry}" stroke="var(--line)" stroke-width=".7"/>`;
+      if (plan.parts[ri - 1]?.id === highlightPartId)
+        svg += `<rect x="${tx}" y="${ry}" width="${tw}" height="${rowH}" fill="#ffb020" opacity="0.18"/>`;
+    }
     r.forEach(
       (t, i) =>
         (svg += `<text x="${r1(tx + colX[i] + 7)}" y="${r1(ry + rowH / 2 + fs * 0.35)}" class="th" style="font-size:${fs.toFixed(1)}px;letter-spacing:0">${esc(t)}</text>`)

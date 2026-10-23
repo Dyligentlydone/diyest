@@ -98,7 +98,15 @@ function persistDraft(d: Draft) {
   sessionStorage.setItem(DRAFT_KEY, raw);
 }
 
-export function DraftClient({ isAuthed, units }: { isAuthed: boolean; units: Units }) {
+export function DraftClient({
+  isAuthed,
+  units,
+  kerfMm = 3,
+}: {
+  isAuthed: boolean;
+  units: Units;
+  kerfMm?: number;
+}) {
   const router = useRouter();
   // sessionStorage is a client-only store: subscribe-read pattern keeps the
   // SSR/hydration shell consistent ("Loading…"), then the draft streams in.
@@ -432,6 +440,7 @@ export function DraftClient({ isAuthed, units }: { isAuthed: boolean; units: Uni
         reviewPending={draft.reviewPending}
         checking={checking || isPartial}
         changedSteps={draft.changedSteps ?? []}
+        kerfMm={kerfMm}
       />
 
       <div className="sticky bottom-4 mt-8 flex justify-center">

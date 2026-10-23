@@ -8,6 +8,7 @@ export interface Profile {
   skill_level: SkillLevel;
   kerf_mm: number;
   stock_sizes: Record<string, unknown>;
+  tools_owned: string[];
   plan_tier: "free" | "pro";
   stripe_customer_id: string | null;
   created_at: string;

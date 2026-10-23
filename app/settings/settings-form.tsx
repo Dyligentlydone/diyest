@@ -90,6 +90,22 @@ export function SettingsForm({ profile, email }: { profile: Profile; email: stri
         </p>
       </div>
 
+      <div className="space-y-1.5">
+        <Label htmlFor="tools_owned">Tools you own</Label>
+        <textarea
+          id="tools_owned"
+          name="tools_owned"
+          rows={6}
+          defaultValue={(profile.tools_owned ?? []).join("\n")}
+          placeholder={"drill/driver\ncircular saw\norbital sander\nclamps"}
+          className="w-full rounded-md border bg-transparent px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        />
+        <p className="text-xs text-muted-foreground">
+          One tool per line. When you check &quot;use my tools only&quot; on a new
+          plan, the plan avoids tools not on this list (or gives workarounds).
+        </p>
+      </div>
+
       {state.error && <p className="text-sm text-destructive">{state.error}</p>}
 
       <Button type="submit" disabled={pending}>

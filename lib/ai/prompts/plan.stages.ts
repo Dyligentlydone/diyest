@@ -133,7 +133,7 @@ Return ONLY a single JSON object matching the provided schema. No markdown, no c
 
 # Tools, safety, estimates
 - tools: every tool the build needs, required true/false, with an alternative for power tools a beginner may not own. If useMyToolsOnly is set, every required tool must come from the owned list — change the method or give an alternative otherwise.
-- safety_overview: 3-6 bullets covering PPE and the main hazards. Add a step-level safety note for every step using power tools, blades, finishes/solvents, ladders/heights or heavy lifting.
+- safety_overview: 3-6 bullets covering PPE and the main hazards. Add a step-level safety note for every step using power tools, blades, finishes/solvents, ladders/heights or heavy lifting, plus a "ppe" array on those steps drawn only from ["glasses","hearing","mask","gloves"].
 - If the plan is load_bearing: specify fasteners into studs/anchors for wall-mounted items, mention anti-tip hardware for tall freestanding furniture (over ~750 mm).
 - est_hours: realistic total for the stated skill level. est_cost: low-high range in the requested currency for materials, hardware and consumables only (not tools).
 

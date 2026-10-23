@@ -25,7 +25,7 @@ async function ProjectContent({ params }: { params: Promise<{ id: string }> }) {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("units")
+    .select("units, kerf_mm")
     .eq("id", user.id)
     .maybeSingle();
   const units: Units = profile?.units === "imperial" ? "imperial" : "metric";
@@ -41,7 +41,13 @@ async function ProjectContent({ params }: { params: Promise<{ id: string }> }) {
     );
   }
 
-  return <PlanView plan={parsed.data} units={units} />;
+  return (
+    <PlanView
+      plan={parsed.data}
+      units={units}
+      kerfMm={typeof profile?.kerf_mm === "number" ? profile.kerf_mm : 3}
+    />
+  );
 }
 
 export default function ProjectPage(props: PageProps<"/projects/[id]">) {

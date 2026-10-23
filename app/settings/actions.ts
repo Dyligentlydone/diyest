@@ -11,6 +11,7 @@ const settingsSchema = z.object({
   units: z.enum(["metric", "imperial"]),
   skill_level: z.enum(["beginner", "intermediate", "advanced"]),
   kerf_mm: z.coerce.number().min(0).max(10).default(3),
+  tools_owned: z.array(z.string().trim().min(1).max(80)).max(60).default([]),
 });
 
 export async function updateSettings(
@@ -28,6 +29,10 @@ export async function updateSettings(
     units: formData.get("units"),
     skill_level: formData.get("skill_level"),
     kerf_mm: formData.get("kerf_mm"),
+    tools_owned: String(formData.get("tools_owned") ?? "")
+      .split("\n")
+      .map((s) => s.trim())
+      .filter(Boolean),
   });
   if (!parsed.success) return { error: "Check the form values and try again." };
 
@@ -37,6 +42,7 @@ export async function updateSettings(
     units: parsed.data.units,
     skill_level: parsed.data.skill_level,
     kerf_mm: parsed.data.kerf_mm,
+    tools_owned: parsed.data.tools_owned,
   });
 
   if (error) return { error: "Could not save settings. Try again." };
