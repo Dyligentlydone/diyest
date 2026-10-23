@@ -60,6 +60,8 @@ export function PlanView({
 
   const requiredTools = plan.tools.filter((t) => t.required);
   const optionalTools = plan.tools.filter((t) => !t.required);
+  const cutParts = plan.parts.filter((p) => p.source !== "buy");
+  const buyParts = plan.parts.filter((p) => p.source === "buy");
 
   return (
     <div className="space-y-8">
@@ -179,7 +181,7 @@ export function PlanView({
                   </tr>
                 </thead>
                 <tbody>
-                  {plan.parts.map((p) => (
+                  {cutParts.map((p) => (
                     <tr key={p.id} className="border-t">
                       <td className="py-1.5 pr-2 font-mono text-xs">{p.id}</td>
                       <td className="py-1.5 pr-2">{p.name}</td>
@@ -196,6 +198,28 @@ export function PlanView({
           </Card>
 
           <div className="space-y-4">
+            {buyParts.length > 0 && (
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm">Buy these parts</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-1.5 text-sm">
+                    {buyParts.map((p) => (
+                      <li key={p.id} className="flex justify-between gap-3">
+                        <span>
+                          {p.name}
+                          <span className="block text-xs text-muted-foreground">
+                            {p.buy_spec ?? "off-the-shelf"}
+                          </span>
+                        </span>
+                        <span className="shrink-0 text-muted-foreground">×{p.qty}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            )}
             <Card>
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm">Hardware</CardTitle>

@@ -14,7 +14,7 @@ import { readdirSync, readFileSync, mkdirSync, writeFileSync, existsSync } from 
 import { join, extname, basename } from "node:path";
 import { generatePlan } from "../lib/ai/generate";
 import { planSchema } from "../lib/plan/schema";
-import type { PlanRequest } from "../lib/ai/prompts/plan.v1";
+import type { PlanRequest } from "../lib/ai/prompts/plan.v1.3";
 
 const IMAGES_DIR = "eval/images";
 const RESULTS_DIR = "eval/results";
@@ -73,7 +73,15 @@ async function main() {
               schemaValid: planSchema.safeParse(result.plan).success,
               unverified: result.unverified,
               warnings: result.warnings,
-              repaired: result.repaired,
+              repairCount: result.repairCount,
+              review: result.review
+                ? {
+                    verdict: result.review.verdict,
+                    issues: result.review.issues,
+                    tokens: result.review.tokens,
+                    latencyMs: result.review.latencyMs,
+                  }
+                : null,
               plan: result.plan,
             }
           : result,

@@ -23,11 +23,12 @@ describe("renderBlueprint", () => {
     expect(svg).toMatch(/<polyline[^>]*class="hid"/);
   });
 
-  it("marks splayed-leg angles and level ends on the table", () => {
+  it("marks splayed-leg angles, joints, and bought parts on the table", () => {
     const svg = renderBlueprint(tablePlan, "metric");
     expect(svg).toMatch(/\d+\.\d°</); // angle callout text
-    expect(svg).toContain("LEVEL"); // cut column for the splayed legs
     expect(svg).toContain("⌀"); // round top diameter callout
+    expect(svg).toContain(">J1<"); // joint marker at leg/top contact
+    expect(svg).toContain("BUY"); // bought legs excluded from the cut column
   });
 
   it("renders imperial units", () => {

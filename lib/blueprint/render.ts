@@ -8,7 +8,7 @@
  * Everything on the sheet is computed from plan numbers — nothing hand-placed,
  * nothing drawn by a model.
  */
-import type { AxisPlacement, BoxPlacement, Part, Plan } from "@/lib/plan/schema";
+import type { AxisPlacement, Part, Plan } from "@/lib/plan/schema";
 import { isAxisPlacement } from "@/lib/plan/schema";
 import { formatDimension } from "@/lib/units";
 import type { Units } from "@/lib/types";
@@ -344,6 +344,7 @@ function partSize(part: Part, fmt: (mm: number) => string) {
   return `${fmt(d[0])} x ${fmt(d[1])} x ${fmt(d[2])}`;
 }
 function partCut(part: Part, fmt: (mm: number) => string) {
+  if (part.source === "buy") return "BUY";
   const pl = part.placements[0];
   if (isAxisPlacement(pl)) {
     const d = norm(sub(pl.to, pl.from)),
@@ -478,6 +479,54 @@ export function renderBlueprint(plan: Plan, units: Units): string {
       svg += angleMark(side.T, VIEWS.side.P, lo2, hi2);
     });
 
+  // joint callouts: circled Jn at each part-pair contact centroid (front view)
+  {
+    const byId = new Map(plan.parts.map((p) => [p.id, p]));
+    const MM_TOL = 1;
+    const aabbOf = (s: Solid) => {
+      const lo: Vec3 = [Infinity, Infinity, Infinity],
+        hi: Vec3 = [-Infinity, -Infinity, -Infinity];
+      for (const v of s.mesh.verts)
+        for (let i = 0; i < 3; i++) {
+          lo[i] = Math.min(lo[i], v[i]);
+          hi[i] = Math.max(hi[i], v[i]);
+        }
+      return { lo, hi };
+    };
+    const boxes = solids.map(aabbOf);
+    for (const j of plan.joints) {
+      if (!byId.has(j.part_a) || !byId.has(j.part_b)) continue; // FLOOR/WALL
+      let n = 0;
+      for (const [i, sA] of solids.entries()) {
+        if (sA.part.id !== j.part_a) continue;
+        for (const [k, sB] of solids.entries()) {
+          if (sB.part.id !== j.part_b) continue;
+          const a = boxes[i],
+            b = boxes[k];
+          const touch =
+            a.lo[0] <= b.hi[0] + MM_TOL &&
+            a.hi[0] >= b.lo[0] - MM_TOL &&
+            a.lo[1] <= b.hi[1] + MM_TOL &&
+            a.hi[1] >= b.lo[1] - MM_TOL &&
+            a.lo[2] <= b.hi[2] + MM_TOL &&
+            a.hi[2] >= b.lo[2] - MM_TOL;
+          if (!touch) continue;
+          n++;
+          if (n > 3) break; // cap labels: first 3 occurrences get markers
+          // contact centroid = midpoint of the AABB overlap region
+          const c: Vec3 = [
+            (Math.max(a.lo[0], b.lo[0]) + Math.min(a.hi[0], b.hi[0])) / 2,
+            (Math.max(a.lo[1], b.lo[1]) + Math.min(a.hi[1], b.hi[1])) / 2,
+            (Math.max(a.lo[2], b.lo[2]) + Math.min(a.hi[2], b.hi[2])) / 2,
+          ];
+          const [ux, uy] = front.T(VIEWS.front.P(c));
+          svg += `<circle cx="${r1(ux)}" cy="${r1(uy)}" r="8" class="dim" fill="var(--bp)"/>` +
+            `<text x="${r1(ux)}" y="${r1(uy + 4)}" text-anchor="middle" class="lbl" style="font-size:10px">${esc(j.id)}</text>`;
+        }
+      }
+    }
+  }
+
   // diameter / radius callouts in the top view
   solids.forEach(({ part, placement: pl, copy }) => {
     if (copy || isAxisPlacement(pl) || !part.profile) return;
@@ -561,7 +610,9 @@ export function renderBlueprint(plan: Plan, units: Units): string {
     <line x1="${tbX}" y1="${tbY + 44}" x2="${tbX + tbW}" y2="${tbY + 44}" stroke="var(--line)"/>
     <line x1="${tbX}" y1="${tbY + 82}" x2="${tbX + tbW}" y2="${tbY + 82}" stroke="var(--line)"/>
     <line x1="${tbX + 150}" y1="${tbY + 44}" x2="${tbX + 150}" y2="${tbY + tbH}" stroke="var(--line)"/>
-    <text x="${tbX + 14}" y="${tbY + 29}" class="big">${esc(plan.title.toUpperCase())}</text>
+    <text x="${tbX + 14}" y="${tbY + 29}" class="big" style="font-size:${r1(
+      Math.min(20, Math.max(11, (tbW - 24) / (0.62 * Math.max(1, plan.title.length))))
+    )}px">${esc(plan.title.toUpperCase())}</text>
     <text x="${tbX + 14}" y="${tbY + 68}" class="lbl">UNITS: ${units === "metric" ? "MM" : "INCHES"}</text>
     <text x="${tbX + 164}" y="${tbY + 68}" class="lbl">SCALE: NTS</text>
     <text x="${tbX + 14}" y="${tbY + 106}" class="lbl">PARTS: ${plan.parts.length}</text>

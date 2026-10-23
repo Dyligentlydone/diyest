@@ -8,9 +8,20 @@ export function getOpenAI(): OpenAI {
   return client;
 }
 
-/** Vision-capable chat model for all plan/diagnosis calls. Swap via env. */
-export function aiModel(): string {
-  return process.env.AI_MODEL || "gpt-4o";
+/** Vision-capable chat model for plan/diagnosis generation. */
+export function planModel(): string {
+  return process.env.AI_MODEL_PLAN || process.env.AI_MODEL || "gpt-4o";
+}
+
+/** Strongest available model — used for the buildability review. */
+export function reviewModel(): string {
+  return process.env.AI_MODEL_REVIEW || planModel();
+}
+
+export type ReviewMode = "all" | "load_bearing" | "off";
+export function reviewMode(): ReviewMode {
+  const v = process.env.REVIEW_MODE;
+  return v === "load_bearing" || v === "off" ? v : "all";
 }
 
 /** Some models reject an explicit temperature; only send it where supported. */

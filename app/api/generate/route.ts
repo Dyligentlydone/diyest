@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { generatePlan } from "@/lib/ai/generate";
-import type { PlanRequest } from "@/lib/ai/prompts/plan.v1";
+import { PROMPT_VERSION } from "@/lib/ai/prompts/plan.v1.3";
+import { REVIEW_PROMPT_VERSION } from "@/lib/ai/prompts/review.v1";
+import type { PlanRequest } from "@/lib/ai/prompts/plan.v1.3";
 import {
   ANON_COOKIE,
   anonGenerationsUsed,
@@ -127,7 +129,7 @@ export async function POST(request: NextRequest) {
 
     void logGeneration({
       user_id: user?.id,
-      prompt_version: result.ok ? result.promptVersion : "plan.v1.2",
+      prompt_version: result.ok ? result.promptVersion : PROMPT_VERSION,
       raw_output: result.raw,
       validation_errors: result.ok
         ? result.unverified.length
@@ -139,6 +141,17 @@ export async function POST(request: NextRequest) {
       latency_ms: result.ok ? result.latencyMs : undefined,
       tokens: result.ok ? result.tokens : undefined,
     });
+    if (result.ok && result.review)
+      void logGeneration({
+        user_id: user?.id,
+        prompt_version: REVIEW_PROMPT_VERSION,
+        raw_output: JSON.stringify(result.review),
+        validation_errors: result.review.issues.length
+          ? result.review.issues
+          : undefined,
+        latency_ms: result.review.latencyMs,
+        tokens: result.review.tokens,
+      });
     if (user) void recordUsage(user.id, "plan_generate");
 
     const res = NextResponse.json(result);

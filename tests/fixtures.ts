@@ -16,6 +16,8 @@ export const bookcasePlan: Plan = {
       name: "Left side",
       material: "Pine board",
       stock: "board",
+      source: "make",
+      buy_spec: null,
       length_mm: 1800,
       width_mm: 286,
       thickness_mm: 19,
@@ -27,6 +29,8 @@ export const bookcasePlan: Plan = {
       name: "Right side",
       material: "Pine board",
       stock: "board",
+      source: "make",
+      buy_spec: null,
       length_mm: 1800,
       width_mm: 286,
       thickness_mm: 19,
@@ -38,6 +42,8 @@ export const bookcasePlan: Plan = {
       name: "Shelf",
       material: "Pine board",
       stock: "board",
+      source: "make",
+      buy_spec: null,
       length_mm: 762,
       width_mm: 286,
       thickness_mm: 19,
@@ -55,6 +61,8 @@ export const bookcasePlan: Plan = {
       name: "Arched kick plate",
       material: "Pine board",
       stock: "board",
+      source: "make",
+      buy_spec: null,
       length_mm: 762,
       width_mm: 80,
       thickness_mm: 19,
@@ -70,6 +78,8 @@ export const bookcasePlan: Plan = {
       name: "Back panel",
       material: "Plywood",
       stock: "sheet",
+      source: "make",
+      buy_spec: null,
       length_mm: 1800,
       width_mm: 800,
       thickness_mm: 6,
@@ -77,7 +87,55 @@ export const bookcasePlan: Plan = {
       placements: [{ x: 0, y: 0, z: 286, sx: 800, sy: 1800, sz: 6 }],
     },
   ],
-  hardware: [{ name: "Wood screws", size: "4 × 40mm", qty: 40 }],
+  joints: [
+    // each shelf touches both sides → P1-P3, P2-P3 (count 5 each, 4 screws/joint)
+    {
+      id: "J1", part_a: "P1", part_b: "P3", count: 5, type: "butt_screw",
+      fasteners: [{ name: "Wood screws #8 x 38mm", size: "#8 × 38mm", qty_per_joint: 4 }],
+      glue: true, drive_from: "outside face of P1, pre-drilled", step: 2, note: null,
+    },
+    {
+      id: "J2", part_a: "P2", part_b: "P3", count: 5, type: "butt_screw",
+      fasteners: [{ name: "Wood screws #8 x 38mm", size: "#8 × 38mm", qty_per_joint: 4 }],
+      glue: true, drive_from: "outside face of P2, pre-drilled", step: 2, note: null,
+    },
+    {
+      id: "J3", part_a: "P1", part_b: "P4", count: 1, type: "butt_screw",
+      fasteners: [{ name: "Wood screws #8 x 38mm", size: "#8 × 38mm", qty_per_joint: 2 }],
+      glue: true, drive_from: "outside face of P1", step: 2, note: null,
+    },
+    {
+      id: "J4", part_a: "P2", part_b: "P4", count: 1, type: "butt_screw",
+      fasteners: [{ name: "Wood screws #8 x 38mm", size: "#8 × 38mm", qty_per_joint: 2 }],
+      glue: true, drive_from: "outside face of P2", step: 2, note: null,
+    },
+    // back panel nailed to sides + each shelf edge
+    {
+      id: "J5", part_a: "P5", part_b: "P1", count: 1, type: "nail_brad",
+      fasteners: [{ name: "Brad nails 25mm", size: "25mm", qty_per_joint: 8 }],
+      glue: true, drive_from: "through the back panel", step: 2, note: null,
+    },
+    {
+      id: "J6", part_a: "P5", part_b: "P2", count: 1, type: "nail_brad",
+      fasteners: [{ name: "Brad nails 25mm", size: "25mm", qty_per_joint: 8 }],
+      glue: true, drive_from: "through the back panel", step: 2, note: null,
+    },
+    {
+      id: "J7", part_a: "P5", part_b: "P3", count: 5, type: "nail_brad",
+      fasteners: [{ name: "Brad nails 25mm", size: "25mm", qty_per_joint: 2 }],
+      glue: false, drive_from: "through the back panel", step: 2, note: null,
+    },
+    // kick plate's top edge meets the bottom shelf's underside
+    {
+      id: "J8", part_a: "P4", part_b: "P3", count: 1, type: "glue_screw",
+      fasteners: [{ name: "Brad nails 25mm", size: "25mm", qty_per_joint: 2 }],
+      glue: true, drive_from: "through the kick plate face", step: 2, note: null,
+    },
+  ],
+  hardware: [
+    { name: "Wood screws #8 x 38mm", size: "#8 × 38mm", qty: 44 },
+    { name: "Brad nails 25mm", size: "25mm", qty: 28 },
+  ],
   finishes: [{ name: "Satin polyurethane", qty: "500ml" }],
   tools: [
     { name: "Circular saw", required: true, alternative: "Have the store cut boards" },
@@ -122,6 +180,8 @@ export const tablePlan: Plan = {
       name: "Round top",
       material: "Pine panel",
       stock: "sheet",
+      source: "make",
+      buy_spec: null,
       length_mm: 600,
       width_mm: 600,
       thickness_mm: 25,
@@ -132,8 +192,10 @@ export const tablePlan: Plan = {
     {
       id: "P2",
       name: "Splayed leg",
-      material: "Pine dowel blank",
+      material: "Pre-made tapered pine table leg",
       stock: "dowel",
+      source: "buy",
+      buy_spec: "21 in (533 mm) tapered pine table leg with 5/16 in hanger bolt",
       length_mm: 533,
       width_mm: 40,
       thickness_mm: 40,
@@ -152,6 +214,8 @@ export const tablePlan: Plan = {
       name: "Cleat",
       material: "Pine board",
       stock: "board",
+      source: "make",
+      buy_spec: null,
       length_mm: 280,
       width_mm: 40,
       thickness_mm: 22,
@@ -160,7 +224,32 @@ export const tablePlan: Plan = {
       placements: [{ x: 160, y: 503, z: 280, sx: 280, sy: 22, sz: 40 }],
     },
   ],
-  hardware: [{ name: "Wood screws", size: "4 × 30mm", qty: 8 }],
+  joints: [
+    // legs bolt to the top through angled leg plates (hanger bolts)
+    {
+      id: "J1", part_a: "P2", part_b: "P1", count: 4, type: "leg_plate_hanger_bolt",
+      fasteners: [
+        { name: "Angled leg plate 12°", size: null, qty_per_joint: 1 },
+        { name: "Hanger bolt 5/16 in", size: "5/16 in", qty_per_joint: 1 },
+        { name: "#10 pan head screw 19mm", size: "19mm", qty_per_joint: 4 },
+      ],
+      glue: false, drive_from: "through the plate into the top, plate attached before flipping", step: 2,
+      note: "angled plates set the splay; bolts, not end-grain screws, carry the load",
+    },
+    // cleat braces the top via slotted holes — solid top must move
+    {
+      id: "J2", part_a: "P3", part_b: "P1", count: 1, type: "slotted_screw",
+      fasteners: [{ name: "#8 washer-head screw 25mm", size: "25mm", qty_per_joint: 4 }],
+      glue: false, drive_from: "from below through slotted holes", step: 2,
+      note: "slotted holes allow seasonal movement of the solid top",
+    },
+  ],
+  hardware: [
+    { name: "Angled leg plate 12°", size: null, qty: 4 },
+    { name: "Hanger bolt 5/16 in", size: "5/16 in", qty: 4 },
+    { name: "#10 pan head screw 19mm", size: "19mm", qty: 16 },
+    { name: "#8 washer-head screw 25mm", size: "25mm", qty: 4 },
+  ],
   finishes: [{ name: "Danish oil" }],
   tools: [
     { name: "Miter saw", required: true },

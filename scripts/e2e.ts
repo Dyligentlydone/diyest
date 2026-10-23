@@ -142,7 +142,7 @@ if (result.ok) {
   const p = planJson as { title?: string; parts?: unknown[]; steps?: unknown[] };
   console.log(
     `  plan: "${p.title}" — ${p.parts?.length} parts, ${p.steps?.length} steps, ` +
-      `${result.tokens} tokens, repaired=${result.repaired}`
+      `${result.tokens} tokens, repairs=${result.repairCount}, review=${(result.review as { verdict?: string } | null)?.verdict ?? "n/a"}`
   );
 }
 for (const c of checks) {

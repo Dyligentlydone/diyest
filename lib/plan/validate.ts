@@ -175,7 +175,68 @@ export async function validatePlan(
         ctx.targetDimensionsMm.height ?? 0
       )
     : MAX_PART_MM;
-  for (const p of plan.parts) checkPart(p, targetMax, errors, warnings);
+  for (const p of plan.parts) {
+    checkPart(p, targetMax, errors, warnings);
+    if (p.source === "buy" && !p.buy_spec?.trim())
+      errors.push(`${p.id} (${p.name}): source "buy" requires a buy_spec`);
+  }
+
+  // ---- joints (v1.3): structural declarations must cover reality ----
+  const jointIds = new Set<string>();
+  const jointPairs = new Set<string>();
+  const pairKey = (a: string, b: string) => [a, b].sort().join("|");
+  for (const j of plan.joints) {
+    if (jointIds.has(j.id)) errors.push(`Duplicate joint id ${j.id}`);
+    jointIds.add(j.id);
+    if (!ids.has(j.part_a))
+      errors.push(`Joint ${j.id} references unknown part_a "${j.part_a}"`);
+    if (!ids.has(j.part_b) && j.part_b !== "FLOOR" && j.part_b !== "WALL")
+      errors.push(`Joint ${j.id} references unknown part_b "${j.part_b}"`);
+    if (j.part_a === j.part_b)
+      errors.push(`Joint ${j.id} joins part ${j.part_a} to itself`);
+    jointPairs.add(pairKey(j.part_a, j.part_b));
+
+    const step = plan.steps.find((s) => s.n === j.step);
+    if (!step) {
+      errors.push(`Joint ${j.id} is made in step ${j.step}, which doesn't exist`);
+    } else {
+      if (!step.parts_used.includes(j.part_a))
+        errors.push(`Joint ${j.id} made in step ${j.step} but its parts_used lacks ${j.part_a}`);
+      if (ids.has(j.part_b) && !step.parts_used.includes(j.part_b))
+        errors.push(`Joint ${j.id} made in step ${j.step} but its parts_used lacks ${j.part_b}`);
+    }
+  }
+
+  // hardware quantities must equal the sum of joint fasteners (name-matched)
+  const normName = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "");
+  const fastenerTotals = new Map<string, number>();
+  const fastenerNames = new Map<string, string>();
+  for (const j of plan.joints)
+    for (const f of j.fasteners) {
+      const k = normName(f.name);
+      fastenerTotals.set(k, (fastenerTotals.get(k) ?? 0) + f.qty_per_joint * j.count);
+      fastenerNames.set(k, f.name);
+    }
+  const hwMatched = new Set<string>();
+  for (const [fk, total] of fastenerTotals) {
+    const hw = plan.hardware.find(
+      (h) => normName(h.name) === fk || normName(h.name).includes(fk) || fk.includes(normName(h.name))
+    );
+    if (!hw)
+      errors.push(
+        `Fastener "${fastenerNames.get(fk)}" used by joints (×${total}) is missing from the hardware list`
+      );
+    else {
+      hwMatched.add(hw.name);
+      if (hw.qty !== total)
+        errors.push(
+          `Hardware "${hw.name}" qty ${hw.qty} ≠ joints total ${total} (sum of qty_per_joint × count)`
+        );
+    }
+  }
+  for (const h of plan.hardware)
+    if (!hwMatched.has(h.name))
+      warnings.push(`Hardware "${h.name}" isn't referenced by any joint`);
 
   // ---- geometry checks (real meshes) ----
   let solids: Solid[] = [];
@@ -231,6 +292,32 @@ export async function validatePlan(
       );
       if (!supported)
         errors.push(`${s.part.id} (${s.part.name}) copy ${s.copy + 1} floats in mid-air`);
+    }
+
+    // joint coverage: every pair of different-part solids that touch (AABBs
+    // within 1mm) must have a declared joint between their part ids.
+    // Exempted: same-part contacts, and pairs where both parts rest on the
+    // floor (incidental ground-level contact needs no joinery).
+    for (let i = 0; i < solids.length; i++) {
+      for (let j = i + 1; j < solids.length; j++) {
+        const A = solids[i],
+          Bs = solids[j];
+        if (A.part.id === Bs.part.id) continue;
+        const a = boxes[i],
+          b = boxes[j];
+        if (a.lo[1] <= MM_TOL && b.lo[1] <= MM_TOL) continue;
+        const touching =
+          a.lo[0] <= b.hi[0] + MM_TOL &&
+          a.hi[0] >= b.lo[0] - MM_TOL &&
+          a.lo[1] <= b.hi[1] + MM_TOL &&
+          a.hi[1] >= b.lo[1] - MM_TOL &&
+          a.lo[2] <= b.hi[2] + MM_TOL &&
+          a.hi[2] >= b.lo[2] - MM_TOL;
+        if (touching && !jointPairs.has(pairKey(A.part.id, Bs.part.id)))
+          errors.push(
+            `Parts ${A.part.id} (${A.part.name}) and ${Bs.part.id} (${Bs.part.name}) touch but have no declared joint`
+          );
+      }
     }
   }
 

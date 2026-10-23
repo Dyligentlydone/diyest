@@ -74,11 +74,67 @@ export type CrossSection = z.infer<typeof crossSectionSchema>;
 
 // ---------- plan ----------
 
+export const jointTypeSchema = z.enum([
+  "butt_screw",
+  "pocket_screw",
+  "glue_screw",
+  "dowel",
+  "biscuit",
+  "domino",
+  "dado",
+  "rabbet",
+  "half_lap",
+  "mortise_tenon",
+  "bridle",
+  "dovetail",
+  "box_joint",
+  "metal_bracket",
+  "leg_plate_hanger_bolt",
+  "threaded_insert_bolt",
+  "connector_bolt",
+  "tabletop_fastener",
+  "slotted_screw",
+  "hinge",
+  "drawer_slide",
+  "nail_brad",
+  "wall_anchor",
+  "stud_screw",
+  "other",
+]);
+
+export type JointType = z.infer<typeof jointTypeSchema>;
+
+/** A connection between two parts (part_b may be "FLOOR" or "WALL"). */
+export const jointSchema = z.object({
+  id: z.string().min(1),
+  part_a: z.string().min(1),
+  part_b: z.string().min(1),
+  count: z.number().int().positive(),
+  type: jointTypeSchema,
+  fasteners: z.array(
+    z.object({
+      name: z.string().min(1),
+      size: z.string().nullable(),
+      qty_per_joint: z.number().positive(),
+    })
+  ),
+  glue: z.boolean(),
+  drive_from: z.string().min(1),
+  step: z.number().int().positive(),
+  note: z.string().nullable(),
+});
+
+export type Joint = z.infer<typeof jointSchema>;
+
 export const partSchema = z.object({
   id: z.string().min(1),
   name: z.string().min(1),
   material: z.string().min(1),
   stock: z.enum(["board", "sheet", "dowel", "other"]),
+  /** "make" = cut from stock; "buy" = off-the-shelf (excluded from cut list). */
+  source: z.enum(["make", "buy"]),
+  /** Standard searchable product description, required when source = "buy". */
+  buy_spec: z.string().nullable(),
   length_mm: z.number().positive(),
   width_mm: z.number().positive(),
   thickness_mm: z.number().positive(),
@@ -110,6 +166,7 @@ export const planSchema = z.object({
   // Arrays may be empty: the prompt returns empty arrays for NOT_BUILDABLE
   // responses. "A buildable plan must have parts" is enforced by validate.ts.
   parts: z.array(partSchema),
+  joints: z.array(jointSchema),
   hardware: z.array(
     z.object({
       name: z.string().min(1),

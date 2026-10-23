@@ -1,6 +1,9 @@
 /**
- * Plan generation orchestrator: prompt → model → JSON → Zod → consistency
- * validation → one repair pass on failure (brief §3, §6).
+ * Plan generation orchestrator (plan.v1.3 + review.v1):
+ *   generate → Zod parse → geometry validation → repair once if needed
+ *   → buildability review (AI_MODEL_REVIEW, gated by REVIEW_MODE)
+ *   → blocker/major issues → one more repair → re-validate + re-review once
+ *   → surviving issues surface as `unverified`; minors surface as tips.
  * Server-side only — never import from client components.
  */
 import { zodResponseFormat } from "openai/helpers/zod";
@@ -11,22 +14,40 @@ import {
   PLAN_SYSTEM_PROMPT,
   PROMPT_VERSION,
   type PlanRequest,
-} from "./prompts/plan.v1";
-import { aiModel, getOpenAI, supportsTemperature } from "./openai";
+} from "./prompts/plan.v1.3";
+import {
+  buildReviewUserMessage,
+  REVIEW_SYSTEM_PROMPT,
+  reviewIssuesForRepair,
+  reviewSchema,
+  type Review,
+} from "./prompts/review.v1";
+import { planModel, reviewMode, reviewModel, getOpenAI, supportsTemperature } from "./openai";
 import { NOT_BUILDABLE_TITLE, planSchema, type Plan } from "@/lib/plan/schema";
 import { validatePlan, type ValidationResult } from "@/lib/plan/validate";
+
+export interface ReviewInfo {
+  verdict: Review["verdict"];
+  summary: string;
+  issues: Review["issues"];
+  model: string;
+  latencyMs: number;
+  tokens: number;
+}
 
 export interface GenerateSuccess {
   ok: true;
   plan: Plan;
-  /** consistency issues that survived the repair attempt — show on the plan */
+  /** consistency/buildability issues that survived repair — show on the plan */
   unverified: string[];
   warnings: string[];
   promptVersion: string;
   model: string;
   latencyMs: number;
   tokens: number;
-  repaired: boolean;
+  /** number of repair passes that ran (geometry + review) */
+  repairCount: number;
+  review: ReviewInfo | null;
   raw: string;
 }
 
@@ -37,9 +58,9 @@ export type GenerateResult =
 
 async function callModel(
   messages: ChatCompletionMessageParam[],
-  imageDataUrls: string[]
+  imageDataUrls: string[],
+  model = planModel()
 ): Promise<{ raw: string; latencyMs: number; tokens: number }> {
-  const model = aiModel();
   const start = Date.now();
 
   const withImages = messages.map((m) => {
@@ -65,6 +86,41 @@ async function callModel(
 
   return {
     raw: completion.choices[0]?.message?.content ?? "",
+    latencyMs: Date.now() - start,
+    tokens: completion.usage?.total_tokens ?? 0,
+  };
+}
+
+/** Buildability review — JSON only, no images, on AI_MODEL_REVIEW. */
+async function callReview(
+  planJson: string,
+  req: PlanRequest
+): Promise<ReviewInfo> {
+  const model = reviewModel();
+  const start = Date.now();
+  const completion = await getOpenAI().chat.completions.parse({
+    model,
+    messages: [
+      { role: "system", content: REVIEW_SYSTEM_PROMPT },
+      {
+        role: "user",
+        content: buildReviewUserMessage(planJson, {
+          skillLevel: req.skillLevel,
+          toolsOwned: req.toolsOwned,
+          useMyToolsOnly: req.useMyToolsOnly,
+          units: req.units,
+        }),
+      },
+    ],
+    response_format: zodResponseFormat(reviewSchema, "review"),
+    ...(supportsTemperature(model) ? { temperature: 0.2 } : {}),
+  });
+  const parsed = completion.choices[0]?.message?.parsed as Review | null;
+  return {
+    verdict: parsed?.verdict ?? "pass",
+    summary: parsed?.summary ?? "",
+    issues: parsed?.issues ?? [],
+    model,
     latencyMs: Date.now() - start,
     tokens: completion.usage?.total_tokens ?? 0,
   };
@@ -113,22 +169,20 @@ export async function generatePlan(
   imageDataUrls: string[],
   ctx: Parameters<typeof validatePlan>[1] = {}
 ): Promise<GenerateResult> {
-  const model = aiModel();
+  const model = planModel();
   const userMessage = buildPlanUserMessage({ ...req, imageCount: imageDataUrls.length });
+  const genMessages = (extra: ChatCompletionMessageParam[] = []): ChatCompletionMessageParam[] => [
+    { role: "system", content: PLAN_SYSTEM_PROMPT },
+    { role: "user", content: userMessage },
+    ...extra,
+  ];
 
   // ---- attempt 1 ----
-  const first = await callModel(
-    [
-      { role: "system", content: PLAN_SYSTEM_PROMPT },
-      { role: "user", content: userMessage },
-    ],
-    imageDataUrls
-  );
-
+  const first = await callModel(genMessages(), imageDataUrls);
   let raw = first.raw;
   let latencyMs = first.latencyMs;
   let tokens = first.tokens;
-  let repaired = false;
+  let repairCount = 0;
 
   const nb = isNotBuildable(raw);
   if (nb) return { ok: false, kind: "not_buildable", summary: nb.summary, raw };
@@ -140,16 +194,14 @@ export async function generatePlan(
     validation.errors = [...attempt.parseErrors, ...validation.errors];
   }
 
-  // ---- repair pass (once) ----
+  // ---- geometry repair pass (once) ----
   if (validation.errors.length) {
-    repaired = true;
+    repairCount++;
     const second = await callModel(
-      [
-        { role: "system", content: PLAN_SYSTEM_PROMPT },
-        { role: "user", content: userMessage },
+      genMessages([
         { role: "assistant", content: raw },
         { role: "user", content: buildRepairMessage(raw, validation.errors) },
-      ],
+      ]),
       imageDataUrls
     );
     raw = second.raw;
@@ -160,29 +212,96 @@ export async function generatePlan(
     if (nb2) return { ok: false, kind: "not_buildable", summary: nb2.summary, raw };
 
     attempt = tryParse(raw);
-    const secondValidation: ValidationResult = attempt.plan
+    validation = attempt.plan
       ? await validatePlan(attempt.plan, ctx)
       : { errors: [], warnings: [] };
-    validation = {
-      errors: [...attempt.parseErrors, ...secondValidation.errors],
-      warnings: secondValidation.warnings,
-    };
+    validation.errors = [...attempt.parseErrors, ...validation.errors];
   }
 
   if (!attempt.plan) {
     return { ok: false, kind: "invalid", errors: validation.errors, raw };
   }
 
+  // ---- buildability review (only when geometry is clean) ----
+  let review: ReviewInfo | null = null;
+  const mode = reviewMode();
+  const shouldReview =
+    mode === "all" || (mode === "load_bearing" && attempt.plan.load_bearing);
+  if (!validation.errors.length && shouldReview) {
+    const reviewIssueLines = (r: ReviewInfo) => reviewIssuesForRepair({ verdict: r.verdict, summary: "", issues: r.issues } as Review);
+
+    review = await callReview(raw, req);
+    latencyMs += review.latencyMs;
+    tokens += review.tokens;
+
+    if (review.verdict !== "pass") {
+      const blockers = reviewIssueLines(review);
+      if (blockers.length) {
+        // one more repair driven by review issues, then re-validate + re-review
+        repairCount++;
+        const third = await callModel(
+          genMessages([
+            { role: "assistant", content: raw },
+            { role: "user", content: buildRepairMessage(raw, blockers) },
+          ]),
+          imageDataUrls
+        );
+        raw = third.raw;
+        latencyMs += third.latencyMs;
+        tokens += third.tokens;
+
+        const nb3 = isNotBuildable(raw);
+        if (nb3) return { ok: false, kind: "not_buildable", summary: nb3.summary, raw };
+
+        attempt = tryParse(raw);
+        validation = attempt.plan
+          ? await validatePlan(attempt.plan, ctx)
+          : { errors: [...attempt.parseErrors], warnings: [] };
+        validation.errors = [...attempt.parseErrors, ...validation.errors];
+
+        if (attempt.plan && !validation.errors.length) {
+          const re = await callReview(raw, req);
+          latencyMs += re.latencyMs;
+          tokens += re.tokens;
+          review = re;
+        } else {
+          review = null; // geometry regressed; unverified carries those errors
+        }
+      }
+    }
+  }
+
+  if (!attempt.plan) {
+    return { ok: false, kind: "invalid", errors: validation.errors, raw };
+  }
+
+  const unverified = [...validation.errors];
+  if (review && review.verdict !== "pass")
+    unverified.push(
+      ...reviewIssuesForRepair({
+        verdict: review.verdict,
+        summary: review.summary,
+        issues: review.issues,
+      } as Review)
+    );
+
+  // minor review issues surface as tips, not errors
+  const tips =
+    review?.issues
+      .filter((i) => i.severity === "minor")
+      .map((i) => `Review tip (${i.category}): ${i.problem} → ${i.fix}`) ?? [];
+
   return {
     ok: true,
     plan: attempt.plan,
-    unverified: validation.errors,
-    warnings: validation.warnings,
+    unverified,
+    warnings: [...validation.warnings, ...tips],
     promptVersion: PROMPT_VERSION,
     model,
     latencyMs,
     tokens,
-    repaired,
+    repairCount,
+    review,
     raw,
   };
 }
