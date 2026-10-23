@@ -112,3 +112,33 @@ Real furniture photos (Openverse/CC, see `eval/images/SOURCES.md`) through the f
 
 Token totals are recorded per run (`tokens` field). Dollar cost isn't reported —
 `gpt-6-luna` pricing isn't exposed via the API; multiply totals by your plan's rate.
+
+## 11. v1.4 — progressive pipeline + code-side bookkeeping regression
+
+**Pipeline changes:** hardware derived in code from joints (no AI bookkeeping); `consumables` split out; joint parts auto-added to `parts_used`; geometry validation and carpenter review run in parallel; ONE merged repair call (full-plan repair for geometry issues, targeted `{joints, steps}` repair for list-only issues); re-review only when a blocker was fixed; NDJSON stream returns the plan to the UI first ("Master carpenter check in progress…"), then the final checked plan ("Improved after carpenter review" when a repair landed). `AI_MODEL_PLAN=gpt-6-luna` @ `reasoning_effort=medium`, `AI_MODEL_REVIEW=gpt-6.1-sol`.
+
+**Regression run** (`eval/results/regression-*.json`, 6 photos + 2 scenarios, concurrency 4):
+
+| Plan | t→first plan | t→final | Tokens | Repairs | Verdict | Unverified | Notes |
+|---|---|---|---|---|---|---|---|
+| bench | 89 s | 287 s | 60,170 | 1 | fix | 16 | box-dims + apron/brace overlap survived repair |
+| birdhouse | 101 s | 266 s | 61,171 | 1 | fix | 3 | review blockers: step order, joint strength, latch spec |
+| chair | 126 s | 315 s | 62,445 | 1 | fix | 3 | tenon embedment, cleat orientation, tool inventory |
+| coffee-table | 94 s | 279 s | 55,429 | 1 | pass | 0 | clean |
+| desk | 104 s | 237 s | 62,964 | 1 | fix | 11 | undeclared leg↔apron / leg↔rail joints survived |
+| step-stool | 57 s | 221 s | 46,036 | 1 | fix | 3 | strap-joint blocker, bolt count, cleat clarity |
+| round-table | 67 s | 158 s | 39,988 | 1 | pass | 0 | leg_plate_hanger_bolt + glue_screw; kit-only hardware ✅ |
+| not-buildable | 28 s | 81 s | 33,837 | 1 | pass→refused³ | 0 | motorcycle carburetor — see note |
+
+³ First v1.4 run accepted the motorcycle job as a "repair project" (v1.3 refused it). Tightened the refusal list in `plan.v1.4` (vehicles/engines/fuel systems, licensed trades); re-verified → `not_buildable`. ✅
+
+**vs targets:** first plan 57–126 s (target ~60 s — hit on 2/7); final 158–315 s (target <2 min — hit on 1/7); tokens 40–63k (target <25k — missed; the review call on `gpt-6.1-sol` adds ~15–20k and a repair pass re-sends the full plan).
+
+**Reasoning-effort A/B** (round-table prompt, `scripts/effort-ab.ts`):
+- `medium`: t→plan 72 s, total 138 s, 34,329 tok, 3 joints, 1 residual
+- `low`: t→plan 34 s, total 62 s, 29,101 tok, 2 joints, 2 residuals
+- Kept `medium` — low effort is ~2× faster but produced thinner joinery. `AI_REASONING_EFFORT` env overrides.
+
+**Blueprint check** (`test-results/blueprint-table-v14.svg[.png]`): J1/J2 joint markers at leg-top contacts, `BUY` cut column for purchased legs, derived hardware (kit listed once, qty 4 + screws qty 4), consumables list populated, title fits block. Stale pre-v1.3 drafts in sessionStorage no longer crash the renderer (`plan.joints ?? []` guard).
+
+**Remaining residuals are honest UNVERIFIED surfacing** — review blockers and geometry errors that one repair pass didn't clear. The merged-repair approach fixes most single-class issues; plans with multiple error classes (bench: dims + overlap) still leak through. Candidate follow-ups: allow a second repair on new-class errors, or tighten per-part box-dims wording.

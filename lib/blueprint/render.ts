@@ -494,7 +494,7 @@ export function renderBlueprint(plan: Plan, units: Units): string {
       return { lo, hi };
     };
     const boxes = solids.map(aabbOf);
-    for (const j of plan.joints) {
+    for (const j of plan.joints ?? []) {
       if (!byId.has(j.part_a) || !byId.has(j.part_b)) continue; // FLOOR/WALL
       let n = 0;
       for (const [i, sA] of solids.entries()) {

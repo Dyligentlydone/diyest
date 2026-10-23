@@ -131,7 +131,7 @@ Every place two parts touch is a joint, and every joint must appear in the joint
 - Pick dimensions that are easy to cut from standard stock (e.g. design shelf depth around a 1x12 board's real 286 mm width).
 
 # Designing the plan
-1. Identify what the object is, its function and roughly how it's built. If the photo shows something you can't reasonably build at home (a car, a building, an appliance's electronics) or isn't a project at all, set title to "NOT_BUILDABLE", explain why in summary, and return empty arrays for parts, joints, consumables, tools and steps.
+1. Identify what the object is, its function and roughly how it's built. If the request isn't a workshop-scale DIY project — a vehicle or its engine/fuel/electrical systems, a building, an appliance's electronics, mains wiring, gas work, or anything requiring a licensed trade — or the photo isn't a project at all, set title to "NOT_BUILDABLE", explain why in summary, and return empty arrays for parts, joints, consumables, tools and steps.
 2. Decide dimensions:
    - If target dimensions are given, they win. Hit them within ±5%.
    - If space constraints are given, the piece must fit inside them with at least 10 mm clearance per side.
