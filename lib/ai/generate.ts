@@ -26,7 +26,7 @@ import {
   PROMPT_VERSION,
   type JointRepair,
   type PlanRequest,
-} from "./prompts/plan.v1.4";
+} from "./prompts/plan.v1.5";
 import {
   buildPartsRepairMessage,
   buildStage2UserMessage,
@@ -44,9 +44,11 @@ import {
   reviewIssuesForRepair,
   reviewSchema,
   type Review,
+  type ReviewIssue,
 } from "./prompts/review.v1";
 import {
   escalationModel,
+  genTier,
   getOpenAI,
   planModel,
   reasoningEffort,
@@ -323,39 +325,87 @@ export async function callReview(
 
 interface ReviewOutcome {
   review: ReviewInfo | null;
-  /** true when the configured review model failed and Luna reviewed instead */
+  /** true when the Sol (designated) review didn't run — never claim checked */
   pending: boolean;
-  call: CallRecord | null;
+  calls: CallRecord[];
 }
 
-async function reviewWithFallback(planJson: string, req: PlanRequest): Promise<ReviewOutcome> {
-  const model = reviewModel();
-  const tier = reviewTier();
-  for (const [stage, m, t] of [
-    ["review", model, tier] as const,
-    ["review_fallback", planModel(), undefined] as const,
-  ]) {
-    try {
-      const r = await callReviewRawUsage(planJson, req, m, t);
-      return {
-        review: r.info,
-        pending: stage === "review_fallback",
-        call: {
-          stage,
-          model: m,
-          tier: t ?? "standard",
-          usage: r.usage,
-          costUsd: costUsd(m, r.usage, t),
-          latencyMs: r.info.latencyMs,
-        },
-      };
-    } catch (e) {
-      if (stage === "review")
-        console.warn(`[review] ${m} failed (${(e as Error).message}) — falling back to ${planModel()}`);
-      else console.error(`[review] fallback also failed (${(e as Error).message}) — review pending`);
-    }
+const SEV_RANK = { blocker: 3, major: 2, minor: 1 } as const;
+const VERDICT_RANK = { unsafe: 3, fix: 2, pass: 1 } as const;
+
+/**
+ * Merge two reviewers' issue lists: dedupe by (step, joint, category), keep
+ * the higher severity, prefer the first reviewer's wording on ties.
+ */
+function mergeReviewIssues(primary: ReviewIssue[], secondary: ReviewIssue[]): ReviewIssue[] {
+  const byKey = new Map<string, ReviewIssue>();
+  for (const i of [...primary, ...secondary]) {
+    const key = `${i.step ?? "-"}|${i.joint_id ?? "-"}|${i.category}`;
+    const prev = byKey.get(key);
+    if (!prev || SEV_RANK[i.severity] > SEV_RANK[prev.severity]) byKey.set(key, i);
   }
-  return { review: null, pending: true, call: null };
+  return [...byKey.values()].sort((a, b) => SEV_RANK[b.severity] - SEV_RANK[a.severity]);
+}
+
+/**
+ * §3 step 4 + ship decision: Luna and Sol review in PARALLEL on every plan;
+ * issues merged (dedupe by step/joint/category, higher severity wins).
+ * Sol failing → Luna's review still stands but the plan is "review pending"
+ * (no-silent-downgrade). Luna failing → Sol's review stands alone.
+ */
+async function reviewBoth(planJson: string, req: PlanRequest): Promise<ReviewOutcome> {
+  const sol = reviewModel();
+  const luna = planModel();
+  const solTier = reviewTier();
+  const [solRes, lunaRes] = await Promise.allSettled([
+    callReviewRawUsage(planJson, req, sol, solTier),
+    callReviewRawUsage(planJson, req, luna, undefined),
+  ]);
+
+  const calls: CallRecord[] = [];
+  let solInfo: ReviewInfo | null = null;
+  let lunaInfo: ReviewInfo | null = null;
+  if (solRes.status === "fulfilled") {
+    solInfo = solRes.value.info;
+    calls.push({
+      stage: "review",
+      model: sol,
+      tier: solTier ?? "standard",
+      usage: solRes.value.usage,
+      costUsd: costUsd(sol, solRes.value.usage, solTier),
+      latencyMs: solInfo.latencyMs,
+    });
+  } else {
+    console.warn(`[review] ${sol} failed (${(solRes.reason as Error).message}) — Luna review only, marking pending`);
+  }
+  if (lunaRes.status === "fulfilled") {
+    lunaInfo = lunaRes.value.info;
+    calls.push({
+      stage: "review_luna",
+      model: luna,
+      tier: "standard",
+      usage: lunaRes.value.usage,
+      costUsd: costUsd(luna, lunaRes.value.usage),
+      latencyMs: lunaInfo.latencyMs,
+    });
+  } else {
+    console.warn(`[review] ${luna} (parallel reviewer) failed (${(lunaRes.reason as Error).message})`);
+  }
+
+  if (!solInfo && !lunaInfo) return { review: null, pending: true, calls };
+  const base = solInfo ?? lunaInfo!;
+  const verdicts = [solInfo?.verdict, lunaInfo?.verdict].filter(
+    (v): v is Review["verdict"] => v != null
+  );
+  const review: ReviewInfo = {
+    verdict: verdicts.sort((a, b) => VERDICT_RANK[b] - VERDICT_RANK[a])[0],
+    summary: base.summary,
+    issues: mergeReviewIssues(solInfo?.issues ?? [], lunaInfo?.issues ?? []),
+    model: solInfo && lunaInfo ? `${sol}+${luna}` : base.model,
+    latencyMs: Math.max(solInfo?.latencyMs ?? 0, lunaInfo?.latencyMs ?? 0),
+    tokens: (solInfo?.tokens ?? 0) + (lunaInfo?.tokens ?? 0),
+  };
+  return { review, pending: !solInfo, calls };
 }
 
 // ---------------------------------------------------------------------------
@@ -470,6 +520,8 @@ export async function generatePlan(
   ): Promise<{ s1: Stage1Plan; plan: Plan } | GenerateError> => {
     const streamed = opts2.streamed;
     const tag = opts2.escalate ? "escalate" : "stage";
+    // Luna stages run on the Fast (priority) tier; Sol/escalation stays Standard.
+    const callTier = m === planModel() ? genTier() : undefined;
     const overBudget = () => !streamed && costSoFar() >= cap;
     const onDelta =
       emit && streamed
@@ -491,9 +543,9 @@ export async function generatePlan(
       imageDataUrls,
       "plan_stage1",
       stage1Schema,
-      { model: m, stream: streamed, onDelta, effort: s1Effort }
+      { model: m, stream: streamed, onDelta, effort: s1Effort, tier: callTier }
     );
-    track(`${tag}1`, m, undefined, s1res);
+    track(`${tag}1`, m, callTier, s1res);
 
     const nb = isNotBuildable(s1res.raw);
     if (nb) return { ok: false, kind: "not_buildable", summary: nb.summary, raw: s1res.raw };
@@ -513,9 +565,9 @@ export async function generatePlan(
         imageDataUrls,
         "plan_stage1",
         stage1Schema,
-        { model: m, effort: s1Effort }
+        { model: m, effort: s1Effort, tier: callTier }
       );
-      track(`${tag}1_retry`, m, undefined, retry);
+      track(`${tag}1_retry`, m, callTier, retry);
       s1 = retry.parsed;
       if (!s1)
         return {
@@ -540,9 +592,9 @@ export async function generatePlan(
         imageDataUrls,
         "parts_repair",
         partsRepairSchema,
-        { model: m, effort: s1Effort }
+        { model: m, effort: s1Effort, tier: callTier }
       );
-      track(`${tag}1_geomrepair`, m, undefined, rep);
+      track(`${tag}1_geomrepair`, m, callTier, rep);
       if (rep.parsed?.parts?.length) {
         s1 = {
           ...s1,
@@ -574,9 +626,9 @@ export async function generatePlan(
       [], // no images — geometry is fixed, stage 2 is text-only
       "plan_stage2",
       stage2Schema,
-      { model: m }
+      { model: m, tier: callTier }
     );
-    track(`${tag}2`, m, undefined, s2res);
+    track(`${tag}2`, m, callTier, s2res);
     if (!s2res.parsed)
       return {
         ok: false,
@@ -609,9 +661,11 @@ export async function generatePlan(
   const shouldReview = mode === "all" || (mode === "load_bearing" && plan.load_bearing);
   const [validation, reviewOut] = await Promise.all([
     validatePlan(plan, ctx),
-    shouldReview ? reviewWithFallback(JSON.stringify(plan), req) : Promise.resolve({ review: null, pending: false, call: null } as ReviewOutcome),
+    shouldReview
+      ? reviewBoth(JSON.stringify(plan), req)
+      : Promise.resolve({ review: null, pending: false, calls: [] } as ReviewOutcome),
   ]);
-  if (reviewOut.call) calls.push(reviewOut.call);
+  calls.push(...reviewOut.calls);
   let review = reviewOut.review;
   let reviewPending = reviewOut.pending;
 
@@ -646,9 +700,9 @@ export async function generatePlan(
         [],
         "joint_repair",
         jointRepairSchema,
-        { model }
+        { model, tier: genTier() }
       );
-      track("repair_joints", model, undefined, rep);
+      track("repair_joints", model, genTier(), rep);
       if (rep.parsed?.joints && rep.parsed?.steps) {
         currentPlan = finalizePlan({
           ...currentPlan,
@@ -668,9 +722,9 @@ export async function generatePlan(
         imageDataUrls,
         "parts_repair",
         partsRepairSchema,
-        { model, effort: s1Effort }
+        { model, effort: s1Effort, tier: genTier() }
       );
-      track("repair_parts", model, undefined, rep);
+      track("repair_parts", model, genTier(), rep);
       if (rep.parsed?.parts?.length) {
         currentPlan = finalizePlan({
           ...currentPlan,
@@ -690,9 +744,9 @@ export async function generatePlan(
         imageDataUrls,
         "plan",
         stage1FullSchema,
-        { model }
+        { model, tier: genTier() }
       );
-      track("repair_full", model, undefined, rep);
+      track("repair_full", model, genTier(), rep);
       if (rep.parsed) currentPlan = finalizePlan(rep.parsed);
     }
 
@@ -705,8 +759,8 @@ export async function generatePlan(
 
     // re-review only if a blocker was being fixed (§3 step 5)
     if (hadBlocker && !v2.errors.length && shouldReview) {
-      const re = await reviewWithFallback(JSON.stringify(currentPlan), req);
-      if (re.call) calls.push(re.call);
+      const re = await reviewBoth(JSON.stringify(currentPlan), req);
+      calls.push(...re.calls);
       review = re.review ?? review;
       reviewPending = reviewPending || re.pending;
     }
@@ -722,9 +776,11 @@ export async function generatePlan(
       if (costSoFar() < cap) {
         const [ev, er] = await Promise.all([
           validatePlan(esc.plan, ctx),
-          shouldReview ? reviewWithFallback(JSON.stringify(esc.plan), req) : Promise.resolve({ review: null, pending: false, call: null } as ReviewOutcome),
+          shouldReview
+            ? reviewBoth(JSON.stringify(esc.plan), req)
+            : Promise.resolve({ review: null, pending: false, calls: [] } as ReviewOutcome),
         ]);
-        if (er.call) calls.push(er.call);
+        calls.push(...er.calls);
         const eBlockers = computeBlockers(ev.errors, er.review);
         if (eBlockers.length < blockers.length) {
           escalated = escModel;

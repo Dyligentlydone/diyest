@@ -18,6 +18,7 @@ vi.mock("@/lib/ai/openai", () => ({
   reviewModel: () => "test-review",
   reviewMode: () => "all",
   reviewTier: () => undefined,
+  genTier: () => undefined,
   escalationModel: () =>
     process.env.AI_MODEL_ESCALATE && process.env.AI_MODEL_ESCALATE !== "test-plan"
       ? process.env.AI_MODEL_ESCALATE
@@ -100,12 +101,13 @@ describe("generatePlan pipeline (two-stage)", () => {
     delete process.env.AI_MODEL_ESCALATE;
   });
 
-  it("runs stage1 → stage2 → review with no repairs on a clean plan", async () => {
+  it("runs stage1 → stage2 → dual review with no repairs on a clean plan", async () => {
     const events: string[] = [];
     parse
       .mockResolvedValueOnce(resp(s1))
       .mockResolvedValueOnce(resp(s2))
-      .mockResolvedValueOnce(reviewResp("pass"));
+      .mockResolvedValueOnce(reviewResp("pass")) // sol
+      .mockResolvedValueOnce(reviewResp("pass")); // luna (parallel)
 
     const r = await generatePlan(REQ, [], {}, (ev) => events.push(ev.type), OPTS);
     expect(r.ok).toBe(true);
@@ -115,8 +117,13 @@ describe("generatePlan pipeline (two-stage)", () => {
     expect(r.blockers).toEqual([]);
     expect(r.unverified).toEqual([]);
     expect(r.review?.verdict).toBe("pass");
-    expect(r.calls.map((c) => c.stage)).toEqual(["stage1", "stage2", "review"]);
-    expect(parse).toHaveBeenCalledTimes(3);
+    expect(r.calls.map((c) => c.stage)).toEqual([
+      "stage1",
+      "stage2",
+      "review",
+      "review_luna",
+    ]);
+    expect(parse).toHaveBeenCalledTimes(4);
   });
 
   it("repairs stage-1 geometry with a parts-only repair before stage 2", async () => {
@@ -124,6 +131,7 @@ describe("generatePlan pipeline (two-stage)", () => {
       .mockResolvedValueOnce(resp(badGeometryS1)) // stage 1 — bad dims
       .mockResolvedValueOnce(resp({ parts: s1.parts, overall_dimensions_mm: s1.overall_dimensions_mm })) // parts repair
       .mockResolvedValueOnce(resp(s2))
+      .mockResolvedValueOnce(reviewResp("pass"))
       .mockResolvedValueOnce(reviewResp("pass"));
 
     const r = await generatePlan(REQ, [], {}, undefined, OPTS);
@@ -134,9 +142,10 @@ describe("generatePlan pipeline (two-stage)", () => {
       "stage1_geomrepair",
       "stage2",
       "review",
+      "review_luna",
     ]);
     expect(r.blockers).toEqual([]);
-    expect(parse).toHaveBeenCalledTimes(4);
+    expect(parse).toHaveBeenCalledTimes(5);
   });
 
   it("uses the targeted joints/steps repair for list-only issues", async () => {
@@ -148,6 +157,7 @@ describe("generatePlan pipeline (two-stage)", () => {
     parse
       .mockResolvedValueOnce(resp(s1))
       .mockResolvedValueOnce(resp(noShelfJoints))
+      .mockResolvedValueOnce(reviewResp("pass"))
       .mockResolvedValueOnce(reviewResp("pass"))
       .mockResolvedValueOnce(resp({ joints: s2.joints, steps: s2.steps }));
 
@@ -165,8 +175,10 @@ describe("generatePlan pipeline (two-stage)", () => {
       .mockResolvedValueOnce(resp(s1))
       .mockResolvedValueOnce(resp(s2))
       .mockResolvedValueOnce(reviewResp("fail", [blocker()]))
+      .mockResolvedValueOnce(reviewResp("pass")) // luna reviewer (parallel)
       .mockResolvedValueOnce(resp({ joints: s2.joints, steps: s2.steps }))
-      .mockResolvedValueOnce(reviewResp("pass"));
+      .mockResolvedValueOnce(reviewResp("pass")) // sol re-review
+      .mockResolvedValueOnce(reviewResp("pass")); // luna re-review
 
     const r = await generatePlan(REQ, [], {}, undefined, OPTS);
     expect(r.ok).toBe(true);
@@ -174,7 +186,7 @@ describe("generatePlan pipeline (two-stage)", () => {
     expect(r.repairCount).toBe(1);
     expect(r.review?.verdict).toBe("pass");
     expect(r.blockers).toEqual([]);
-    expect(parse).toHaveBeenCalledTimes(5); // s1+s2+review+repair+re-review
+    expect(parse).toHaveBeenCalledTimes(7); // s1+s2+2 reviews+repair+2 re-reviews
   });
 
   it("escalates stages on the strong model when blockers survive repair", async () => {
@@ -182,12 +194,15 @@ describe("generatePlan pipeline (two-stage)", () => {
     parse
       .mockResolvedValueOnce(resp(s1))
       .mockResolvedValueOnce(resp(s2))
-      .mockResolvedValueOnce(reviewResp("fail", [blocker()])) // review → blocker
+      .mockResolvedValueOnce(reviewResp("fail", [blocker()])) // sol review → blocker
+      .mockResolvedValueOnce(reviewResp("fail", [blocker()])) // luna review (parallel)
       .mockResolvedValueOnce(resp({ joints: s2.joints, steps: s2.steps })) // repair
-      .mockResolvedValueOnce(reviewResp("fail", [blocker()])) // re-review — blocker survives
+      .mockResolvedValueOnce(reviewResp("fail", [blocker()])) // sol re-review
+      .mockResolvedValueOnce(reviewResp("fail", [blocker()])) // luna re-review
       .mockResolvedValueOnce(resp(s1)) // escalate stage 1
       .mockResolvedValueOnce(resp(s2)) // escalate stage 2
-      .mockResolvedValueOnce(reviewResp("pass")); // escalate review
+      .mockResolvedValueOnce(reviewResp("pass")) // esc sol review
+      .mockResolvedValueOnce(reviewResp("pass")); // esc luna review
 
     const r = await generatePlan(REQ, [], {}, undefined, OPTS);
     expect(r.ok).toBe(true);
@@ -195,7 +210,7 @@ describe("generatePlan pipeline (two-stage)", () => {
     expect(r.escalated).toBe("test-esc");
     expect(r.blockers).toEqual([]);
     expect(r.calls.filter((c) => c.model === "test-esc").length).toBe(2);
-    expect(r.calls.length).toBeGreaterThanOrEqual(7);
+    expect(r.calls.length).toBeGreaterThanOrEqual(10);
   });
 
   it("surfaces surviving blockers for the friendly 'tricky' state", async () => {
@@ -203,8 +218,10 @@ describe("generatePlan pipeline (two-stage)", () => {
       .mockResolvedValueOnce(resp(s1))
       .mockResolvedValueOnce(resp(s2))
       .mockResolvedValueOnce(reviewResp("fail", [blocker()]))
+      .mockResolvedValueOnce(reviewResp("fail", [blocker()]))
       .mockResolvedValueOnce(resp({ joints: s2.joints, steps: s2.steps }))
-      .mockResolvedValueOnce(reviewResp("fail", [blocker()])); // still failing
+      .mockResolvedValueOnce(reviewResp("fail", [blocker()])) // still failing (sol)
+      .mockResolvedValueOnce(reviewResp("fail", [blocker()])); // still failing (luna)
 
     const r = await generatePlan(REQ, [], {}, undefined, OPTS);
     expect(r.ok).toBe(true);
@@ -224,18 +241,18 @@ describe("generatePlan pipeline (two-stage)", () => {
     expect(parse).toHaveBeenCalledTimes(1);
   });
 
-  it("marks reviewPending and keeps the plan when the review model fails", async () => {
+  it("marks reviewPending and keeps the plan when the Sol review fails", async () => {
     parse
       .mockResolvedValueOnce(resp(s1))
       .mockResolvedValueOnce(resp(s2))
-      .mockRejectedValueOnce(new Error("sol down")) // review fails
-      .mockResolvedValueOnce(reviewResp("pass")); // luna fallback
+      .mockRejectedValueOnce(new Error("sol down")) // sol review fails
+      .mockResolvedValueOnce(reviewResp("pass")); // luna review still ran
 
     const r = await generatePlan(REQ, [], {}, undefined, OPTS);
     expect(r.ok).toBe(true);
     if (!r.ok) return;
     expect(r.reviewPending).toBe(true);
     expect(r.review?.model).toBe("test-plan");
-    expect(r.calls.some((c) => c.stage === "review_fallback")).toBe(true);
+    expect(r.calls.some((c) => c.stage === "review_luna")).toBe(true);
   });
 });

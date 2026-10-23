@@ -11,3 +11,21 @@ Running 8 regression plans (concurrency 4)…
 [review] gpt-6.1-sol failed (429 You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/.) — falling back to gpt-6-luna
 [review] fallback also failed (429 You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/.) — review pending
   done: coffee-table (248s, exception)
+  done: bench (395s, exception)
+
+name          | useful | partial | plan | final | calls           | tokens | cost$ | rep | esc | verdict    | blk | title
+---------------------------------------------------------------------------------------------------------------------------------------
+bench         |      — |       — |    — |   395 |                 |      0 | $0.000 |   0 |   - | exception  |   0 | —
+birdhouse     |      — |       — |    — |   182 |                 |      0 | $0.000 |   0 |   - | exception  |   0 | —
+chair         |      — |       — |    — |   231 |                 |      0 | $0.000 |   0 |   - | exception  |   0 | —
+coffee-table  |      — |       — |    — |   248 |                 |      0 | $0.000 |   0 |   - | exception  |   0 | —
+desk          |      — |       — |    — |     1 |                 |      0 | $0.000 |   0 |   - | exception  |   0 | —
+not-buildable |      — |       — |    — |     1 |                 |      0 | $0.000 |   0 |   - | exception  |   0 | —
+round-table   |      — |       — |    — |     1 |                 |      0 | $0.000 |   0 |   - | exception  |   0 | —
+step-stool    |      — |       — |    — |     1 |                 |      0 | $0.000 |   0 |   - | exception  |   0 | —
+
+AVERAGES: useful 0s · full plan 0s · final 0s · cost $0.000 · tokens 0
+MEDIANS:  useful 0s · full plan 0s · final 0s
+escalations: 0/0 · blocker-free finals: 0/0
+
+results → eval/results/regression-1792733137958.json

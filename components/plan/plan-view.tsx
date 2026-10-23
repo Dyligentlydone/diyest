@@ -50,6 +50,8 @@ export function PlanView({
   blockers = [],
   warnings = [],
   reviewPending = false,
+  checking = false,
+  changedSteps = [],
 }: {
   plan: Plan;
   units: Units;
@@ -59,6 +61,10 @@ export function PlanView({
   warnings?: string[];
   /** configured review model failed — plan is not fully checked */
   reviewPending?: boolean;
+  /** review still running — steps are drafts until it lands */
+  checking?: boolean;
+  /** step numbers the carpenter-review repair changed */
+  changedSteps?: number[];
 }) {
   const [units, setUnits] = useState<Units>(initialUnits);
   const currency = plan.est_cost.currency;
@@ -260,6 +266,7 @@ export function PlanView({
                 </CardContent>
               </Card>
             )}
+            {plan.hardware.length > 0 && (
             <Card>
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm">Hardware</CardTitle>
@@ -283,6 +290,7 @@ export function PlanView({
                 </ul>
               </CardContent>
             </Card>
+            )}
 
             {consumablesOf(plan).length > 0 && (
               <Card>
@@ -322,6 +330,7 @@ export function PlanView({
       </section>
 
       {/* tools */}
+      {plan.tools.length > 0 && (
       <section>
         <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold">
           <Wrench className="h-5 w-5" /> Tools
@@ -362,6 +371,7 @@ export function PlanView({
           )}
         </div>
       </section>
+      )}
 
       {/* safety */}
       {plan.safety_overview.length > 0 && (
@@ -378,20 +388,42 @@ export function PlanView({
       )}
 
       {/* steps */}
+      {plan.steps.length > 0 && (
       <section>
-        <h2 className="mb-3 text-lg font-semibold">Build steps</h2>
+        <h2 className="mb-3 flex flex-wrap items-center gap-3 text-lg font-semibold">
+          Build steps
+          {checking && (
+            <Badge variant="outline" className="border-primary/50 text-xs font-normal">
+              Draft — carpenter check in progress
+            </Badge>
+          )}
+        </h2>
         <div className="space-y-3">
           {[...plan.steps]
             .sort((a, b) => a.n - b.n)
             .map((s) => (
-              <Card key={s.n}>
+              <Card
+                key={s.n}
+                className={
+                  changedSteps.includes(s.n)
+                    ? "border-amber-500/60 bg-amber-500/5"
+                    : undefined
+                }
+              >
                 <CardContent className="pt-5">
                   <div className="flex gap-4">
                     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary font-mono text-sm font-bold text-primary-foreground">
                       {s.n}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <h3 className="font-medium">{s.title}</h3>
+                      <h3 className="font-medium">
+                        {s.title}
+                        {changedSteps.includes(s.n) && (
+                          <Badge variant="secondary" className="ml-2 text-[10px]">
+                            updated by review
+                          </Badge>
+                        )}
+                      </h3>
                       <p className="mt-1 text-sm text-muted-foreground">{s.text}</p>
                       {s.parts_used.length > 0 && (
                         <p className="mt-2 text-xs text-muted-foreground">
@@ -426,6 +458,7 @@ export function PlanView({
             ))}
         </div>
       </section>
+      )}
 
       <Separator />
       <p className="text-xs text-muted-foreground">

@@ -17,8 +17,12 @@ export const PRICES: Record<string, Price> = {
   "gpt-6-astra": { input: 10.0, cachedInput: 1.0, output: 50.0 },
 };
 
-/** Flex tier ≈ 50% of Standard. */
-const FLEX_FACTOR = 0.5;
+/**
+ * Tier multipliers on Standard pricing. Flex ≈ 50%. Priority ("Fast") tier
+ * pricing isn't published for these SKUs — billed at Standard until the
+ * pricing page confirms; re-check before launch.
+ */
+const TIER_FACTORS: Record<string, number> = { flex: 0.5, priority: 1 };
 
 export interface TokenUsage {
   inputTokens: number;
@@ -31,7 +35,7 @@ export interface TokenUsage {
 export function costUsd(model: string, u: TokenUsage, tier?: string): number {
   const p = PRICES[model];
   if (!p) return 0;
-  const f = tier === "flex" ? FLEX_FACTOR : 1;
+  const f = tier ? (TIER_FACTORS[tier] ?? 1) : 1;
   const uncached = Math.max(0, u.inputTokens - u.cachedTokens);
   return (
     (uncached * p.input + u.cachedTokens * p.cachedInput + u.outputTokens * p.output) /

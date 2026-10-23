@@ -1,0 +1,223 @@
+{
+  "at": "2026-10-23T05:25:37.958Z",
+  "rows": [
+    {
+      "name": "bench",
+      "title": "—",
+      "ok": false,
+      "tUsefulS": null,
+      "tPartialS": null,
+      "tFirstPlanS": null,
+      "tFinalS": 394.832,
+      "calls": "",
+      "tokens": 0,
+      "costUsd": 0,
+      "repairs": 0,
+      "escalated": null,
+      "verdict": "exception",
+      "reviewModel": "—",
+      "blockers": 0,
+      "unverified": 0,
+      "notes": "429 You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organiz"
+    },
+    {
+      "name": "birdhouse",
+      "title": "—",
+      "ok": false,
+      "tUsefulS": null,
+      "tPartialS": null,
+      "tFirstPlanS": null,
+      "tFinalS": 182.385,
+      "calls": "",
+      "tokens": 0,
+      "costUsd": 0,
+      "repairs": 0,
+      "escalated": null,
+      "verdict": "exception",
+      "reviewModel": "—",
+      "blockers": 0,
+      "unverified": 0,
+      "notes": "429 You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organiz"
+    },
+    {
+      "name": "chair",
+      "title": "—",
+      "ok": false,
+      "tUsefulS": null,
+      "tPartialS": null,
+      "tFirstPlanS": null,
+      "tFinalS": 231.142,
+      "calls": "",
+      "tokens": 0,
+      "costUsd": 0,
+      "repairs": 0,
+      "escalated": null,
+      "verdict": "exception",
+      "reviewModel": "—",
+      "blockers": 0,
+      "unverified": 0,
+      "notes": "429 You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organiz"
+    },
+    {
+      "name": "coffee-table",
+      "title": "—",
+      "ok": false,
+      "tUsefulS": null,
+      "tPartialS": null,
+      "tFirstPlanS": null,
+      "tFinalS": 247.655,
+      "calls": "",
+      "tokens": 0,
+      "costUsd": 0,
+      "repairs": 0,
+      "escalated": null,
+      "verdict": "exception",
+      "reviewModel": "—",
+      "blockers": 0,
+      "unverified": 0,
+      "notes": "429 You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organiz"
+    },
+    {
+      "name": "desk",
+      "title": "—",
+      "ok": false,
+      "tUsefulS": null,
+      "tPartialS": null,
+      "tFirstPlanS": null,
+      "tFinalS": 0.968,
+      "calls": "",
+      "tokens": 0,
+      "costUsd": 0,
+      "repairs": 0,
+      "escalated": null,
+      "verdict": "exception",
+      "reviewModel": "—",
+      "blockers": 0,
+      "unverified": 0,
+      "notes": "429 You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organiz"
+    },
+    {
+      "name": "not-buildable",
+      "title": "—",
+      "ok": false,
+      "tUsefulS": null,
+      "tPartialS": null,
+      "tFirstPlanS": null,
+      "tFinalS": 0.779,
+      "calls": "",
+      "tokens": 0,
+      "costUsd": 0,
+      "repairs": 0,
+      "escalated": null,
+      "verdict": "exception",
+      "reviewModel": "—",
+      "blockers": 0,
+      "unverified": 0,
+      "notes": "429 You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organiz"
+    },
+    {
+      "name": "round-table",
+      "title": "—",
+      "ok": false,
+      "tUsefulS": null,
+      "tPartialS": null,
+      "tFirstPlanS": null,
+      "tFinalS": 0.847,
+      "calls": "",
+      "tokens": 0,
+      "costUsd": 0,
+      "repairs": 0,
+      "escalated": null,
+      "verdict": "exception",
+      "reviewModel": "—",
+      "blockers": 0,
+      "unverified": 0,
+      "notes": "429 You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organiz"
+    },
+    {
+      "name": "step-stool",
+      "title": "—",
+      "ok": false,
+      "tUsefulS": null,
+      "tPartialS": null,
+      "tFirstPlanS": null,
+      "tFinalS": 0.975,
+      "calls": "",
+      "tokens": 0,
+      "costUsd": 0,
+      "repairs": 0,
+      "escalated": null,
+      "verdict": "exception",
+      "reviewModel": "—",
+      "blockers": 0,
+      "unverified": 0,
+      "notes": "429 You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organiz"
+    }
+  ],
+  "results": {
+    "birdhouse": {
+      "ok": false,
+      "kind": "invalid",
+      "errors": [
+        "Error: 429 You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
+      ],
+      "raw": ""
+    },
+    "desk": {
+      "ok": false,
+      "kind": "invalid",
+      "errors": [
+        "Error: 429 You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
+      ],
+      "raw": ""
+    },
+    "step-stool": {
+      "ok": false,
+      "kind": "invalid",
+      "errors": [
+        "Error: 429 You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
+      ],
+      "raw": ""
+    },
+    "round-table": {
+      "ok": false,
+      "kind": "invalid",
+      "errors": [
+        "Error: 429 You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
+      ],
+      "raw": ""
+    },
+    "not-buildable": {
+      "ok": false,
+      "kind": "invalid",
+      "errors": [
+        "Error: 429 You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
+      ],
+      "raw": ""
+    },
+    "chair": {
+      "ok": false,
+      "kind": "invalid",
+      "errors": [
+        "Error: 429 You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
+      ],
+      "raw": ""
+    },
+    "coffee-table": {
+      "ok": false,
+      "kind": "invalid",
+      "errors": [
+        "Error: 429 You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
+      ],
+      "raw": ""
+    },
+    "bench": {
+      "ok": false,
+      "kind": "invalid",
+      "errors": [
+        "Error: 429 You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
+      ],
+      "raw": ""
+    }
+  }
+}

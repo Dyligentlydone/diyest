@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { generatePlan, type GenEvent } from "@/lib/ai/generate";
-import { PROMPT_VERSION } from "@/lib/ai/prompts/plan.v1.4";
+import { PROMPT_VERSION } from "@/lib/ai/prompts/plan.v1.5";
 import { REVIEW_PROMPT_VERSION } from "@/lib/ai/prompts/review.v1";
-import type { PlanRequest } from "@/lib/ai/prompts/plan.v1.4";
+import type { PlanRequest } from "@/lib/ai/prompts/plan.v1.5";
 import {
   ANON_COOKIE,
   anonGenerationsUsed,

@@ -30,7 +30,20 @@ interface Draft {
   reviewPending?: boolean;
   /** true while stage 2/joints are still generating (blueprint-only view) */
   partial?: boolean;
+  /** step numbers the review repair changed — highlighted on screen */
+  changedSteps?: number[];
   savedId: string | null;
+}
+
+/** Steps the carpenter-review repair altered — title, text or parts changed. */
+function diffSteps(before: Plan["steps"], after: Plan["steps"]): number[] {
+  const byN = new Map(before.map((s) => [s.n, s]));
+  return after
+    .filter((s) => {
+      const b = byN.get(s.n);
+      return !b || b.title !== s.title || b.text !== s.text;
+    })
+    .map((s) => s.n);
 }
 
 interface PendingGen {
@@ -158,6 +171,7 @@ export function DraftClient({ isAuthed, units }: { isAuthed: boolean; units: Uni
           promptVersion: r.promptVersion,
           improved: r.improved,
           reviewPending: r.reviewPending,
+          changedSteps: diffSteps(readDraft()?.plan.steps ?? [], r.plan.steps),
           savedId: null,
         });
         setChecking(false);
@@ -267,6 +281,7 @@ export function DraftClient({ isAuthed, units }: { isAuthed: boolean; units: Uni
             promptVersion: r.promptVersion,
             improved: r.improved,
             reviewPending: r.reviewPending,
+            changedSteps: diffSteps(draft!.plan.steps ?? [], r.plan.steps),
             partial: false,
           });
           setChecking(false);
@@ -326,7 +341,7 @@ export function DraftClient({ isAuthed, units }: { isAuthed: boolean; units: Uni
           mode: "build",
           plan: draft.plan,
           input: draft.input,
-          prompt_version: draft.promptVersion ?? "plan.v1.4",
+          prompt_version: draft.promptVersion ?? "plan.v1.5",
           imagePaths,
         }),
       });
@@ -415,6 +430,8 @@ export function DraftClient({ isAuthed, units }: { isAuthed: boolean; units: Uni
         blockers={draft.blockers}
         warnings={draft.warnings}
         reviewPending={draft.reviewPending}
+        checking={checking || isPartial}
+        changedSteps={draft.changedSteps ?? []}
       />
 
       <div className="sticky bottom-4 mt-8 flex justify-center">

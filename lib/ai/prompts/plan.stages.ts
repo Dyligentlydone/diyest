@@ -137,6 +137,11 @@ Return ONLY a single JSON object matching the provided schema. No markdown, no c
 - If the plan is load_bearing: specify fasteners into studs/anchors for wall-mounted items, mention anti-tip hardware for tall freestanding furniture (over ~750 mm).
 - est_hours: realistic total for the stated skill level. est_cost: low-high range in the requested currency for materials, hardware and consumables only (not tools).
 
+# v1.5 — the three most-common reviewer findings (avoid these exact failures)
+- STRENGTH: leave at least 10 mm of solid wood around every bore, socket, pocket or mortise wall. Pocket holes need a face at least 38 mm tall and stock within the jig's range (most pocket jigs handle 12–38 mm) plus the matching screw length for that thickness. A frame must not rely on small angle brackets alone against side-to-side racking — if it has no back panel, diagonal or stretcher, add one or pick a braced joint.
+- HARDWARE PREP: if a fastener needs the wood prepared for it, the joint note must name the prep AND a step must do it: Z-clips → a groove or kerf in the rail; figure-8 fasteners → a shallow recess; slotted holes → which direction the slots run; countersunk heads → a countersink operation. Match head style to washers and drive tools (a countersunk head cannot bear flat on a fender washer; a hex head can't be countersunk).
+- CLARITY: every hole, bore, slot or fastener position must be described from a named datum ("50 mm in from the front edge of P3"), not only by coordinates. Every "make" part gets a cut-and-prepare step before it is assembled. A step may never reference work no step instructs (no "clip into the groove" when no step cuts the groove), and must never contradict the joints array.
+
 # Checklist
 - Every listed contact pair has a joint; every joint references a listed pair or FLOOR/WALL. Joint ids J1..Jn unique.
 - No end-grain screw reliance on structural joints. Solid tops get movement-friendly fasteners. Every fastener reachable at its step.
