@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BuildIt
 
-## Getting Started
+AI DIY project planner: show the app a photo or describe what you want to make, and
+get a complete buildable plan — dimensioned blueprint, materials/cut lists, tools,
+and step-by-step instructions.
 
-First, run the development server:
+## Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Next.js 16 (App Router) + TypeScript strict
+- Tailwind CSS v4 + shadcn/ui
+- Supabase (Postgres + Auth + Storage)
+- OpenAI for plan generation (server-side only, via `lib/ai/`)
+- Zod for all validation
+- Stripe for subscriptions (Milestone 6)
+
+## Setup
+
+1. **Install deps**
+
+   ```bash
+   npm install
+   ```
+
+2. **Create a Supabase project** (free tier is fine) at https://supabase.com
+
+3. **Configure env**
+
+   ```bash
+   cp .env.example .env.local
+   ```
+
+   Fill in `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   (Supabase dashboard → Project Settings → API). Other vars can stay empty until
+   their milestone.
+
+4. **Apply the database schema**
+
+   Either run the migration through the Supabase SQL editor
+   (`supabase/migrations/0001_init.sql`), or link the CLI:
+
+   ```bash
+   npx supabase link --project-ref <your-ref>
+   npx supabase db push
+   ```
+
+5. **Auth redirects** — in Supabase → Authentication → URL Configuration:
+   - Site URL: `http://localhost:3000`
+   - Redirect URLs: add `http://localhost:3000/auth/callback` and
+     `http://localhost:3000/auth/confirm`
+   - For Google sign-in, enable the Google provider (Authentication → Providers)
+     with OAuth credentials from Google Cloud Console.
+
+6. **Run**
+
+   ```bash
+   npm run dev
+   ```
+
+   App: http://localhost:3000
+
+## Repo layout
+
+```
+app/            routes (App Router)
+components/     shared UI; components/ui = shadcn
+lib/            env, supabase clients, plan/blueprint/ai modules
+  ai/prompts/   versioned AI prompts (plan.v1.ts provided by handoff)
+supabase/migrations/  SQL migrations (RLS enabled on every table)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Notes
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- All AI calls happen server-side; never from the client.
+- All plan dimensions are stored internally in millimeters.
+- See `DECISIONS.md` for architecture choices and open questions.
