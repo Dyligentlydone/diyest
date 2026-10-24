@@ -12,10 +12,24 @@
  */
 import { notFound, redirect } from "next/navigation";
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import { isSupabaseConfigured } from "@/lib/env";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
 
 export type SiteMode = "invite_only" | "public";
+
+/**
+ * Browse gate cookie: joining the waitlist sets this, which unlocks LOOKING
+ * around the app (the homepage lock screen, /new, etc.) but never generating —
+ * that stays gated by the invite check in the API routes.
+ */
+export const GATE_COOKIE = "diyest_gate";
+export const GATE_WAITLIST = "waitlist";
+
+export async function hasBrowseCookie(): Promise<boolean> {
+  const jar = await cookies();
+  return jar.get(GATE_COOKIE)?.value === GATE_WAITLIST;
+}
 
 export function siteMode(): SiteMode {
   return process.env.SITE_MODE === "public" ? "public" : "invite_only";
@@ -67,6 +81,9 @@ export interface BetaAccess {
   /** grant level, e.g. 'pro' during beta */
   level: "basic" | "intermediate" | "pro";
   isAdmin: boolean;
+  /** the invite code that granted access, if any — code redeemers get
+   *  INVITE_PLAN_USES total plan generations instead of the beta caps */
+  inviteCode: string | null;
 }
 
 /**
@@ -82,11 +99,11 @@ async function accessRow(userId: string): Promise<BetaAccess | null> {
   const { data: user } = await supabase.auth.admin.getUserById(userId);
   const email = user.user?.email ?? null;
   if (isAdminEmail(email))
-    return { email, active: true, level: "pro", isAdmin: true };
+    return { email, active: true, level: "pro", isAdmin: true, inviteCode: null };
 
   const { data: p } = await supabase
     .from("profiles")
-    .select("beta_access_level, beta_access_until")
+    .select("beta_access_level, beta_access_until, invite_code")
     .eq("id", userId)
     .maybeSingle();
   const until = p?.beta_access_until ? Date.parse(p.beta_access_until) : null;
@@ -96,6 +113,7 @@ async function accessRow(userId: string): Promise<BetaAccess | null> {
     active,
     level: active ? (p.beta_access_level as BetaAccess["level"]) : "basic",
     isAdmin: false,
+    inviteCode: p?.invite_code ?? null,
   };
 }
 
@@ -116,13 +134,16 @@ export async function requireApiAccess(): Promise<
   } = await supabase.auth.getUser();
   if (!user)
     return {
-      response: NextResponse.json({ error: "Sign in to continue" }, { status: 401 }),
+      response: NextResponse.json(
+        { ok: false, kind: "auth", error: "sign_in", errors: ["Sign in to continue."] },
+        { status: 401 }
+      ),
     };
 
   if (!isInviteOnly()) {
     return {
       userId: user.id,
-      access: { email: user.email ?? null, active: true, level: "basic", isAdmin: false },
+      access: { email: user.email ?? null, active: true, level: "basic", isAdmin: false, inviteCode: null },
     };
   }
 
@@ -131,9 +152,13 @@ export async function requireApiAccess(): Promise<
     return {
       response: NextResponse.json(
         {
+          ok: false,
+          kind: "limit",
+          reason: "invite_required",
           error: "invite_required",
           message:
             "diyest is in invite-only beta. Join the waitlist or enter an invite code.",
+          errors: ["diyest is in invite-only beta — enter an invite code to generate."],
         },
         { status: 403 }
       ),
@@ -160,30 +185,35 @@ export async function denyIfNoInvite(userId: string): Promise<NextResponse | nul
   return null;
 }
 
-/** Redirect to the waitlist when a signed-in user lacks an active invite. */
-export async function denyPageIfNoInvite(userId: string): Promise<void> {
-  if (!isInviteOnly()) return;
-  const access = await betaAccessFor(userId);
-  if (!access?.active) redirect("/?invite=required#waitlist");
+/**
+ * Signed-in users may browse every page — waitlist members and pre-invite
+ * users see the app but can't generate (the API enforces that). Kept as a
+ * named function so call sites stay descriptive.
+ */
+export async function denyPageIfNoInvite(): Promise<void> {
+  return; // browsing is allowed; actual use is gated in the API routes
 }
 
 /**
- * Page-route gate. Redirects signed-out visitors to /login (with next= back)
- * and signed-in uninvited users to the homepage waitlist. Returns the access
- * info for the page. Public mode only requires sign-in.
+ * Page-route gate (invite-only mode). Signed-in users always browse.
+ * Anonymous visitors need the waitlist cookie — without it they go back to
+ * the homepage, where the lock screen asks them to join or redeem a code.
  */
-export async function requirePageAccess(
-  currentPath: string
-): Promise<{ userId: string | null; access: BetaAccess | null }> {
+export async function requirePageAccess(): Promise<{
+  userId: string | null;
+  access: BetaAccess | null;
+}> {
   if (!isInviteOnly() || !isSupabaseConfigured())
     return { userId: null, access: null }; // public mode — pages allow anonymous
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) redirect(`/login?next=${encodeURIComponent(currentPath)}`);
+  if (!user) {
+    if (await hasBrowseCookie()) return { userId: null, access: null };
+    redirect("/"); // locked → homepage lock screen
+  }
   const access = await betaAccessFor(user.id);
-  if (!access?.active) redirect("/?invite=required#waitlist");
   return { userId: user.id, access };
 }
 
@@ -199,6 +229,11 @@ export async function requireAdmin(): Promise<{ userId: string; email: string }>
   } = await supabase.auth.getUser();
   if (!user || !isAdminEmail(user.email)) notFound();
   return { userId: user.id, email: user.email! };
+}
+
+/** Total plan generations an invite code grants (config). */
+export function invitePlanUses(): number {
+  return Number(process.env.INVITE_PLAN_USES ?? "3") || 3;
 }
 
 /** Beta protective caps (config). Pro features, rate-limited during beta. */

@@ -56,6 +56,17 @@ export async function usageToday(userId: string, kind: UsageKind): Promise<numbe
   return count ?? 0;
 }
 
+/** Count all-time usage events of a kind for a user. */
+export async function usageTotal(userId: string, kind: UsageKind): Promise<number> {
+  const supabase = createServiceClient();
+  const { count } = await supabase
+    .from("usage_events")
+    .select("id", { count: "exact", head: true })
+    .eq("user_id", userId)
+    .eq("kind", kind);
+  return count ?? 0;
+}
+
 export async function recordUsage(userId: string, kind: UsageKind): Promise<void> {
   const supabase = createServiceClient();
   await supabase.from("usage_events").insert({ user_id: userId, kind });

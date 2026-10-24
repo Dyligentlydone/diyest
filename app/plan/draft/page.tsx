@@ -41,7 +41,7 @@ export default function DraftPlanPage() {
 
 async function DraftLoader() {
   // invite-only beta: drafts require an active invite
-  await requirePageAccess("/plan/draft");
+  await requirePageAccess();
   const { isAuthed, units, kerfMm } = await sessionInfo();
   return <DraftClient isAuthed={isAuthed} units={units} kerfMm={kerfMm} />;
 }

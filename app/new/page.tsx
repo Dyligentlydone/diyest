@@ -33,7 +33,7 @@ async function defaults(): Promise<{
 
 async function Form() {
   // invite-only beta: /new requires an active invite
-  await requirePageAccess("/new");
+  await requirePageAccess();
   const d = await defaults();
   return <ModeTabs defaults={d} />;
 }

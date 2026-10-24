@@ -14,6 +14,7 @@ import {
   recordUsage,
   usageThisMonth,
   usageToday,
+  usageTotal,
 } from "@/lib/usage";
 import { dailySpendAlertUsd } from "@/lib/ai/pricing";
 import { isSupabaseConfigured } from "@/lib/env";
@@ -26,7 +27,7 @@ import {
   reviewModel,
   reviewTier,
 } from "@/lib/ai/openai";
-import { betaCanGenerate, isInviteOnly, requireApiAccess } from "@/lib/site-mode";
+import { betaCanGenerate, invitePlanUses, isInviteOnly, requireApiAccess } from "@/lib/site-mode";
 import { stripImageDataUrl } from "@/lib/image";
 
 const payloadSchema = z.object({
@@ -126,6 +127,23 @@ export async function POST(request: NextRequest) {
     const gate = await requireApiAccess();
     if ("response" in gate) return gate.response;
     user = { id: gate.userId };
+    // code-redeemed users get INVITE_PLAN_USES total plans (admins bypass —
+    // they have no inviteCode); other grants keep the daily/monthly beta caps
+    if (gate.access.inviteCode) {
+      const total = await usageTotal(gate.userId, "plan_generate");
+      if (total >= invitePlanUses())
+        return NextResponse.json(
+          {
+            ok: false,
+            kind: "limit",
+            reason: "invite_uses",
+            errors: [
+              `That's all ${invitePlanUses()} plans on your invite — we'll email you when more spots open.`,
+            ],
+          },
+          { status: 429 }
+        );
+    }
     const [usedToday, usedMonth] = await Promise.all([
       usageToday(gate.userId, "plan_generate"),
       usageThisMonth(gate.userId, "plan_generate"),

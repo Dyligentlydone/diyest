@@ -2,8 +2,11 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { WaitlistForm } from "@/components/waitlist-form";
-import { isInviteOnly } from "@/lib/site-mode";
+import { InviteLock } from "@/components/invite-lock";
+import { hasBrowseCookie, isInviteOnly } from "@/lib/site-mode";
 import { turnstileSiteKey } from "@/lib/turnstile";
+import { isSupabaseConfigured } from "@/lib/env";
+import { createClient } from "@/lib/supabase/server";
 import { ArrowRight, Camera, DraftingCompass, ListChecks, ShieldCheck } from "lucide-react";
 
 function Notice({ kind }: { kind: string | null }) {
@@ -40,20 +43,20 @@ function Transformation() {
       <figure className="rounded-lg border bg-card p-2 text-center">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/examples/bookcase-iso.png"
-          alt="A 3D view of a bookcase you described"
+          src="/examples/ldesk-photo.jpg"
+          alt="A photo of a walnut L-shaped desk"
           className="w-full rounded"
         />
         <figcaption className="py-1.5 text-xs text-muted-foreground">
-          You picture it
+          You snap a photo
         </figcaption>
       </figure>
       <ArrowRight className="mx-auto h-6 w-6 rotate-90 text-muted-foreground sm:rotate-0" aria-hidden />
       <figure className="rounded-lg border bg-card p-2 text-center">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/examples/bookcase-blueprint.png"
-          alt="A generated dimensioned blueprint of the bookcase"
+          src="/examples/ldesk-blueprint.png"
+          alt="The generated dimensioned blueprint of the L-shaped desk"
           className="w-full rounded"
         />
         <figcaption className="py-1.5 text-xs text-muted-foreground">
@@ -88,18 +91,35 @@ const STEPS = [
 ];
 
 const EXAMPLES = [
+  { src: "/examples/ldesk-blueprint.png", alt: "Generated blueprint for an L-shaped desk", label: "L-shaped desk" },
   { src: "/examples/table-blueprint.png", alt: "Generated blueprint for a round table", label: "Round table" },
   { src: "/examples/bookcase-blueprint.png", alt: "Generated blueprint for a bookcase", label: "Bookcase" },
-  { src: "/examples/table-iso.png", alt: "3D view of the table plan", label: "3D preview" },
-  { src: "/examples/bookcase-iso.png", alt: "3D exploded view of the bookcase plan", label: "Exploded view" },
+  { src: "/examples/ldesk-3d.png", alt: "3D preview of the L-shaped desk plan", label: "3D preview" },
 ];
 
-export default function Home(props: {
+/**
+ * Show the lock screen when: invite-only mode AND the visitor hasn't joined
+ * the waitlist (no browse cookie) AND isn't signed in. Signed-in users and
+ * waitlisted browsers see the normal page.
+ */
+async function lockedOut(): Promise<boolean> {
+  if (!isInviteOnly() || !isSupabaseConfigured()) return false;
+  if (await hasBrowseCookie()) return false;
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  return !user;
+}
+
+export default async function Home(props: {
   searchParams: Promise<Record<string, string | undefined>>;
 }) {
   const inviteOnly = isInviteOnly();
+  const locked = await lockedOut();
   return (
     <main className="flex-1">
+      {locked && <InviteLock siteKey={turnstileSiteKey()} />}
       <section className="mx-auto flex max-w-3xl flex-col items-center px-4 pt-16 pb-10 text-center sm:pt-24">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/logo.png" alt="diyest" className="h-24 w-auto sm:h-32" />

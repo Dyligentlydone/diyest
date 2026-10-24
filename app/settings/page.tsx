@@ -35,7 +35,7 @@ async function SettingsContent() {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect("/login?next=/settings");
-  await denyPageIfNoInvite(user.id);
+  await denyPageIfNoInvite();
 
   const { data } = await supabase
     .from("profiles")

@@ -19,7 +19,14 @@ declare global {
   }
 }
 
-export function WaitlistForm({ siteKey }: { siteKey: string | null }) {
+export function WaitlistForm({
+  siteKey,
+  onJoined,
+}: {
+  siteKey: string | null;
+  /** called after a successful join (new or already-joined) */
+  onJoined?: () => void;
+}) {
   const params = useSearchParams();
   const [email, setEmail] = useState("");
   const [build, setBuild] = useState("");
@@ -90,6 +97,7 @@ export function WaitlistForm({ siteKey }: { siteKey: string | null }) {
         return;
       }
       setDone({ alreadyJoined: !!data.alreadyJoined, confirmed: !!data.confirmed });
+      onJoined?.();
     } catch {
       toast.error("Network error — try again.");
     } finally {

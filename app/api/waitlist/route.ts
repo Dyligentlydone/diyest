@@ -12,6 +12,17 @@ import {
 } from "@/lib/email";
 import { makeConfirmToken, makeReferralCode } from "@/lib/waitlist";
 import { verifyTurnstile } from "@/lib/turnstile";
+import { GATE_COOKIE, GATE_WAITLIST } from "@/lib/site-mode";
+
+/** Joining the waitlist unlocks browsing (not generating) — mark the browser. */
+function withBrowseCookie(res: NextResponse): NextResponse {
+  res.cookies.set(GATE_COOKIE, GATE_WAITLIST, {
+    path: "/",
+    maxAge: 60 * 60 * 24 * 365,
+    sameSite: "lax",
+  });
+  return res;
+}
 
 const schema = z.object({
   email: z.string().trim().max(320).email(),
@@ -71,12 +82,14 @@ export async function POST(request: NextRequest) {
       });
       void sendEmail({ to: normalized, ...mail });
     }
-    return NextResponse.json({
-      ok: true,
-      referralCode: existing.referral_code,
-      alreadyJoined: true,
-      confirmed: !!existing.confirmed_at,
-    });
+    return withBrowseCookie(
+      NextResponse.json({
+        ok: true,
+        referralCode: existing.referral_code,
+        alreadyJoined: true,
+        confirmed: !!existing.confirmed_at,
+      })
+    );
   }
 
   // referrer exists? (attribution — count bumps only after confirmation)
@@ -118,5 +131,7 @@ export async function POST(request: NextRequest) {
   const mail = waitlistConfirmEmail({ confirmUrl, referralUrl: referralLink(referralCode) });
   void sendEmail({ to: normalized, ...mail });
 
-  return NextResponse.json({ ok: true, referralCode, alreadyJoined: false, confirmed: false });
+  return withBrowseCookie(
+    NextResponse.json({ ok: true, referralCode, alreadyJoined: false, confirmed: false })
+  );
 }

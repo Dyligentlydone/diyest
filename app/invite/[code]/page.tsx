@@ -45,7 +45,7 @@ async function Redeem({ params }: { params: Promise<{ code: string }> }) {
         <h1 className="mt-4 text-2xl font-bold">Your invite is ready</h1>
         <p className="mt-2 text-sm text-muted-foreground">
           Code <strong className="font-mono">{code}</strong> — sign in to claim it.
-          It unlocks Pro features free during the beta.
+          Your invite includes <strong>3 plan generations</strong>.
         </p>
         <Link
           href={`/login?next=${encodeURIComponent(`/invite/${code}`)}`}
@@ -65,8 +65,9 @@ async function Redeem({ params }: { params: Promise<{ code: string }> }) {
       <PartyPopper className="h-10 w-10 text-primary" aria-hidden />
       <h1 className="mt-4 text-2xl font-bold">Welcome to the beta</h1>
       <p className="mt-2 text-sm text-muted-foreground">
-        <strong className="capitalize">{result.level}</strong> access unlocked.
-        Snap a photo or describe a project and get a buildable plan.
+        <strong className="capitalize">{result.level}</strong> access unlocked —
+        your invite includes <strong>3 plan generations</strong>. Snap a photo
+        or describe a project and get a buildable plan.
       </p>
       <Link href="/new" className={`${buttonVariants()} mt-6`}>
         Start your first project

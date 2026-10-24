@@ -26,7 +26,7 @@ async function ProjectList() {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect("/login?next=/projects");
-  await denyPageIfNoInvite(user.id);
+  await denyPageIfNoInvite();
 
   const { data: projects } = await supabase
     .from("projects")

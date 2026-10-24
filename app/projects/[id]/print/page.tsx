@@ -31,7 +31,7 @@ async function PrintContent({ params }: { params: Promise<{ id: string }> }) {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect(`/login?next=/projects/${id}/print`);
-  await denyPageIfNoInvite(user.id);
+  await denyPageIfNoInvite();
 
   const { data: project } = await supabase
     .from("projects")

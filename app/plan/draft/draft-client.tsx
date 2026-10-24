@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { PlanView } from "@/components/plan/plan-view";
@@ -126,7 +126,11 @@ export function DraftClient({
   // carpenter-checked plan arrives (or the connection drops).
   const [phase, setPhase] = useState<null | "reading" | "geometry" | "joinery" | "checking">(null);
   const [elapsed, setElapsed] = useState(0);
-  const [genError, setGenError] = useState<{ msg: string; kind?: string } | null>(null);
+  const [genError, setGenError] = useState<{
+    msg: string;
+    kind?: string;
+    cta?: { href: string; label: string };
+  } | null>(null);
   const [meta, setMeta] = useState<{ title?: string; summary?: string; partsReceived?: number }>({});
   const startedRef = useRef(false);
   // "generating" = a pending request exists and the stream hasn't finished
@@ -197,13 +201,39 @@ export function DraftClient({
         setGenFinished(true);
       },
       onError: (e) => {
-        setGenError({
-          msg:
-            e.kind === "not_buildable"
-              ? e.summary ?? "That doesn't look like a buildable project."
-              : e.errors[0] ?? "Generation failed. Try again.",
-          kind: e.reason === "anonymous_limit" || e.reason === "free_limit" ? "limit" : e.kind,
-        });
+        // map gate errors to honest copy + the right next step
+        const gated =
+          e.reason === "invite_required"
+            ? {
+                msg: "diyest is invite-only during beta — enter an invite code to generate.",
+                kind: "limit",
+                cta: { href: "/invite", label: "Enter invite code" },
+              }
+            : e.reason === "invite_uses"
+              ? {
+                  msg: e.errors[0] ?? "You've used all the plans on your invite.",
+                  kind: "limit",
+                  cta: { href: "/#waitlist", label: "Join the waitlist" },
+                }
+              : e.kind === "auth"
+                ? {
+                    msg: "Sign in to continue.",
+                    kind: "auth",
+                    cta: { href: "/login", label: "Sign in" },
+                  }
+                : null;
+        setGenError(
+          gated ?? {
+            msg:
+              e.kind === "not_buildable"
+                ? e.summary ?? "That doesn't look like a buildable project."
+                : e.errors[0] ?? "Generation failed. Try again.",
+            kind:
+              e.reason === "anonymous_limit" || e.reason === "free_limit"
+                ? "limit"
+                : e.kind,
+          }
+        );
         setPhase(null);
         setGenFinished(true);
       },
@@ -284,6 +314,14 @@ export function DraftClient({
           {genError.kind === "not_buildable" ? "Not a buildable project" : "Something went wrong"}
         </h1>
         <p className="mt-2 text-muted-foreground">{genError.msg}</p>
+        {genError.cta && (
+          <Link
+            href={genError.cta.href}
+            className={`${buttonVariants()} mt-6 inline-block`}
+          >
+            {genError.cta.label}
+          </Link>
+        )}
         <Link href="/new" className="mt-4 inline-block underline underline-offset-4">
           Try a different project
         </Link>
