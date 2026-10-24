@@ -92,7 +92,7 @@ export async function sendEmail(opts: {
   text?: string;
 }): Promise<SendResult> {
   const key = process.env.RESEND_API_KEY;
-  const from = process.env.RESEND_FROM ?? "diyest <hello@diyest.app>";
+  const from = process.env.RESEND_FROM ?? "diyest <hello@diyest.com>";
   if (!key) {
     console.log(`[email:stub] to=${opts.to} subject="${opts.subject}"`);
     return { ok: true, via: "stub" };
