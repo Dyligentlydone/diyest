@@ -100,26 +100,29 @@ const EXAMPLES = [
 /**
  * Show the lock screen when: invite-only mode AND the visitor hasn't joined
  * the waitlist (no browse cookie) AND isn't signed in. Signed-in users and
- * waitlisted browsers see the normal page.
+ * waitlisted browsers see the normal page. Runtime data (cookies/auth) must
+ * stay inside a Suspense boundary so the page can still prerender.
  */
-async function lockedOut(): Promise<boolean> {
-  if (!isInviteOnly() || !isSupabaseConfigured()) return false;
-  if (await hasBrowseCookie()) return false;
+async function MaybeLock() {
+  if (!isInviteOnly() || !isSupabaseConfigured()) return null;
+  if (await hasBrowseCookie()) return null;
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  return !user;
+  if (user) return null;
+  return <InviteLock siteKey={turnstileSiteKey()} />;
 }
 
-export default async function Home(props: {
+export default function Home(props: {
   searchParams: Promise<Record<string, string | undefined>>;
 }) {
   const inviteOnly = isInviteOnly();
-  const locked = await lockedOut();
   return (
     <main className="flex-1">
-      {locked && <InviteLock siteKey={turnstileSiteKey()} />}
+      <Suspense>
+        <MaybeLock />
+      </Suspense>
       <section className="mx-auto flex max-w-3xl flex-col items-center px-4 pt-16 pb-10 text-center sm:pt-24">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/logo.png" alt="diyest" className="h-24 w-auto sm:h-32" />
