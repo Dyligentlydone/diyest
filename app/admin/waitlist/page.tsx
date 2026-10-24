@@ -3,14 +3,36 @@ import Link from "next/link";
 import { requireAdmin } from "@/lib/site-mode";
 import { createServiceClient } from "@/lib/supabase/server";
 import { computePosition, type WaitlistEntry } from "@/lib/waitlist";
-import { inviteNextN } from "./actions";
+import { inviteNextN, broadcastWaitlist } from "./actions";
 
-type SP = Promise<{ q?: string; sort?: string; confirmed?: string }>;
+type SP = Promise<{
+  q?: string;
+  sort?: string;
+  confirmed?: string;
+  sent?: string;
+  failed?: string;
+}>;
 
 async function WaitlistAdmin({ searchParams }: { searchParams: SP }) {
   await requireAdmin();
-  const { q = "", sort = "position", confirmed = "" } = await searchParams;
+  const {
+    q = "",
+    sort = "position",
+    confirmed = "",
+    sent = "",
+    failed = "",
+  } = await searchParams;
   const supabase = createServiceClient();
+
+  const [
+    { count: optAll },
+    { count: optConfirmed },
+    { count: optInvited },
+  ] = await Promise.all([
+    supabase.from("waitlist").select("*", { count: "exact", head: true }).eq("marketing_opt_in", true),
+    supabase.from("waitlist").select("*", { count: "exact", head: true }).eq("marketing_opt_in", true).not("confirmed_at", "is", null),
+    supabase.from("waitlist").select("*", { count: "exact", head: true }).eq("marketing_opt_in", true).not("invited_at", "is", null),
+  ]);
 
   let query = supabase
     .from("waitlist")
@@ -42,6 +64,42 @@ async function WaitlistAdmin({ searchParams }: { searchParams: SP }) {
 
   return (
     <>
+      {sent && (
+        <p className="mb-4 rounded-md border border-green-200 bg-green-50 px-3 py-2 text-sm text-green-800">
+          Broadcast sent to {sent} {Number(sent) === 1 ? "person" : "people"}
+          {Number(failed) > 0 ? ` — ${failed} failed (check Resend/logs)` : ""}.
+        </p>
+      )}
+
+      <form action={broadcastWaitlist} className="mb-6 rounded-lg border p-4">
+        <h2 className="font-semibold">Email the waitlist</h2>
+        <p className="mt-1 text-xs text-muted-foreground">
+          Goes only to people who opted into updates — unsubscribed people are
+          never emailed. Every send includes an unsubscribe link.
+        </p>
+        <div className="mt-3 grid gap-3 sm:grid-cols-2">
+          <label className="block">
+            <span className="text-xs text-muted-foreground">Audience</span>
+            <select name="audience" className="mt-0.5 h-9 w-full rounded border bg-background px-2 text-sm">
+              <option value="all">All opted in ({optAll ?? 0})</option>
+              <option value="confirmed">Confirmed &amp; opted in ({optConfirmed ?? 0})</option>
+              <option value="invited">Invited &amp; opted in ({optInvited ?? 0})</option>
+            </select>
+          </label>
+          <label className="block">
+            <span className="text-xs text-muted-foreground">Subject</span>
+            <input name="subject" required placeholder="diyest beta opens next week" className="mt-0.5 h-9 w-full rounded border bg-transparent px-2 text-sm" />
+          </label>
+        </div>
+        <label className="mt-3 block">
+          <span className="text-xs text-muted-foreground">Message</span>
+          <textarea name="body" required rows={5} placeholder="Quick update from the diyest bench…" className="mt-0.5 w-full rounded border bg-transparent px-2 py-1.5 text-sm" />
+        </label>
+        <button className="mt-3 h-9 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground">
+          Send broadcast
+        </button>
+      </form>
+
       <div className="flex flex-wrap items-end gap-3">
         <form className="flex flex-wrap items-end gap-2" method="get">
           <input name="q" defaultValue={q} placeholder="Search email…" className="h-9 rounded border bg-transparent px-2 text-sm" />

@@ -3,8 +3,9 @@
 import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/site-mode";
 import { createServiceClient } from "@/lib/supabase/server";
-import { inviteEmail, inviteLink, sendEmail } from "@/lib/email";
-import { computePosition, type WaitlistEntry } from "@/lib/waitlist";
+import { inviteEmail, inviteLink, sendEmail, broadcastEmail } from "@/lib/email";
+import { computePosition, unsubscribeToken, type WaitlistEntry } from "@/lib/waitlist";
+import { redirect } from "next/navigation";
 
 /**
  * Send single-use invite codes to the top N confirmed, not-yet-invited
@@ -51,4 +52,39 @@ export async function inviteNextN(formData: FormData) {
   }
   revalidatePath("/admin/waitlist");
   revalidatePath("/admin/invites");
+}
+
+/**
+ * Broadcast an announcement to waitlist subscribers. Only goes to
+ * marketing_opt_in = true — people who never opted in or who unsubscribed
+ * (which also clears the flag) are never emailed.
+ */
+export async function broadcastWaitlist(formData: FormData) {
+  await requireAdmin();
+  const supabase = createServiceClient();
+  const subject = String(formData.get("subject") ?? "").trim();
+  const body = String(formData.get("body") ?? "").trim();
+  const audience = String(formData.get("audience") ?? "all");
+  if (!subject || !body) throw new Error("Subject and message are required");
+
+  let query = supabase
+    .from("waitlist")
+    .select("email")
+    .eq("marketing_opt_in", true)
+    .limit(5000);
+  if (audience === "confirmed") query = query.not("confirmed_at", "is", null);
+  if (audience === "invited") query = query.not("invited_at", "is", null);
+  const { data } = await query;
+
+  const base = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  let sent = 0;
+  let failed = 0;
+  for (const row of data ?? []) {
+    const unsubUrl = `${base}/waitlist/unsubscribe?e=${encodeURIComponent(row.email)}&t=${unsubscribeToken(row.email)}`;
+    const mail = broadcastEmail({ subject, body, unsubUrl });
+    const res = await sendEmail({ to: row.email, ...mail });
+    if (res.ok) sent++;
+    else failed++;
+  }
+  redirect(`/admin/waitlist?sent=${sent}&failed=${failed}`);
 }

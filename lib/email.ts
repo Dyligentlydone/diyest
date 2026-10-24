@@ -181,6 +181,29 @@ export function inviteEmail(opts: { code: string; inviteUrl: string }) {
   };
 }
 
+/** Admin broadcast to waitlist subscribers — plain-text body, unsub footer. */
+export function broadcastEmail(opts: {
+  subject: string;
+  body: string;
+  unsubUrl: string;
+}) {
+  const esc = (s: string) =>
+    s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const paras = opts.body
+    .split(/\n{2,}/)
+    .map((p) => `<p>${esc(p).replace(/\n/g, "<br>")}</p>`)
+    .join("");
+  return {
+    subject: opts.subject,
+    html: `
+      <div style="font-family:sans-serif;max-width:480px">
+        ${paras}
+        <p style="color:#999;font-size:12px"><a href="${opts.unsubUrl}">Unsubscribe</a> from updates.</p>
+      </div>`,
+    text: `${opts.body}\n\nUnsubscribe: ${opts.unsubUrl}`,
+  };
+}
+
 export function referralLink(code: string): string {
   return `${appUrl()}/?ref=${encodeURIComponent(code)}#waitlist`;
 }
