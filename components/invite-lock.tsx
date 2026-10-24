@@ -29,7 +29,7 @@ export function InviteLock({ siteKey }: { siteKey: string | null }) {
 
   if (joined)
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 p-4 backdrop-blur-sm">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/60 p-4 backdrop-blur-md">
         <div className="w-full max-w-md rounded-lg border bg-card p-8 text-center">
           <Check className="mx-auto h-10 w-10 text-green-600" aria-hidden />
           <h2 className="mt-4 text-xl font-semibold">You&apos;re on the list</h2>
@@ -50,7 +50,7 @@ export function InviteLock({ siteKey }: { siteKey: string | null }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-background/60 p-4 backdrop-blur-md"
       role="dialog"
       aria-modal="true"
       aria-label="diyest is invite-only"
