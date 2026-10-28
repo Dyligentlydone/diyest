@@ -8,9 +8,19 @@ export function getOpenAI(): OpenAI {
   return client;
 }
 
-/** Vision-capable chat model for plan/diagnosis generation. */
+/** Vision-capable chat model for stage-1 geometry/photo generation. */
 export function planModel(): string {
   return process.env.AI_MODEL_PLAN || process.env.AI_MODEL || "gpt-4o";
+}
+
+/**
+ * Text-only model for stage 2 (joints, steps, tools, safety) once stage-1
+ * geometry is locked. Defaults to AI_MODEL_STAGE2 → AI_MODEL → planModel() so
+ * stage 1 can use a reasoning vision model (gpt-5) while stage 2 runs fast
+ * and cheap on gpt-4.1 / gpt-5-mini.
+ */
+export function stage2Model(): string {
+  return process.env.AI_MODEL_STAGE2 || process.env.AI_MODEL || planModel();
 }
 
 /** Strongest available model — used for the buildability review. */

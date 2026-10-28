@@ -517,6 +517,7 @@ export function renderBlueprint(
       return { lo, hi };
     };
     const boxes = solids.map(aabbOf);
+    const placed: [number, number][] = [];
     for (const j of plan.joints ?? []) {
       if (!byId.has(j.part_a) || !byId.has(j.part_b)) continue; // FLOOR/WALL
       let n = 0;
@@ -534,8 +535,6 @@ export function renderBlueprint(
             a.lo[2] <= b.hi[2] + MM_TOL &&
             a.hi[2] >= b.lo[2] - MM_TOL;
           if (!touch) continue;
-          n++;
-          if (n > 3) break; // cap labels: first 3 occurrences get markers
           // contact centroid = midpoint of the AABB overlap region
           const c: Vec3 = [
             (Math.max(a.lo[0], b.lo[0]) + Math.min(a.hi[0], b.hi[0])) / 2,
@@ -543,14 +542,21 @@ export function renderBlueprint(
             (Math.max(a.lo[2], b.lo[2]) + Math.min(a.hi[2], b.hi[2])) / 2,
           ];
           const [ux, uy] = front.T(VIEWS.front.P(c));
+          // skip if another callout circle is already within 20px in front view
+          if (placed.some(([px, py]) => Math.hypot(ux - px, uy - py) < 20)) continue;
+          placed.push([ux, uy]);
+          n++;
           svg += `<circle cx="${r1(ux)}" cy="${r1(uy)}" r="8" class="dim" fill="var(--bp)"/>` +
             `<text x="${r1(ux)}" y="${r1(uy + 4)}" text-anchor="middle" class="lbl" style="font-size:10px">${esc(j.id)}</text>`;
+          if (n >= 1) break;
         }
+        if (n >= 1) break;
       }
     }
   }
 
-  // diameter / radius callouts in the top view
+  // diameter / radius callouts in the top view (deduplicated by label)
+  const seenTopLabels = new Set<string>();
   solids.forEach(({ part, placement: pl, copy }) => {
     if (copy || isAxisPlacement(pl) || !part.profile) return;
     const t = part.profile.type;
@@ -560,6 +566,14 @@ export function renderBlueprint(
       L = size[ua],
       Wd = size[va];
     if (ua === "y" || va === "y") return; // only flat (horizontal) shaped parts are true-shape from the top
+    const label =
+      t === "circle"
+        ? Math.abs(L - Wd) < 1
+          ? "⌀" + fmt(L)
+          : fmt(L) + " x " + fmt(Wd) + " OVAL"
+        : "R" + fmt(part.profile.radius) + " TYP.";
+    if (seenTopLabels.has(label)) return;
+    seenTopLabels.add(label);
     const c: Vec3 = [pl.x + pl.sx / 2, pl.y + pl.sy, pl.z + pl.sz / 2];
     const edge: Vec3 =
       t === "circle"
@@ -572,19 +586,19 @@ export function renderBlueprint(
     const e = top.T(VIEWS.top.P(edge)),
       lx = e[0] + 40,
       ly = e[1] - 26;
-    const label =
-      t === "circle"
-        ? Math.abs(L - Wd) < 1
-          ? "⌀" + fmt(L)
-          : fmt(L) + " x " + fmt(Wd) + " OVAL"
-        : "R" + fmt(part.profile.radius) + " TYP.";
     svg += `<line x1="${r1(e[0])}" y1="${r1(e[1])}" x2="${r1(lx)}" y2="${r1(ly)}" class="dim" marker-start="url(#a)"/>
       <line x1="${r1(lx)}" y1="${r1(ly)}" x2="${r1(lx + 18)}" y2="${r1(ly)}" class="dim"/>
       <text x="${r1(lx + 22)}" y="${r1(ly + 4)}" class="lbl">${label}</text>`;
   });
 
-  // parts table: columns sized to their content; font shrinks if needed so
-  // nothing overflows
+  // title block bounds first so the parts table above it never collides
+  const tbW = 300,
+    tbH = 96,
+    tbX = SHEET_W - 16 - tbW,
+    tbY = SHEET_H - 16 - tbH;
+
+  // parts table: columns sized to their content; row height & font shrink so
+  // the table always finishes above the title block (tbY - 8)
   const rows = plan.parts.map((p) => [
     p.id,
     p.name.toUpperCase(),
@@ -595,18 +609,20 @@ export function renderBlueprint(
   const head = ["ID", "PART", "QTY", "SIZE", "CUT"],
     tx = 620,
     tw = SHEET_W - 16 - tx,
-    ty = 462;
+    ty = 438,
+    maxTableH = tbY - 8 - ty;
+  const rowH = Math.min(20, Math.max(11, Math.floor(maxTableH / (rows.length + 1)))),
+    th = rowH * (rows.length + 1);
   const chars = head.map((h, i) => Math.max(h.length, ...rows.map((r) => r[i].length)));
   const fs = Math.min(
-    12,
+    11.5,
+    Math.max(7.5, rowH - 4.5),
     (tw - 14 * head.length) / (0.62 * chars.reduce((a, b) => a + b, 0))
   );
   const colW = chars.map((c) => c * 0.62 * fs + 14),
     extra = (tw - colW.reduce((a, b) => a + b, 0)) / head.length;
   const colX: number[] = [];
   colW.reduce((x, w) => (colX.push(x), x + w + extra), 0);
-  const rowH = Math.max(18, fs + 10),
-    th = rowH * (rows.length + 1);
   svg += `<rect x="${tx}" y="${ty}" width="${tw}" height="${th}" fill="var(--bp)" stroke="var(--line)" stroke-width="1.5"/>`;
   [head, ...rows].forEach((r, ri) => {
     const ry = ty + rowH * ri;
@@ -627,21 +643,20 @@ export function renderBlueprint(
         (svg += `<line x1="${r1(tx + cx)}" y1="${ty}" x2="${r1(tx + cx)}" y2="${ty + th}" stroke="var(--line)" stroke-width=".7"/>`)
     );
 
-  // title block
-  const tbW = 300,
-    tbH = 120,
-    tbX = SHEET_W - 16 - tbW,
-    tbY = SHEET_H - 16 - tbH;
+  // title block (compact 96px tall; title font scales without overflowing)
+  const titleText = plan.title.toUpperCase();
+  const titleFs = Math.min(
+    18,
+    Math.max(8.5, (tbW - 24) / (0.65 * Math.max(1, titleText.length) + 1.2))
+  );
   svg += `<rect x="${tbX}" y="${tbY}" width="${tbW}" height="${tbH}" fill="var(--bp)" stroke="var(--line)" stroke-width="2"/>
-    <line x1="${tbX}" y1="${tbY + 44}" x2="${tbX + tbW}" y2="${tbY + 44}" stroke="var(--line)"/>
-    <line x1="${tbX}" y1="${tbY + 82}" x2="${tbX + tbW}" y2="${tbY + 82}" stroke="var(--line)"/>
-    <line x1="${tbX + 150}" y1="${tbY + 44}" x2="${tbX + 150}" y2="${tbY + tbH}" stroke="var(--line)"/>
-    <text x="${tbX + 14}" y="${tbY + 29}" class="big" style="font-size:${r1(
-      Math.min(20, Math.max(11, (tbW - 24) / (0.62 * Math.max(1, plan.title.length))))
-    )}px">${esc(plan.title.toUpperCase())}</text>
-    <text x="${tbX + 14}" y="${tbY + 68}" class="lbl">UNITS: ${units === "metric" ? "MM" : "INCHES"}</text>
-    <text x="${tbX + 164}" y="${tbY + 68}" class="lbl">SCALE: NTS</text>
-    <text x="${tbX + 14}" y="${tbY + 106}" class="lbl">PARTS: ${plan.parts.length}</text>
-    <text x="${tbX + 164}" y="${tbY + 106}" class="lbl">SHEET 1 OF 1</text></svg>`;
+    <line x1="${tbX}" y1="${tbY + 34}" x2="${tbX + tbW}" y2="${tbY + 34}" stroke="var(--line)"/>
+    <line x1="${tbX}" y1="${tbY + 65}" x2="${tbX + tbW}" y2="${tbY + 65}" stroke="var(--line)"/>
+    <line x1="${tbX + 150}" y1="${tbY + 34}" x2="${tbX + 150}" y2="${tbY + tbH}" stroke="var(--line)"/>
+    <text x="${tbX + 12}" y="${tbY + 23}" class="big" style="font-size:${r1(titleFs)}px;letter-spacing:1px">${esc(titleText)}</text>
+    <text x="${tbX + 14}" y="${tbY + 54}" class="lbl">UNITS: ${units === "metric" ? "MM" : "INCHES"}</text>
+    <text x="${tbX + 164}" y="${tbY + 54}" class="lbl">SCALE: NTS</text>
+    <text x="${tbX + 14}" y="${tbY + 84}" class="lbl">PARTS: ${plan.parts.length}</text>
+    <text x="${tbX + 164}" y="${tbY + 84}" class="lbl">SHEET 1 OF 1</text></svg>`;
   return svg;
 }

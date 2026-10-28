@@ -12,6 +12,16 @@ export interface Price {
 }
 
 export const PRICES: Record<string, Price> = {
+  "gpt-5": { input: 1.25, cachedInput: 0.125, output: 10.0 },
+  "gpt-5-mini": { input: 0.25, cachedInput: 0.025, output: 2.0 },
+  "gpt-4.1": { input: 2.0, cachedInput: 0.5, output: 8.0 },
+  "gpt-4.1-mini": { input: 0.4, cachedInput: 0.1, output: 1.6 },
+  "gpt-4.1-nano": { input: 0.1, cachedInput: 0.025, output: 0.4 },
+  "gpt-4o": { input: 2.5, cachedInput: 1.25, output: 10.0 },
+  "gpt-4o-mini": { input: 0.15, cachedInput: 0.075, output: 0.6 },
+  o3: { input: 2.0, cachedInput: 0.5, output: 8.0 },
+  "o3-mini": { input: 1.1, cachedInput: 0.55, output: 4.4 },
+  "o4-mini": { input: 1.1, cachedInput: 0.275, output: 4.4 },
   "gpt-6-luna": { input: 0.1, cachedInput: 0.01, output: 0.5 },
   "gpt-6.1-sol": { input: 2.0, cachedInput: 0.1, output: 10.0 },
   "gpt-6-astra": { input: 10.0, cachedInput: 1.0, output: 50.0 },

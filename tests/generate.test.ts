@@ -15,6 +15,7 @@ const { parse } = vi.hoisted(() => ({ parse: vi.fn() }));
 vi.mock("@/lib/ai/openai", () => ({
   getOpenAI: () => ({ chat: { completions: { parse } } }),
   planModel: () => "test-plan",
+  stage2Model: () => "test-plan",
   reviewModel: () => "test-review",
   reviewMode: () => "all",
   reviewTier: () => undefined,

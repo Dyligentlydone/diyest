@@ -24,6 +24,7 @@ import {
   buildPlanUserMessage,
   buildRepairMessage,
   jointRepairSchema,
+  PLAN_SYSTEM_PROMPT,
   PROMPT_VERSION,
   type JointRepair,
   type PlanRequest,
@@ -56,6 +57,7 @@ import {
   reviewMode,
   reviewModel,
   reviewTier,
+  stage2Model,
   supportsTemperature,
 } from "./openai";
 import { costUsd, planCostCapUsd, type CallRecord, type TokenUsage } from "./pricing";
@@ -546,7 +548,7 @@ export async function generatePlan(
   const cap = planCostCapUsd();
   const runStages = async (
     m: string,
-    opts2: { streamed: boolean; escalate: boolean }
+    opts2: { streamed: boolean; escalate: boolean; priorIssues?: string[] }
   ): Promise<{ s1: Stage1Plan; plan: Plan } | GenerateError> => {
     const streamed = opts2.streamed;
     const tag = opts2.escalate ? "escalate" : "stage";
@@ -554,6 +556,9 @@ export async function generatePlan(
     const callTier = m === planModel() || opts2.escalate ? genTier() : undefined;
     const callTimeout = opts2.escalate ? ESC_TIMEOUT_MS : undefined;
     const overBudget = () => !streamed && costSoFar() >= cap;
+    const s1UserMessage = opts2.priorIssues?.length
+      ? `${userMessage}\n\nCRITICAL ISSUES FROM MASTER-CARPENTER REVIEW OF EARLIER DRAFT (your geometry MUST fix every one of these):\n${opts2.priorIssues.map((e) => `- ${e}`).join("\n")}`
+      : userMessage;
     const onDelta =
       emit && streamed
         ? (acc: string) => {
@@ -569,7 +574,7 @@ export async function generatePlan(
     const s1res = await callModel<Stage1Plan>(
       [
         { role: "system", content: STAGE1_SYSTEM_PROMPT },
-        { role: "user", content: userMessage },
+        { role: "user", content: s1UserMessage },
       ],
       imageDataUrls,
       "plan_stage1",
@@ -593,7 +598,7 @@ export async function generatePlan(
       const retry = await callModel<Stage1Plan>(
         [
           { role: "system", content: STAGE1_SYSTEM_PROMPT },
-          { role: "user", content: userMessage },
+          { role: "user", content: s1UserMessage },
           { role: "assistant", content: s1res.raw },
           {
             role: "user",
@@ -653,6 +658,9 @@ export async function generatePlan(
       return { ok: false, kind: "invalid", errors: ["over budget"], raw: "" };
 
     // ---- stage 2: joints, steps, tools, safety, estimates ----
+    // Primary run uses stage2Model() (fast/cheap text model since geometry is
+    // already locked); escalation uses the escalation model.
+    const m2 = opts2.escalate ? m : stage2Model();
     const s2res = await callModel(
       [
         { role: "system", content: STAGE2_SYSTEM_PROMPT },
@@ -664,9 +672,9 @@ export async function generatePlan(
       [], // no images — geometry is fixed, stage 2 is text-only
       "plan_stage2",
       stage2Schema,
-      { model: m, tier: callTier, timeoutMs: callTimeout }
+      { model: m2, tier: callTier, timeoutMs: callTimeout }
     );
-    track(`${tag}2`, m, callTier, s2res);
+    track(`${tag}2`, m2, callTier, s2res);
     if (!s2res.parsed)
       return {
         ok: false,
@@ -761,7 +769,8 @@ export async function generatePlan(
       review == null || nonMinorReview.every(jointScoped);
 
     if (!geometryDirty && reviewJointScoped) {
-      // list-class only → targeted joints/steps repair
+      // list-class only → targeted joints/steps repair on the fast stage-2 model
+      const m2 = stage2Model();
       const rep = await callModel<JointRepair>(
         [
           { role: "system", content: STAGE2_SYSTEM_PROMPT },
@@ -771,9 +780,9 @@ export async function generatePlan(
         [],
         "joint_repair",
         jointRepairSchema,
-        { model, tier: genTier() }
+        { model: m2, tier: genTier() }
       );
-      track("repair_joints", model, genTier(), rep);
+      track("repair_joints", m2, genTier(), rep);
       if (rep.parsed?.joints && rep.parsed?.steps) {
         currentPlan = finalizePlan({
           ...currentPlan,
@@ -805,17 +814,18 @@ export async function generatePlan(
         } as GenPlan);
       }
     } else {
-      // mixed issues → one full-plan repair
+      // mixed / photo-fidelity issues → full-plan repair using PLAN_SYSTEM_PROMPT
+      // (which includes the 3D coordinate system and photo-reading rules)
       const rep = await callModel<GenPlan>(
         [
-          { role: "system", content: STAGE2_SYSTEM_PROMPT },
-          { role: "user", content: JSON.stringify(currentPlan) },
+          { role: "system", content: PLAN_SYSTEM_PROMPT },
+          { role: "user", content: userMessage },
           { role: "user", content: buildRepairMessage(JSON.stringify(currentPlan), mergedIssues) },
         ],
         imageDataUrls,
         "plan",
         stage1FullSchema,
-        { model, tier: genTier() }
+        { model, effort: s1Effort, tier: genTier() }
       );
       track("repair_full", model, genTier(), rep);
       if (rep.parsed) currentPlan = finalizePlan(rep.parsed);
@@ -846,7 +856,11 @@ export async function generatePlan(
   if (blockers.length && escModel && costSoFar() < cap) {
     let esc: Awaited<ReturnType<typeof runStages>> | null = null;
     try {
-      esc = await runStages(escModel, { streamed: false, escalate: true });
+      esc = await runStages(escModel, {
+        streamed: false,
+        escalate: true,
+        priorIssues: blockers,
+      });
     } catch (e) {
       console.warn(
         `[generate] escalation on ${escModel} failed (${(e as Error).message}) — keeping pre-escalation plan`
