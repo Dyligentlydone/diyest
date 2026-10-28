@@ -47,6 +47,7 @@ const PUBLIC_PREFIXES = [
   "/login",
   "/auth/",
   "/invite/",
+  "/promo/",
   "/waitlist",
   "/pricing",
   "/legal/",
