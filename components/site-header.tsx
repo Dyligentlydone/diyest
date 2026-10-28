@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import Link from "next/link";
+import { connection } from "next/server";
 import { buttonVariants } from "@/components/ui/button";
 import { isSupabaseConfigured } from "@/lib/env";
 import { createClient } from "@/lib/supabase/server";
@@ -13,6 +14,7 @@ async function HeaderAuth() {
       </Link>
     );
   }
+  await connection();
   const supabase = await createClient();
   const {
     data: { user },
@@ -27,14 +29,16 @@ async function HeaderAuth() {
   );
 }
 
-/** Display-only badge — reads the session JWT from cookies (no auth API call). */
+/** Display-only badge — connection() marks it request-time so the auth call
+ *  (which reads Date.now internally) is legal under Cache Components. */
 async function HeaderName() {
   if (!isSupabaseConfigured()) return null;
+  await connection();
   const supabase = await createClient();
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  const name = session?.user.email?.split("@")[0];
+    data: { user },
+  } = await supabase.auth.getUser();
+  const name = user?.email?.split("@")[0];
   if (!name) return null;
   return (
     <span className="hidden text-xs text-muted-foreground sm:inline">
