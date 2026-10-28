@@ -58,6 +58,7 @@ import {
   reviewModel,
   reviewTier,
   stage2Model,
+  supportsServiceTier,
   supportsTemperature,
 } from "./openai";
 import { costUsd, planCostCapUsd, type CallRecord, type TokenUsage } from "./pricing";
@@ -223,7 +224,9 @@ export async function callModel<T>(
     response_format: zodResponseFormat(schema, schemaName),
     ...(supportsTemperature(model) ? { temperature: 0.3 } : {}),
     ...(effort ? { reasoning_effort: effort } : {}),
-    ...(opts.tier ? { service_tier: opts.tier as "flex" | "priority" } : {}),
+    ...(supportsServiceTier(model, opts.tier)
+      ? { service_tier: opts.tier as "flex" | "priority" }
+      : {}),
   };
   const requestOpts = { timeout: opts.timeoutMs ?? GEN_TIMEOUT_MS, maxRetries: 1 };
 
@@ -307,7 +310,9 @@ async function callReviewRawUsage(
       response_format: zodResponseFormat(reviewSchema, "review"),
       ...(supportsTemperature(model) ? { temperature: 0.2 } : {}),
       ...(reasoningEffort(model) ? { reasoning_effort: reasoningEffort(model)! } : {}),
-      ...(tier ? { service_tier: tier as "flex" | "priority" } : {}),
+      ...(supportsServiceTier(model, tier)
+        ? { service_tier: tier as "flex" | "priority" }
+        : {}),
     },
     { timeout: CALL_TIMEOUT_MS, maxRetries: 1 }
   );

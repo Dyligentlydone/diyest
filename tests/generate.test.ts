@@ -25,6 +25,7 @@ vi.mock("@/lib/ai/openai", () => ({
       ? process.env.AI_MODEL_ESCALATE
       : null,
   supportsTemperature: () => false,
+  supportsServiceTier: () => false,
   reasoningEffort: () => null,
 }));
 

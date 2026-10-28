@@ -80,6 +80,13 @@ export function supportsTemperature(model: string): boolean {
   return /^(gpt-4|gpt-3|o1-mini)/i.test(model);
 }
 
+/** Only gpt-5/6 and o-series models support service_tier="flex". */
+export function supportsServiceTier(model: string, tier?: string): boolean {
+  if (!tier) return false;
+  if (tier === "flex") return /^(gpt-5|gpt-6|o\d)/i.test(model);
+  return tier === "priority";
+}
+
 /** Reasoning effort for gpt-5/6/o-series models. Default medium (speed). */
 export function reasoningEffort(
   model: string
