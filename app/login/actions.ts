@@ -9,6 +9,16 @@ export type LoginState = { error?: string; sent?: boolean; email?: string; signu
 
 const emailSchema = z.string().trim().toLowerCase().email();
 
+/** Map Supabase auth failures to something the user can act on. */
+function authError(error: { message?: string; code?: string }, fallback: string) {
+  const code = String(error.code ?? error.message ?? "");
+  if (code.includes("rate_limit"))
+    return "Too many emails sent recently — wait an hour and try again.";
+  if (code.includes("user_already_exists") || code.includes("already registered"))
+    return "That email already has an account — sign in instead.";
+  return `${fallback} (${code || "unknown_error"})`;
+}
+
 function safeNext(raw: unknown): string {
   const v = typeof raw === "string" ? raw : "";
   return v.startsWith("/") && !v.startsWith("//") ? v : "/projects";
@@ -31,7 +41,7 @@ export async function signInWithEmail(
     },
   });
 
-  if (error) return { error: "Could not send the sign-in link. Try again." };
+  if (error) return { error: authError(error, "Could not send the sign-in link") };
   return { sent: true, email: parsed.data };
 }
 
@@ -75,7 +85,7 @@ export async function signUpWithPassword(
       emailRedirectTo: `${origin}/auth/callback?next=${encodeURIComponent(safeNext(formData.get("next")))}`,
     },
   });
-  if (error) return { error: "Could not create the account — try again." };
+  if (error) return { error: authError(error, "Could not create the account") };
   return { sent: true, email: parsed.data, signup: true };
 }
 
