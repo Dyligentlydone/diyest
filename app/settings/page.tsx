@@ -160,14 +160,46 @@ async function SettingsContent() {
           <CardHeader>
             <CardTitle>Sell your plans</CardTitle>
             <CardDescription>
-              Charge for plans you share publicly — buyers get an instant copy.
-              diyest takes a {PLATFORM_FEE_PCT}% fee; the rest pays out to your
-              bank via Stripe.
+              Charge a one-time price for any plan you share publicly.
             </CardDescription>
           </CardHeader>
           <CardContent>
+            <ol className="list-decimal space-y-1.5 pl-5 text-sm text-muted-foreground">
+              <li>
+                <span className="font-medium text-foreground">
+                  Connect payouts
+                </span>{" "}
+                — a quick Stripe setup links your bank account (about 2
+                minutes, handled securely by Stripe).
+              </li>
+              <li>
+                <span className="font-medium text-foreground">
+                  Share a project
+                </span>{" "}
+                — open any project in My Projects, choose{" "}
+                <span className="font-medium text-foreground">Paid</span>, set
+                your price, and list it. It appears in the public gallery with
+                a preview only — buyers can&apos;t see the full plan until they
+                pay.
+              </li>
+              <li>
+                <span className="font-medium text-foreground">
+                  Someone buys it
+                </span>{" "}
+                — they get an instant copy in their projects, and the money
+                lands in your Stripe balance automatically.
+              </li>
+              <li>
+                <span className="font-medium text-foreground">
+                  You get paid
+                </span>{" "}
+                — diyest keeps a {PLATFORM_FEE_PCT}% platform fee; the rest
+                pays out to your bank on Stripe&apos;s normal schedule. If a
+                buyer refunds, their copy is removed.
+              </li>
+            </ol>
             {liveSales.length > 0 && (
-              <p className="text-sm text-muted-foreground">
+              <p className="mt-4 text-sm font-medium">
                 {liveSales.length} sale{liveSales.length === 1 ? "" : "s"} ·{" "}
                 {formatCents(earnedCents)} earned
               </p>

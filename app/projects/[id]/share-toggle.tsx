@@ -142,7 +142,8 @@ export function ShareToggle({
     );
 
   return (
-    <span className="flex flex-wrap items-center gap-2">
+    <span className="flex flex-col items-end gap-1.5">
+      <span className="flex flex-wrap items-center gap-2">
       <select
         value={cat}
         onChange={(e) => setCat(e.target.value as (typeof CATEGORIES)[number])}
@@ -200,6 +201,14 @@ export function ShareToggle({
         <Link href="/settings" className="text-xs text-muted-foreground underline">
           set up payouts to charge
         </Link>
+      )}
+      </span>
+      {priced && (
+        <span className="text-right text-xs text-muted-foreground">
+          Buyers see a preview only — the full plan unlocks after payment and
+          copies into their projects. You keep 90% of each sale, paid to your
+          bank via Stripe.
+        </span>
       )}
     </span>
   );
