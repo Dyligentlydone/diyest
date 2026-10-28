@@ -8,17 +8,23 @@ import { Badge } from "@/components/ui/badge";
 import { isSupabaseConfigured } from "@/lib/env";
 import { betaAccessFor, isInviteOnly } from "@/lib/site-mode";
 import { planSchema } from "@/lib/plan/schema";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
+import { formatCents } from "@/lib/connect";
+import { BuyPlanButton } from "@/components/buy-plan-button";
+import { ProjectThumb } from "@/components/project-thumb";
 import { CloneButton } from "./clone-button";
+import { PurchasePending } from "./purchase-pending";
 
 interface Props {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ bought?: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!isSupabaseConfigured()) return {};
   const { slug } = await params;
-  const supabase = await createClient();
+  // service client: paid plans are RLS-invisible to anon but still need OG
+  const supabase = createServiceClient();
   const { data: project } = await supabase
     .from("projects")
     .select("title, plan")
@@ -37,13 +43,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-async function PublicContent({ params }: Props) {
+async function PublicContent({ params, searchParams }: Props) {
   const { slug } = await params;
+  const { bought } = await searchParams;
+  const service = createServiceClient();
   const supabase = await createClient();
   const [{ data: project }, { data: auth }] = await Promise.all([
-    supabase
+    service
       .from("projects")
-      .select("id, title, plan, input, is_public, slug, category, user_id")
+      .select(
+        "id, title, plan, input, is_public, slug, category, user_id, price_cents"
+      )
       .eq("slug", slug)
       .eq("is_public", true)
       .maybeSingle(),
@@ -53,6 +63,22 @@ async function PublicContent({ params }: Props) {
   const parsed = planSchema.safeParse(project.plan);
   if (!parsed.success) notFound();
   const plan = parsed.data;
+
+  const isOwner = auth.user?.id === project.user_id;
+  const isPaid = !!project.price_cents;
+
+  let purchase: { cloned_project_id: string | null } | null = null;
+  if (isPaid && auth.user && !isOwner) {
+    const { data } = await service
+      .from("plan_purchases")
+      .select("cloned_project_id")
+      .eq("project_id", project.id)
+      .eq("buyer_id", auth.user.id)
+      .is("refunded_at", null)
+      .maybeSingle();
+    purchase = data;
+  }
+  const locked = isPaid && !isOwner && !purchase;
 
   const { data: journal } = await supabase
     .from("journal_entries")
@@ -95,7 +121,16 @@ async function PublicContent({ params }: Props) {
           </p>
         </div>
         <div className="flex gap-2">
-          {auth.user && (!isInviteOnly() || (await betaAccessFor(auth.user.id))?.active) ? (
+          {isPaid && purchase?.cloned_project_id ? (
+            <Link
+              href={`/projects/${purchase.cloned_project_id}`}
+              className={buttonVariants()}
+            >
+              Open your copy
+            </Link>
+          ) : locked ? null : auth.user &&
+            (!isInviteOnly() ||
+              (await betaAccessFor(auth.user.id))?.active) ? (
             <CloneButton projectId={project.id} />
           ) : isInviteOnly() ? (
             <>
@@ -117,7 +152,63 @@ async function PublicContent({ params }: Props) {
         </div>
       </div>
 
-      <PlanView plan={plan} units={units} />
+      {locked ? (
+        <div className="overflow-hidden rounded-lg border">
+          <div className="bg-[#0b4f9c] p-4">
+            <div className="mx-auto max-w-md [&>svg]:h-64 [&>svg]:w-full">
+              <ProjectThumb plan={plan} />
+            </div>
+          </div>
+          <div className="space-y-4 p-5">
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <h1 className="text-xl font-bold">{project.title}</h1>
+              <span className="text-lg font-semibold">
+                {formatCents(project.price_cents!)}
+              </span>
+            </div>
+            <p className="text-sm text-muted-foreground">{plan.summary}</p>
+            <p className="text-xs text-muted-foreground">
+              {plan.difficulty} · ~{plan.est_hours}h build · est. materials $
+              {plan.est_cost.low}–${plan.est_cost.high} · {plan.steps.length}{" "}
+              steps · blueprint + cut list + shopping list
+            </p>
+            {bought === "1" ? <PurchasePending /> : null}
+            <div className="flex items-center gap-3">
+              {auth.user ? (
+                <BuyPlanButton
+                  projectId={project.id}
+                  slug={slug}
+                  priceLabel={formatCents(project.price_cents!)}
+                />
+              ) : (
+                <Link
+                  href={`/login?next=/p/${slug}`}
+                  className={buttonVariants({ size: "lg" })}
+                >
+                  Sign in to buy — {formatCents(project.price_cents!)}
+                </Link>
+              )}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Sold by the plan&apos;s creator. Instant copy into your projects —
+              blueprint, cut list, shopping list and steps included.
+            </p>
+          </div>
+        </div>
+      ) : (
+        <>
+          {isPaid && purchase && (
+            <p className="mb-4 rounded-md border px-4 py-3 text-sm">
+              You own this plan — it&apos;s also in{" "}
+              <Link href="/projects" className="underline">
+                My projects
+              </Link>
+              .
+            </p>
+          )}
+          <PlanView plan={plan} units={units} />
+        </>
+      )}
 
       {journalWithUrls.length > 0 && (
         <section className="mt-10">
@@ -158,7 +249,7 @@ export default function PublicProjectPage(props: Props) {
       <Suspense
         fallback={<div className="h-96 animate-pulse rounded-lg border bg-muted/40" />}
       >
-        <PublicContent params={props.params} />
+        <PublicContent params={props.params} searchParams={props.searchParams} />
       </Suspense>
     </main>
   );

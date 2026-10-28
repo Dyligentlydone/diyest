@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { notFound } from "next/navigation";
 import { isSupabaseConfigured } from "@/lib/env";
 import { planSchema } from "@/lib/plan/schema";
-import { createClient } from "@/lib/supabase/server";
+import { createServiceClient } from "@/lib/supabase/server";
 import { solidsOf } from "@/lib/blueprint/solids";
 import { projectPainter } from "@/lib/blueprint/explode";
 
@@ -19,7 +19,7 @@ export default async function OgImage({
 }) {
   if (!isSupabaseConfigured()) notFound();
   const { slug } = await params;
-  const supabase = await createClient();
+  const supabase = createServiceClient();
   const { data: project } = await supabase
     .from("projects")
     .select("title, plan")

@@ -16,6 +16,8 @@ const patchSchema = z.object({
     .nullable()
     .optional(),
   title: z.string().min(1).max(120).optional(),
+  /** null = free share; >= 100 = priced plan (Stripe minimum $1) */
+  price_cents: z.number().int().min(100).max(50000).nullable().optional(),
 });
 
 /** PATCH — status / sharing / category changes (owner only via RLS). */
@@ -58,6 +60,22 @@ export async function PATCH(
       if (!proj?.slug) update.slug = newSlug();
     }
   }
+  if (patch.price_cents !== undefined) {
+    if (patch.price_cents != null) {
+      // charging requires a payout-ready Connect account
+      const { data: prof } = await supabase
+        .from("profiles")
+        .select("stripe_account_enabled")
+        .eq("id", user.id)
+        .maybeSingle();
+      if (!prof?.stripe_account_enabled)
+        return NextResponse.json(
+          { error: "connect_payouts" },
+          { status: 409 }
+        );
+    }
+    update.price_cents = patch.price_cents;
+  }
   if (!Object.keys(update).length)
     return NextResponse.json({ error: "Nothing to update" }, { status: 400 });
 
@@ -65,7 +83,7 @@ export async function PATCH(
     .from("projects")
     .update(update)
     .eq("id", id)
-    .select("id, slug, is_public, status, category")
+    .select("id, slug, is_public, status, category, price_cents")
     .single();
   if (error) return NextResponse.json({ error: "Could not update" }, { status: 500 });
   return NextResponse.json({ ok: true, project: data });

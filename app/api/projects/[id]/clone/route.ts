@@ -27,13 +27,31 @@ export async function POST(
 
   const { data: source } = await supabase
     .from("projects")
-    .select("title, mode, plan, input, prompt_version, category, is_public, user_id")
+    .select(
+      "title, mode, plan, input, prompt_version, category, is_public, user_id, price_cents"
+    )
     .eq("id", id)
     .maybeSingle();
 
   // own projects can always be duplicated; others' only when public
   if (!source || (!source.is_public && source.user_id !== user.id))
     return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+  // priced plans: only the owner or a paying buyer can copy
+  if (source.price_cents && source.user_id !== user.id) {
+    const { data: purchase } = await supabase
+      .from("plan_purchases")
+      .select("id")
+      .eq("project_id", id)
+      .eq("buyer_id", user.id)
+      .is("refunded_at", null)
+      .maybeSingle();
+    if (!purchase)
+      return NextResponse.json(
+        { error: "purchase_required" },
+        { status: 402 }
+      );
+  }
 
   const { data: copy, error } = await supabase
     .from("projects")

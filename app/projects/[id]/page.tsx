@@ -28,7 +28,7 @@ async function ProjectContent({ params }: { params: Promise<{ id: string }> }) {
   const { data: project } = await supabase
     .from("projects")
     .select(
-      "id, title, status, plan, input, created_at, shopping_have, is_public, slug, category"
+      "id, title, status, plan, input, created_at, shopping_have, is_public, slug, category, price_cents"
     )
     .eq("id", id)
     .maybeSingle();
@@ -36,7 +36,7 @@ async function ProjectContent({ params }: { params: Promise<{ id: string }> }) {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("units, kerf_mm")
+    .select("units, kerf_mm, stripe_account_enabled")
     .eq("id", user.id)
     .maybeSingle();
   const units: Units = profile?.units === "imperial" ? "imperial" : "metric";
@@ -92,6 +92,8 @@ async function ProjectContent({ params }: { params: Promise<{ id: string }> }) {
           isPublic={project.is_public}
           slug={project.slug}
           category={project.category}
+          priceCents={project.price_cents}
+          canCharge={!!profile?.stripe_account_enabled}
         />
         <Link
           href={`/projects/${project.id}/print`}

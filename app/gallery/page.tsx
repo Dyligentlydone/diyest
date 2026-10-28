@@ -3,7 +3,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { isSupabaseConfigured } from "@/lib/env";
 import { planSchema } from "@/lib/plan/schema";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
+import { formatCents } from "@/lib/connect";
 import { isInviteOnly } from "@/lib/site-mode";
 import { ProjectThumb } from "@/components/project-thumb";
 import { Badge } from "@/components/ui/badge";
@@ -26,10 +27,11 @@ const CATEGORIES = [
 ] as const;
 
 async function GalleryGrid() {
-  const supabase = await createClient();
+  // service client: paid plans are RLS-invisible to anon but should be listed
+  const supabase = createServiceClient();
   const { data: projects } = await supabase
     .from("projects")
-    .select("id, title, slug, category, plan")
+    .select("id, title, slug, category, plan, price_cents")
     .eq("is_public", true)
     .order("is_featured", { ascending: false })
     .order("created_at", { ascending: false })
@@ -63,11 +65,20 @@ async function GalleryGrid() {
               </div>
               <div className="p-3">
                 <p className="truncate text-sm font-medium">{p.title}</p>
-                {p.category && (
-                  <Badge variant="secondary" className="mt-1.5 text-[10px] capitalize">
-                    {p.category}
-                  </Badge>
-                )}
+                <span className="mt-1.5 flex items-center gap-1.5">
+                  {p.category && (
+                    <Badge variant="secondary" className="text-[10px] capitalize">
+                      {p.category}
+                    </Badge>
+                  )}
+                  {p.price_cents ? (
+                    <Badge className="text-[10px]">{formatCents(p.price_cents)}</Badge>
+                  ) : (
+                    <Badge variant="outline" className="text-[10px]">
+                      Free
+                    </Badge>
+                  )}
+                </span>
               </div>
             </Link>
           </li>

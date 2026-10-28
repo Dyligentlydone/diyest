@@ -4,8 +4,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isSupabaseConfigured } from "@/lib/env";
 import { planSchema } from "@/lib/plan/schema";
-import { createClient } from "@/lib/supabase/server";
+import { createServiceClient } from "@/lib/supabase/server";
+import { formatCents } from "@/lib/connect";
 import { ProjectThumb } from "@/components/project-thumb";
+import { Badge } from "@/components/ui/badge";
 
 const CATEGORIES = [
   "tables",
@@ -44,10 +46,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 async function CategoryGrid({ category }: { category: Category }) {
-  const supabase = await createClient();
+  // service client: paid plans are RLS-invisible to anon but should be listed
+  const supabase = createServiceClient();
   const { data: projects } = await supabase
     .from("projects")
-    .select("id, title, slug, plan")
+    .select("id, title, slug, plan, price_cents")
     .eq("is_public", true)
     .eq("category", category)
     .order("is_featured", { ascending: false })
@@ -82,6 +85,11 @@ async function CategoryGrid({ category }: { category: Category }) {
               </div>
               <div className="p-3">
                 <p className="truncate text-sm font-medium">{p.title}</p>
+                {p.price_cents ? (
+                  <Badge className="mt-1.5 text-[10px]">
+                    {formatCents(p.price_cents)}
+                  </Badge>
+                ) : null}
               </div>
             </Link>
           </li>

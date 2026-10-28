@@ -11,7 +11,9 @@ import { isSupabaseConfigured } from "@/lib/env";
 import { betaAccessFor, denyPageIfNoInvite } from "@/lib/site-mode";
 import { createClient } from "@/lib/supabase/server";
 import { billingEnabled, billingState, TIERS } from "@/lib/billing";
+import { formatCents, PLATFORM_FEE_PCT } from "@/lib/connect";
 import { PortalButton } from "@/components/checkout-button";
+import { ConnectPayoutsButton } from "@/components/connect-payouts-button";
 import Link from "next/link";
 import type { Profile } from "@/lib/types";
 import { SettingsForm } from "./settings-form";
@@ -63,6 +65,18 @@ async function SettingsContent() {
 
   const billing = await billingState(user.id);
   const access = await betaAccessFor(user.id);
+
+  // marketplace earnings (seller's own sales — RLS lets sellers read them)
+  const { data: sales } = await supabase
+    .from("plan_purchases")
+    .select("amount_cents, fee_cents, created_at, refunded_at")
+    .eq("seller_id", user.id);
+  const liveSales = (sales ?? []).filter((s) => !s.refunded_at);
+  const earnedCents = liveSales.reduce(
+    (sum, s) => sum + (s.amount_cents - s.fee_cents),
+    0
+  );
+  const payoutsConnected = !!profile.stripe_account_enabled;
   const tierCfg = billing.tier
     ? TIERS.find((t) => t.tier === billing.tier)
     : null;
@@ -140,6 +154,45 @@ async function SettingsContent() {
           </div>
         </CardContent>
       </Card>
+
+      {billingEnabled() && (
+        <Card className="mb-6" id="payouts">
+          <CardHeader>
+            <CardTitle>Sell your plans</CardTitle>
+            <CardDescription>
+              Charge for plans you share publicly — buyers get an instant copy.
+              diyest takes a {PLATFORM_FEE_PCT}% fee; the rest pays out to your
+              bank via Stripe.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {liveSales.length > 0 && (
+              <p className="text-sm text-muted-foreground">
+                {liveSales.length} sale{liveSales.length === 1 ? "" : "s"} ·{" "}
+                {formatCents(earnedCents)} earned
+              </p>
+            )}
+            <div className="mt-3 flex flex-wrap items-center gap-3">
+              <ConnectPayoutsButton className="h-9 rounded-md bg-primary px-3 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+                {payoutsConnected
+                  ? "Payouts connected — manage in Stripe"
+                  : profile.stripe_account_id
+                    ? "Finish payout setup"
+                    : "Set up payouts"}
+              </ConnectPayoutsButton>
+              {payoutsConnected ? (
+                <span className="text-xs text-muted-foreground">
+                  You can now set a price when sharing a project.
+                </span>
+              ) : (
+                <span className="text-xs text-muted-foreground">
+                  Stripe Express — link a bank account, ~2 minutes.
+                </span>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       <Card className="mb-6">
         <CardHeader>

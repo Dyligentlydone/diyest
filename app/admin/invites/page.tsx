@@ -62,7 +62,7 @@ async function InviteAdmin() {
             <span className="text-xs text-muted-foreground">Type</span>
             <select name="kind" defaultValue="invite" className="mt-0.5 h-9 w-full rounded border bg-background px-2">
               <option value="invite">Invite (personal)</option>
-              <option value="promo">Promo (creator's shared code)</option>
+              <option value="promo">Promo (creator&rsquo;s shared code)</option>
             </select>
           </label>
           <label className="block">
@@ -87,7 +87,7 @@ async function InviteAdmin() {
             </select>
           </label>
           <label className="block">
-            <span className="text-xs text-muted-foreground">Custom expiry (only if "Custom date")</span>
+            <span className="text-xs text-muted-foreground">Custom expiry (only if &ldquo;Custom date&rdquo;)</span>
             <input name="expiresAt" type="date" className="mt-0.5 h-9 w-full rounded border bg-transparent px-2" />
           </label>
           <label className="block">
