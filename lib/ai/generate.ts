@@ -207,7 +207,14 @@ export async function callModel<T>(
     };
   });
 
-  const effort = opts.effort !== undefined ? opts.effort : reasoningEffort(model);
+  // effort only applies to reasoning models — an env-set effort must not be
+  // sent to gpt-4.x or the API 400s on the unknown param
+  const effort =
+    reasoningEffort(model) === null
+      ? null
+      : opts.effort !== undefined
+        ? opts.effort
+        : reasoningEffort(model);
   const params = {
     model,
     messages: withImages,
