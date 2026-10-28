@@ -59,15 +59,35 @@ async function InviteAdmin() {
             <input name="count" type="number" min={0} max={500} placeholder="0" className="mt-0.5 h-9 w-full rounded border bg-transparent px-2" />
           </label>
           <label className="block">
-            <span className="text-xs text-muted-foreground">Label (influencer)</span>
+            <span className="text-xs text-muted-foreground">Type</span>
+            <select name="kind" defaultValue="invite" className="mt-0.5 h-9 w-full rounded border bg-background px-2">
+              <option value="invite">Invite (personal)</option>
+              <option value="promo">Promo (creator's shared code)</option>
+            </select>
+          </label>
+          <label className="block">
+            <span className="text-xs text-muted-foreground">Label (creator)</span>
             <input name="label" placeholder="e.g. Maker Jane" className="mt-0.5 h-9 w-full rounded border bg-transparent px-2" />
           </label>
           <label className="block">
-            <span className="text-xs text-muted-foreground">Max uses</span>
-            <input name="maxUses" type="number" min={1} defaultValue={1} className="mt-0.5 h-9 w-full rounded border bg-transparent px-2" />
+            <span className="text-xs text-muted-foreground">Linked invite (promo only)</span>
+            <input name="linkedCode" placeholder="e.g. AIMEE" className="mt-0.5 h-9 w-full rounded border bg-transparent px-2 font-mono uppercase" />
           </label>
           <label className="block">
-            <span className="text-xs text-muted-foreground">Expires (date)</span>
+            <span className="text-xs text-muted-foreground">Max uses (blank = 1 invite / 500 promo)</span>
+            <input name="maxUses" type="number" min={1} placeholder="auto" className="mt-0.5 h-9 w-full rounded border bg-transparent px-2" />
+          </label>
+          <label className="block">
+            <span className="text-xs text-muted-foreground">Code expires</span>
+            <select name="expiresPreset" defaultValue="never" className="mt-0.5 h-9 w-full rounded border bg-background px-2">
+              <option value="never">Never</option>
+              <option value="6mo">6 months</option>
+              <option value="1y">1 year</option>
+              <option value="custom">Custom date →</option>
+            </select>
+          </label>
+          <label className="block">
+            <span className="text-xs text-muted-foreground">Custom expiry (only if "Custom date")</span>
             <input name="expiresAt" type="date" className="mt-0.5 h-9 w-full rounded border bg-transparent px-2" />
           </label>
           <label className="block">
@@ -105,8 +125,22 @@ async function InviteAdmin() {
           <tbody>
             {(codes ?? []).map((c) => (
               <tr key={c.id} className={`border-b ${c.is_active ? "" : "opacity-50"}`}>
-                <td className="py-2 pr-3 font-mono text-xs">{c.code}</td>
-                <td className="py-2 pr-3">{c.label ?? "—"}</td>
+                <td className="py-2 pr-3 font-mono text-xs">
+                  {c.code}
+                  {c.kind === "promo" && (
+                    <span className="ml-1.5 rounded bg-purple-100 px-1 py-0.5 text-[10px] font-semibold text-purple-800">
+                      PROMO
+                    </span>
+                  )}
+                </td>
+                <td className="py-2 pr-3">
+                  {c.label ?? "—"}
+                  {c.linked_code && (
+                    <span className="block text-[10px] text-muted-foreground">
+                      → {c.linked_code}
+                    </span>
+                  )}
+                </td>
                 <td className="py-2 pr-3 tabular-nums">{c.uses}/{c.max_uses}</td>
                 <td className="py-2 pr-3">{fmt(c.expires_at)}</td>
                 <td className="py-2 pr-3">{c.grant_access_level}{c.grant_days ? ` ${c.grant_days}d` : ""}</td>

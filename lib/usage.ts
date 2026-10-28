@@ -67,6 +67,22 @@ export async function usageTotal(userId: string, kind: UsageKind): Promise<numbe
   return count ?? 0;
 }
 
+/** Count usage events of a kind since a timestamp (billing periods). */
+export async function usageSince(
+  userId: string,
+  kind: UsageKind,
+  since: string
+): Promise<number> {
+  const supabase = createServiceClient();
+  const { count } = await supabase
+    .from("usage_events")
+    .select("id", { count: "exact", head: true })
+    .eq("user_id", userId)
+    .eq("kind", kind)
+    .gte("created_at", since);
+  return count ?? 0;
+}
+
 export async function recordUsage(userId: string, kind: UsageKind): Promise<void> {
   const supabase = createServiceClient();
   await supabase.from("usage_events").insert({ user_id: userId, kind });

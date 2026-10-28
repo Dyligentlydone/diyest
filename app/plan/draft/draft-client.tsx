@@ -215,6 +215,12 @@ export function DraftClient({
                   kind: "limit",
                   cta: { href: "/#waitlist", label: "Join the waitlist" },
                 }
+              : e.reason === "plan_limit"
+                ? {
+                    msg: e.errors[0] ?? "Monthly plan limit reached.",
+                    kind: "limit",
+                    cta: { href: "/pricing", label: "See plans" },
+                  }
               : e.kind === "auth"
                 ? {
                     msg: "Sign in to continue.",

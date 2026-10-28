@@ -12,6 +12,7 @@ import {
   checkDailySpend,
   logGeneration,
   recordUsage,
+  usageSince,
   usageThisMonth,
   usageToday,
   usageTotal,
@@ -27,7 +28,17 @@ import {
   reviewModel,
   reviewTier,
 } from "@/lib/ai/openai";
-import { betaCanGenerate, invitePlanUses, isInviteOnly, requireApiAccess } from "@/lib/site-mode";
+import {
+  betaAccessFor,
+  betaCanGenerate,
+  invitePlanUses,
+  isInviteOnly,
+} from "@/lib/site-mode";
+import {
+  billingState,
+  consumePlanCredit,
+  TIERS,
+} from "@/lib/billing";
 import { stripImageDataUrl } from "@/lib/image";
 
 const payloadSchema = z.object({
@@ -122,47 +133,99 @@ export async function POST(request: NextRequest) {
   let user: { id: string } | null = null;
   const supabase = isSupabaseConfigured() ? await createClient() : null;
 
+  // how the request was admitted — controls whether a completed plan also
+  // burns a purchased single-plan credit
+  let admitVia: "sub" | "credit" | "beta" | "free" = "free";
+
   if (isInviteOnly()) {
-    // invite-only beta: signed-in + active invite required, beta caps apply
-    const gate = await requireApiAccess();
-    if ("response" in gate) return gate.response;
-    user = { id: gate.userId };
-    // code-redeemed users get INVITE_PLAN_USES total plans (admins bypass —
-    // they have no inviteCode); other grants keep the daily/monthly beta caps
-    if (gate.access.inviteCode) {
-      const total = await usageTotal(gate.userId, "plan_generate");
-      if (total >= invitePlanUses())
+    // signed-in required, then: paid subscription → plan credit → invite/beta
+    const {
+      data: { user: u },
+    } = supabase ? await supabase.auth.getUser() : { data: { user: null } };
+    if (!u)
+      return NextResponse.json(
+        { ok: false, kind: "auth", error: "sign_in", errors: ["Sign in to continue."] },
+        { status: 401 }
+      );
+    user = { id: u.id };
+
+    const billing = await billingState(u.id);
+    if (billing.active && billing.tier) {
+      const limit =
+        TIERS.find((t) => t.tier === billing.tier)?.gensPerMonth ?? null;
+      if (limit != null) {
+        const used = await usageSince(
+          u.id,
+          "plan_generate",
+          billing.currentPeriodStart ?? "1970-01-01T00:00:00Z"
+        );
+        if (used >= limit)
+          return NextResponse.json(
+            {
+              ok: false,
+              kind: "limit",
+              reason: "plan_limit",
+              errors: [
+                `That's all ${limit} plans on your ${billing.tier} plan this month — it resets on your next billing date, or upgrade for more.`,
+              ],
+            },
+            { status: 429 }
+          );
+      }
+      admitVia = "sub";
+    } else if (billing.credits > 0) {
+      admitVia = "credit";
+    } else {
+      // invite/beta rules (unchanged): active invite required, code users
+      // get INVITE_PLAN_USES total, other grants keep daily/monthly caps
+      const access = await betaAccessFor(u.id);
+      if (!access?.active)
         return NextResponse.json(
           {
             ok: false,
             kind: "limit",
-            reason: "invite_uses",
+            reason: "invite_required",
+            error: "invite_required",
+            errors: ["diyest is in invite-only beta — enter an invite code to generate."],
+          },
+          { status: 403 }
+        );
+      if (access.inviteCode) {
+        const total = await usageTotal(u.id, "plan_generate");
+        if (total >= invitePlanUses())
+          return NextResponse.json(
+            {
+              ok: false,
+              kind: "limit",
+              reason: "invite_uses",
+              errors: [
+                `That's all ${invitePlanUses()} plans on your invite — we'll email you when more spots open.`,
+              ],
+            },
+            { status: 429 }
+          );
+      }
+      const [usedToday, usedMonth] = await Promise.all([
+        usageToday(u.id, "plan_generate"),
+        usageThisMonth(u.id, "plan_generate"),
+      ]);
+      const cap = betaCanGenerate(usedToday, usedMonth);
+      if (!cap.allowed)
+        return NextResponse.json(
+          {
+            ok: false,
+            kind: "limit",
+            reason: cap.reason,
             errors: [
-              `That's all ${invitePlanUses()} plans on your invite — we'll email you when more spots open.`,
+              cap.reason === "beta_daily_limit"
+                ? "Beta limit: that's all the plans for today — more tomorrow."
+                : "Beta limit: monthly plan cap reached. Ask us for more.",
             ],
           },
           { status: 429 }
         );
+      admitVia = "beta";
     }
-    const [usedToday, usedMonth] = await Promise.all([
-      usageToday(gate.userId, "plan_generate"),
-      usageThisMonth(gate.userId, "plan_generate"),
-    ]);
-    const cap = betaCanGenerate(usedToday, usedMonth);
-    if (!cap.allowed)
-      return NextResponse.json(
-        {
-          ok: false,
-          kind: "limit",
-          reason: cap.reason,
-          errors: [
-            cap.reason === "beta_daily_limit"
-              ? "Beta limit: that's all the plans for today — more tomorrow."
-              : "Beta limit: monthly plan cap reached. Ask us for more.",
-          ],
-        },
-        { status: 429 }
-      );
   } else {
     const {
       data: { user: u },
@@ -278,6 +341,7 @@ export async function POST(request: NextRequest) {
           send({ type: "plan", plan: cached.plan, unverified: cached.unverified, warnings: cached.warnings, promptVersion: PROMPT_VERSION, firstPlanMs: 0 });
           send({ type: "final", result });
           if (user) void recordUsage(user.id, "plan_generate");
+          if (user && admitVia === "credit") void consumePlanCredit(user.id);
           return;
         }
         const result = await generatePlan(
@@ -347,6 +411,7 @@ export async function POST(request: NextRequest) {
           });
         void checkDailySpend(dailySpendAlertUsd());
         if (user) void recordUsage(user.id, "plan_generate");
+        if (user && admitVia === "credit") void consumePlanCredit(user.id);
       } catch (e) {
         console.error("[generate] failed", e);
         send({

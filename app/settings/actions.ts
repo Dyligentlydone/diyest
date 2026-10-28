@@ -47,3 +47,22 @@ export async function updateSettings(
   revalidatePath("/settings");
   return { saved: true };
 }
+
+export type PasswordState = { error?: string; saved?: boolean };
+
+/** Set or change the account password — works for magic-link-created accounts too. */
+export async function updatePassword(
+  _prev: PasswordState,
+  formData: FormData
+): Promise<PasswordState> {
+  const password = String(formData.get("password") ?? "");
+  if (password.length < 8)
+    return { error: "Password must be at least 8 characters." };
+  if (password !== String(formData.get("password_confirm") ?? ""))
+    return { error: "Passwords don't match." };
+
+  const supabase = await createClient();
+  const { error } = await supabase.auth.updateUser({ password });
+  if (error) return { error: "Could not set the password. Try again." };
+  return { saved: true };
+}

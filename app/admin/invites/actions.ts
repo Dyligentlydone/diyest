@@ -8,8 +8,17 @@ export async function createCodes(formData: FormData) {
   await requireAdmin();
   const supabase = createServiceClient();
 
+  const kind = String(formData.get("kind")) === "promo" ? "promo" : "invite";
+  const linkedCode =
+    String(formData.get("linkedCode") ?? "")
+      .trim()
+      .toUpperCase() || null;
   const label = String(formData.get("label") ?? "").trim() || null;
-  const maxUses = Math.max(1, Number(formData.get("maxUses") ?? 1) || 1);
+  const maxUsesRaw = String(formData.get("maxUses") ?? "").trim();
+  const maxUses = Math.max(
+    1,
+    maxUsesRaw ? Number(maxUsesRaw) : kind === "promo" ? 500 : 1
+  );
   const grantLevel = ["basic", "intermediate", "pro"].includes(
     String(formData.get("grantLevel"))
   )
@@ -21,8 +30,17 @@ export async function createCodes(formData: FormData) {
     grantDaysRaw && Number.isFinite(grantDaysNum) && grantDaysNum > 0
       ? Math.floor(grantDaysNum)
       : null;
+  const preset = String(formData.get("expiresPreset") ?? "never");
   const expiresRaw = String(formData.get("expiresAt") ?? "").trim();
-  const expiresAt = expiresRaw ? new Date(expiresRaw).toISOString() : null;
+  const DAY = 24 * 60 * 60 * 1000;
+  const expiresAt =
+    preset === "6mo"
+      ? new Date(Date.now() + 182 * DAY).toISOString()
+      : preset === "1y"
+        ? new Date(Date.now() + 365 * DAY).toISOString()
+        : preset === "custom" && expiresRaw
+          ? new Date(expiresRaw).toISOString()
+          : null;
 
   // single code or batch: "PREFIX" + count → PREFIX-1, PREFIX-2, …
   const single = String(formData.get("code") ?? "").trim().toUpperCase();
@@ -39,6 +57,8 @@ export async function createCodes(formData: FormData) {
   const { error } = await supabase.from("invite_codes").insert(
     rows.map((r) => ({
       ...r,
+      kind,
+      linked_code: kind === "promo" ? linkedCode : null,
       label,
       max_uses: maxUses,
       grant_access_level: grantLevel,
