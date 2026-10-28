@@ -75,11 +75,4 @@ export function ToolChecklist({
   );
 }
 
-/** Parse the FormData this component emits into a tools array. */
-export function toolsFromFormData(fd: FormData): string[] {
-  const custom = String(fd.get("tools_custom") ?? "")
-    .split("\n")
-    .map((s) => s.trim())
-    .filter(Boolean);
-  return [...fd.getAll("tool").map(String), ...custom];
-}
+

@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
-import { toolsFromFormData } from "@/components/tool-checklist";
+import { toolsFromFormData } from "@/lib/tools";
 
 export type SettingsState = { error?: string; saved?: boolean };
 

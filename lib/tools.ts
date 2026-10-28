@@ -204,6 +204,15 @@ export function canonicalTool(name: string): string | null {
   return null;
 }
 
+/** Parse the ToolChecklist fields (`tool` multi + `tools_custom` textarea). */
+export function toolsFromFormData(fd: FormData): string[] {
+  const custom = String(fd.get("tools_custom") ?? "")
+    .split("\n")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  return [...fd.getAll("tool").map(String), ...custom];
+}
+
 /**
  * Normalize a list of tool names: canonical where known, otherwise the
  * original text kept verbatim (treated as a custom tool).

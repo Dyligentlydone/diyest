@@ -19,7 +19,8 @@ import { compressImage } from "@/lib/images";
 import { toMm } from "@/lib/units";
 import type { SkillLevel, Units } from "@/lib/types";
 import { ALL_TOOLS, canonicalTool } from "@/lib/tools";
-import { ToolChecklist, toolsFromFormData } from "@/components/tool-checklist";
+import { ToolChecklist } from "@/components/tool-checklist";
+import { toolsFromFormData } from "@/lib/tools";
 import type { Diagnosis, Ideas } from "@/lib/ai/prompts/m4";
 
 const CANON_SET = new Set(ALL_TOOLS.map((t) => t.toLowerCase()));
