@@ -21,6 +21,23 @@ export interface Cut {
   note?: string; // e.g. "ends level at 8.2°", "round profile — trace shape"
 }
 
+/**
+ * Strip leading thickness/dimension prefixes ("25 mm birch plywood") and
+ * trailing finish notes (", walnut-stained", ", black-painted") from a part's
+ * material string so identical raw stock packs together and stockLabel never
+ * repeats "25 mm 25 mm ...".
+ */
+export function cleanStockMaterial(raw: string): string {
+  return raw
+    .trim()
+    .replace(/^\d+([./]\d+)?\s*(mm|cm|in|inch|inches|")\s+/i, "")
+    .replace(
+      /,\s*[^,]*(stained|painted|finished|primed|coated|lacquered|oiled|varnished|sealed|dyed|clear)[^,]*$/i,
+      ""
+    )
+    .trim();
+}
+
 /** Unit-aware stock label: `¾" × 11¼" × 94½" pine` / "19×286×2400 mm …" */
 export function stockLabel(p: StockPiece, units: Units): string {
   // stock is sold in nominal sizes — snap to a whole inch only when within
@@ -34,9 +51,10 @@ export function stockLabel(p: StockPiece, units: Units): string {
     return formatDimension(snapped, units);
   };
   const u = units === "metric" ? " mm" : "";
-  const mat = p.material.toLowerCase().endsWith(p.kind)
-    ? p.material
-    : `${p.material} ${p.kind}`;
+  const cleaned = cleanStockMaterial(p.material);
+  const mat = cleaned.toLowerCase().endsWith(p.kind)
+    ? cleaned
+    : `${cleaned} ${p.kind}`;
   if (p.kind === "sheet")
     return `${f(p.width ?? 0)} × ${f(p.length)} × ${f(p.thickness ?? 0)}${u} ${mat}`;
   if (p.sectionMm && "d" in p.sectionMm)
@@ -146,7 +164,7 @@ function piecesOf(plan: Plan): {
             cs?.shape === "rect" ? cs.w : part.width_mm,
             cs?.shape === "rect" ? cs.t : part.thickness_mm
           );
-      const key = `${part.material}|${section}`;
+      const key = `${cleanStockMaterial(part.material)}|${section}`;
       for (let i = 0; i < part.qty; i++)
         push(boards, {
           partId: part.id,
@@ -161,7 +179,7 @@ function piecesOf(plan: Plan): {
     // box placement: two largest face dims are the piece footprint
     const dims = [pl.sx, pl.sy, pl.sz].sort((a, b) => b - a);
     if (part.stock === "sheet") {
-      const key = `${part.material}|${Math.round(part.thickness_mm)}`;
+      const key = `${cleanStockMaterial(part.material)}|${Math.round(part.thickness_mm)}`;
       for (let i = 0; i < part.qty; i++)
         push(sheets, {
           partId: part.id,
@@ -180,7 +198,7 @@ function piecesOf(plan: Plan): {
         });
         continue;
       }
-      const key = `${part.material}|${fmtSection(part.width_mm, part.thickness_mm)}`;
+      const key = `${cleanStockMaterial(part.material)}|${fmtSection(part.width_mm, part.thickness_mm)}`;
       for (let i = 0; i < part.qty; i++)
         push(boards, {
           partId: part.id,
