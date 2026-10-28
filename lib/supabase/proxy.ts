@@ -34,9 +34,20 @@ export async function updateSession(request: NextRequest) {
 
   // Refresh the session token if needed. Do not add logic between
   // createServerClient and getUser() — it can cause random logouts.
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // A corrupt/stale session cookie can make getUser() throw — treat as
+  // signed-out rather than killing every request through middleware.
+  let user = null;
+  try {
+    const { data } = await supabase.auth.getUser();
+    user = data.user;
+  } catch {
+    // clear the corrupt session cookie so the next request starts clean
+    for (const c of request.cookies.getAll())
+      if (c.name.includes("-auth-token")) {
+        request.cookies.delete(c.name);
+        response.cookies.delete(c.name);
+      }
+  }
 
   const { pathname } = request.nextUrl;
 
