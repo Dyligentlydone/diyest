@@ -38,7 +38,13 @@ async function HeaderName() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  const name = user?.email?.split("@")[0];
+  if (!user) return null;
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("display_name")
+    .eq("id", user.id)
+    .single();
+  const name = profile?.display_name?.trim() || user.email?.split("@")[0];
   if (!name) return null;
   return (
     <span className="hidden text-xs text-muted-foreground sm:inline">
