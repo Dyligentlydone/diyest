@@ -34,16 +34,19 @@ export async function updateSettings(
   });
   if (!parsed.success) return { error: "Check the form values and try again." };
 
-  const { error } = await supabase.from("profiles").upsert({
-    id: user.id,
-    display_name: parsed.data.display_name || null,
-    units: parsed.data.units,
-    skill_level: parsed.data.skill_level,
-    kerf_mm: parsed.data.kerf_mm,
-    tools_owned: parsed.data.tools_owned,
-  });
-
-  if (error) return { error: "Could not save settings. Try again." };
+  try {
+    const { error } = await supabase.from("profiles").upsert({
+      id: user.id,
+      display_name: parsed.data.display_name || null,
+      units: parsed.data.units,
+      skill_level: parsed.data.skill_level,
+      kerf_mm: parsed.data.kerf_mm,
+      tools_owned: parsed.data.tools_owned,
+    });
+    if (error) return { error: `Could not save settings: ${error.message}` };
+  } catch (e) {
+    return { error: `Could not save settings: ${e instanceof Error ? e.message : "unknown"}` };
+  }
   revalidatePath("/settings");
   return { saved: true };
 }

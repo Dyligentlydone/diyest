@@ -1,9 +1,15 @@
 import { createServerClient } from "@supabase/ssr";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
+import { connection } from "next/server";
 import { requireEnv } from "@/lib/env";
 
 export async function createClient() {
+  // Marks the surrounding render/action as request-time. The Supabase auth
+  // client calls Date.now() internally when loading a session, which Cache
+  // Components treats as an unstable value during prerendering — this opts
+  // every caller out of the static prerender path before it happens.
+  await connection();
   const cookieStore = await cookies();
 
   return createServerClient(
