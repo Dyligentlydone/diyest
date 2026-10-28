@@ -576,6 +576,18 @@ export async function generatePlan(
         : undefined;
 
     // ---- stage 1: overview + parts ----
+    // When user photos are attached, run stage 1 directly on reviewModel()
+    // (gpt-6.1-sol, ~8.5c) so 3D spatial geometry is right on the first pass
+    // without wasting 4 minutes failing on Luna and escalating.
+    const s1Model = opts2.escalate
+      ? m
+      : imageDataUrls.length
+        ? reviewModel()
+        : m;
+    const s1Tier =
+      s1Model === planModel() || opts2.escalate || imageDataUrls.length
+        ? genTier()
+        : undefined;
     const s1res = await callModel<Stage1Plan>(
       [
         { role: "system", content: STAGE1_SYSTEM_PROMPT },
@@ -585,15 +597,15 @@ export async function generatePlan(
       "plan_stage1",
       stage1Schema,
       {
-        model: m,
+        model: s1Model,
         stream: streamed,
         onDelta,
         effort: s1Effort,
-        tier: callTier,
+        tier: s1Tier,
         timeoutMs: callTimeout,
       }
     );
-    track(`${tag}1`, m, callTier, s1res);
+    track(`${tag}1`, s1Model, s1Tier, s1res);
 
     const nb = isNotBuildable(s1res.raw);
     if (nb) return { ok: false, kind: "not_buildable", summary: nb.summary, raw: s1res.raw };
@@ -613,9 +625,9 @@ export async function generatePlan(
         imageDataUrls,
         "plan_stage1",
         stage1Schema,
-        { model: m, effort: s1Effort, tier: callTier, timeoutMs: callTimeout }
+        { model: s1Model, effort: s1Effort, tier: s1Tier, timeoutMs: callTimeout }
       );
-      track(`${tag}1_retry`, m, callTier, retry);
+      track(`${tag}1_retry`, s1Model, s1Tier, retry);
       s1 = retry.parsed;
       if (!s1)
         return {
@@ -633,16 +645,16 @@ export async function generatePlan(
       const rep = await callModel<PartsRepair>(
         [
           { role: "system", content: STAGE1_SYSTEM_PROMPT },
-          { role: "user", content: userMessage },
+          { role: "user", content: s1UserMessage },
           { role: "assistant", content: s1res.raw },
           { role: "user", content: buildPartsRepairMessage(s1res.raw, geo.errors) },
         ],
         imageDataUrls,
         "parts_repair",
         partsRepairSchema,
-        { model: m, effort: s1Effort, tier: callTier, timeoutMs: callTimeout }
+        { model: s1Model, effort: s1Effort, tier: s1Tier, timeoutMs: callTimeout }
       );
-      track(`${tag}1_geomrepair`, m, callTier, rep);
+      track(`${tag}1_geomrepair`, s1Model, s1Tier, rep);
       if (rep.parsed?.parts?.length) {
         s1 = {
           ...s1,
@@ -773,6 +785,7 @@ export async function generatePlan(
     const reviewJointScoped =
       review == null || nonMinorReview.every(jointScoped);
 
+    const geomModel = imageDataUrls.length ? reviewModel() : model;
     if (!geometryDirty && reviewJointScoped) {
       // list-class only → targeted joints/steps repair on the fast stage-2 model
       const m2 = stage2Model();
@@ -807,9 +820,9 @@ export async function generatePlan(
         imageDataUrls,
         "parts_repair",
         partsRepairSchema,
-        { model, effort: s1Effort, tier: genTier() }
+        { model: geomModel, effort: s1Effort, tier: genTier() }
       );
-      track("repair_parts", model, genTier(), rep);
+      track("repair_parts", geomModel, genTier(), rep);
       if (rep.parsed?.parts?.length) {
         currentPlan = finalizePlan({
           ...currentPlan,
@@ -830,9 +843,9 @@ export async function generatePlan(
         imageDataUrls,
         "plan",
         stage1FullSchema,
-        { model, effort: s1Effort, tier: genTier() }
+        { model: geomModel, effort: s1Effort, tier: genTier() }
       );
-      track("repair_full", model, genTier(), rep);
+      track("repair_full", geomModel, genTier(), rep);
       if (rep.parsed) currentPlan = finalizePlan(rep.parsed);
     }
 

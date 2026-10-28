@@ -20,7 +20,7 @@
 
 import { z } from "zod";
 
-export const REVIEW_PROMPT_VERSION = "review.v3";
+export const REVIEW_PROMPT_VERSION = "review.v4";
 
 // All fields required; null for "none" (OpenAI strict structured outputs).
 export const reviewIssueSchema = z.object({
@@ -64,7 +64,9 @@ You receive the plan as JSON (parts with placements, joints, hardware, tools, st
 Review it by mentally building it, step by step, in order:
 
 0. PHOTO FIDELITY (only when the user's photo is attached — do this FIRST). Compare the plan's parts against what the photo actually shows. Every major visible mass must be modeled: each worktop, return, wing, pedestal, drawer bank, individual drawer fronts, pull-out keyboard tray, shelf bay, hutch, carcass, leg or waterfall leg panel.
-   - L-SHAPE / FOOTPRINT CHECK: if the photo shows an L-shaped desk or perpendicular return/credenza running along a side wall, check that overall_dimensions_mm.depth spans the full return depth (~1100–1600 mm) and that the return extends along Z (perpendicular to the main run) — if the plan flattened the return inline along X into a straight shallow desk (depth ~500–650 mm), flag a blocker in photo_fidelity.
+   - L-SHAPE / FOOTPRINT & RETURN ORIENTATION CHECK: if the photo shows an L-shaped desk or perpendicular return/credenza running along a side wall, check BOTH:
+     (a) overall_dimensions_mm.depth spans the full return depth (~1100–1600 mm) and the return extends along Z, AND
+     (b) the return's drawers and open PC/shelf bays face INWARD toward the chair (-x for a right-side return, with sx = thickness at the return's inner X edge, and the pegboard/end cap at z = 0). If the plan put a solid blank panel along the return's inward -x face and put the drawers/divider on the narrow z = 0 end cap instead, flag a blocker in photo_fidelity explaining that the return cabinet is rotated 90° on its own axis.
    - STEPPED / TWO-TIER CHECK: if the photo shows a main top resting above a lower credenza on a riser block, verify the two tops are at different y heights with a riser part between them.
    - DRAWERS & TRAYS CHECK: if the photo shows stacked drawers (e.g. 3 drawer fronts) or an under-desk pull-out keyboard tray, and the plan leaves the bay as an empty open box with no drawer fronts or omits the tray, flag a blocker in photo_fidelity.
    - Reserve blocker severity for missing MAJOR masses or flattened L-footprints; missing small trim or decoration is minor. Do not flag objects in the photo that are clearly not part of the piece (plants, chairs, computers, lamps, decor).

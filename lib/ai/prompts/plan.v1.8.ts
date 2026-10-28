@@ -6,4 +6,4 @@
 
 export * from "./plan.v1.7";
 
-export const PROMPT_VERSION = "plan.v1.8";
+export const PROMPT_VERSION = "plan.v1.9";
