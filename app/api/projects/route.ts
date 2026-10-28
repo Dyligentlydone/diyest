@@ -15,6 +15,7 @@ const saveSchema = z.object({
   input: z.record(z.string(), z.unknown()).default({}),
   prompt_version: z.string().default("plan.v1.2"),
   imagePaths: z.array(z.string().max(500)).max(8).default([]),
+  images: z.array(z.string()).max(8).default([]),
 });
 
 export async function POST(request: NextRequest) {
@@ -38,8 +39,22 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: msg }, { status: 400 });
   }
 
-  // Only accept image paths inside the caller's own storage folder.
+  // Only accept image paths inside the caller's own storage folder, plus upload
+  // any base64 data-URL images sent directly from the draft client.
   const paths = body.imagePaths.filter((p) => p.startsWith(`${user.id}/`));
+  for (const [i, d] of body.images.entries()) {
+    const [head, b] = d.split(",");
+    if (!head || !b) continue;
+    const mime = head.match(/data:(.*?);/)?.[1] ?? "image/jpeg";
+    const ext = mime.includes("png") ? "png" : "jpg";
+    const path = `${user.id}/${body.id}/input-${i}.${ext}`;
+    const buf = Buffer.from(b, "base64");
+    const { error: upErr } = await supabase.storage
+      .from("project-images")
+      .upload(path, buf, { contentType: mime, upsert: true });
+    if (!upErr) paths.push(path);
+    else console.warn("[projects] image upload failed", upErr.message);
+  }
 
   const { error } = await supabase.from("projects").insert({
     id: body.id,

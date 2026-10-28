@@ -8,7 +8,6 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { PlanView } from "@/components/plan/plan-view";
-import { createClient } from "@/lib/supabase/client";
 import { streamGenerate } from "@/lib/generate-stream";
 import type { Plan } from "@/lib/plan/schema";
 import type { Units } from "@/lib/types";
@@ -440,32 +439,7 @@ export function DraftClient({
     }
     setBusy(true);
     try {
-      const supabase = createClient();
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (!user) {
-        router.push("/login?next=/plan/draft");
-        return;
-      }
-
       const projectId = crypto.randomUUID();
-      const imagePaths: string[] = [];
-      for (const [i, d] of draft.images.entries()) {
-        const [head, b] = d.split(",");
-        const mime = head.match(/data:(.*?);/)?.[1] ?? "image/jpeg";
-        const ext = mime.includes("png") ? "png" : "jpg";
-        const path = `${user.id}/${projectId}/input-${i}.${ext}`;
-        const bin = atob(b);
-        const bytes = new Uint8Array(bin.length);
-        for (let k = 0; k < bin.length; k++) bytes[k] = bin.charCodeAt(k);
-        const { error } = await supabase.storage
-          .from("project-images")
-          .upload(path, new Blob([bytes], { type: mime }), { upsert: true });
-        if (!error) imagePaths.push(path);
-        else console.warn("image upload failed", error.message);
-      }
-
       const res = await fetch("/api/projects", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -479,16 +453,22 @@ export function DraftClient({
           plan: draft.plan,
           input: draft.input,
           prompt_version: draft.promptVersion ?? "plan.v1.8",
-          imagePaths,
+          images: draft.images,
         }),
       });
-      const out = await res.json();
+      if (res.status === 401) {
+        router.push("/login?next=/plan/draft");
+        return;
+      }
+      const out = await res.json().catch(() => ({}));
       if (!res.ok) {
         toast.error(out.error ?? "Could not save project");
         return;
       }
       sessionStorage.removeItem(DRAFT_KEY);
       router.push(`/projects/${projectId}`);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Could not save project");
     } finally {
       setBusy(false);
     }

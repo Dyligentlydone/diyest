@@ -1,9 +1,13 @@
 import { createBrowserClient } from "@supabase/ssr";
-import { requireEnv } from "@/lib/env";
 
+/**
+ * Browser Supabase client — must reference literal NEXT_PUBLIC_* properties so
+ * Next.js inlines them into the client bundle at build time (dynamic
+ * process.env[name] lookups evaluate to undefined in the browser).
+ */
 export function createClient() {
   return createBrowserClient(
-    requireEnv("NEXT_PUBLIC_SUPABASE_URL"),
-    requireEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY")
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 }
