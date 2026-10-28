@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { promoStatsForToken } from "@/lib/promo";
 import { isSupabaseConfigured } from "@/lib/env";
 
@@ -18,11 +19,9 @@ function Stat({ label, value, hint }: { label: string; value: string; hint?: str
   );
 }
 
-export default async function PromoSharePage(props: {
-  params: Promise<{ token: string }>;
-}) {
+async function PromoShare({ params }: { params: Promise<{ token: string }> }) {
   if (!isSupabaseConfigured()) notFound();
-  const { token } = await props.params;
+  const { token } = await params;
   const s = await promoStatsForToken(token);
   if (!s) notFound();
 
@@ -81,5 +80,26 @@ export default async function PromoSharePage(props: {
         subscribers join · diyest.com
       </p>
     </main>
+  );
+}
+
+export default function PromoSharePage(props: {
+  params: Promise<{ token: string }>;
+}) {
+  return (
+    <Suspense
+      fallback={
+        <main className="mx-auto w-full max-w-2xl px-4 py-14">
+          <div className="mx-auto h-8 w-48 animate-pulse rounded bg-muted" />
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="h-24 animate-pulse rounded-lg border bg-muted/40" />
+            ))}
+          </div>
+        </main>
+      }
+    >
+      <PromoShare params={props.params} />
+    </Suspense>
   );
 }
