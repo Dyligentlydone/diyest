@@ -44,15 +44,24 @@ async function Redeem({ params }: { params: Promise<{ code: string }> }) {
         <PartyPopper className="h-10 w-10 text-primary" aria-hidden />
         <h1 className="mt-4 text-2xl font-bold">Your invite is ready</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Code <strong className="font-mono">{code}</strong> — sign in to claim it.
-          Your invite includes <strong>3 plan generations</strong>.
+          Code <strong className="font-mono">{code}</strong> — create your account
+          to claim it. Your invite includes <strong>3 plan generations</strong>.
         </p>
         <Link
-          href={`/login?next=${encodeURIComponent(`/invite/${code}`)}`}
+          href={`/login?mode=signup&next=${encodeURIComponent(`/invite/${code}`)}`}
           className={`${buttonVariants()} mt-6`}
         >
-          Sign in to claim
+          Create your account
         </Link>
+        <p className="mt-3 text-xs text-muted-foreground">
+          Already have an account?{" "}
+          <Link
+            href={`/login?next=${encodeURIComponent(`/invite/${code}`)}`}
+            className="underline underline-offset-2"
+          >
+            Sign in
+          </Link>
+        </p>
       </>
     );
   }

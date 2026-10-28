@@ -20,7 +20,9 @@ export function LoginForm() {
   const params = useSearchParams();
   const oauthError = params.get("error");
   const next = params.get("next") ?? "/projects";
-  const [mode, setMode] = useState<Mode>("signin");
+  const [mode, setMode] = useState<Mode>(
+    params.get("mode") === "signup" ? "signup" : "signin"
+  );
 
   const [pwdState, pwdAction, pwdPending] = useActionState<LoginState, FormData>(
     signInWithPassword,

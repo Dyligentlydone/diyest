@@ -27,6 +27,22 @@ async function HeaderAuth() {
   );
 }
 
+/** Display-only badge — reads the session JWT from cookies (no auth API call). */
+async function HeaderName() {
+  if (!isSupabaseConfigured()) return null;
+  const supabase = await createClient();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+  const name = session?.user.email?.split("@")[0];
+  if (!name) return null;
+  return (
+    <span className="hidden text-xs text-muted-foreground sm:inline">
+      · {name}
+    </span>
+  );
+}
+
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40">
@@ -34,6 +50,9 @@ export function SiteHeader() {
         <Link href="/" className="flex items-center font-semibold" aria-label="diyest home">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo.png" alt="diyest" className="h-9 w-auto" />
+          <Suspense fallback={null}>
+            <HeaderName />
+          </Suspense>
         </Link>
         <nav className="flex items-center gap-1 sm:gap-2">
           <Link
