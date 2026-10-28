@@ -32,7 +32,7 @@ export function PlanFeedback({ projectId }: { projectId?: string | null }) {
   }
 
   return (
-    <div className="rounded-lg border-2 border-primary/20 bg-primary/5 p-4">
+    <div className="rounded-lg border-2 border-blueprint/20 bg-blueprint/5 p-4">
       <div className="flex flex-wrap items-center gap-3">
         <div>
           <p className="text-sm font-semibold">Beta check — is this plan buildable?</p>
@@ -92,7 +92,7 @@ export function PlanFeedback({ projectId }: { projectId?: string | null }) {
             className="h-9 flex-1 rounded-md border bg-background px-3 text-sm outline-none"
             maxLength={2000}
           />
-          <button type="submit" className="h-9 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground">
+          <button type="submit" className="h-9 rounded-md bg-blueprint px-4 text-sm font-medium text-blueprint-foreground">
             Send report
           </button>
         </form>

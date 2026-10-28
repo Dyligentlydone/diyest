@@ -169,7 +169,7 @@ export function ShoppingList({
                     onClick={() => toggle(i.key)}
                     aria-label={shownHave.has(i.key) ? "Mark as needed" : "Mark as already have"}
                     className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${
-                      shownHave.has(i.key) ? "border-primary bg-primary text-primary-foreground" : ""
+                      shownHave.has(i.key) ? "border-blueprint bg-blueprint text-blueprint-foreground" : ""
                     }`}
                   >
                     {shownHave.has(i.key) && <Check className="h-3 w-3" />}

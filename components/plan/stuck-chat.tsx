@@ -112,7 +112,7 @@ export function StuckChat({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground shadow-lg hover:bg-primary/90"
+        className="fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full bg-blueprint px-4 py-2.5 text-sm font-medium text-blueprint-foreground shadow-lg hover:bg-blueprint/90"
       >
         <LifeBuoy className="h-4 w-4" /> I&apos;m stuck
       </button>
@@ -150,7 +150,7 @@ export function StuckChat({
                 key={i}
                 className={`max-w-[85%] rounded-lg px-3 py-2 text-sm ${
                   m.role === "user"
-                    ? "ml-auto bg-primary text-primary-foreground"
+                    ? "ml-auto bg-blueprint text-blueprint-foreground"
                     : "bg-muted"
                 }`}
               >

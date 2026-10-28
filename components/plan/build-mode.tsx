@@ -132,7 +132,7 @@ export function BuildMode({
       {/* progress bar */}
       <div className="h-1 bg-muted">
         <div
-          className="h-full bg-primary transition-all"
+          className="h-full bg-blueprint transition-all"
           style={{ width: `${(doneCount / steps.length) * 100}%` }}
         />
       </div>
@@ -181,7 +181,7 @@ export function BuildMode({
           </p>
         )}
         {step.tip && (
-          <p className="mt-3 rounded-md border-l-4 border-primary/50 bg-primary/5 px-4 py-3 text-sm">
+          <p className="mt-3 rounded-md border-l-4 border-blueprint/50 bg-blueprint/5 px-4 py-3 text-sm">
             <strong>Tip:</strong> {step.tip}
           </p>
         )}

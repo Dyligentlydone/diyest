@@ -34,7 +34,7 @@ export function GlossedText({ text }: { text: string }) {
         key={i}
         type="button"
         onClick={() => setOpen(open === p.term ? null : p.term!)}
-        className="underline decoration-dotted decoration-primary/60 underline-offset-2 hover:text-primary"
+        className="underline decoration-dotted decoration-blueprint/60 underline-offset-2 hover:text-blueprint"
       >
         {p.t}
       </button>
@@ -47,7 +47,7 @@ export function GlossedText({ text }: { text: string }) {
     <span>
       {nodes}
       {open && def && (
-        <span className="mt-1 block rounded border-l-2 border-primary/60 bg-primary/5 px-2 py-1 text-xs not-italic">
+        <span className="mt-1 block rounded border-l-2 border-blueprint/60 bg-blueprint/5 px-2 py-1 text-xs not-italic">
           <strong className="capitalize">{open}</strong> — {def}
         </span>
       )}

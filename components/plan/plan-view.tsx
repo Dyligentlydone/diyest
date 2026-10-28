@@ -246,7 +246,7 @@ export function PlanView({
                 onClick={() => setVisualMode(k)}
                 className={`rounded-md px-3 py-1 font-medium transition-colors ${
                   visualMode === k
-                    ? "bg-background text-foreground shadow-xs"
+                    ? "bg-blueprint text-blueprint-foreground shadow-xs"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
@@ -390,7 +390,7 @@ export function PlanView({
               onClick={() => setTab(id)}
               className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
                 tab === id
-                  ? "bg-primary text-primary-foreground"
+                  ? "bg-blueprint text-blueprint-foreground"
                   : "text-muted-foreground hover:bg-muted hover:text-foreground"
               }`}
             >
@@ -447,7 +447,7 @@ export function PlanView({
           )}
 
           {checking && (
-            <Badge variant="outline" className="border-primary/50 text-xs font-normal">
+            <Badge variant="outline" className="border-blueprint/50 text-xs font-normal">
               Draft — carpenter check in progress
             </Badge>
           )}
@@ -465,7 +465,7 @@ export function PlanView({
                       shownChanged.includes(s.n)
                         ? "border-amber-500/60 bg-amber-500/5"
                         : usesSel
-                          ? "border-primary/60 bg-primary/5"
+                          ? "border-blueprint/60 bg-blueprint/5"
                           : isDone
                             ? "opacity-65"
                             : undefined
@@ -479,8 +479,8 @@ export function PlanView({
                           title={isDone ? "Mark step incomplete" : "Mark step done"}
                           className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border font-mono text-xs font-bold transition-colors ${
                             isDone
-                              ? "border-primary bg-primary text-primary-foreground"
-                              : "border-primary/40 bg-primary/10 text-foreground hover:bg-primary hover:text-primary-foreground"
+                              ? "border-blueprint bg-blueprint text-blueprint-foreground"
+                              : "border-blueprint/40 bg-blueprint/10 text-foreground hover:bg-blueprint hover:text-blueprint-foreground"
                           }`}
                         >
                           {isDone ? <Check className="h-3.5 w-3.5" /> : s.n}
@@ -512,9 +512,9 @@ export function PlanView({
                                   type="button"
                                   onClick={() => toggle(id)}
                                   title={pName ? `${id}: ${pName}` : id}
-                                  className={`rounded border px-1.5 py-0.5 font-mono text-[11px] transition-colors hover:bg-primary/10 ${
+                                  className={`rounded border px-1.5 py-0.5 font-mono text-[11px] transition-colors hover:bg-blueprint/10 ${
                                     selId === id
-                                      ? "border-primary bg-primary/15 font-semibold"
+                                      ? "border-blueprint bg-blueprint/15 font-semibold"
                                       : "border-muted-foreground/30 text-muted-foreground"
                                   }`}
                                 >
@@ -554,7 +554,7 @@ export function PlanView({
                           {(s.tip || s.safety) && (
                             <div className="grid gap-1.5 pt-1 sm:grid-cols-2">
                               {s.tip && (
-                                <p className="rounded border-l-2 border-primary/50 bg-primary/5 px-2.5 py-1.5 text-xs text-muted-foreground">
+                                <p className="rounded border-l-2 border-blueprint/50 bg-blueprint/5 px-2.5 py-1.5 text-xs text-muted-foreground">
                                   <strong className="text-foreground">Tip:</strong> {s.tip}
                                 </p>
                               )}
@@ -662,8 +662,8 @@ export function PlanView({
                       <tr
                         key={p.id}
                         onClick={() => toggle(p.id)}
-                        className={`cursor-pointer border-t transition-colors hover:bg-primary/5 ${
-                          selId === p.id ? "bg-primary/10" : ""
+                        className={`cursor-pointer border-t transition-colors hover:bg-blueprint/5 ${
+                          selId === p.id ? "bg-blueprint/10" : ""
                         }`}
                       >
                         <td className="py-1.5 pr-2 font-mono text-xs font-semibold">

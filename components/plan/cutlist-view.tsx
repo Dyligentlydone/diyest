@@ -51,7 +51,7 @@ export function CutListView({
   );
 
   const rowCls = (id: string) =>
-    `cursor-pointer transition-colors ${selectedPart === id ? "bg-amber-500/15" : "hover:bg-muted/50"}`;
+    `cursor-pointer transition-colors ${selectedPart === id ? "bg-blueprint/15" : "hover:bg-muted/50"}`;
 
   const pieces = [...cut.boards, ...cut.sheets];
   if (!pieces.length && !cut.loose.length) return null;
@@ -130,7 +130,7 @@ export function CutListView({
                 </div>
                 <div className="mt-1.5 h-1 w-full overflow-hidden rounded-full bg-muted">
                   <div
-                    className="h-full rounded-full bg-primary/70"
+                    className="h-full rounded-full bg-blueprint/70"
                     style={{ width: `${pct}%` }}
                   />
                 </div>
