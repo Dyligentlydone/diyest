@@ -128,7 +128,7 @@ export function PlanView({
   serverDone?: number[];
 }) {
   const [units, setUnits] = useState<Units>(initialUnits);
-  const [selId, setSelId] = useState<string | null>(null);
+  const [selId, setSelId] = useState<string | null>(plan.parts[0]?.id ?? null);
   const [visualMode, setVisualMode] = useState<VisualMode>("blueprint");
   const [tab, setTab] = useState<SectionTab>("steps");
   const [doneSteps, setDoneSteps] = useState<Set<number>>(() => new Set(serverDone));
