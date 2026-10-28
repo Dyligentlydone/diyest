@@ -77,32 +77,72 @@ async function GalleryGrid() {
   );
 }
 
+/** Waitlist/invite CTAs — only shown to signed-out visitors in invite-only
+ *  mode; members can already build, so they see the "make it yours" copy. */
+async function GalleryCta() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!isInviteOnly())
+    return (
+      <p className="mt-1 text-sm text-muted-foreground">
+        Free plans shared by builders — blueprint, cut list, shopping list and
+        steps included. Open one and hit “Build this yourself” to make it yours.
+      </p>
+    );
+  if (user)
+    return (
+      <p className="mt-1 text-sm text-muted-foreground">
+        Free plans shared by builders — blueprint, cut list, shopping list and
+        steps included. Open one to build it yourself.
+      </p>
+    );
+  return (
+    <>
+      <p className="mt-1 text-sm text-muted-foreground">
+        Free plans shared by builders — blueprint, cut list, shopping list and
+        steps included. Open one and join the waitlist to build it.
+      </p>
+      <div className="mt-4 flex gap-2">
+        <Link
+          href="/#waitlist"
+          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
+        >
+          Join the waitlist
+        </Link>
+        <Link
+          href="/invite"
+          className="rounded-md border px-4 py-2 text-sm font-medium hover:bg-muted"
+        >
+          Have an invite code?
+        </Link>
+      </div>
+    </>
+  );
+}
+
 export default function GalleryPage() {
   return (
     <main className="mx-auto w-full max-w-5xl px-4 py-10">
       <h1 className="text-2xl font-bold">Project gallery</h1>
-      <p className="mt-1 text-sm text-muted-foreground">
-        Free plans shared by builders — blueprint, cut list, shopping list and
-        steps included.{" "}
-        {isInviteOnly()
-          ? "Open one and join the waitlist to build it."
-          : "Open one and hit “Build this yourself” to make it yours."}
-      </p>
-      {isInviteOnly() && (
-        <div className="mt-4 flex gap-2">
-          <Link
-            href="/#waitlist"
-            className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
-          >
-            Join the waitlist
-          </Link>
-          <Link
-            href="/invite"
-            className="rounded-md border px-4 py-2 text-sm font-medium hover:bg-muted"
-          >
-            Have an invite code?
-          </Link>
-        </div>
+      {isSupabaseConfigured() ? (
+        <Suspense
+          fallback={
+            <p className="mt-1 text-sm text-muted-foreground">
+              Free plans shared by builders — blueprint, cut list, shopping list
+              and steps included.
+            </p>
+          }
+        >
+          <GalleryCta />
+        </Suspense>
+      ) : (
+        <p className="mt-1 text-sm text-muted-foreground">
+          Free plans shared by builders — blueprint, cut list, shopping list and
+          steps included.
+        </p>
       )}
 
       <nav className="mt-5 flex flex-wrap gap-2" aria-label="Categories">
