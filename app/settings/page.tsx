@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { isSupabaseConfigured } from "@/lib/env";
-import { denyPageIfNoInvite } from "@/lib/site-mode";
+import { betaAccessFor, denyPageIfNoInvite } from "@/lib/site-mode";
 import { createClient } from "@/lib/supabase/server";
 import { billingEnabled, billingState, TIERS } from "@/lib/billing";
 import { PortalButton } from "@/components/checkout-button";
@@ -62,21 +62,49 @@ async function SettingsContent() {
   };
 
   const billing = await billingState(user.id);
+  const access = await betaAccessFor(user.id);
   const tierCfg = billing.tier
     ? TIERS.find((t) => t.tier === billing.tier)
     : null;
-  const planLabel = tierCfg
-    ? `${tierCfg.name} — $${tierCfg.priceUsd}/mo`
-    : billing.credits > 0
+  // invite grants map onto paid tiers for display: basic→starter,
+  // intermediate→workshop, pro→pro
+  const grantTier =
+    !tierCfg && access?.active
+      ? TIERS.find(
+          (t) =>
+            t.tier ===
+            (access.level === "pro"
+              ? "pro"
+              : access.level === "intermediate"
+                ? "workshop"
+                : "starter")
+        )
+      : null;
+  const planLabel = tierCfg ? `${tierCfg.name} — $${tierCfg.priceUsd}/mo` : null;
+  const creditLabel =
+    billing.credits > 0
       ? `${billing.credits} plan credit${billing.credits === 1 ? "" : "s"}`
-      : "Free (invite beta)";
+      : null;
 
   return (
     <>
       <Card className="mb-6">
         <CardHeader>
           <CardTitle>Plan &amp; billing</CardTitle>
-          <CardDescription>{planLabel}</CardDescription>
+          <CardDescription>
+            {planLabel ??
+              (grantTier ? (
+                <span>
+                  {grantTier.name} —{" "}
+                  <span className="line-through">${grantTier.priceUsd}/mo</span>
+                </span>
+              ) : (
+                creditLabel ?? "Free"
+              ))}
+            {grantTier && (
+              <span className="mt-0.5 block text-xs">Free (invited)</span>
+            )}
+          </CardDescription>
         </CardHeader>
         <CardContent>
           {billing.active && billing.currentPeriodEnd && (
