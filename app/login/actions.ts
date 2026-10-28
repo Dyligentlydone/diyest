@@ -66,7 +66,9 @@ export async function signInWithPassword(
   redirect(safeNext(formData.get("next")));
 }
 
-/** Email + password sign-up — Supabase emails a confirmation link. */
+/** Email + password sign-up. If email confirmation is off (Supabase dashboard),
+ *  signUp returns a session and we log straight in; otherwise Supabase emails
+ *  a confirmation link first. */
 export async function signUpWithPassword(
   _prev: LoginState,
   formData: FormData
@@ -78,7 +80,7 @@ export async function signUpWithPassword(
   if (!pwd.success) return { error: pwd.error.issues[0]?.message };
 
   const supabase = await createClient();
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email: parsed.data,
     password: pwd.data,
     options: {
@@ -86,6 +88,7 @@ export async function signUpWithPassword(
     },
   });
   if (error) return { error: authError(error, "Could not create the account") };
+  if (data.session) redirect(safeNext(formData.get("next")));
   return { sent: true, email: parsed.data, signup: true };
 }
 
