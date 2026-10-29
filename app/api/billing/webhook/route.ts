@@ -113,8 +113,10 @@ export async function POST(request: NextRequest) {
         const userId = session.metadata?.userId;
         // one-time single-plan purchase → +1 credit; subscription state is
         // handled by customer.subscription.* events
-        if (session.mode === "payment" && session.metadata?.plan === "single" && userId)
+        if (session.mode === "payment" && session.metadata?.plan === "single" && userId) {
           await grantPlanCredits(userId);
+          await recordUsage(userId, "single_purchase");
+        }
         if (session.metadata?.type === "plan_purchase")
           await fulfillPlanPurchase(session);
         break;

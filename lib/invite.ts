@@ -1,5 +1,6 @@
 /** Invite-code domain logic — validation is a pure function for tests. */
 import { createServiceClient } from "@/lib/supabase/server";
+import { normalizeEmail } from "@/lib/email";
 
 export interface InviteCodeRow {
   code: string;
@@ -33,11 +34,11 @@ export function checkCode(
 
 export async function lookupCode(
   raw: string
-): Promise<(InviteCodeRow & { id: string; grant_access_level: string; grant_days: number | null }) | null> {
+): Promise<(InviteCodeRow & { id: string; kind: string; grant_access_level: string; grant_days: number | null }) | null> {
   const supabase = createServiceClient();
   const { data } = await supabase
     .from("invite_codes")
-    .select("id, code, is_active, uses, max_uses, expires_at, grant_access_level, grant_days")
+    .select("id, code, kind, is_active, uses, max_uses, expires_at, grant_access_level, grant_days")
     .ilike("code", raw.trim()) // case-insensitive
     .maybeSingle();
   return data;
@@ -77,6 +78,24 @@ export async function redeemCode(userId: string, rawCode: string): Promise<Redee
       .eq("id", c.id);
   }
 
+  // Attribution: a creator's promo code is explicit last-touch and always wins.
+  // For generic invites, keep the referral that first brought the user — their
+  // waitlist row's invite_code — so waitlist→signup stays credited to the
+  // creator who referred them.
+  let attribution = c.code;
+  if (c.kind !== "promo") {
+    const { data: auth } = await supabase.auth.admin.getUserById(userId);
+    const email = auth.user?.email ? normalizeEmail(auth.user.email) : null;
+    if (email) {
+      const { data: wl } = await supabase
+        .from("waitlist")
+        .select("invite_code")
+        .eq("email", email)
+        .maybeSingle();
+      if (wl?.invite_code) attribution = wl.invite_code;
+    }
+  }
+
   const until =
     c.grant_days != null
       ? new Date(Date.now() + c.grant_days * 24 * 3600 * 1000).toISOString()
@@ -86,7 +105,7 @@ export async function redeemCode(userId: string, rawCode: string): Promise<Redee
     .update({
       beta_access_level: c.grant_access_level,
       beta_access_until: until,
-      invite_code: c.code,
+      invite_code: attribution,
     })
     .eq("id", userId);
 

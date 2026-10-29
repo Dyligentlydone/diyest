@@ -4,7 +4,7 @@
  * token-gated /promo/[token] share page.
  */
 import { createServiceClient } from "./supabase/server";
-import { TIERS, type PaidTier } from "./billing";
+import { TIERS, SINGLE_PLAN_USD, type PaidTier } from "./billing";
 
 export const AFFILIATE_RATE = 0.1;
 
@@ -19,8 +19,12 @@ export interface PromoStats {
   sharedPlans: number;
   waitlistSignups: number;
   activeSubscribers: number;
+  /** one-time $15 single-plan purchases by attributed users */
+  singlePlanSales: number;
   /** est. monthly affiliate payout at AFFILIATE_RATE of active subs */
   estMonthlyUsd: number;
+  /** est. one-time affiliate payout at AFFILIATE_RATE of single plans */
+  estOneTimeUsd: number;
   /** signups per day, oldest → newest */
   daily: { date: string; signups: number; plans: number }[];
 }
@@ -34,15 +38,23 @@ export async function promoStatsForCode(code: string): Promise<PromoStats | null
     .maybeSingle();
   if (!row) return null;
 
-  // who redeemed this code
-  const { data: redemptions } = await supabase
-    .from("invite_redemptions")
-    .select("user_id, redeemed_at")
-    .eq("code", code)
-    .order("redeemed_at");
-  const userIds = (redemptions ?? []).map((r) => r.user_id);
+  // users credited to this code — direct redeemers plus waitlist referrals
+  // whose profile kept this code as their attribution through redemption
+  const { data: attributed } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("invite_code", code);
+  const userIds = (attributed ?? []).map((r) => r.id);
 
-  const [plansRes, sharedRes, waitlistRes, subsRes] = await Promise.all([
+  const [redemptionsRes, plansRes, sharedRes, waitlistRes, subsRes, singlesRes] = await Promise.all([
+    // signup dates for the daily chart — each user has ≤1 redemption
+    userIds.length
+      ? supabase
+          .from("invite_redemptions")
+          .select("user_id, redeemed_at")
+          .in("user_id", userIds)
+          .order("redeemed_at")
+      : Promise.resolve({ data: [] as { user_id: string; redeemed_at: string }[] }),
     userIds.length
       ? supabase
           .from("usage_events")
@@ -64,8 +76,16 @@ export async function promoStatsForCode(code: string): Promise<PromoStats | null
           .in("user_id", userIds)
           .in("status", ["active", "trialing"])
       : Promise.resolve({ data: [] as { user_id: string; plan_tier: string | null; status: string }[] }),
+    userIds.length
+      ? supabase
+          .from("usage_events")
+          .select("id", { count: "exact", head: true })
+          .eq("kind", "single_purchase")
+          .in("user_id", userIds)
+      : Promise.resolve({ count: 0 }),
   ]);
 
+  const redemptions = redemptionsRes.data ?? [];
   const plans = plansRes.data ?? [];
   const shared = sharedRes.data ?? [];
   const subs = subsRes.data ?? [];
@@ -75,6 +95,8 @@ export async function promoStatsForCode(code: string): Promise<PromoStats | null
     (sum, s) => sum + (tierPrice.get(s.plan_tier as PaidTier) ?? 0) * AFFILIATE_RATE,
     0
   );
+  const singlePlanSales = singlesRes.count ?? 0;
+  const estOneTimeUsd = singlePlanSales * SINGLE_PLAN_USD * AFFILIATE_RATE;
 
   // last 30 days of activity, bucketed by UTC day
   const days: PromoStats["daily"] = [];
@@ -84,7 +106,7 @@ export async function promoStatsForCode(code: string): Promise<PromoStats | null
     days.push({ date: d.toISOString().slice(0, 10), signups: 0, plans: 0 });
   }
   const idx = new Map(days.map((d, i) => [d.date, i]));
-  for (const r of redemptions ?? []) {
+  for (const r of redemptions) {
     const i = idx.get(r.redeemed_at.slice(0, 10));
     if (i != null) days[i].signups++;
   }
@@ -104,7 +126,9 @@ export async function promoStatsForCode(code: string): Promise<PromoStats | null
     sharedPlans: shared.length,
     waitlistSignups: waitlistRes.count ?? 0,
     activeSubscribers: subs.length,
+    singlePlanSales,
     estMonthlyUsd,
+    estOneTimeUsd,
     daily: days,
   };
 }

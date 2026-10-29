@@ -51,7 +51,7 @@ async function PromoShare({ params }: { params: Promise<{ token: string }> }) {
         <Stat
           label="Est. commission"
           value={`$${s.estMonthlyUsd.toFixed(2)}/mo`}
-          hint="at 10% of subscriptions"
+          hint={`10% of subs · +$${s.estOneTimeUsd.toFixed(2)} from ${s.singlePlanSales} single plan${s.singlePlanSales === 1 ? "" : "s"}`}
         />
       </div>
 
@@ -105,8 +105,8 @@ async function PromoShare({ params }: { params: Promise<{ token: string }> }) {
       </div>
 
       <p className="mt-6 text-center text-xs text-muted-foreground">
-        Signups = people who redeemed your code · Commission estimates update as
-        subscribers join · diyest.com
+        Signups = accounts credited to your code (link or redemption) ·
+        Commission estimates update as subscribers join · diyest.com
       </p>
     </main>
   );
