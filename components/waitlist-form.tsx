@@ -31,6 +31,9 @@ export function WaitlistForm({
   const [email, setEmail] = useState("");
   const [build, setBuild] = useState("");
   const [heard, setHeard] = useState("");
+  const [refCode, setRefCode] = useState(
+    params.get("invite") ?? params.get("ref") ?? ""
+  );
   const [marketing, setMarketing] = useState(false);
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState<{
@@ -78,8 +81,11 @@ export function WaitlistForm({
           heardFrom: heard || undefined,
           marketingOptIn: marketing,
           turnstileToken: tokenRef.current ?? undefined,
-          ref: params.get("ref") ?? undefined,
-          invite: params.get("invite") ?? undefined,
+          // typed code feeds both attribution paths — creator promo codes
+          // (invite) and personal waitlist referral codes (ref); the API
+          // credits whichever one matches
+          ref: refCode.trim() || params.get("ref") || undefined,
+          invite: refCode.trim() || params.get("invite") || undefined,
           utmSource: params.get("utm_source") ?? undefined,
           utmMedium: params.get("utm_medium") ?? undefined,
           utmCampaign: params.get("utm_campaign") ?? undefined,
@@ -166,6 +172,18 @@ export function WaitlistForm({
         placeholder="YouTube, a friend, Reddit…"
         maxLength={200}
         className="mt-1 h-11 w-full rounded-md border bg-transparent px-3 text-base outline-none focus:border-primary sm:h-10 sm:text-sm"
+      />
+      <label className="mt-4 block text-sm font-medium" htmlFor="wl-ref">
+        Referral code <span className="font-normal text-muted-foreground">(optional)</span>
+      </label>
+      <input
+        id="wl-ref"
+        type="text"
+        value={refCode}
+        onChange={(e) => setRefCode(e.target.value.toUpperCase())}
+        placeholder="e.g. AIMEE"
+        maxLength={60}
+        className="mt-1 h-11 w-full rounded-md border bg-transparent px-3 font-mono text-base uppercase outline-none focus:border-primary sm:h-10 sm:text-sm"
       />
       <label className="mt-4 flex items-start gap-2.5 text-sm text-muted-foreground">
         <input
