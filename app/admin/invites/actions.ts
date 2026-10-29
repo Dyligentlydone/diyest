@@ -67,7 +67,10 @@ export async function createCodes(formData: FormData) {
     }))
   );
   if (error) throw new Error(`Could not create codes: ${error.message}`);
-  revalidatePath("/admin/invites");
+  // the write already committed — a revalidate hiccup must not black-screen
+  try {
+    revalidatePath("/admin/invites");
+  } catch {}
 }
 
 export async function deactivateCode(formData: FormData) {
@@ -77,5 +80,7 @@ export async function deactivateCode(formData: FormData) {
   const active = formData.get("active") === "true";
   if (!id) return;
   await supabase.from("invite_codes").update({ is_active: !active }).eq("id", id);
-  revalidatePath("/admin/invites");
+  try {
+    revalidatePath("/admin/invites");
+  } catch {}
 }

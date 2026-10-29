@@ -11,6 +11,21 @@ async function InviteAdmin() {
   await requireAdmin();
   const supabase = createServiceClient();
 
+  const results = await Promise.all([
+    supabase.from("invite_codes").select("*").order("created_at", { ascending: false }).limit(500),
+    supabase.from("invite_redemptions").select("code"),
+    supabase.from("profiles").select("id, invite_code").not("invite_code", "is", null),
+    supabase.from("usage_events").select("user_id").eq("kind", "plan_generate"),
+    supabase.from("projects").select("user_id").eq("is_public", true),
+    supabase.from("waitlist").select("invite_code").not("invite_code", "is", null),
+  ]).catch(() => null);
+  if (!results) {
+    return (
+      <p className="rounded-md border p-4 text-sm text-muted-foreground">
+        Couldn&apos;t load invite data — refresh to retry.
+      </p>
+    );
+  }
   const [
     { data: codes },
     { data: redemptions },
@@ -18,14 +33,7 @@ async function InviteAdmin() {
     { data: planEvents },
     { data: shared },
     { data: attributed },
-  ] = await Promise.all([
-    supabase.from("invite_codes").select("*").order("created_at", { ascending: false }).limit(500),
-    supabase.from("invite_redemptions").select("code"),
-    supabase.from("profiles").select("id, invite_code").not("invite_code", "is", null),
-    supabase.from("usage_events").select("user_id").eq("kind", "plan_generate"),
-    supabase.from("projects").select("user_id").eq("is_public", true),
-    supabase.from("waitlist").select("invite_code").not("invite_code", "is", null),
-  ]);
+  ] = results;
 
   const userCode = new Map((betaProfiles ?? []).map((p) => [p.id, p.invite_code as string]));
   const perCode = (rows: { code?: string | null; user_id?: string | null; invite_code?: string | null }[] | null, key: "code" | "user_id" | "invite_code") => {
