@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { promoStatsForToken } from "@/lib/promo";
 import { isSupabaseConfigured } from "@/lib/env";
+import { appUrl } from "@/lib/billing";
+import { CopyButton } from "@/components/copy-button";
 
 export const metadata: Metadata = {
   title: "Creator stats — diyest",
@@ -73,6 +75,33 @@ async function PromoShare({ params }: { params: Promise<{ token: string }> }) {
           <span>{s.daily[0]?.date}</span>
           <span>{s.daily[s.daily.length - 1]?.date}</span>
         </div>
+      </div>
+
+      <div className="mt-8 rounded-xl border p-5">
+        <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          Your code
+        </p>
+        <div className="mt-3 flex items-center justify-between gap-3 rounded-md bg-muted/50 px-3 py-2">
+          <code className="font-mono text-lg font-bold tracking-wide">{s.code}</code>
+          <CopyButton text={s.code} label="Copy code" />
+        </div>
+        <p className="mt-4 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          Your share link — credits you on waitlist joins and signups
+        </p>
+        <div className="mt-2 flex items-center justify-between gap-3 rounded-md bg-muted/50 px-3 py-2">
+          <code className="truncate font-mono text-xs">
+            {appUrl()}/?invite={s.code}
+          </code>
+          <CopyButton
+            text={`${appUrl()}/?invite=${s.code}`}
+            label="Copy link"
+            className="inline-flex shrink-0 items-center gap-1 rounded border px-2 py-1 text-xs hover:bg-muted"
+          />
+        </div>
+        <p className="mt-2 text-[11px] text-muted-foreground">
+          Followers can also just type your code into the referral box on the
+          waitlist form — same credit.
+        </p>
       </div>
 
       <p className="mt-6 text-center text-xs text-muted-foreground">
