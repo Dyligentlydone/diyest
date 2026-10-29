@@ -19,6 +19,11 @@ declare global {
   }
 }
 
+function readCookie(name: string): string {
+  const m = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
+  return m ? decodeURIComponent(m[1]) : "";
+}
+
 export function WaitlistForm({
   siteKey,
   onJoined,
@@ -42,6 +47,13 @@ export function WaitlistForm({
   } | null>(null);
   const tokenRef = useRef<string | null>(null);
   const widgetEl = useRef<HTMLDivElement>(null);
+
+  // pre-fill from the referral cookie when there's no ?invite=/?ref= in the URL
+  useEffect(() => {
+    setRefCode((cur) =>
+      cur || readCookie("diyest_invite") || readCookie("diyest_ref")
+    );
+  }, []);
 
   // render the Turnstile widget once the script is ready
   useEffect(() => {
@@ -83,9 +95,18 @@ export function WaitlistForm({
           turnstileToken: tokenRef.current ?? undefined,
           // typed code feeds both attribution paths — creator promo codes
           // (invite) and personal waitlist referral codes (ref); the API
-          // credits whichever one matches
-          ref: refCode.trim() || params.get("ref") || undefined,
-          invite: refCode.trim() || params.get("invite") || undefined,
+          // credits whichever one matches. Falls back to the URL param,
+          // then the cookie the proxy sets on landing.
+          ref:
+            refCode.trim() ||
+            params.get("ref") ||
+            readCookie("diyest_ref") ||
+            undefined,
+          invite:
+            refCode.trim() ||
+            params.get("invite") ||
+            readCookie("diyest_invite") ||
+            undefined,
           utmSource: params.get("utm_source") ?? undefined,
           utmMedium: params.get("utm_medium") ?? undefined,
           utmCampaign: params.get("utm_campaign") ?? undefined,
