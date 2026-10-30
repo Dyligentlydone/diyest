@@ -6,6 +6,7 @@ import {
   sendEmail,
   waitlistConfirmedEmail,
 } from "@/lib/email";
+import { requestOrigin } from "@/lib/env";
 import {
   computePosition,
   unsubscribeToken,
@@ -16,7 +17,7 @@ import {
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const token = url.searchParams.get("token");
-  const base = `${url.protocol}//${url.host}`;
+  const base = requestOrigin(request);
   if (!token || !isSupabaseConfigured())
     return NextResponse.redirect(`${base}/?confirm=invalid`);
 

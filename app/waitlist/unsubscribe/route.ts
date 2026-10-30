@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { isSupabaseConfigured } from "@/lib/env";
+import { isSupabaseConfigured, requestOrigin } from "@/lib/env";
 import { createServiceClient } from "@/lib/supabase/server";
 import { unsubscribeToken } from "@/lib/waitlist";
 
@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const email = url.searchParams.get("e") ?? "";
   const token = url.searchParams.get("t") ?? "";
-  const base = `${url.protocol}//${url.host}`;
+  const base = requestOrigin(request);
   if (!email || !token || !isSupabaseConfigured())
     return NextResponse.redirect(`${base}/?unsub=invalid`);
   if (unsubscribeToken(email) !== token)
